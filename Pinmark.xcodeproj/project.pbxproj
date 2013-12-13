@@ -1,0 +1,484 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		278EF427185B71E2003A27D3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF426185B71E2003A27D3 /* Foundation.framework */; };
+		278EF429185B71E2003A27D3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF428185B71E2003A27D3 /* CoreGraphics.framework */; };
+		278EF42B185B71E2003A27D3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF42A185B71E2003A27D3 /* UIKit.framework */; };
+		278EF431185B71E2003A27D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 278EF42F185B71E2003A27D3 /* InfoPlist.strings */; };
+		278EF433185B71E2003A27D3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF432185B71E2003A27D3 /* main.m */; };
+		278EF437185B71E2003A27D3 /* PMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF436185B71E2003A27D3 /* PMAppDelegate.m */; };
+		278EF43A185B71E2003A27D3 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 278EF438185B71E2003A27D3 /* Main_iPhone.storyboard */; };
+		278EF43D185B71E2003A27D3 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 278EF43B185B71E2003A27D3 /* Main_iPad.storyboard */; };
+		278EF442185B71E2003A27D3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 278EF441185B71E2003A27D3 /* Images.xcassets */; };
+		278EF449185B71E2003A27D3 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF448185B71E2003A27D3 /* XCTest.framework */; };
+		278EF44A185B71E2003A27D3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF426185B71E2003A27D3 /* Foundation.framework */; };
+		278EF44B185B71E2003A27D3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF42A185B71E2003A27D3 /* UIKit.framework */; };
+		278EF453185B71E2003A27D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 278EF451185B71E2003A27D3 /* InfoPlist.strings */; };
+		278EF455185B71E2003A27D3 /* PinmarkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF454185B71E2003A27D3 /* PinmarkTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		278EF44C185B71E2003A27D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 278EF41B185B71E2003A27D3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 278EF422185B71E2003A27D3;
+			remoteInfo = Pinmark;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		278EF423185B71E2003A27D3 /* Pinmark.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pinmark.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		278EF426185B71E2003A27D3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		278EF428185B71E2003A27D3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		278EF42A185B71E2003A27D3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		278EF42E185B71E2003A27D3 /* Pinmark-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pinmark-Info.plist"; sourceTree = "<group>"; };
+		278EF430185B71E2003A27D3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		278EF432185B71E2003A27D3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		278EF434185B71E2003A27D3 /* Pinmark-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pinmark-Prefix.pch"; sourceTree = "<group>"; };
+		278EF435185B71E2003A27D3 /* PMAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PMAppDelegate.h; sourceTree = "<group>"; };
+		278EF436185B71E2003A27D3 /* PMAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PMAppDelegate.m; sourceTree = "<group>"; };
+		278EF439185B71E2003A27D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		278EF43C185B71E2003A27D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		278EF441185B71E2003A27D3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		278EF447185B71E2003A27D3 /* PinmarkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinmarkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		278EF448185B71E2003A27D3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		278EF450185B71E2003A27D3 /* PinmarkTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PinmarkTests-Info.plist"; sourceTree = "<group>"; };
+		278EF452185B71E2003A27D3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		278EF454185B71E2003A27D3 /* PinmarkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PinmarkTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		278EF420185B71E2003A27D3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				278EF429185B71E2003A27D3 /* CoreGraphics.framework in Frameworks */,
+				278EF42B185B71E2003A27D3 /* UIKit.framework in Frameworks */,
+				278EF427185B71E2003A27D3 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		278EF444185B71E2003A27D3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				278EF449185B71E2003A27D3 /* XCTest.framework in Frameworks */,
+				278EF44B185B71E2003A27D3 /* UIKit.framework in Frameworks */,
+				278EF44A185B71E2003A27D3 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		278EF41A185B71E2003A27D3 = {
+			isa = PBXGroup;
+			children = (
+				278EF42C185B71E2003A27D3 /* Pinmark */,
+				278EF44E185B71E2003A27D3 /* PinmarkTests */,
+				278EF425185B71E2003A27D3 /* Frameworks */,
+				278EF424185B71E2003A27D3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		278EF424185B71E2003A27D3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				278EF423185B71E2003A27D3 /* Pinmark.app */,
+				278EF447185B71E2003A27D3 /* PinmarkTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		278EF425185B71E2003A27D3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				278EF426185B71E2003A27D3 /* Foundation.framework */,
+				278EF428185B71E2003A27D3 /* CoreGraphics.framework */,
+				278EF42A185B71E2003A27D3 /* UIKit.framework */,
+				278EF448185B71E2003A27D3 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		278EF42C185B71E2003A27D3 /* Pinmark */ = {
+			isa = PBXGroup;
+			children = (
+				278EF438185B71E2003A27D3 /* Main_iPhone.storyboard */,
+				278EF43B185B71E2003A27D3 /* Main_iPad.storyboard */,
+				278EF441185B71E2003A27D3 /* Images.xcassets */,
+				278EF42D185B71E2003A27D3 /* Supporting Files */,
+			);
+			path = Pinmark;
+			sourceTree = "<group>";
+		};
+		278EF42D185B71E2003A27D3 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				278EF435185B71E2003A27D3 /* PMAppDelegate.h */,
+				278EF436185B71E2003A27D3 /* PMAppDelegate.m */,
+				278EF42E185B71E2003A27D3 /* Pinmark-Info.plist */,
+				278EF42F185B71E2003A27D3 /* InfoPlist.strings */,
+				278EF432185B71E2003A27D3 /* main.m */,
+				278EF434185B71E2003A27D3 /* Pinmark-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		278EF44E185B71E2003A27D3 /* PinmarkTests */ = {
+			isa = PBXGroup;
+			children = (
+				278EF454185B71E2003A27D3 /* PinmarkTests.m */,
+				278EF44F185B71E2003A27D3 /* Supporting Files */,
+			);
+			path = PinmarkTests;
+			sourceTree = "<group>";
+		};
+		278EF44F185B71E2003A27D3 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				278EF450185B71E2003A27D3 /* PinmarkTests-Info.plist */,
+				278EF451185B71E2003A27D3 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		278EF422185B71E2003A27D3 /* Pinmark */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 278EF458185B71E2003A27D3 /* Build configuration list for PBXNativeTarget "Pinmark" */;
+			buildPhases = (
+				278EF41F185B71E2003A27D3 /* Sources */,
+				278EF420185B71E2003A27D3 /* Frameworks */,
+				278EF421185B71E2003A27D3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Pinmark;
+			productName = Pinmark;
+			productReference = 278EF423185B71E2003A27D3 /* Pinmark.app */;
+			productType = "com.apple.product-type.application";
+		};
+		278EF446185B71E2003A27D3 /* PinmarkTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 278EF45B185B71E2003A27D3 /* Build configuration list for PBXNativeTarget "PinmarkTests" */;
+			buildPhases = (
+				278EF443185B71E2003A27D3 /* Sources */,
+				278EF444185B71E2003A27D3 /* Frameworks */,
+				278EF445185B71E2003A27D3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				278EF44D185B71E2003A27D3 /* PBXTargetDependency */,
+			);
+			name = PinmarkTests;
+			productName = PinmarkTests;
+			productReference = 278EF447185B71E2003A27D3 /* PinmarkTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		278EF41B185B71E2003A27D3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = PM;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = kilovolt42;
+				TargetAttributes = {
+					278EF446185B71E2003A27D3 = {
+						TestTargetID = 278EF422185B71E2003A27D3;
+					};
+				};
+			};
+			buildConfigurationList = 278EF41E185B71E2003A27D3 /* Build configuration list for PBXProject "Pinmark" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 278EF41A185B71E2003A27D3;
+			productRefGroup = 278EF424185B71E2003A27D3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				278EF422185B71E2003A27D3 /* Pinmark */,
+				278EF446185B71E2003A27D3 /* PinmarkTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		278EF421185B71E2003A27D3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				278EF43D185B71E2003A27D3 /* Main_iPad.storyboard in Resources */,
+				278EF442185B71E2003A27D3 /* Images.xcassets in Resources */,
+				278EF43A185B71E2003A27D3 /* Main_iPhone.storyboard in Resources */,
+				278EF431185B71E2003A27D3 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		278EF445185B71E2003A27D3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				278EF453185B71E2003A27D3 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		278EF41F185B71E2003A27D3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				278EF433185B71E2003A27D3 /* main.m in Sources */,
+				278EF437185B71E2003A27D3 /* PMAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		278EF443185B71E2003A27D3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				278EF455185B71E2003A27D3 /* PinmarkTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		278EF44D185B71E2003A27D3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 278EF422185B71E2003A27D3 /* Pinmark */;
+			targetProxy = 278EF44C185B71E2003A27D3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		278EF42F185B71E2003A27D3 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				278EF430185B71E2003A27D3 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		278EF438185B71E2003A27D3 /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				278EF439185B71E2003A27D3 /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		278EF43B185B71E2003A27D3 /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				278EF43C185B71E2003A27D3 /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		278EF451185B71E2003A27D3 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				278EF452185B71E2003A27D3 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		278EF456185B71E2003A27D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		278EF457185B71E2003A27D3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		278EF459185B71E2003A27D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Pinmark/Pinmark-Prefix.pch";
+				INFOPLIST_FILE = "Pinmark/Pinmark-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		278EF45A185B71E2003A27D3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Pinmark/Pinmark-Prefix.pch";
+				INFOPLIST_FILE = "Pinmark/Pinmark-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		278EF45C185B71E2003A27D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Pinmark.app/Pinmark";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Pinmark/Pinmark-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "PinmarkTests/PinmarkTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		278EF45D185B71E2003A27D3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Pinmark.app/Pinmark";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Pinmark/Pinmark-Prefix.pch";
+				INFOPLIST_FILE = "PinmarkTests/PinmarkTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		278EF41E185B71E2003A27D3 /* Build configuration list for PBXProject "Pinmark" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				278EF456185B71E2003A27D3 /* Debug */,
+				278EF457185B71E2003A27D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		278EF458185B71E2003A27D3 /* Build configuration list for PBXNativeTarget "Pinmark" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				278EF459185B71E2003A27D3 /* Debug */,
+				278EF45A185B71E2003A27D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		278EF45B185B71E2003A27D3 /* Build configuration list for PBXNativeTarget "PinmarkTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				278EF45C185B71E2003A27D3 /* Debug */,
+				278EF45D185B71E2003A27D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 278EF41B185B71E2003A27D3 /* Project object */;
+}
