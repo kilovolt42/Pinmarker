@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2703C540185F7E6500570F0C /* PMNewPinTVC.m */; };
 		278EF427185B71E2003A27D3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF426185B71E2003A27D3 /* Foundation.framework */; };
 		278EF429185B71E2003A27D3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF428185B71E2003A27D3 /* CoreGraphics.framework */; };
 		278EF42B185B71E2003A27D3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF42A185B71E2003A27D3 /* UIKit.framework */; };
@@ -34,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2703C53F185F7E6500570F0C /* PMNewPinTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMNewPinTVC.h; sourceTree = "<group>"; };
+		2703C540185F7E6500570F0C /* PMNewPinTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMNewPinTVC.m; sourceTree = "<group>"; };
 		278EF423185B71E2003A27D3 /* Pinmark.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pinmark.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		278EF426185B71E2003A27D3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		278EF428185B71E2003A27D3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -113,6 +116,8 @@
 			children = (
 				278EF438185B71E2003A27D3 /* Main_iPhone.storyboard */,
 				278EF43B185B71E2003A27D3 /* Main_iPad.storyboard */,
+				2703C53F185F7E6500570F0C /* PMNewPinTVC.h */,
+				2703C540185F7E6500570F0C /* PMNewPinTVC.m */,
 				278EF441185B71E2003A27D3 /* Images.xcassets */,
 				278EF42D185B71E2003A27D3 /* Supporting Files */,
 			);
@@ -251,6 +256,7 @@
 			files = (
 				278EF433185B71E2003A27D3 /* main.m in Sources */,
 				278EF437185B71E2003A27D3 /* PMAppDelegate.m in Sources */,
+				2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,6 +475,7 @@
 				278EF45A185B71E2003A27D3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		278EF45B185B71E2003A27D3 /* Build configuration list for PBXNativeTarget "PinmarkTests" */ = {
 			isa = XCConfigurationList;
@@ -477,6 +484,7 @@
 				278EF45D185B71E2003A27D3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
