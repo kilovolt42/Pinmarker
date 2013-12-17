@@ -29,6 +29,7 @@
 	
 	UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
 	[self.view addGestureRecognizer:tap];
+	[self.navigationController.view addGestureRecognizer:tap];
 }
 
 - (IBAction)pin:(UIBarButtonItem *)sender {
@@ -37,10 +38,19 @@
 
 - (void)dismissKeyboard {
 	[self.activeField resignFirstResponder];
+	self.activeField = nil;
 }
+
+#pragma mark - UITableViewDataSource
+
+#pragma mark - UITableViewDelegate
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
 	return NO;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return 0.1;
 }
 
 #pragma mark - UITextFieldDelegate
