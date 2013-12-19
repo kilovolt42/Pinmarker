@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2703C540185F7E6500570F0C /* PMNewPinTVC.m */; };
 		2703C543185FD16100570F0C /* Bookmarklet.js in Sources */ = {isa = PBXBuildFile; fileRef = 2703C542185FD16100570F0C /* Bookmarklet.js */; };
+		270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 270C4A4918628D6A000FC061 /* PMNavigationVC.m */; };
 		278EF427185B71E2003A27D3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF426185B71E2003A27D3 /* Foundation.framework */; };
 		278EF429185B71E2003A27D3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF428185B71E2003A27D3 /* CoreGraphics.framework */; };
 		278EF42B185B71E2003A27D3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF42A185B71E2003A27D3 /* UIKit.framework */; };
@@ -23,6 +24,7 @@
 		278EF44B185B71E2003A27D3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF42A185B71E2003A27D3 /* UIKit.framework */; };
 		278EF453185B71E2003A27D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 278EF451185B71E2003A27D3 /* InfoPlist.strings */; };
 		278EF455185B71E2003A27D3 /* PinmarkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF454185B71E2003A27D3 /* PinmarkTests.m */; };
+		82960B3C2A964DE68159B981 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6E13E9115194BF18C9C2D1A /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +41,9 @@
 		2703C53F185F7E6500570F0C /* PMNewPinTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMNewPinTVC.h; sourceTree = "<group>"; };
 		2703C540185F7E6500570F0C /* PMNewPinTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMNewPinTVC.m; sourceTree = "<group>"; };
 		2703C542185FD16100570F0C /* Bookmarklet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Bookmarklet.js; sourceTree = "<group>"; };
+		270C4A4718628CD3000FC061 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
+		270C4A4818628D6A000FC061 /* PMNavigationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMNavigationVC.h; sourceTree = "<group>"; };
+		270C4A4918628D6A000FC061 /* PMNavigationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMNavigationVC.m; sourceTree = "<group>"; };
 		278EF423185B71E2003A27D3 /* Pinmark.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pinmark.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		278EF426185B71E2003A27D3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		278EF428185B71E2003A27D3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -57,6 +62,8 @@
 		278EF450185B71E2003A27D3 /* PinmarkTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PinmarkTests-Info.plist"; sourceTree = "<group>"; };
 		278EF452185B71E2003A27D3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		278EF454185B71E2003A27D3 /* PinmarkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PinmarkTests.m; sourceTree = "<group>"; };
+		A6E13E9115194BF18C9C2D1A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE2FE771354E43FD945BDE89 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +74,7 @@
 				278EF429185B71E2003A27D3 /* CoreGraphics.framework in Frameworks */,
 				278EF42B185B71E2003A27D3 /* UIKit.framework in Frameworks */,
 				278EF427185B71E2003A27D3 /* Foundation.framework in Frameworks */,
+				82960B3C2A964DE68159B981 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +117,7 @@
 				278EF428185B71E2003A27D3 /* CoreGraphics.framework */,
 				278EF42A185B71E2003A27D3 /* UIKit.framework */,
 				278EF448185B71E2003A27D3 /* XCTest.framework */,
+				A6E13E9115194BF18C9C2D1A /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -118,6 +127,8 @@
 			children = (
 				278EF438185B71E2003A27D3 /* Main_iPhone.storyboard */,
 				278EF43B185B71E2003A27D3 /* Main_iPad.storyboard */,
+				270C4A4818628D6A000FC061 /* PMNavigationVC.h */,
+				270C4A4918628D6A000FC061 /* PMNavigationVC.m */,
 				2703C53F185F7E6500570F0C /* PMNewPinTVC.h */,
 				2703C540185F7E6500570F0C /* PMNewPinTVC.m */,
 				278EF441185B71E2003A27D3 /* Images.xcassets */,
@@ -136,6 +147,8 @@
 				278EF432185B71E2003A27D3 /* main.m */,
 				278EF434185B71E2003A27D3 /* Pinmark-Prefix.pch */,
 				2703C542185FD16100570F0C /* Bookmarklet.js */,
+				270C4A4718628CD3000FC061 /* Podfile */,
+				AE2FE771354E43FD945BDE89 /* Pods.xcconfig */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -165,9 +178,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 278EF458185B71E2003A27D3 /* Build configuration list for PBXNativeTarget "Pinmark" */;
 			buildPhases = (
+				4D009DE108C24BC8B1B452CC /* Check Pods Manifest.lock */,
 				278EF41F185B71E2003A27D3 /* Sources */,
 				278EF420185B71E2003A27D3 /* Frameworks */,
 				278EF421185B71E2003A27D3 /* Resources */,
+				18870BE4A0CE48229897EE1D /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -252,6 +267,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		18870BE4A0CE48229897EE1D /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4D009DE108C24BC8B1B452CC /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		278EF41F185B71E2003A27D3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -259,6 +307,7 @@
 			files = (
 				2703C543185FD16100570F0C /* Bookmarklet.js in Sources */,
 				278EF433185B71E2003A27D3 /* main.m in Sources */,
+				270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */,
 				278EF437185B71E2003A27D3 /* PMAppDelegate.m in Sources */,
 				2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */,
 			);
@@ -394,6 +443,7 @@
 		};
 		278EF459185B71E2003A27D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AE2FE771354E43FD945BDE89 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -407,6 +457,7 @@
 		};
 		278EF45A185B71E2003A27D3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AE2FE771354E43FD945BDE89 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

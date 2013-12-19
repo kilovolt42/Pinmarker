@@ -7,6 +7,7 @@
 //
 
 #import "PMAppDelegate.h"
+#import "PMNavigationVC.h"
 
 @implementation PMAppDelegate
 
@@ -41,6 +42,11 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+	UIViewController *viewController = self.window.rootViewController;
+	if ([viewController isKindOfClass:[PMNavigationVC class]]) {
+		PMNavigationVC *navigationVC = (PMNavigationVC *)viewController;
+		[navigationVC addURL:url sourceApplication:sourceApplication];
+	}
 	return YES;
 }
 
