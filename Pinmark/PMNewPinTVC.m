@@ -8,6 +8,7 @@
 
 #import "PMNewPinTVC.h"
 #import <AFNetworking/AFNetworking.h>
+#import "PMLoginVC.h"
 
 @interface PMNewPinTVC () <UITextFieldDelegate, UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *URLTextField;
@@ -17,9 +18,17 @@
 @property (weak, nonatomic) IBOutlet UISwitch *toReadSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *sharedSwitch;
 @property (weak, nonatomic) id activeField;
+@property (strong, nonatomic) NSString *authToken;
 @end
 
 @implementation PMNewPinTVC
+
+#define PINBOARD_API_AUTH_TOKEN_KEY @"auth_token_key"
+
+- (void)setAuthToken:(NSString *)authToken {
+	_authToken = authToken;
+	self.title = [[_authToken componentsSeparatedByString:@":"] firstObject];
+}
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
@@ -33,7 +42,23 @@
 	[self.navigationController.view addGestureRecognizer:tap];
 }
 
-#define PINBOARD_API_AUTH_TOKEN @""
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	self.authToken = [[NSUserDefaults standardUserDefaults] valueForKey:PINBOARD_API_AUTH_TOKEN_KEY];
+	if (!self.authToken) {
+		[self.navigationController performSegueWithIdentifier:@"Login Segue" sender:self];
+	}
+}
+
+- (IBAction)completeLogin:(UIStoryboardSegue *)segue {
+	PMLoginVC *loginVC = (PMLoginVC *)segue.sourceViewController;
+	self.authToken = loginVC.authToken;
+	[[NSUserDefaults standardUserDefaults] setObject:self.authToken forKey:PINBOARD_API_AUTH_TOKEN_KEY];
+	
+	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
+}
 
 - (IBAction)pin:(UIBarButtonItem *)sender {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -47,7 +72,7 @@
 					@"shared": self.sharedSwitch.on ? @"no" : @"yes",
 					@"toread": self.toReadSwitch.on ? @"yes" : @"no",
 					@"format": @"json",
-					@"auth_token": PINBOARD_API_AUTH_TOKEN }
+					@"auth_token": self.authToken }
 		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
 			 NSLog(@"Response Object: %@", responseObject);
 		 }

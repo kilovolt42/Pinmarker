@@ -23,6 +23,7 @@
 		278EF44B185B71E2003A27D3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF42A185B71E2003A27D3 /* UIKit.framework */; };
 		278EF453185B71E2003A27D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 278EF451185B71E2003A27D3 /* InfoPlist.strings */; };
 		278EF455185B71E2003A27D3 /* PinmarkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF454185B71E2003A27D3 /* PinmarkTests.m */; };
+		27A87B1B18637FB1006D3F25 /* PMLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A87B1A18637FB1006D3F25 /* PMLoginVC.m */; };
 		82960B3C2A964DE68159B981 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6E13E9115194BF18C9C2D1A /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +62,8 @@
 		278EF450185B71E2003A27D3 /* PinmarkTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PinmarkTests-Info.plist"; sourceTree = "<group>"; };
 		278EF452185B71E2003A27D3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		278EF454185B71E2003A27D3 /* PinmarkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PinmarkTests.m; sourceTree = "<group>"; };
+		27A87B1918637FB1006D3F25 /* PMLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLoginVC.h; sourceTree = "<group>"; };
+		27A87B1A18637FB1006D3F25 /* PMLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLoginVC.m; sourceTree = "<group>"; };
 		A6E13E9115194BF18C9C2D1A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE2FE771354E43FD945BDE89 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -130,6 +133,8 @@
 				270C4A4918628D6A000FC061 /* PMNavigationVC.m */,
 				2703C53F185F7E6500570F0C /* PMNewPinTVC.h */,
 				2703C540185F7E6500570F0C /* PMNewPinTVC.m */,
+				27A87B1918637FB1006D3F25 /* PMLoginVC.h */,
+				27A87B1A18637FB1006D3F25 /* PMLoginVC.m */,
 				278EF441185B71E2003A27D3 /* Images.xcassets */,
 				278EF42D185B71E2003A27D3 /* Supporting Files */,
 			);
@@ -306,6 +311,7 @@
 			files = (
 				278EF433185B71E2003A27D3 /* main.m in Sources */,
 				270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */,
+				27A87B1B18637FB1006D3F25 /* PMLoginVC.m in Sources */,
 				278EF437185B71E2003A27D3 /* PMAppDelegate.m in Sources */,
 				2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */,
 			);
