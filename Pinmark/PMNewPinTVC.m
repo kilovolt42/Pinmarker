@@ -27,7 +27,7 @@
 
 - (void)setAuthToken:(NSString *)authToken {
 	_authToken = authToken;
-	self.title = [[_authToken componentsSeparatedByString:@":"] firstObject];
+	self.title = [[self.authToken componentsSeparatedByString:@":"] firstObject];
 }
 
 - (void)viewDidLoad {
@@ -45,9 +45,7 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	self.authToken = [[NSUserDefaults standardUserDefaults] valueForKey:PINBOARD_API_AUTH_TOKEN_KEY];
-	if (!self.authToken) {
-		[self.navigationController performSegueWithIdentifier:@"Login Segue" sender:self];
-	}
+	while (!self.authToken) [self login];
 }
 
 - (IBAction)completeLogin:(UIStoryboardSegue *)segue {
@@ -61,9 +59,16 @@
 }
 
 - (IBAction)pin:(UIBarButtonItem *)sender {
+	if (![self isReadyToPin]) return;
+	
+	UIActivityIndicatorView *indicatorButton = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	[indicatorButton startAnimating];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicatorButton];
+	
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
 	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
+	__weak PMNewPinTVC *weakSelf = self;
 	[manager GET:@"https://api.pinboard.in/v1/posts/add"
 	  parameters:@{ @"url": self.URLTextField.text,
 					@"description": self.descriptionTextField.text,
@@ -75,10 +80,70 @@
 					@"auth_token": self.authToken }
 		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
 			 NSLog(@"Response Object: %@", responseObject);
+			 weakSelf.navigationItem.rightBarButtonItem = sender;
+			 NSString *resultCode = responseObject[@"result_code"];
+			 if (resultCode) {
+				 if ([resultCode isEqualToString:@"done"]) {
+					 [weakSelf reportSuccess];
+				 } else if ([resultCode isEqualToString:@"missing url"]) {
+					 [weakSelf reportErrorWithMessage:@"Missing URL"];
+				 } else if ([resultCode isEqualToString:@"must provide title"]) {
+					 [weakSelf reportErrorWithMessage:@"Missing Title"];
+				 } else {
+					 [weakSelf reportErrorWithMessage:nil];
+				 }
+			 }
 		 }
 		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 			 NSLog(@"Error: %@", error);
+			 weakSelf.navigationItem.rightBarButtonItem = sender;
+			 [weakSelf reportErrorWithMessage:nil];
 		 }];
+}
+
+- (void)login {
+	[self.navigationController performSegueWithIdentifier:@"Login Segue" sender:self];
+}
+
+- (BOOL)isReadyToPin {
+	if ([self.URLTextField.text isEqualToString:@""]) {
+		[self reportErrorWithMessage:@"URL Required"];
+		[self.URLTextField becomeFirstResponder];
+		return NO;
+	} else if ([self.descriptionTextField.text isEqualToString:@""]) {
+		[self reportErrorWithMessage:@"Title Required"];
+		[self.descriptionTextField becomeFirstResponder];
+		return NO;
+	}
+	return YES;
+}
+
+- (void)reportErrorWithMessage:(NSString *)message {
+	self.title = message ? message : @"Error";
+	self.navigationController.navigationBar.barTintColor = [UIColor redColor];
+	[self performSelector:@selector(resetNavigationBar) withObject:self afterDelay:2.0];
+}
+
+- (void)reportSuccess {
+	self.title = @"Success";
+	self.navigationController.navigationBar.barTintColor = [UIColor greenColor];
+	[self performSelector:@selector(resetNavigationBar) withObject:self afterDelay:2.0];
+	[self clearFields];
+}
+
+- (void)resetNavigationBar {
+	self.title = [[self.authToken componentsSeparatedByString:@":"] firstObject];
+	self.navigationController.navigationBar.barTintColor = nil;
+}
+
+- (void)clearFields {
+	self.URLTextField.text = @"";
+	self.descriptionTextField.text = @"";
+	self.tagsTextField.text = @"";
+	self.extendedTextView.text = @"";
+	self.toReadSwitch.on = NO;
+	self.sharedSwitch.on = NO;
+	[self.activeField resignFirstResponder];
 }
 
 - (void)dismissKeyboard {
