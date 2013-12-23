@@ -10,6 +10,8 @@
 #import <AFNetworking/AFNetworking.h>
 #import "PMLoginVC.h"
 
+NSString * const PMPinboardAuthTokenKey = @"PMPinboardAuthTokenKey";
+
 @interface PMNewPinTVC () <UITextFieldDelegate, UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *URLTextField;
 @property (weak, nonatomic) IBOutlet UITextField *descriptionTextField;
@@ -19,16 +21,26 @@
 @property (weak, nonatomic) IBOutlet UISwitch *sharedSwitch;
 @property (weak, nonatomic) id activeField;
 @property (strong, nonatomic) NSString *authToken;
+@property (strong, nonatomic) NSString *xCallbackSuccess;
 @end
 
 @implementation PMNewPinTVC
 
-#define PINBOARD_API_AUTH_TOKEN_KEY @"auth_token_key"
+#pragma mark - Properties
+
+@synthesize authToken = _authToken;
+
+- (NSString *)authToken {
+	if (!_authToken) _authToken = [[NSUserDefaults standardUserDefaults] valueForKey:PMPinboardAuthTokenKey];
+	return _authToken;
+}
 
 - (void)setAuthToken:(NSString *)authToken {
 	_authToken = authToken;
 	self.title = [[self.authToken componentsSeparatedByString:@":"] firstObject];
 }
+
+#pragma mark - UIViewController
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
@@ -44,14 +56,15 @@
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	self.authToken = [[NSUserDefaults standardUserDefaults] valueForKey:PINBOARD_API_AUTH_TOKEN_KEY];
-	while (!self.authToken) [self login];
+	if (!self.authToken) [self login];
 }
+
+#pragma mark - IBAction
 
 - (IBAction)completeLogin:(UIStoryboardSegue *)segue {
 	PMLoginVC *loginVC = (PMLoginVC *)segue.sourceViewController;
 	self.authToken = loginVC.authToken;
-	[[NSUserDefaults standardUserDefaults] setObject:self.authToken forKey:PINBOARD_API_AUTH_TOKEN_KEY];
+	[[NSUserDefaults standardUserDefaults] setObject:self.authToken forKey:PMPinboardAuthTokenKey];
 	
 	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
 		[self dismissViewControllerAnimated:YES completion:nil];
@@ -65,40 +78,85 @@
 	[indicatorButton startAnimating];
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicatorButton];
 	
+	NSDictionary *parameters = @{ @"url": self.URLTextField.text,
+								  @"description": self.descriptionTextField.text,
+								  @"extended": self.extendedTextView.text,
+								  @"tags": self.tagsTextField.text,
+								  @"shared": self.sharedSwitch.on ? @"no" : @"yes",
+								  @"toread": self.toReadSwitch.on ? @"yes" : @"no" };
+	
+	__weak PMNewPinTVC *weakSelf = self;
+	
+	[self addBookmarkWithParameters:parameters
+							success:^(AFHTTPRequestOperation *operation, id responseObject) {
+								weakSelf.navigationItem.rightBarButtonItem = sender;
+								NSString *resultCode = responseObject[@"result_code"];
+								if (resultCode) {
+									if ([resultCode isEqualToString:@"done"]) [weakSelf reportSuccess];
+									else if ([resultCode isEqualToString:@"missing url"]) [weakSelf reportErrorWithMessage:@"Missing URL"];
+									else if ([resultCode isEqualToString:@"must provide title"]) [weakSelf reportErrorWithMessage:@"Missing Title"];
+									else [weakSelf reportErrorWithMessage:nil];
+								}
+							}
+							failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+								weakSelf.navigationItem.rightBarButtonItem = sender;
+								[weakSelf reportErrorWithMessage:nil];
+							}];
+}
+
+#pragma mark - Methods
+
+- (void)addBookmarkWithParameters:(NSDictionary *)parameters
+						  success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))successCallback
+						  failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failureCallback {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
 	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
-	__weak PMNewPinTVC *weakSelf = self;
-	[manager GET:@"https://api.pinboard.in/v1/posts/add"
-	  parameters:@{ @"url": self.URLTextField.text,
-					@"description": self.descriptionTextField.text,
-					@"extended": self.extendedTextView.text,
-					@"tags": self.tagsTextField.text,
-					@"shared": self.sharedSwitch.on ? @"no" : @"yes",
-					@"toread": self.toReadSwitch.on ? @"yes" : @"no",
-					@"format": @"json",
-					@"auth_token": self.authToken }
+	
+	NSMutableDictionary *mutableParameters = [parameters mutableCopy];
+	[mutableParameters addEntriesFromDictionary:@{ @"format": @"json",
+												   @"auth_token": self.authToken }];
+	
+	[manager GET:@"https://api.pinboard.in/v1/posts/add" parameters:mutableParameters
 		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
 			 NSLog(@"Response Object: %@", responseObject);
-			 weakSelf.navigationItem.rightBarButtonItem = sender;
-			 NSString *resultCode = responseObject[@"result_code"];
-			 if (resultCode) {
-				 if ([resultCode isEqualToString:@"done"]) {
-					 [weakSelf reportSuccess];
-				 } else if ([resultCode isEqualToString:@"missing url"]) {
-					 [weakSelf reportErrorWithMessage:@"Missing URL"];
-				 } else if ([resultCode isEqualToString:@"must provide title"]) {
-					 [weakSelf reportErrorWithMessage:@"Missing Title"];
-				 } else {
-					 [weakSelf reportErrorWithMessage:nil];
-				 }
+			 if (successCallback) successCallback(operation, responseObject);
+			 if (self.xCallbackSuccess) {
+				 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[self.xCallbackSuccess stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 			 }
 		 }
 		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 			 NSLog(@"Error: %@", error);
-			 weakSelf.navigationItem.rightBarButtonItem = sender;
-			 [weakSelf reportErrorWithMessage:nil];
+			 if (failureCallback) failureCallback(operation, error);
 		 }];
+}
+
+- (void)addURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
+	self.xCallbackSuccess = nil;
+	
+	NSMutableDictionary *parameters = [NSMutableDictionary new];
+	for (NSString *parameter in [[url query] componentsSeparatedByString:@"&"]) {
+		NSArray *fieldValuePair = [parameter componentsSeparatedByString:@"="];
+		NSString *field = [fieldValuePair[0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+		NSString *value = [fieldValuePair[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+		parameters[field] = value;
+	}
+	
+	if ([[url lastPathComponent] isEqualToString:@"add"]) {
+		if ([[url host] isEqualToString:@"x-callback-url"]) {
+			self.xCallbackSuccess = parameters[@"x-success"];
+			if ([parameters[@"fast"] isEqualToString:@"yes"]) {
+				[self addBookmarkWithParameters:@{ @"url": parameters[@"url"],
+												   @"description": parameters[@"description"] }
+										success:nil
+										failure:nil];
+				return;
+			}
+		}
+		self.URLTextField.text = parameters[@"url"];
+		self.descriptionTextField.text = parameters[@"description"];
+		self.extendedTextView.text = parameters[@"extended"];
+	}
 }
 
 - (void)login {
@@ -118,17 +176,17 @@
 	return YES;
 }
 
-- (void)reportErrorWithMessage:(NSString *)message {
-	self.title = message ? message : @"Error";
-	self.navigationController.navigationBar.barTintColor = [UIColor redColor];
-	[self performSelector:@selector(resetNavigationBar) withObject:self afterDelay:2.0];
-}
-
 - (void)reportSuccess {
 	self.title = @"Success";
 	self.navigationController.navigationBar.barTintColor = [UIColor greenColor];
 	[self performSelector:@selector(resetNavigationBar) withObject:self afterDelay:2.0];
 	[self clearFields];
+}
+
+- (void)reportErrorWithMessage:(NSString *)message {
+	self.title = message ? message : @"Error";
+	self.navigationController.navigationBar.barTintColor = [UIColor redColor];
+	[self performSelector:@selector(resetNavigationBar) withObject:self afterDelay:2.0];
 }
 
 - (void)resetNavigationBar {
@@ -149,20 +207,6 @@
 - (void)dismissKeyboard {
 	[self.activeField resignFirstResponder];
 	self.activeField = nil;
-}
-
-- (void)addURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-	if ([[url lastPathComponent] isEqualToString:@"add"]) {
-		NSString *query = [[url query] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-		NSMutableDictionary *parameters = [NSMutableDictionary new];
-		for (NSString *parameter in [query componentsSeparatedByString:@"&"]) {
-			NSArray *fieldValuePair = [parameter componentsSeparatedByString:@"="];
-			parameters[fieldValuePair[0]] = fieldValuePair[1];
-		}
-		self.URLTextField.text = parameters[@"url"];
-		self.descriptionTextField.text = parameters[@"description"];
-		self.extendedTextView.text = parameters[@"extended"];
-	}
 }
 
 #pragma mark - UITableViewDataSource
