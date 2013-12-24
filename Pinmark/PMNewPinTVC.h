@@ -10,6 +10,6 @@
 
 @interface PMNewPinTVC : UITableViewController
 
-- (void)addURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
+- (void)openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation;
 
 @end

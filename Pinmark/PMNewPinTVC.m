@@ -9,8 +9,8 @@
 #import "PMNewPinTVC.h"
 #import <AFNetworking/AFNetworking.h>
 #import "PMLoginVC.h"
-
-NSString * const PMPinboardAuthTokenKey = @"PMPinboardAuthTokenKey";
+#import "PMPinboardManager.h"
+#import "NSURL+Pinmark.h"
 
 @interface PMNewPinTVC () <UITextFieldDelegate, UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *URLTextField;
@@ -20,7 +20,7 @@ NSString * const PMPinboardAuthTokenKey = @"PMPinboardAuthTokenKey";
 @property (weak, nonatomic) IBOutlet UISwitch *toReadSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *sharedSwitch;
 @property (weak, nonatomic) id activeField;
-@property (strong, nonatomic) NSString *authToken;
+@property (strong, nonatomic) PMPinboardManager *manager;
 @property (strong, nonatomic) NSString *xCallbackSuccess;
 @end
 
@@ -28,16 +28,9 @@ NSString * const PMPinboardAuthTokenKey = @"PMPinboardAuthTokenKey";
 
 #pragma mark - Properties
 
-@synthesize authToken = _authToken;
-
-- (NSString *)authToken {
-	if (!_authToken) _authToken = [[NSUserDefaults standardUserDefaults] valueForKey:PMPinboardAuthTokenKey];
-	return _authToken;
-}
-
-- (void)setAuthToken:(NSString *)authToken {
-	_authToken = authToken;
-	self.title = [[self.authToken componentsSeparatedByString:@":"] firstObject];
+- (PMPinboardManager *)manager {
+	if (!_manager) _manager = [PMPinboardManager new];
+	return _manager;
 }
 
 #pragma mark - UIViewController
@@ -52,20 +45,19 @@ NSString * const PMPinboardAuthTokenKey = @"PMPinboardAuthTokenKey";
 	UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
 	[self.view addGestureRecognizer:tap];
 	[self.navigationController.view addGestureRecognizer:tap];
+	
+	
 }
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	if (!self.authToken) [self login];
+	if (!self.manager.authToken) [self login];
+	self.title = self.manager.username;
 }
 
 #pragma mark - IBAction
 
-- (IBAction)completeLogin:(UIStoryboardSegue *)segue {
-	PMLoginVC *loginVC = (PMLoginVC *)segue.sourceViewController;
-	self.authToken = loginVC.authToken;
-	[[NSUserDefaults standardUserDefaults] setObject:self.authToken forKey:PMPinboardAuthTokenKey];
-	
+- (IBAction)completeLogin:(UIStoryboardSegue *)segue {	
 	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
@@ -87,51 +79,26 @@ NSString * const PMPinboardAuthTokenKey = @"PMPinboardAuthTokenKey";
 	
 	__weak PMNewPinTVC *weakSelf = self;
 	
-	[self addBookmarkWithParameters:parameters
-							success:^(AFHTTPRequestOperation *operation, id responseObject) {
-								weakSelf.navigationItem.rightBarButtonItem = sender;
-								NSString *resultCode = responseObject[@"result_code"];
-								if (resultCode) {
-									if ([resultCode isEqualToString:@"done"]) [weakSelf reportSuccess];
-									else if ([resultCode isEqualToString:@"missing url"]) [weakSelf reportErrorWithMessage:@"Missing URL"];
-									else if ([resultCode isEqualToString:@"must provide title"]) [weakSelf reportErrorWithMessage:@"Missing Title"];
-									else [weakSelf reportErrorWithMessage:nil];
-								}
-							}
-							failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-								weakSelf.navigationItem.rightBarButtonItem = sender;
-								[weakSelf reportErrorWithMessage:nil];
-							}];
+	[self.manager add:parameters
+			  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+				  weakSelf.navigationItem.rightBarButtonItem = sender;
+				  NSString *resultCode = responseObject[@"result_code"];
+				  if (resultCode) {
+					  if ([resultCode isEqualToString:@"done"]) [weakSelf reportSuccess];
+					  else if ([resultCode isEqualToString:@"missing url"]) [weakSelf reportErrorWithMessage:@"Missing URL"];
+					  else if ([resultCode isEqualToString:@"must provide title"]) [weakSelf reportErrorWithMessage:@"Missing Title"];
+					  else [weakSelf reportErrorWithMessage:nil];
+				  }
+			  }
+			  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+				  weakSelf.navigationItem.rightBarButtonItem = sender;
+				  [weakSelf reportErrorWithMessage:nil];
+			  }];
 }
 
 #pragma mark - Methods
 
-- (void)addBookmarkWithParameters:(NSDictionary *)parameters
-						  success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))successCallback
-						  failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failureCallback {
-	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
-	
-	NSMutableDictionary *mutableParameters = [parameters mutableCopy];
-	[mutableParameters addEntriesFromDictionary:@{ @"format": @"json",
-												   @"auth_token": self.authToken }];
-	
-	[manager GET:@"https://api.pinboard.in/v1/posts/add" parameters:mutableParameters
-		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-			 NSLog(@"Response Object: %@", responseObject);
-			 if (successCallback) successCallback(operation, responseObject);
-			 if (self.xCallbackSuccess) {
-				 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[self.xCallbackSuccess stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
-			 }
-		 }
-		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-			 NSLog(@"Error: %@", error);
-			 if (failureCallback) failureCallback(operation, error);
-		 }];
-}
-
-- (void)addURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
+- (void)openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
 	self.xCallbackSuccess = nil;
 	
 	NSMutableDictionary *parameters = [NSMutableDictionary new];
@@ -146,10 +113,10 @@ NSString * const PMPinboardAuthTokenKey = @"PMPinboardAuthTokenKey";
 		if ([[url host] isEqualToString:@"x-callback-url"]) {
 			self.xCallbackSuccess = parameters[@"x-success"];
 			if ([parameters[@"fast"] isEqualToString:@"yes"]) {
-				[self addBookmarkWithParameters:@{ @"url": parameters[@"url"],
+				[self.manager add:@{ @"url": parameters[@"url"],
 												   @"description": parameters[@"description"] }
-										success:nil
-										failure:nil];
+						  success:nil
+						  failure:nil];
 				return;
 			}
 		}
@@ -158,6 +125,8 @@ NSString * const PMPinboardAuthTokenKey = @"PMPinboardAuthTokenKey";
 		self.extendedTextView.text = parameters[@"extended"];
 	}
 }
+
+#pragma mark -
 
 - (void)login {
 	[self.navigationController performSegueWithIdentifier:@"Login Segue" sender:self];
@@ -190,7 +159,7 @@ NSString * const PMPinboardAuthTokenKey = @"PMPinboardAuthTokenKey";
 }
 
 - (void)resetNavigationBar {
-	self.title = [[self.authToken componentsSeparatedByString:@":"] firstObject];
+	self.title = self.manager.username;
 	self.navigationController.navigationBar.barTintColor = nil;
 }
 

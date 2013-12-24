@@ -7,16 +7,26 @@
 //
 
 #import "PMLoginVC.h"
-#import <AFNetworking/AFNetworking.h>
+#import "PMPinboardManager.h"
 
 @interface PMLoginVC () <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+@property (strong, nonatomic) PMPinboardManager *manager;
 @end
 
 @implementation PMLoginVC
+
+#pragma mark - Properties
+
+- (PMPinboardManager *)manager {
+	if (!_manager) _manager = [PMPinboardManager new];
+	return _manager;
+}
+
+#pragma mark - UIViewController
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
@@ -26,6 +36,28 @@
 	[self.usernameTextField becomeFirstResponder];
 }
 
+#pragma mark - IBAction
+
+- (IBAction)login {
+	__weak PMLoginVC *weakSelf = self;
+	[self activateActivityIndicator];
+	
+	[self.manager addAccountForUsername:self.usernameTextField.text password:self.passwordTextField.text completionHandler:^(NSError *error) {
+		[weakSelf deactiveActivityIndicator];
+		if (error) {
+			NSLog(@"Error: %@", error);
+			weakSelf.statusLabel.text = @"Try again!";
+			[weakSelf.statusLabel sizeToFit];
+			weakSelf.passwordTextField.text = @"";
+			[weakSelf.usernameTextField becomeFirstResponder];
+		} else {
+			[weakSelf performSegueWithIdentifier:@"Complete Login Segue" sender:weakSelf];
+		}
+	}];
+}
+
+#pragma mark - Methods
+
 - (void)activateActivityIndicator {
 	[self.activityIndicator startAnimating];
 	self.activityIndicator.hidden = NO;
@@ -34,30 +66,6 @@
 - (void)deactiveActivityIndicator {
 	self.activityIndicator.hidden = YES;
 	[self.activityIndicator stopAnimating];
-}
-
-- (IBAction)login {
-	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
-	__weak PMLoginVC *weakSelf = self;
-	[self activateActivityIndicator];
-	[manager GET:[NSString stringWithFormat:@"https://%@:%@@api.pinboard.in/v1/user/api_token", self.usernameTextField.text, self.passwordTextField.text]
-	  parameters:@{ @"format": @"json" }
-		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-			 [weakSelf deactiveActivityIndicator];
-			 NSLog(@"Response Object: %@", responseObject);
-			 weakSelf.authToken = [NSString stringWithFormat:@"%@:%@", weakSelf.usernameTextField.text, responseObject[@"result"]];
-			 [weakSelf performSegueWithIdentifier:@"Complete Login Segue" sender:weakSelf];
-		 }
-		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-			 [weakSelf deactiveActivityIndicator];
-			 NSLog(@"Error: %@", error);
-			 weakSelf.statusLabel.text = @"Try again!";
-			 [weakSelf.statusLabel sizeToFit];
-			 weakSelf.passwordTextField.text = @"";
-			 [weakSelf.usernameTextField becomeFirstResponder];
-		 }];
 }
 
 #pragma mark - UITextFieldDelegate

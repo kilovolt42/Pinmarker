@@ -45,7 +45,7 @@
 	UIViewController *viewController = self.window.rootViewController;
 	if ([viewController isKindOfClass:[PMNavigationVC class]]) {
 		PMNavigationVC *navigationVC = (PMNavigationVC *)viewController;
-		[navigationVC addURL:url sourceApplication:sourceApplication];
+		[navigationVC openURL:url sourceApplication:sourceApplication annotation:annotation];
 	}
 	return YES;
 }

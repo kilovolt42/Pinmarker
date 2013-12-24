@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2703C540185F7E6500570F0C /* PMNewPinTVC.m */; };
 		270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 270C4A4918628D6A000FC061 /* PMNavigationVC.m */; };
+		278119681869F917006B93AB /* PMPinboardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 278119671869F917006B93AB /* PMPinboardManager.m */; };
+		2781196C186A0516006B93AB /* NSURL+Pinmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781196B186A0516006B93AB /* NSURL+Pinmark.m */; };
 		278EF427185B71E2003A27D3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF426185B71E2003A27D3 /* Foundation.framework */; };
 		278EF429185B71E2003A27D3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF428185B71E2003A27D3 /* CoreGraphics.framework */; };
 		278EF42B185B71E2003A27D3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF42A185B71E2003A27D3 /* UIKit.framework */; };
@@ -44,6 +46,11 @@
 		270C4A4718628CD3000FC061 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
 		270C4A4818628D6A000FC061 /* PMNavigationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMNavigationVC.h; sourceTree = "<group>"; };
 		270C4A4918628D6A000FC061 /* PMNavigationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMNavigationVC.m; sourceTree = "<group>"; };
+		278119661869F917006B93AB /* PMPinboardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMPinboardManager.h; sourceTree = "<group>"; };
+		278119671869F917006B93AB /* PMPinboardManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMPinboardManager.m; sourceTree = "<group>"; };
+		278119691869FDF1006B93AB /* Pinmark.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Pinmark.h; sourceTree = "<group>"; };
+		2781196A186A0516006B93AB /* NSURL+Pinmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Pinmark.h"; sourceTree = "<group>"; };
+		2781196B186A0516006B93AB /* NSURL+Pinmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Pinmark.m"; sourceTree = "<group>"; };
 		278EF423185B71E2003A27D3 /* Pinmark.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pinmark.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		278EF426185B71E2003A27D3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		278EF428185B71E2003A27D3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -135,6 +142,8 @@
 				2703C540185F7E6500570F0C /* PMNewPinTVC.m */,
 				27A87B1918637FB1006D3F25 /* PMLoginVC.h */,
 				27A87B1A18637FB1006D3F25 /* PMLoginVC.m */,
+				278119661869F917006B93AB /* PMPinboardManager.h */,
+				278119671869F917006B93AB /* PMPinboardManager.m */,
 				278EF441185B71E2003A27D3 /* Images.xcassets */,
 				278EF42D185B71E2003A27D3 /* Supporting Files */,
 			);
@@ -144,8 +153,11 @@
 		278EF42D185B71E2003A27D3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				278119691869FDF1006B93AB /* Pinmark.h */,
 				278EF435185B71E2003A27D3 /* PMAppDelegate.h */,
 				278EF436185B71E2003A27D3 /* PMAppDelegate.m */,
+				2781196A186A0516006B93AB /* NSURL+Pinmark.h */,
+				2781196B186A0516006B93AB /* NSURL+Pinmark.m */,
 				278EF42E185B71E2003A27D3 /* Pinmark-Info.plist */,
 				278EF42F185B71E2003A27D3 /* InfoPlist.strings */,
 				278EF432185B71E2003A27D3 /* main.m */,
@@ -312,6 +324,8 @@
 				278EF433185B71E2003A27D3 /* main.m in Sources */,
 				270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */,
 				27A87B1B18637FB1006D3F25 /* PMLoginVC.m in Sources */,
+				278119681869F917006B93AB /* PMPinboardManager.m in Sources */,
+				2781196C186A0516006B93AB /* NSURL+Pinmark.m in Sources */,
 				278EF437185B71E2003A27D3 /* PMAppDelegate.m in Sources */,
 				2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */,
 			);

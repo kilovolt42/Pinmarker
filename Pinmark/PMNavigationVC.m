@@ -15,11 +15,11 @@
 
 @implementation PMNavigationVC
 
-- (void)addURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
+- (void)openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
 	UIViewController *viewController = self.viewControllers[0];
 	if ([viewController isKindOfClass:[PMNewPinTVC class]]) {
 		PMNewPinTVC *newPinTVC = (PMNewPinTVC *)viewController;
-		[newPinTVC addURL:url sourceApplication:sourceApplication];
+		[newPinTVC openURL:url sourceApplication:sourceApplication annotation:annotation];
 	}
 }
 
