@@ -7,7 +7,8 @@
 //
 
 #import "PMPinboardManager.h"
-#import "Pinmark.h"
+
+NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";
 
 @implementation PMPinboardManager
 

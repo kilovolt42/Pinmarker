@@ -45,7 +45,6 @@
 	[self.manager addAccountForUsername:self.usernameTextField.text password:self.passwordTextField.text completionHandler:^(NSError *error) {
 		[weakSelf deactiveActivityIndicator];
 		if (error) {
-			NSLog(@"Error: %@", error);
 			weakSelf.statusLabel.text = @"Try again!";
 			[weakSelf.statusLabel sizeToFit];
 			weakSelf.passwordTextField.text = @"";

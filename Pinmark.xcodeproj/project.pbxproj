@@ -48,7 +48,6 @@
 		270C4A4918628D6A000FC061 /* PMNavigationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMNavigationVC.m; sourceTree = "<group>"; };
 		278119661869F917006B93AB /* PMPinboardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMPinboardManager.h; sourceTree = "<group>"; };
 		278119671869F917006B93AB /* PMPinboardManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMPinboardManager.m; sourceTree = "<group>"; };
-		278119691869FDF1006B93AB /* Pinmark.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Pinmark.h; sourceTree = "<group>"; };
 		2781196A186A0516006B93AB /* NSURL+Pinmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Pinmark.h"; sourceTree = "<group>"; };
 		2781196B186A0516006B93AB /* NSURL+Pinmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Pinmark.m"; sourceTree = "<group>"; };
 		278EF423185B71E2003A27D3 /* Pinmark.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pinmark.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,7 +152,6 @@
 		278EF42D185B71E2003A27D3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				278119691869FDF1006B93AB /* Pinmark.h */,
 				278EF435185B71E2003A27D3 /* PMAppDelegate.h */,
 				278EF436185B71E2003A27D3 /* PMAppDelegate.m */,
 				2781196A186A0516006B93AB /* NSURL+Pinmark.h */,
