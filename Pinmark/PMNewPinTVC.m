@@ -21,7 +21,10 @@
 @property (weak, nonatomic) IBOutlet UISwitch *sharedSwitch;
 @property (weak, nonatomic) id activeField;
 @property (strong, nonatomic) PMPinboardManager *manager;
-@property (strong, nonatomic) NSString *xCallbackSuccess;
+@property (nonatomic, copy) void (^xSuccess)(AFHTTPRequestOperation *, id);
+@property (nonatomic, copy) void (^xFailure)(AFHTTPRequestOperation *, NSError *);
+@property (strong, nonatomic) NSString *dt;
+@property (strong, nonatomic) NSString *replace;
 @end
 
 @implementation PMNewPinTVC
@@ -68,12 +71,14 @@
 	[indicatorButton startAnimating];
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicatorButton];
 	
-	NSDictionary *parameters = @{ @"url": self.URLTextField.text,
-								  @"description": self.descriptionTextField.text,
-								  @"extended": self.extendedTextView.text,
-								  @"tags": self.tagsTextField.text,
-								  @"shared": self.sharedSwitch.on ? @"no" : @"yes",
-								  @"toread": self.toReadSwitch.on ? @"yes" : @"no" };
+	NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{ @"url": self.URLTextField.text,
+																					   @"description": self.descriptionTextField.text,
+																					   @"extended": self.extendedTextView.text,
+																					   @"tags": self.tagsTextField.text,
+																					   @"shared": self.sharedSwitch.on ? @"no" : @"yes",
+																					   @"toread": self.toReadSwitch.on ? @"yes" : @"no" }];
+	if (self.dt) parameters[@"dt"] = self.dt;
+	if (self.replace) parameters[@"replace"] = self.replace;
 	
 	__weak PMNewPinTVC *weakSelf = self;
 	
@@ -82,45 +87,69 @@
 				  weakSelf.navigationItem.rightBarButtonItem = sender;
 				  NSString *resultCode = responseObject[@"result_code"];
 				  if (resultCode) {
-					  if ([resultCode isEqualToString:@"done"]) [weakSelf reportSuccess];
+					  if ([resultCode isEqualToString:@"done"]) {
+						  [weakSelf reportSuccess];
+						  if (weakSelf.xSuccess) weakSelf.xSuccess(operation, responseObject);
+					  }
 					  else if ([resultCode isEqualToString:@"missing url"]) [weakSelf reportErrorWithMessage:@"Missing URL"];
 					  else if ([resultCode isEqualToString:@"must provide title"]) [weakSelf reportErrorWithMessage:@"Missing Title"];
+					  else if ([resultCode isEqualToString:@"item already exists"]) [weakSelf reportErrorWithMessage:@"Already Bookmarked"];
 					  else [weakSelf reportErrorWithMessage:nil];
 				  }
 			  }
 			  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 				  weakSelf.navigationItem.rightBarButtonItem = sender;
 				  [weakSelf reportErrorWithMessage:nil];
+				  if (weakSelf.xFailure) weakSelf.xFailure(operation, error);
 			  }];
 }
 
 #pragma mark - Methods
 
 - (void)openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-	self.xCallbackSuccess = nil;
+	NSString *command = [url lastPathComponent];
+	NSString *host = [url host];
+	NSDictionary *parameters = [url queryParameters];
+	NSDictionary *pinboardParameters = [PMPinboardManager pinboardSpecificParametersFromParameters:parameters];
 	
-	NSMutableDictionary *parameters = [NSMutableDictionary new];
-	for (NSString *parameter in [[url query] componentsSeparatedByString:@"&"]) {
-		NSArray *fieldValuePair = [parameter componentsSeparatedByString:@"="];
-		NSString *field = [fieldValuePair[0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-		NSString *value = [fieldValuePair[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-		parameters[field] = value;
+	if (![command isEqualToString:@"add"]) {
+		return;
 	}
 	
-	if ([[url lastPathComponent] isEqualToString:@"add"]) {
-		if ([[url host] isEqualToString:@"x-callback-url"]) {
-			self.xCallbackSuccess = parameters[@"x-success"];
-			if ([parameters[@"fast"] isEqualToString:@"yes"]) {
-				[self.manager add:@{ @"url": parameters[@"url"],
-												   @"description": parameters[@"description"] }
-						  success:nil
-						  failure:nil];
-				return;
-			}
+	if (!pinboardParameters[@"auth_token"] && !self.manager.authToken) {
+		[self login];
+	}
+	
+	if ([host isEqualToString:@"x-callback-url"]) {
+		if (parameters[@"x-success"]) {
+			self.xSuccess = ^void(AFHTTPRequestOperation *operation, id responseObject) {
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[parameters[@"x-success"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+			};
 		}
-		self.URLTextField.text = parameters[@"url"];
-		self.descriptionTextField.text = parameters[@"description"];
-		self.extendedTextView.text = parameters[@"extended"];
+		if (parameters[@"x-error"]) {
+			self.xFailure = ^void(AFHTTPRequestOperation *operation, NSError *error) {
+				NSString *xError = [NSString stringWithFormat:@"%@?errorCode=%d&errorMessage=%@", parameters[@"x-error"], error.code, error.domain];
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[xError stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+			};
+		}
+	} else {
+		self.xSuccess = nil;
+		self.xFailure = nil;
+	}
+	
+	if (parameters[@"wait"] && [parameters[@"wait"] isEqualToString:@"no"]) {
+		[self.manager add:pinboardParameters success:self.xSuccess failure:self.xFailure];
+	} else {
+		self.URLTextField.text = pinboardParameters[@"url"];
+		self.descriptionTextField.text = pinboardParameters[@"description"];
+		self.tagsTextField.text = pinboardParameters[@"tags"];
+		self.extendedTextView.text = pinboardParameters[@"extended"];
+		if ([pinboardParameters[@"toread"] isEqualToString:@"yes"]) self.toReadSwitch.on = YES;
+		else self.toReadSwitch.on = NO;
+		if ([pinboardParameters[@"shared"] isEqualToString:@"no"]) self.sharedSwitch.on = YES;
+		else self.sharedSwitch.on = NO;
+		self.dt = pinboardParameters[@"dt"];
+		self.replace = pinboardParameters[@"replace"];
 	}
 }
 
@@ -168,6 +197,8 @@
 	self.extendedTextView.text = @"";
 	self.toReadSwitch.on = NO;
 	self.sharedSwitch.on = NO;
+	self.dt = nil;
+	self.replace = nil;
 	[self.activeField resignFirstResponder];
 }
 

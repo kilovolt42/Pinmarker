@@ -34,6 +34,15 @@ NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";
 
 #pragma mark - Methods
 
++ (NSDictionary *)pinboardSpecificParametersFromParameters:(NSDictionary *)parameters {
+	NSMutableDictionary *pinboardParameters = [NSMutableDictionary new];
+	for (NSString *key in @[@"url", @"description", @"extended", @"tags", @"dt", @"replace", @"shared", @"toread", @"auth_token"]) {
+		if (parameters[key]) pinboardParameters[key] = parameters[key];
+		else pinboardParameters[key] = @"";
+	}
+	return [pinboardParameters copy];
+}
+
 - (void)addAccountForUsername:(NSString *)username password:(NSString *)password completionHandler:(void (^)(NSError *))completionHandler {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -58,8 +67,8 @@ NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";
 	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
 	
 	NSMutableDictionary *mutableParameters = [parameters mutableCopy];
-	[mutableParameters addEntriesFromDictionary:@{ @"format": @"json",
-												   @"auth_token": self.authToken }];
+	[mutableParameters addEntriesFromDictionary:@{ @"format": @"json" }];
+	if (!mutableParameters[@"auth_token"]) mutableParameters[@"auth_token"] = self.authToken;
 	
 	[manager GET:@"https://api.pinboard.in/v1/posts/add"
 	  parameters:mutableParameters
@@ -82,9 +91,11 @@ NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";
 			NSMutableArray *newTokens = [NSMutableArray arrayWithArray:tokens];
 			[newTokens addObject:token];
 			[[NSUserDefaults standardUserDefaults] setObject:newTokens forKey:PMAssociatedTokensKey];
+			[[NSUserDefaults standardUserDefaults] synchronize];
 		}
 	} else {
 		[[NSUserDefaults standardUserDefaults] setObject:@[token] forKey:PMAssociatedTokensKey];
+		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 }
 
