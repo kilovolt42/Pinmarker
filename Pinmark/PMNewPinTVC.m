@@ -232,6 +232,7 @@
 #pragma mark - UITextFieldDelegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+	if (self.activeField == self.URLTextField) [self updateSuggestedTagsForURL:self.URLTextField.text];
 	self.activeField = textField;
 }
 
