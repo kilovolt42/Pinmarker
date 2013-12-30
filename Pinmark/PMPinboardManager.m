@@ -82,6 +82,46 @@ NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";
 		 }];
 }
 
+- (void)requestTags:(void (^)(NSDictionary *))successCallback failure:(void (^)(NSError *))failureCallback {
+	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
+	
+	NSDictionary *parameters = @{ @"format": @"json", @"auth_token": self.authToken };
+	
+	[manager GET:@"https://api.pinboard.in/v1/tags/get"
+	  parameters:parameters
+		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+			 NSLog(@"Response Object: %@", responseObject);
+			 if (successCallback) successCallback((NSDictionary *)responseObject);
+		 }
+		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+			 NSLog(@"Error: %@", error);
+			 if (failureCallback) failureCallback(error);
+		 }];
+}
+
+- (void)requestRecommendedTags:(NSDictionary *)parameters success:(void (^)(NSArray *))successCallback failure:(void (^)(NSError *))failureCallback {
+	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
+	
+	NSMutableDictionary *mutableParameters = [parameters mutableCopy];
+	[mutableParameters addEntriesFromDictionary:@{ @"format": @"json" }];
+	if (!mutableParameters[@"auth_token"]) mutableParameters[@"auth_token"] = self.authToken;
+	
+	[manager GET:@"https://api.pinboard.in/v1/posts/suggest"
+	  parameters:mutableParameters
+		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+			 NSLog(@"Response Object: %@", responseObject);
+			 if (successCallback) successCallback(((NSArray *)responseObject)[1][@"recommended"]);
+		 }
+		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+			 NSLog(@"Error: %@", error);
+			 if (failureCallback) failureCallback(error);
+		 }];
+}
+
 #pragma mark -
 
 - (void)associateToken:(NSString *)token {

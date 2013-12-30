@@ -11,6 +11,7 @@
 #import "PMLoginVC.h"
 #import "PMPinboardManager.h"
 #import "NSURL+Pinmark.h"
+#import "PMTagsTVCell.h"
 
 @interface PMNewPinTVC () <UITextFieldDelegate, UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *URLTextField;
@@ -25,6 +26,7 @@
 @property (nonatomic, copy) void (^xFailure)(AFHTTPRequestOperation *, NSError *);
 @property (strong, nonatomic) NSString *dt;
 @property (strong, nonatomic) NSString *replace;
+@property (weak, nonatomic) IBOutlet PMTagsTVCell *tagsTVCell;
 @end
 
 @implementation PMNewPinTVC
@@ -128,7 +130,7 @@
 		}
 		if (parameters[@"x-error"]) {
 			self.xFailure = ^void(AFHTTPRequestOperation *operation, NSError *error) {
-				NSString *xError = [NSString stringWithFormat:@"%@?errorCode=%d&errorMessage=%@", parameters[@"x-error"], error.code, error.domain];
+				NSString *xError = [NSString stringWithFormat:@"%@?errorCode=%ld&errorMessage=%@", parameters[@"x-error"], (long)[error code], [error domain]];
 				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[xError stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 			};
 		}
@@ -143,6 +145,7 @@
 		self.URLTextField.text = pinboardParameters[@"url"];
 		self.descriptionTextField.text = pinboardParameters[@"description"];
 		self.tagsTextField.text = pinboardParameters[@"tags"];
+		[self updateSuggestedTagsForURL:pinboardParameters[@"url"]];
 		self.extendedTextView.text = pinboardParameters[@"extended"];
 		if ([pinboardParameters[@"toread"] isEqualToString:@"yes"]) self.toReadSwitch.on = YES;
 		else self.toReadSwitch.on = NO;
@@ -154,6 +157,13 @@
 }
 
 #pragma mark -
+
+- (void)updateSuggestedTagsForURL:(NSString *)url {
+	__weak PMNewPinTVC *weakSelf = self;
+	[self.manager requestRecommendedTags:@{ @"url": url }
+								 success:^(NSArray *recommendedTags) { weakSelf.tagsTVCell.tags = recommendedTags; }
+								 failure:nil];
+}
 
 - (void)login {
 	[self.navigationController performSegueWithIdentifier:@"Login Segue" sender:self];
@@ -226,8 +236,10 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	if (textField == self.URLTextField) [self.descriptionTextField becomeFirstResponder];
-	else if (textField == self.descriptionTextField) [self.tagsTextField becomeFirstResponder];
+	if (textField == self.URLTextField) {
+		[self.descriptionTextField becomeFirstResponder];
+		[self updateSuggestedTagsForURL:self.URLTextField.text];
+	} else if (textField == self.descriptionTextField) [self.tagsTextField becomeFirstResponder];
 	else if (textField == self.tagsTextField) [self.extendedTextView becomeFirstResponder];
 	return NO;
 }

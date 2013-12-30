@@ -169,8 +169,16 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="asI-KI-AHc" customClass="PMTagsTVCell">
+                                        <rect key="frame" x="0.0" y="231" width="768" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="asI-KI-AHc" id="3I6-LP-HeG">
+                                            <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Extended Cell" rowHeight="108" id="9eM-TX-ts3">
-                                        <rect key="frame" x="0.0" y="231" width="768" height="108"/>
+                                        <rect key="frame" x="0.0" y="275" width="768" height="108"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9eM-TX-ts3" id="IFJ-Jc-HMq">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="107"/>
@@ -193,7 +201,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="To Read Cell" id="C6G-22-GdG">
-                                        <rect key="frame" x="0.0" y="339" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="383" width="768" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="C6G-22-GdG" id="0VU-Yy-Vds">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
@@ -220,7 +228,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Shared Cell" id="Jp9-tN-oJs">
-                                        <rect key="frame" x="0.0" y="383" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="427" width="768" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Jp9-tN-oJs" id="Ic5-su-w2L">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
@@ -265,6 +273,7 @@
                         <outlet property="descriptionTextField" destination="EJl-So-RRo" id="feX-a7-alV"/>
                         <outlet property="extendedTextView" destination="MnQ-ri-o8x" id="Cl8-46-VLR"/>
                         <outlet property="sharedSwitch" destination="DGl-7n-ErL" id="gAq-Ip-Nir"/>
+                        <outlet property="tagsTVCell" destination="asI-KI-AHc" id="JtM-xm-qsn"/>
                         <outlet property="tagsTextField" destination="OV0-oC-pS8" id="xjE-aT-bPG"/>
                         <outlet property="toReadSwitch" destination="HGM-uZ-Pxe" id="Aqd-UV-rww"/>
                     </connections>

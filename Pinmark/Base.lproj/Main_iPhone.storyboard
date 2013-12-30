@@ -81,8 +81,16 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tags Collection View Cell" id="7P4-n7-U7F" customClass="PMTagsTVCell">
+                                        <rect key="frame" x="0.0" y="231" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7P4-n7-U7F" id="Zmn-Sc-Wex">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Extended Cell" rowHeight="108" id="HJE-9x-2VN">
-                                        <rect key="frame" x="0.0" y="231" width="320" height="108"/>
+                                        <rect key="frame" x="0.0" y="275" width="320" height="108"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HJE-9x-2VN" id="9dm-8T-Gw7">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="107"/>
@@ -105,7 +113,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="To Read Cell" id="rsj-Dw-eBk">
-                                        <rect key="frame" x="0.0" y="339" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="383" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rsj-Dw-eBk" id="aur-1S-hku">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -132,7 +140,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Shared Cell" id="jWV-Zc-s2d">
-                                        <rect key="frame" x="0.0" y="383" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="427" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jWV-Zc-s2d" id="smo-7Z-FMP">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -177,6 +185,7 @@
                         <outlet property="descriptionTextField" destination="XKO-Sk-Xpd" id="UtZ-y9-Gai"/>
                         <outlet property="extendedTextView" destination="CGJ-ws-9Xq" id="wlX-hz-VNH"/>
                         <outlet property="sharedSwitch" destination="W9p-Du-tUZ" id="h9Y-tI-srW"/>
+                        <outlet property="tagsTVCell" destination="7P4-n7-U7F" id="Z56-7O-6jD"/>
                         <outlet property="tagsTextField" destination="WT7-a8-5Qs" id="0VW-cX-LeR"/>
                         <outlet property="toReadSwitch" destination="uI2-u2-kLw" id="Hvg-5K-ypP"/>
                     </connections>
@@ -284,8 +293,8 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="FsJ-qN-eCd" kind="relationship" relationship="rootViewController" id="hyu-og-aSs"/>
                         <segue destination="a2q-Sy-4D7" kind="modal" identifier="Login Segue" id="ngS-FR-HBS"/>
+                        <segue destination="FsJ-qN-eCd" kind="relationship" relationship="rootViewController" id="ncd-MO-0bq"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5q-26-iDe" userLabel="First Responder" sceneMemberID="firstResponder"/>
