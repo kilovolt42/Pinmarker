@@ -17,7 +17,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *URLTextField;
 @property (weak, nonatomic) IBOutlet UITextField *descriptionTextField;
 @property (weak, nonatomic) IBOutlet UITextField *tagsTextField;
-@property (weak, nonatomic) IBOutlet UITextView *extendedTextView;
+@property (weak, nonatomic) IBOutlet UITextField *extendedTextField;
 @property (weak, nonatomic) IBOutlet UISwitch *toReadSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *sharedSwitch;
 @property (weak, nonatomic) id activeField;
@@ -45,7 +45,7 @@
 	self.URLTextField.delegate = self;
 	self.descriptionTextField.delegate = self;
 	self.tagsTextField.delegate = self;
-	self.extendedTextView.delegate = self;
+	self.extendedTextField.delegate = self;
 	
 	UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
 	[self.view addGestureRecognizer:tap];
@@ -66,6 +66,19 @@
 	}
 }
 
+- (IBAction)clearFields {
+	self.URLTextField.text = @"";
+	self.descriptionTextField.text = @"";
+	self.extendedTextField.text = @"";
+	self.tagsTextField.text = @"";
+	self.tagsTVCell.tags = nil;
+	self.toReadSwitch.on = NO;
+	self.sharedSwitch.on = NO;
+	self.dt = nil;
+	self.replace = nil;
+	[self.activeField resignFirstResponder];
+}
+
 - (IBAction)pin:(UIBarButtonItem *)sender {
 	if (![self isReadyToPin]) return;
 	
@@ -73,10 +86,12 @@
 	[indicatorButton startAnimating];
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicatorButton];
 	
+	[self addTagsFromString:self.tagsTextField.text];
+	
 	NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{ @"url": self.URLTextField.text,
 																					   @"description": self.descriptionTextField.text,
-																					   @"extended": self.extendedTextView.text,
-																					   @"tags": self.tagsTextField.text,
+																					   @"extended": self.extendedTextField.text,
+																					   @"tags": [self.tagsTVCell.tags componentsJoinedByString:@" "],
 																					   @"shared": self.sharedSwitch.on ? @"no" : @"yes",
 																					   @"toread": self.toReadSwitch.on ? @"yes" : @"no" }];
 	if (self.dt) parameters[@"dt"] = self.dt;
@@ -146,7 +161,7 @@
 		self.descriptionTextField.text = pinboardParameters[@"description"];
 		self.tagsTextField.text = pinboardParameters[@"tags"];
 		[self updateSuggestedTagsForURL:pinboardParameters[@"url"]];
-		self.extendedTextView.text = pinboardParameters[@"extended"];
+		self.extendedTextField.text = pinboardParameters[@"extended"];
 		if ([pinboardParameters[@"toread"] isEqualToString:@"yes"]) self.toReadSwitch.on = YES;
 		else self.toReadSwitch.on = NO;
 		if ([pinboardParameters[@"shared"] isEqualToString:@"no"]) self.sharedSwitch.on = YES;
@@ -163,6 +178,14 @@
 	[self.manager requestRecommendedTags:@{ @"url": url }
 								 success:^(NSArray *recommendedTags) { weakSelf.tagsTVCell.tags = recommendedTags; }
 								 failure:nil];
+}
+
+- (void)addTagsFromString:(NSString *)tagsString {
+	NSMutableArray *tags = [NSMutableArray arrayWithArray:self.tagsTVCell.tags];
+	for (NSString *tag in [tagsString componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@", "]]) {
+		if (![tag isEqualToString:@""] && ![tags containsObject:tag]) [tags addObject:tag];
+	}
+	self.tagsTVCell.tags = [tags copy];
 }
 
 - (void)login {
@@ -200,18 +223,6 @@
 	self.navigationController.navigationBar.barTintColor = nil;
 }
 
-- (void)clearFields {
-	self.URLTextField.text = @"";
-	self.descriptionTextField.text = @"";
-	self.tagsTextField.text = @"";
-	self.extendedTextView.text = @"";
-	self.toReadSwitch.on = NO;
-	self.sharedSwitch.on = NO;
-	self.dt = nil;
-	self.replace = nil;
-	[self.activeField resignFirstResponder];
-}
-
 - (void)dismissKeyboard {
 	[self.activeField resignFirstResponder];
 	self.activeField = nil;
@@ -232,23 +243,23 @@
 #pragma mark - UITextFieldDelegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-	if (self.activeField == self.URLTextField) [self updateSuggestedTagsForURL:self.URLTextField.text];
 	self.activeField = textField;
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	if (textField == self.URLTextField) {
-		[self.descriptionTextField becomeFirstResponder];
-		[self updateSuggestedTagsForURL:self.URLTextField.text];
-	} else if (textField == self.descriptionTextField) [self.tagsTextField becomeFirstResponder];
-	else if (textField == self.tagsTextField) [self.extendedTextView becomeFirstResponder];
-	return NO;
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+	if (textField == self.URLTextField) [self updateSuggestedTagsForURL:self.URLTextField.text];
+	if (textField == self.tagsTextField) {
+		[self addTagsFromString:self.tagsTextField.text];
+		self.tagsTextField.text = @"";
+	}
 }
 
-#pragma mark - UITextViewDelegate
-
-- (void)textViewDidBeginEditing:(UITextView *)textView {
-	self.activeField = textView;
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	if (textField == self.URLTextField) [self.descriptionTextField becomeFirstResponder];
+	else if (textField == self.descriptionTextField) [self.extendedTextField becomeFirstResponder];
+	else if (textField == self.extendedTextField) [self.tagsTextField becomeFirstResponder];
+	else if (textField == self.tagsTextField) [self.tagsTextField resignFirstResponder];
+	return NO;
 }
 
 @end
