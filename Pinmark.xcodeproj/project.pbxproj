@@ -29,6 +29,7 @@
 		278EF453185B71E2003A27D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 278EF451185B71E2003A27D3 /* InfoPlist.strings */; };
 		278EF455185B71E2003A27D3 /* PinmarkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF454185B71E2003A27D3 /* PinmarkTests.m */; };
 		27A87B1B18637FB1006D3F25 /* PMLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A87B1A18637FB1006D3F25 /* PMLoginVC.m */; };
+		27D2DC3418777A9B0054D187 /* PMBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D2DC3318777A9B0054D187 /* PMBookmark.m */; };
 		82960B3C2A964DE68159B981 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6E13E9115194BF18C9C2D1A /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -78,6 +79,8 @@
 		278EF454185B71E2003A27D3 /* PinmarkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PinmarkTests.m; sourceTree = "<group>"; };
 		27A87B1918637FB1006D3F25 /* PMLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLoginVC.h; sourceTree = "<group>"; };
 		27A87B1A18637FB1006D3F25 /* PMLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLoginVC.m; sourceTree = "<group>"; };
+		27D2DC3218777A9B0054D187 /* PMBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMBookmark.h; sourceTree = "<group>"; };
+		27D2DC3318777A9B0054D187 /* PMBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBookmark.m; sourceTree = "<group>"; };
 		A6E13E9115194BF18C9C2D1A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE2FE771354E43FD945BDE89 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -164,6 +167,8 @@
 				272C5CDC1871028A0079B95E /* Tags */,
 				278119661869F917006B93AB /* PMPinboardManager.h */,
 				278119671869F917006B93AB /* PMPinboardManager.m */,
+				27D2DC3218777A9B0054D187 /* PMBookmark.h */,
+				27D2DC3318777A9B0054D187 /* PMBookmark.m */,
 				278EF441185B71E2003A27D3 /* Images.xcassets */,
 				278EF42D185B71E2003A27D3 /* Supporting Files */,
 			);
@@ -349,6 +354,7 @@
 				2781196C186A0516006B93AB /* NSURL+Pinmark.m in Sources */,
 				278EF437185B71E2003A27D3 /* PMAppDelegate.m in Sources */,
 				2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */,
+				27D2DC3418777A9B0054D187 /* PMBookmark.m in Sources */,
 				272C5CDB18709ED90079B95E /* PMTagsTVCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

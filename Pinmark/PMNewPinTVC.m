@@ -12,6 +12,7 @@
 #import "PMPinboardManager.h"
 #import "NSURL+Pinmark.h"
 #import "PMTagsTVCell.h"
+#import "PMBookmark.h"
 
 @interface PMNewPinTVC () <UITextFieldDelegate, UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *URLTextField;
@@ -24,9 +25,8 @@
 @property (strong, nonatomic) PMPinboardManager *manager;
 @property (nonatomic, copy) void (^xSuccess)(AFHTTPRequestOperation *, id);
 @property (nonatomic, copy) void (^xFailure)(AFHTTPRequestOperation *, NSError *);
-@property (strong, nonatomic) NSString *dt;
-@property (strong, nonatomic) NSString *replace;
 @property (weak, nonatomic) IBOutlet PMTagsTVCell *tagsTVCell;
+@property (strong, nonatomic) PMBookmark *bookmark;
 @end
 
 @implementation PMNewPinTVC
@@ -36,6 +36,11 @@
 - (PMPinboardManager *)manager {
 	if (!_manager) _manager = [PMPinboardManager new];
 	return _manager;
+}
+
+- (void)setBookmark:(PMBookmark *)bookmark {
+	_bookmark = bookmark;
+	[self updateFields];
 }
 
 #pragma mark - UIViewController
@@ -66,19 +71,6 @@
 	}
 }
 
-- (IBAction)clearFields {
-	self.URLTextField.text = @"";
-	self.descriptionTextField.text = @"";
-	self.extendedTextField.text = @"";
-	self.tagsTextField.text = @"";
-	self.tagsTVCell.tags = nil;
-	self.toReadSwitch.on = NO;
-	self.sharedSwitch.on = NO;
-	self.dt = nil;
-	self.replace = nil;
-	[self.activeField resignFirstResponder];
-}
-
 - (IBAction)pin:(UIBarButtonItem *)sender {
 	if (![self isReadyToPin]) return;
 	
@@ -88,24 +80,16 @@
 	
 	[self addTagsFromString:self.tagsTextField.text];
 	
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{ @"url": self.URLTextField.text,
-																					   @"description": self.descriptionTextField.text,
-																					   @"extended": self.extendedTextField.text,
-																					   @"tags": [self.tagsTVCell.tags componentsJoinedByString:@" "],
-																					   @"shared": self.sharedSwitch.on ? @"no" : @"yes",
-																					   @"toread": self.toReadSwitch.on ? @"yes" : @"no" }];
-	if (self.dt) parameters[@"dt"] = self.dt;
-	if (self.replace) parameters[@"replace"] = self.replace;
-	
 	__weak PMNewPinTVC *weakSelf = self;
 	
-	[self.manager add:parameters
+	[self.manager add:self.bookmark.parameters
 			  success:^(AFHTTPRequestOperation *operation, id responseObject) {
 				  weakSelf.navigationItem.rightBarButtonItem = sender;
 				  NSString *resultCode = responseObject[@"result_code"];
 				  if (resultCode) {
 					  if ([resultCode isEqualToString:@"done"]) {
 						  [weakSelf reportSuccess];
+						  weakSelf.bookmark = [[PMBookmark alloc] initWithParameters:nil];
 						  if (weakSelf.xSuccess) weakSelf.xSuccess(operation, responseObject);
 					  }
 					  else if ([resultCode isEqualToString:@"missing url"]) [weakSelf reportErrorWithMessage:@"Missing URL"];
@@ -127,13 +111,12 @@
 	NSString *command = [url lastPathComponent];
 	NSString *host = [url host];
 	NSDictionary *parameters = [url queryParameters];
-	NSDictionary *pinboardParameters = [PMPinboardManager pinboardSpecificParametersFromParameters:parameters];
 	
 	if (![command isEqualToString:@"add"]) {
 		return;
 	}
 	
-	if (!pinboardParameters[@"auth_token"] && !self.manager.authToken) {
+	if (!parameters[@"auth_token"] && !self.manager.authToken) {
 		[self login];
 	}
 	
@@ -155,23 +138,22 @@
 	}
 	
 	if (parameters[@"wait"] && [parameters[@"wait"] isEqualToString:@"no"]) {
-		[self.manager add:pinboardParameters success:self.xSuccess failure:self.xFailure];
+		[self.manager add:[PMPinboardManager pinboardSpecificParametersFromParameters:parameters] success:self.xSuccess failure:self.xFailure];
 	} else {
-		self.URLTextField.text = pinboardParameters[@"url"];
-		self.descriptionTextField.text = pinboardParameters[@"description"];
-		self.tagsTextField.text = pinboardParameters[@"tags"];
-		[self updateSuggestedTagsForURL:pinboardParameters[@"url"]];
-		self.extendedTextField.text = pinboardParameters[@"extended"];
-		if ([pinboardParameters[@"toread"] isEqualToString:@"yes"]) self.toReadSwitch.on = YES;
-		else self.toReadSwitch.on = NO;
-		if ([pinboardParameters[@"shared"] isEqualToString:@"no"]) self.sharedSwitch.on = YES;
-		else self.sharedSwitch.on = NO;
-		self.dt = pinboardParameters[@"dt"];
-		self.replace = pinboardParameters[@"replace"];
+		self.bookmark = [[PMBookmark alloc] initWithParameters:parameters];
 	}
 }
 
 #pragma mark -
+
+- (void)updateFields {
+	self.URLTextField.text = self.bookmark.url;
+	self.descriptionTextField.text = self.bookmark.description;
+	self.extendedTextField.text = self.bookmark.extended;
+	self.tagsTextField.text = [self.bookmark.tags componentsJoinedByString:@" "];
+	self.toReadSwitch.on = self.bookmark.toread;
+	self.sharedSwitch.on = !self.bookmark.shared;
+}
 
 - (void)updateSuggestedTagsForURL:(NSString *)url {
 	__weak PMNewPinTVC *weakSelf = self;
@@ -209,7 +191,6 @@
 	self.title = @"Success";
 	self.navigationController.navigationBar.barTintColor = [UIColor greenColor];
 	[self performSelector:@selector(resetNavigationBar) withObject:self afterDelay:2.0];
-	[self clearFields];
 }
 
 - (void)reportErrorWithMessage:(NSString *)message {
@@ -247,7 +228,9 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-	if (textField == self.URLTextField) [self updateSuggestedTagsForURL:self.URLTextField.text];
+	if (textField == self.URLTextField) {
+		if (![self.URLTextField.text isEqualToString:@""]) [self updateSuggestedTagsForURL:self.URLTextField.text];
+	}
 	if (textField == self.tagsTextField) {
 		[self addTagsFromString:self.tagsTextField.text];
 		self.tagsTextField.text = @"";
