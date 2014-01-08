@@ -19,7 +19,7 @@
 		self.url = parameters[@"url"];
 		self.description = parameters[@"description"];
 		self.extended = parameters[@"extended"];
-		self.tags = parameters[@"tags"] ? [NSMutableArray arrayWithArray:parameters[@"tags"]] : [NSMutableArray new];
+		self.tags = parameters[@"tags"];
 		self.dt = parameters[@"dt"] ? [self.dateFormatter dateFromString:parameters[@"dt"]] : nil;
 		self.replace = parameters[@"replace"] ? [[parameters[@"replace"] lowercaseString] isEqualToString:@"yes"] : YES;
 		self.shared = parameters[@"shared"] ? [[parameters[@"shared"] lowercaseString] isEqualToString:@"yes"] : YES;
@@ -28,8 +28,6 @@
 	return self;
 }
 
-#pragma mark Properties
-
 - (NSDateFormatter *)dateFormatter {
 	if (!_dateFormatter) {
 		_dateFormatter = [NSDateFormatter new];
@@ -37,8 +35,6 @@
 	}
 	return _dateFormatter;
 }
-
-#pragma mark - Methods
 
 - (NSDictionary *)parameters {
 	NSMutableDictionary *parameters = [NSMutableDictionary new];

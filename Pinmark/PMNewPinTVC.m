@@ -11,7 +11,6 @@
 #import "PMLoginVC.h"
 #import "PMPinboardManager.h"
 #import "NSURL+Pinmark.h"
-#import "PMTagsTVCell.h"
 #import "PMBookmark.h"
 
 @interface PMNewPinTVC () <UITextFieldDelegate, UITextViewDelegate>
@@ -25,7 +24,6 @@
 @property (strong, nonatomic) PMPinboardManager *manager;
 @property (nonatomic, copy) void (^xSuccess)(AFHTTPRequestOperation *, id);
 @property (nonatomic, copy) void (^xFailure)(AFHTTPRequestOperation *, NSError *);
-@property (weak, nonatomic) IBOutlet PMTagsTVCell *tagsTVCell;
 @property (strong, nonatomic) PMBookmark *bookmark;
 @end
 
@@ -78,11 +76,11 @@
 	[indicatorButton startAnimating];
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicatorButton];
 	
-	[self addTagsFromString:self.tagsTextField.text];
-	
 	__weak PMNewPinTVC *weakSelf = self;
 	
-	[self.manager add:self.bookmark.parameters
+	self.bookmark.tags = [self.tagsTextField.text componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@", "]];
+	
+	[self.manager add:[self.bookmark parameters]
 			  success:^(AFHTTPRequestOperation *operation, id responseObject) {
 				  weakSelf.navigationItem.rightBarButtonItem = sender;
 				  NSString *resultCode = responseObject[@"result_code"];
@@ -155,21 +153,6 @@
 	self.sharedSwitch.on = !self.bookmark.shared;
 }
 
-- (void)updateSuggestedTagsForURL:(NSString *)url {
-	__weak PMNewPinTVC *weakSelf = self;
-	[self.manager requestRecommendedTags:@{ @"url": url }
-								 success:^(NSArray *recommendedTags) { weakSelf.tagsTVCell.tags = recommendedTags; }
-								 failure:nil];
-}
-
-- (void)addTagsFromString:(NSString *)tagsString {
-	NSMutableArray *tags = [NSMutableArray arrayWithArray:self.tagsTVCell.tags];
-	for (NSString *tag in [tagsString componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@", "]]) {
-		if (![tag isEqualToString:@""] && ![tags containsObject:tag]) [tags addObject:tag];
-	}
-	self.tagsTVCell.tags = [tags copy];
-}
-
 - (void)login {
 	[self.navigationController performSegueWithIdentifier:@"Login Segue" sender:self];
 }
@@ -225,16 +208,6 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	self.activeField = textField;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-	if (textField == self.URLTextField) {
-		if (![self.URLTextField.text isEqualToString:@""]) [self updateSuggestedTagsForURL:self.URLTextField.text];
-	}
-	if (textField == self.tagsTextField) {
-		[self addTagsFromString:self.tagsTextField.text];
-		self.tagsTextField.text = @"";
-	}
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

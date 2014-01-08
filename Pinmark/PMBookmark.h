@@ -13,7 +13,7 @@
 @property (strong, nonatomic) NSString *url;
 @property (strong, nonatomic) NSString *description;
 @property (strong, nonatomic) NSString *extended;
-@property (strong, nonatomic) NSMutableArray *tags;
+@property (strong, nonatomic) NSArray *tags;
 @property (strong, nonatomic) NSDate *dt;
 @property (assign, nonatomic) BOOL replace;
 @property (assign, nonatomic) BOOL shared;
