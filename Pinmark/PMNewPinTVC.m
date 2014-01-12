@@ -12,11 +12,13 @@
 #import "PMPinboardManager.h"
 #import "NSURL+Pinmark.h"
 #import "PMBookmark.h"
+#import "PMTagsTVCell.h"
 
 @interface PMNewPinTVC () <UITextFieldDelegate, UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *URLTextField;
 @property (weak, nonatomic) IBOutlet UITextField *descriptionTextField;
 @property (weak, nonatomic) IBOutlet UITextField *tagsTextField;
+@property (weak, nonatomic) IBOutlet PMTagsTVCell *tagsTVCell;
 @property (weak, nonatomic) IBOutlet UITextField *extendedTextField;
 @property (weak, nonatomic) IBOutlet UISwitch *toReadSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *sharedSwitch;
@@ -51,12 +53,12 @@
 	self.extendedTextField.delegate = self;
 	
 	UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-	[self.view addGestureRecognizer:tap];
-	[self.navigationController.view addGestureRecognizer:tap];
+	[self.navigationController.navigationBar addGestureRecognizer:tap];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
+	[self.tagsTVCell setup];
 	if (!self.manager.authToken) [self login];
 	self.title = self.manager.username;
 }
@@ -69,17 +71,27 @@
 	}
 }
 
+// TODO: model should be updated constantly
+- (void)updateBookmark {
+	self.bookmark = [[PMBookmark alloc] initWithParameters:@{ @"url": self.URLTextField.text,
+															  @"description": self.descriptionTextField.text,
+															  @"extended": self.extendedTextField.text,
+															  @"tags": [[self.tagsTVCell.tags copy] componentsJoinedByString:@" "],
+															  @"toread": self.toReadSwitch.on ? @"yes" : @"no",
+															  @"shared": self.sharedSwitch.on ? @"no" : @"yes" }];
+}
+
 - (IBAction)pin:(UIBarButtonItem *)sender {
 	if (![self isReadyToPin]) return;
+	[self.activeField resignFirstResponder];
+	[self updateBookmark];
 	
 	UIActivityIndicatorView *indicatorButton = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	[indicatorButton startAnimating];
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicatorButton];
 	
 	__weak PMNewPinTVC *weakSelf = self;
-	
-	self.bookmark.tags = [self.tagsTextField.text componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@", "]];
-	
+	NSLog(@"%@", [self.bookmark parameters]);
 	[self.manager add:[self.bookmark parameters]
 			  success:^(AFHTTPRequestOperation *operation, id responseObject) {
 				  weakSelf.navigationItem.rightBarButtonItem = sender;
@@ -148,7 +160,7 @@
 	self.URLTextField.text = self.bookmark.url;
 	self.descriptionTextField.text = self.bookmark.description;
 	self.extendedTextField.text = self.bookmark.extended;
-	self.tagsTextField.text = [self.bookmark.tags componentsJoinedByString:@" "];
+	self.tagsTVCell.tags = [self.bookmark.tags mutableCopy];
 	self.toReadSwitch.on = self.bookmark.toread;
 	self.sharedSwitch.on = !self.bookmark.shared;
 }
@@ -192,6 +204,17 @@
 	self.activeField = nil;
 }
 
+- (void)addTags:(NSString *)tags {
+	NSCharacterSet *commaSpaceSet = [NSCharacterSet characterSetWithCharactersInString:@", "];
+	NSMutableArray *newTags = [NSMutableArray arrayWithArray:[tags componentsSeparatedByCharactersInSet:commaSpaceSet]];
+	[newTags removeObject:@""];
+	for (NSString *newTag in newTags) {
+		[self.tagsTVCell.tags removeObject:newTag];
+		[self.tagsTVCell.tags insertObject:newTag atIndex:0];
+	}
+	[self.tagsTVCell reloadData];
+}
+
 #pragma mark - UITableViewDataSource
 
 #pragma mark - UITableViewDelegate
@@ -210,11 +233,28 @@
 	self.activeField = textField;
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+	if (textField == self.tagsTextField) {
+		NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+		NSCharacterSet *commaSpaceSet = [NSCharacterSet characterSetWithCharactersInString:@", "];
+		BOOL shouldAddTags = [newString rangeOfCharacterFromSet:commaSpaceSet].location != NSNotFound;
+		if (shouldAddTags) {
+			[self addTags:newString];
+			textField.text = @"";
+			return NO;
+		}
+	}
+	return YES;
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	if (textField == self.URLTextField) [self.descriptionTextField becomeFirstResponder];
 	else if (textField == self.descriptionTextField) [self.extendedTextField becomeFirstResponder];
 	else if (textField == self.extendedTextField) [self.tagsTextField becomeFirstResponder];
-	else if (textField == self.tagsTextField) [self.tagsTextField resignFirstResponder];
+	else if (textField == self.tagsTextField) {
+		[self addTags:textField.text];
+		textField.text = @"";
+	}
 	return NO;
 }
 

@@ -19,11 +19,15 @@
 		self.url = parameters[@"url"];
 		self.description = parameters[@"description"];
 		self.extended = parameters[@"extended"];
-		self.tags = parameters[@"tags"];
 		self.dt = parameters[@"dt"] ? [self.dateFormatter dateFromString:parameters[@"dt"]] : nil;
 		self.replace = parameters[@"replace"] ? [[parameters[@"replace"] lowercaseString] isEqualToString:@"yes"] : YES;
 		self.shared = parameters[@"shared"] ? [[parameters[@"shared"] lowercaseString] isEqualToString:@"yes"] : YES;
 		self.toread = parameters[@"toread"] ? [[parameters[@"toread"] lowercaseString] isEqualToString:@"yes"] : NO;
+		
+		NSCharacterSet *commaSpaceSet = [NSCharacterSet characterSetWithCharactersInString:@", "];
+		NSMutableArray *newTags = [NSMutableArray arrayWithArray:[parameters[@"tags"] componentsSeparatedByCharactersInSet:commaSpaceSet]];
+		[newTags removeObject:@""];
+		self.tags = [newTags copy];
 	}
 	return self;
 }

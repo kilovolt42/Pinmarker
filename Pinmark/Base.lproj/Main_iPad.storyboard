@@ -110,7 +110,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="URL" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="5uZ-O7-GIW">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="URL" adjustsFontSizeToFit="NO" minimumFontSize="18" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="5uZ-O7-GIW">
                                                     <rect key="frame" x="15" y="0.0" width="738" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -132,7 +132,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Title" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="EJl-So-RRo">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Title" adjustsFontSizeToFit="NO" minimumFontSize="18" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="EJl-So-RRo">
                                                     <rect key="frame" x="15" y="0.0" width="738" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -154,7 +154,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Description" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VzK-vs-Zam">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Description" adjustsFontSizeToFit="NO" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="VzK-vs-Zam">
                                                     <rect key="frame" x="15" y="0.0" width="738" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -169,30 +169,48 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Tags Cell" id="8PB-zY-dvM">
-                                        <rect key="frame" x="0.0" y="231" width="768" height="44"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Tags Cell" rowHeight="88" id="8PB-zY-dvM" customClass="PMTagsTVCell">
+                                        <rect key="frame" x="0.0" y="231" width="768" height="88"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8PB-zY-dvM" id="CdT-so-LMi">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="768" height="87"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Tags" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OV0-oC-pS8">
+                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ej9-1F-agC">
+                                                    <rect key="frame" x="0.0" y="43" width="768" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="WiQ-qR-CNj">
+                                                        <size key="itemSize" width="50" height="50"/>
+                                                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                    </collectionViewFlowLayout>
+                                                    <cells/>
+                                                </collectionView>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add Tags" adjustsFontSizeToFit="NO" minimumFontSize="18" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="cPG-Wt-mzF">
                                                     <rect key="frame" x="15" y="0.0" width="738" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="43" id="hcD-9X-qgv"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="OV0-oC-pS8" secondAttribute="bottom" id="433-BP-DSg"/>
-                                                <constraint firstItem="OV0-oC-pS8" firstAttribute="leading" secondItem="CdT-so-LMi" secondAttribute="leading" constant="15" id="6wu-jF-AYi"/>
-                                                <constraint firstAttribute="trailing" secondItem="OV0-oC-pS8" secondAttribute="trailing" constant="15" id="8HT-1f-3Ey"/>
-                                                <constraint firstItem="OV0-oC-pS8" firstAttribute="top" secondItem="CdT-so-LMi" secondAttribute="top" id="ddU-sT-I7u"/>
+                                                <constraint firstAttribute="bottom" secondItem="ej9-1F-agC" secondAttribute="bottom" id="2s6-Cy-HeU"/>
+                                                <constraint firstItem="ej9-1F-agC" firstAttribute="top" secondItem="cPG-Wt-mzF" secondAttribute="bottom" id="JZT-ui-uo9"/>
+                                                <constraint firstItem="ej9-1F-agC" firstAttribute="leading" secondItem="CdT-so-LMi" secondAttribute="leading" id="LYM-cl-95g"/>
+                                                <constraint firstAttribute="trailing" secondItem="ej9-1F-agC" secondAttribute="trailing" id="Qtg-dA-pPS"/>
+                                                <constraint firstAttribute="trailing" secondItem="cPG-Wt-mzF" secondAttribute="trailing" constant="15" id="axf-9g-AgY"/>
+                                                <constraint firstItem="cPG-Wt-mzF" firstAttribute="top" secondItem="CdT-so-LMi" secondAttribute="top" id="iZK-PQ-TFw"/>
+                                                <constraint firstItem="cPG-Wt-mzF" firstAttribute="leading" secondItem="CdT-so-LMi" secondAttribute="leading" constant="15" id="mGG-fJ-VcK"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="To Read Cell" id="C6G-22-GdG">
-                                        <rect key="frame" x="0.0" y="275" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="319" width="768" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="C6G-22-GdG" id="0VU-Yy-Vds">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
@@ -220,7 +238,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Shared Cell" id="Jp9-tN-oJs">
-                                        <rect key="frame" x="0.0" y="319" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="363" width="768" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Jp9-tN-oJs" id="Ic5-su-w2L">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
@@ -266,7 +284,8 @@
                         <outlet property="descriptionTextField" destination="EJl-So-RRo" id="feX-a7-alV"/>
                         <outlet property="extendedTextField" destination="VzK-vs-Zam" id="NWG-57-0Of"/>
                         <outlet property="sharedSwitch" destination="DGl-7n-ErL" id="gAq-Ip-Nir"/>
-                        <outlet property="tagsTextField" destination="OV0-oC-pS8" id="xjE-aT-bPG"/>
+                        <outlet property="tagsTVCell" destination="8PB-zY-dvM" id="WdX-xF-5eL"/>
+                        <outlet property="tagsTextField" destination="cPG-Wt-mzF" id="SWn-Yz-3Ya"/>
                         <outlet property="toReadSwitch" destination="HGM-uZ-Pxe" id="Aqd-UV-rww"/>
                     </connections>
                 </tableViewController>

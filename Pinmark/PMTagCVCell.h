@@ -10,6 +10,8 @@
 
 @interface PMTagCVCell : UICollectionViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *tagLabel;
+@property (weak, nonatomic) IBOutlet UILabel *label;
+
+- (CGSize)suggestedSizeForCell;
 
 @end

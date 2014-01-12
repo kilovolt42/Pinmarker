@@ -10,6 +10,9 @@
 
 @interface PMTagsTVCell : UITableViewCell
 
-@property (strong, nonatomic) NSArray *tags;
+@property (strong, nonatomic) NSMutableArray *tags;
+
+- (void)setup;
+- (void)reloadData;
 
 @end
