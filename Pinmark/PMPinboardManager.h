@@ -15,6 +15,7 @@
 @property (strong, nonatomic, readonly) NSString *username;
 
 + (NSDictionary *)pinboardSpecificParametersFromParameters:(NSDictionary *)parameters;
+- (void)addAccountForAPIToken:(NSString *)token completionHandler:(void (^)(NSError *))completionHandler;
 - (void)addAccountForUsername:(NSString *)username password:(NSString *)password completionHandler:(void (^)(NSError *))completionHandler;
 - (void)add:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))successCallback failure:(void (^)(AFHTTPRequestOperation *, NSError *))failureCallback;
 - (void)requestTags:(void(^)(NSDictionary *))successCallback failure:(void(^)(NSError *))failureCallback;

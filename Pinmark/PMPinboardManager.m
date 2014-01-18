@@ -43,6 +43,26 @@ NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";
 	return [pinboardParameters copy];
 }
 
+- (void)addAccountForAPIToken:(NSString *)token completionHandler:(void (^)(NSError *))completionHandler {
+	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
+	
+	NSDictionary *parameters = @{ @"format": @"json", @"auth_token": token };
+	
+	[manager GET:[NSString stringWithFormat:@"https://api.pinboard.in/v1/user/api_token"]
+	  parameters:parameters
+		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+			 NSLog(@"Response Object: %@", responseObject);
+			 [self associateToken:token];
+			 completionHandler(nil);
+		 }
+		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+			 NSLog(@"Error: %@", error);
+			 completionHandler(error);
+		 }];
+}
+
 - (void)addAccountForUsername:(NSString *)username password:(NSString *)password completionHandler:(void (^)(NSError *))completionHandler {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 	manager.requestSerializer = [AFHTTPRequestSerializer serializer];

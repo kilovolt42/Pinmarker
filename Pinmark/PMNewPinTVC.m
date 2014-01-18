@@ -8,13 +8,12 @@
 
 #import "PMNewPinTVC.h"
 #import <AFNetworking/AFNetworking.h>
-#import "PMLoginVC.h"
 #import "PMPinboardManager.h"
 #import "NSURL+Pinmark.h"
 #import "PMBookmark.h"
 #import "PMTagsTVCell.h"
 
-@interface PMNewPinTVC () <UITextFieldDelegate, UITextViewDelegate>
+@interface PMNewPinTVC () <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *URLTextField;
 @property (weak, nonatomic) IBOutlet UITextField *descriptionTextField;
 @property (weak, nonatomic) IBOutlet UITextField *tagsTextField;
@@ -91,7 +90,7 @@
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicatorButton];
 	
 	__weak PMNewPinTVC *weakSelf = self;
-	NSLog(@"%@", [self.bookmark parameters]);
+	
 	[self.manager add:[self.bookmark parameters]
 			  success:^(AFHTTPRequestOperation *operation, id responseObject) {
 				  weakSelf.navigationItem.rightBarButtonItem = sender;
@@ -252,8 +251,12 @@
 	else if (textField == self.descriptionTextField) [self.extendedTextField becomeFirstResponder];
 	else if (textField == self.extendedTextField) [self.tagsTextField becomeFirstResponder];
 	else if (textField == self.tagsTextField) {
-		[self addTags:textField.text];
-		textField.text = @"";
+		if ([textField.text isEqualToString:@""]) {
+			[textField resignFirstResponder];
+		} else {
+			[self addTags:textField.text];
+			textField.text = @"";
+		}
 	}
 	return NO;
 }
