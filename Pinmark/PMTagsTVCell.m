@@ -56,6 +56,15 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (void)reloadData {
 	[self.collectionView reloadData];
+	[self scrollToLastTag];
+}
+
+- (void)scrollToLastTag {
+	NSIndexPath *lastTag = [NSIndexPath indexPathForItem:[self.tags count] - 1 inSection:0];
+	[self.collectionView scrollToItemAtIndexPath:lastTag atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
+	CGPoint contentOffset = self.collectionView.contentOffset;
+	contentOffset.x += 15.0;
+	self.collectionView.contentOffset = contentOffset;
 }
 
 - (void)deleteTag:(id)sender {

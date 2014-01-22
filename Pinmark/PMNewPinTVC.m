@@ -26,6 +26,7 @@
 @property (nonatomic, copy) void (^xSuccess)(AFHTTPRequestOperation *, id);
 @property (nonatomic, copy) void (^xFailure)(AFHTTPRequestOperation *, NSError *);
 @property (strong, nonatomic) PMBookmark *bookmark;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tagsCVHeightConstraint;
 @end
 
 @implementation PMNewPinTVC
@@ -209,7 +210,7 @@
 	[newTags removeObject:@""];
 	for (NSString *newTag in newTags) {
 		[self.tagsTVCell.tags removeObject:newTag];
-		[self.tagsTVCell.tags insertObject:newTag atIndex:0];
+		[self.tagsTVCell.tags addObject:newTag];
 	}
 	[self.tagsTVCell reloadData];
 }
@@ -233,16 +234,6 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-	if (textField == self.tagsTextField) {
-		NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
-		NSCharacterSet *commaSpaceSet = [NSCharacterSet characterSetWithCharactersInString:@", "];
-		BOOL shouldAddTags = [newString rangeOfCharacterFromSet:commaSpaceSet].location != NSNotFound;
-		if (shouldAddTags) {
-			[self addTags:newString];
-			textField.text = @"";
-			return NO;
-		}
-	}
 	return YES;
 }
 
@@ -257,8 +248,23 @@
 			[self addTags:textField.text];
 			textField.text = @"";
 		}
+		[self.tableView beginUpdates];
+		[self.tableView endUpdates];
+		[self.tableView scrollRectToVisible:self.tagsTVCell.frame animated:YES];
 	}
 	return NO;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.item == 3) {
+		if ([self.tagsTVCell.tags count] == 0) {
+			self.tagsCVHeightConstraint.constant = 0.0;
+		} else {
+			self.tagsCVHeightConstraint.constant = 44.0;
+		}
+		return self.tagsTextField.frame.size.height + self.tagsCVHeightConstraint.constant;
+	}
+	return 44.0;
 }
 
 @end
