@@ -81,7 +81,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tags Cell" id="Nya-DV-bfQ" customClass="PMTagsTVCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tags Cell" id="Nya-DV-bfQ">
                                         <rect key="frame" x="0.0" y="231" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nya-DV-bfQ" id="42E-Nl-Oru">
@@ -199,7 +199,7 @@
                         <outlet property="extendedTextField" destination="MoP-vU-7bQ" id="prl-Ei-wJc"/>
                         <outlet property="sharedSwitch" destination="W9p-Du-tUZ" id="h9Y-tI-srW"/>
                         <outlet property="tagsCVHeightConstraint" destination="1GY-RB-FhD" id="3Rz-Mr-xo4"/>
-                        <outlet property="tagsTVCell" destination="Nya-DV-bfQ" id="Pkz-PC-Afx"/>
+                        <outlet property="tagsCollectionView" destination="fjA-FE-hIj" id="Z2p-0N-biW"/>
                         <outlet property="tagsTextField" destination="KKd-Mm-SOm" id="QLV-oK-sE3"/>
                         <outlet property="toReadSwitch" destination="uI2-u2-kLw" id="Hvg-5K-ypP"/>
                     </connections>

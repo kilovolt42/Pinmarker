@@ -329,7 +329,7 @@
                         <outlet property="extendedTextField" destination="VzK-vs-Zam" id="NWG-57-0Of"/>
                         <outlet property="sharedSwitch" destination="DGl-7n-ErL" id="gAq-Ip-Nir"/>
                         <outlet property="tagsCVHeightConstraint" destination="R2a-9P-qG5" id="8px-re-dWs"/>
-                        <outlet property="tagsTVCell" destination="8PB-zY-dvM" id="WdX-xF-5eL"/>
+                        <outlet property="tagsCollectionView" destination="ej9-1F-agC" id="SeJ-cX-bhy"/>
                         <outlet property="tagsTextField" destination="cPG-Wt-mzF" id="SWn-Yz-3Ya"/>
                         <outlet property="toReadSwitch" destination="HGM-uZ-Pxe" id="Aqd-UV-rww"/>
                     </connections>
