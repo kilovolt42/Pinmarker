@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface PMTagsDSD : NSObject <UICollectionViewDataSource>
+@interface PMTagsDataSource : NSObject <UICollectionViewDataSource>
 
 @property (strong, nonatomic) NSMutableArray *tags;
 

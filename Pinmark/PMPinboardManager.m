@@ -8,6 +8,10 @@
 
 #import "PMPinboardManager.h"
 
+@interface PMPinboardManager ()
+@property (strong, nonatomic, readwrite) NSArray *userTags;
+@end
+
 NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";
 
 @implementation PMPinboardManager
@@ -30,6 +34,26 @@ NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";
 - (NSString *)username {
 	if (!_username) _username = [[self.authToken componentsSeparatedByString:@":"] firstObject];
 	return _username;
+}
+
+#pragma mark - Initializers
+
+- (id)init {
+	if (self = [super init]) {
+		__weak PMPinboardManager *weakSelf = self;
+		[self requestTags:^(NSDictionary *tags) {
+			weakSelf.userTags = [tags keysSortedByValueUsingComparator:^NSComparisonResult(id num1, id num2) {
+				if ([num1 integerValue] > [num2 integerValue]) {
+					return (NSComparisonResult)NSOrderedAscending;
+				} else if ([num1 integerValue] < [num2 integerValue]) {
+					return (NSComparisonResult)NSOrderedDescending;
+				} else {
+					return (NSComparisonResult)NSOrderedSame;
+				}
+			}];
+		} failure:nil];
+	}
+	return self;
 }
 
 #pragma mark - Methods

@@ -14,6 +14,8 @@
 
 @implementation PMBookmark
 
+#pragma mark - Initializers
+
 - (id)initWithParameters:(NSDictionary *)parameters {
 	if (self = [super init]) {
 		self.url = parameters[@"url"];
@@ -32,13 +34,7 @@
 	return self;
 }
 
-- (NSDateFormatter *)dateFormatter {
-	if (!_dateFormatter) {
-		_dateFormatter = [NSDateFormatter new];
-		_dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
-	}
-	return _dateFormatter;
-}
+#pragma mark - Methods
 
 - (NSDictionary *)parameters {
 	NSMutableDictionary *parameters = [NSMutableDictionary new];
@@ -51,6 +47,16 @@
 	parameters[@"shared"] = self.shared ? @"yes" : @"no";
 	parameters[@"toread"] = self.toread ? @"yes" : @"no";
 	return [parameters copy];
+}
+
+#pragma mark -
+
+- (NSDateFormatter *)dateFormatter {
+	if (!_dateFormatter) {
+		_dateFormatter = [NSDateFormatter new];
+		_dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
+	}
+	return _dateFormatter;
 }
 
 @end

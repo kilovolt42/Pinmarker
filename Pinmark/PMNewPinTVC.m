@@ -12,7 +12,7 @@
 #import "NSURL+Pinmark.h"
 #import "PMBookmark.h"
 #import "PMTagCVCell.h"
-#import "PMTagsDSD.h"
+#import "PMTagsDataSource.h"
 
 @interface PMNewPinTVC () <UITextFieldDelegate, UICollectionViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *URLTextField;
@@ -20,16 +20,19 @@
 @property (weak, nonatomic) IBOutlet UITextField *extendedTextField;
 @property (weak, nonatomic) IBOutlet UITextField *tagsTextField;
 @property (weak, nonatomic) IBOutlet UICollectionView *tagsCollectionView;
-@property (strong, nonatomic) PMTagsDSD *tagsDSD;
-@property (strong, nonatomic) PMTagCVCell *sizingCell;
+@property (weak, nonatomic) IBOutlet UICollectionView *suggestedTagsCollectionView;
 @property (weak, nonatomic) IBOutlet UISwitch *toReadSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *sharedSwitch;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tagsCVHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *suggestedTagsCVHeightConstraint;
 @property (weak, nonatomic) id activeField;
 @property (strong, nonatomic) PMPinboardManager *manager;
 @property (nonatomic, copy) void (^xSuccess)(AFHTTPRequestOperation *, id);
 @property (nonatomic, copy) void (^xFailure)(AFHTTPRequestOperation *, NSError *);
 @property (strong, nonatomic) PMBookmark *bookmark;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tagsCVHeightConstraint;
+@property (strong, nonatomic) PMTagsDataSource *tagsDataSource;
+@property (strong, nonatomic) PMTagsDataSource *suggestedTagsDataSource;
+@property (strong, nonatomic) PMTagCVCell *sizingCell;
 @end
 
 static NSString *tagCellIdentifier = @"Tag Cell";
@@ -48,20 +51,35 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	[self updateFields];
 }
 
-- (PMTagsDSD *)tagsDSD {
-	if (!_tagsDSD) _tagsDSD = [PMTagsDSD new];
-	return _tagsDSD;
+- (PMTagsDataSource *)tagsDataSource {
+	if (!_tagsDataSource) _tagsDataSource = [PMTagsDataSource new];
+	return _tagsDataSource;
+}
+
+- (PMTagsDataSource *)suggestedTagsDataSource {
+	if (!_suggestedTagsDataSource) _suggestedTagsDataSource = [PMTagsDataSource new];
+	return _suggestedTagsDataSource;
 }
 
 - (void)setTagsCollectionView:(UICollectionView *)collectionView {
 	_tagsCollectionView = collectionView;
-	_tagsCollectionView.dataSource = self.tagsDSD;
+	_tagsCollectionView.dataSource = self.tagsDataSource;
 	_tagsCollectionView.delegate = self;
 	_tagsCollectionView.allowsMultipleSelection = NO;
 	
 	UINib *cellNib = [UINib nibWithNibName:@"PMTagCVCell" bundle:nil];
 	[_tagsCollectionView registerNib:cellNib forCellWithReuseIdentifier:tagCellIdentifier];
 	self.sizingCell = [[cellNib instantiateWithOwner:nil options:nil] objectAtIndex:0];
+}
+
+- (void)setSuggestedTagsCollectionView:(UICollectionView *)suggestedTagsCollectionView {
+	_suggestedTagsCollectionView = suggestedTagsCollectionView;
+	_suggestedTagsCollectionView.dataSource = self.suggestedTagsDataSource;
+	_suggestedTagsCollectionView.delegate = self;
+	_suggestedTagsCollectionView.allowsMultipleSelection = NO;
+	
+	UINib *cellNib = [UINib nibWithNibName:@"PMTagCVCell" bundle:nil];
+	[_suggestedTagsCollectionView registerNib:cellNib forCellWithReuseIdentifier:tagCellIdentifier];
 }
 
 #pragma mark - UIViewController
@@ -79,9 +97,6 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	
-	
-	
 	if (!self.manager.authToken) [self login];
 	self.title = self.manager.username;
 }
@@ -99,7 +114,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	self.bookmark = [[PMBookmark alloc] initWithParameters:@{ @"url": self.URLTextField.text,
 															  @"description": self.descriptionTextField.text,
 															  @"extended": self.extendedTextField.text,
-															  @"tags": [[self.tagsDSD.tags copy] componentsJoinedByString:@" "],
+															  @"tags": [[self.tagsDataSource.tags copy] componentsJoinedByString:@" "],
 															  @"toread": self.toReadSwitch.on ? @"yes" : @"no",
 															  @"shared": self.sharedSwitch.on ? @"no" : @"yes" }];
 }
@@ -183,7 +198,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	self.URLTextField.text = self.bookmark.url;
 	self.descriptionTextField.text = self.bookmark.description;
 	self.extendedTextField.text = self.bookmark.extended;
-	self.tagsDSD.tags = [self.bookmark.tags mutableCopy];
+	self.tagsDataSource.tags = [self.bookmark.tags mutableCopy];
 	self.toReadSwitch.on = self.bookmark.toread;
 	self.sharedSwitch.on = !self.bookmark.shared;
 }
@@ -232,19 +247,16 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	NSMutableArray *newTags = [NSMutableArray arrayWithArray:[tags componentsSeparatedByCharactersInSet:commaSpaceSet]];
 	[newTags removeObject:@""];
 	for (NSString *newTag in newTags) {
-		[self.tagsDSD.tags removeObject:newTag];
-		[self.tagsDSD.tags addObject:newTag];
+		[self.tagsDataSource.tags removeObject:newTag];
+		[self.tagsDataSource.tags addObject:newTag];
 	}
-	[self reloadTagData];
-}
-
-- (void)reloadTagData {
 	[self.tagsCollectionView reloadData];
 	[self scrollToLastTag];
+	[self updateTagsRowHeight];
 }
 
 - (void)scrollToLastTag {
-	NSIndexPath *lastTag = [NSIndexPath indexPathForItem:[self.tagsDSD.tags count] - 1 inSection:0];
+	NSIndexPath *lastTag = [NSIndexPath indexPathForItem:[self.tagsDataSource.tags count] - 1 inSection:0];
 	[self.tagsCollectionView scrollToItemAtIndexPath:lastTag atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
 	CGPoint contentOffset = self.tagsCollectionView.contentOffset;
 	contentOffset.x += 15.0;
@@ -254,10 +266,19 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 - (void)deleteTag:(id)sender {
 	NSArray *selectedItems = [self.tagsCollectionView indexPathsForSelectedItems];
 	if ([selectedItems count]) {
-		NSIndexPath *selectedItem = selectedItems[0];
-		[self.tagsDSD.tags removeObjectAtIndex:[selectedItem item]];
+		NSIndexPath *selectedItem = [selectedItems firstObject];
+		[self.tagsDataSource.tags removeObjectAtIndex:[selectedItem item]];
 		[self.tagsCollectionView deleteItemsAtIndexPaths:@[selectedItem]];
+		[self.tagsCollectionView reloadData];
+		[self updateTagsRowHeight];
 	}
+}
+
+- (void)updateTagsRowHeight {
+	[self.tableView beginUpdates];
+	[self.tableView endUpdates];
+	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:3 inSection:0]];
+	[self.tableView scrollRectToVisible:cell.frame animated:YES];
 }
 
 #pragma mark - UIResponder
@@ -273,20 +294,31 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-	[self becomeFirstResponder];
-	UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-	
-	UIMenuController *menuController = [UIMenuController sharedMenuController];
-	UIMenuItem *deleteTag = [[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(deleteTag:)];
-	[menuController setMenuItems:@[deleteTag]];
-	[menuController setTargetRect:cell.frame inView:collectionView];
-	[menuController setMenuVisible:YES animated:YES];
+	if (collectionView == self.tagsCollectionView) {
+		[self becomeFirstResponder];
+		UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+		UIMenuController *menuController = [UIMenuController sharedMenuController];
+		UIMenuItem *deleteTag = [[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(deleteTag:)];
+		[menuController setMenuItems:@[deleteTag]];
+		[menuController setTargetRect:cell.frame inView:collectionView];
+		[menuController setMenuVisible:YES animated:YES];
+	} else {
+		[self addTags:self.suggestedTagsDataSource.tags[[indexPath item]]];
+		self.suggestedTagsDataSource.tags = nil;
+		[self.suggestedTagsCollectionView reloadData];
+		self.tagsTextField.text = @"";
+		[self updateTagsRowHeight];
+	}
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-	self.sizingCell.label.text = self.tagsDSD.tags[[indexPath item]];
+	if (collectionView == self.tagsCollectionView) {
+		self.sizingCell.label.text = self.tagsDataSource.tags[[indexPath item]];
+	} else {
+		self.sizingCell.label.text = self.suggestedTagsDataSource.tags[[indexPath item]];
+	}
 	return [self.sizingCell suggestedSizeForCell];
 }
 
@@ -317,6 +349,16 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+	if (textField == self.tagsTextField) {
+		if (self.manager.userTags) {
+			NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+			NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", newString];
+			NSArray *results = [self.manager.userTags filteredArrayUsingPredicate:searchPredicate];
+			self.suggestedTagsDataSource.tags = [NSMutableArray arrayWithArray:results];
+			[self.suggestedTagsCollectionView reloadData];
+			[self updateTagsRowHeight];
+		}
+	}
 	return YES;
 }
 
@@ -331,22 +373,25 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 			[self addTags:textField.text];
 			textField.text = @"";
 		}
-		[self.tableView beginUpdates];
-		[self.tableView endUpdates];
-		UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:3 inSection:0]];
-		[self.tableView scrollRectToVisible:cell.frame animated:YES];
 	}
 	return NO;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.item == 3) {
-		if ([self.tagsDSD.tags count] == 0) {
-			self.tagsCVHeightConstraint.constant = 0.0;
-		} else {
+		if ([self.tagsCollectionView numberOfItemsInSection:0]) {
 			self.tagsCVHeightConstraint.constant = 44.0;
+		} else {
+			self.tagsCVHeightConstraint.constant = 0.0;
 		}
-		return self.tagsTextField.frame.size.height + self.tagsCVHeightConstraint.constant;
+		
+		if ([self.suggestedTagsCollectionView numberOfItemsInSection:0]) {
+			self.suggestedTagsCVHeightConstraint.constant = 44.0;
+		} else {
+			self.suggestedTagsCVHeightConstraint.constant = 0.0;
+		}
+		
+		return self.tagsTextField.frame.size.height + self.tagsCVHeightConstraint.constant + self.suggestedTagsCVHeightConstraint.constant;
 	}
 	return 44.0;
 }

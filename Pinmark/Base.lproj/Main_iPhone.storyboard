@@ -81,28 +81,19 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tags Cell" id="Nya-DV-bfQ">
-                                        <rect key="frame" x="0.0" y="231" width="320" height="44"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tags Cell" rowHeight="132" id="Nya-DV-bfQ">
+                                        <rect key="frame" x="0.0" y="231" width="320" height="132"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nya-DV-bfQ" id="42E-Nl-Oru">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="131"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Tags" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KKd-Mm-SOm">
-                                                    <rect key="frame" x="15" y="0.0" width="290" height="43"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="43" id="bpe-QS-ODQ"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
-                                                </textField>
                                                 <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="redraw" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fjA-FE-hIj">
-                                                    <rect key="frame" x="0.0" y="43" width="320" height="0.0"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" id="1GY-RB-FhD"/>
+                                                        <constraint firstAttribute="height" constant="44" id="1GY-RB-FhD"/>
                                                     </constraints>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Atz-M5-rKT">
                                                         <size key="itemSize" width="50" height="50"/>
@@ -112,19 +103,47 @@
                                                     </collectionViewFlowLayout>
                                                     <cells/>
                                                 </collectionView>
+                                                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="redraw" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="0eK-wh-PDu">
+                                                    <rect key="frame" x="0.0" y="87" width="320" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="44" id="03X-Gb-BGV"/>
+                                                    </constraints>
+                                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Qhv-nF-ZuR">
+                                                        <size key="itemSize" width="50" height="50"/>
+                                                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                    </collectionViewFlowLayout>
+                                                    <cells/>
+                                                </collectionView>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add Tags" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KKd-Mm-SOm">
+                                                    <rect key="frame" x="15" y="44" width="290" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="43" id="bpe-QS-ODQ"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
+                                                </textField>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="fjA-FE-hIj" firstAttribute="leading" secondItem="42E-Nl-Oru" secondAttribute="leading" id="1Sr-TP-mRA"/>
-                                                <constraint firstItem="KKd-Mm-SOm" firstAttribute="top" secondItem="42E-Nl-Oru" secondAttribute="top" id="1pT-ih-nh4"/>
                                                 <constraint firstAttribute="trailing" secondItem="KKd-Mm-SOm" secondAttribute="trailing" constant="15" id="4wY-j2-UdC"/>
                                                 <constraint firstItem="KKd-Mm-SOm" firstAttribute="leading" secondItem="42E-Nl-Oru" secondAttribute="leading" constant="15" id="Iod-vi-jWz"/>
                                                 <constraint firstAttribute="trailing" secondItem="fjA-FE-hIj" secondAttribute="trailing" id="VDY-N3-FNj"/>
-                                                <constraint firstItem="fjA-FE-hIj" firstAttribute="top" secondItem="KKd-Mm-SOm" secondAttribute="bottom" id="fDA-cn-rln"/>
+                                                <constraint firstItem="KKd-Mm-SOm" firstAttribute="top" secondItem="fjA-FE-hIj" secondAttribute="bottom" id="dio-U8-VnA"/>
+                                                <constraint firstAttribute="trailing" secondItem="0eK-wh-PDu" secondAttribute="trailing" id="gmE-46-mA6"/>
+                                                <constraint firstItem="fjA-FE-hIj" firstAttribute="top" secondItem="42E-Nl-Oru" secondAttribute="top" id="i04-ty-Bbf"/>
+                                                <constraint firstItem="0eK-wh-PDu" firstAttribute="leading" secondItem="42E-Nl-Oru" secondAttribute="leading" id="qgz-aK-Cp2"/>
+                                                <constraint firstItem="0eK-wh-PDu" firstAttribute="top" secondItem="KKd-Mm-SOm" secondAttribute="bottom" id="uer-cZ-DuL"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="To Read Cell" id="rsj-Dw-eBk">
-                                        <rect key="frame" x="0.0" y="275" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="363" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rsj-Dw-eBk" id="aur-1S-hku">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -152,7 +171,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Shared Cell" id="jWV-Zc-s2d">
-                                        <rect key="frame" x="0.0" y="319" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="407" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jWV-Zc-s2d" id="smo-7Z-FMP">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -198,6 +217,8 @@
                         <outlet property="descriptionTextField" destination="XKO-Sk-Xpd" id="UtZ-y9-Gai"/>
                         <outlet property="extendedTextField" destination="MoP-vU-7bQ" id="prl-Ei-wJc"/>
                         <outlet property="sharedSwitch" destination="W9p-Du-tUZ" id="h9Y-tI-srW"/>
+                        <outlet property="suggestedTagsCVHeightConstraint" destination="03X-Gb-BGV" id="Ewo-gA-sVw"/>
+                        <outlet property="suggestedTagsCollectionView" destination="0eK-wh-PDu" id="Idq-bL-JDn"/>
                         <outlet property="tagsCVHeightConstraint" destination="1GY-RB-FhD" id="3Rz-Mr-xo4"/>
                         <outlet property="tagsCollectionView" destination="fjA-FE-hIj" id="Z2p-0N-biW"/>
                         <outlet property="tagsTextField" destination="KKd-Mm-SOm" id="QLV-oK-sE3"/>

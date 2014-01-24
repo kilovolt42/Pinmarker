@@ -13,6 +13,7 @@
 
 @property (strong, nonatomic, readonly) NSString *authToken;
 @property (strong, nonatomic, readonly) NSString *username;
+@property (strong, nonatomic, readonly) NSArray *userTags;
 
 + (NSDictionary *)pinboardSpecificParametersFromParameters:(NSDictionary *)parameters;
 - (void)addAccountForAPIToken:(NSString *)token completionHandler:(void (^)(NSError *))completionHandler;

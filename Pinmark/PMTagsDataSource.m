@@ -6,16 +6,14 @@
 //  Copyright (c) 2014 kilovolt42. All rights reserved.
 //
 
-#import "PMTagsDSD.h"
+#import "PMTagsDataSource.h"
 #import "PMTagCVCell.h"
 
 static NSString *tagCellIdentifier = @"Tag Cell";
 
-@implementation PMTagsDSD
+@implementation PMTagsDataSource
 
 #pragma mark - Properties
-
-@synthesize tags = _tags;
 
 - (NSMutableArray *)tags {
 	if (!_tags) _tags = [NSMutableArray new];
@@ -34,7 +32,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:tagCellIdentifier forIndexPath:indexPath];
-	((PMTagCVCell *)cell).label.text = self.tags[indexPath.item];
+	((PMTagCVCell *)cell).label.text = self.tags[[indexPath item]];
 	return cell;
 }
 
