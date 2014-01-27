@@ -133,7 +133,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 				  if (resultCode) {
 					  if ([resultCode isEqualToString:@"done"]) {
 						  [weakSelf reportSuccess];
-						  weakSelf.bookmark = [[PMBookmark alloc] initWithParameters:nil];
+						  weakSelf.bookmark = [PMBookmark new];
 						  if (weakSelf.xSuccess) weakSelf.xSuccess(operation, responseObject);
 					  }
 					  else if ([resultCode isEqualToString:@"missing url"]) [weakSelf reportErrorWithMessage:@"Missing URL"];
@@ -202,9 +202,13 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	self.URLTextField.text = self.bookmark.url;
 	self.descriptionTextField.text = self.bookmark.description;
 	self.extendedTextField.text = self.bookmark.extended;
-	self.tagsDataSource.tags = [self.bookmark.tags mutableCopy];
+	self.tagsDataSource.tags = self.bookmark.tags;
+	[self.tagsCollectionView reloadData];
+	self.suggestedTagsDataSource.tags = nil;
+	[self.suggestedTagsCollectionView reloadData];
 	self.toReadSwitch.on = self.bookmark.toread;
 	self.sharedSwitch.on = !self.bookmark.shared;
+	[self updateTagsRowHeight];
 }
 
 - (void)login {
@@ -248,8 +252,14 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (void)addTags:(NSString *)tags {
 	[self.bookmark addTags:tags];
+	
 	self.tagsDataSource.tags = self.bookmark.tags;
 	[self.tagsCollectionView reloadData];
+	
+	self.suggestedTagsDataSource.tags = nil;
+	[self.suggestedTagsCollectionView reloadData];
+	
+	self.tagsTextField.text = @"";
 	[self scrollToLastTag];
 	[self updateTagsRowHeight];
 }
@@ -262,6 +272,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 										atScrollPosition:UICollectionViewScrollPositionRight
 												animated:YES];
 		
+		// TODO: this is bad - if there is no need to scroll (say content width less than screen width) then if mucks up the content offset
 		CGPoint contentOffset = self.tagsCollectionView.contentOffset;
 		contentOffset.x += 15.0;
 		self.tagsCollectionView.contentOffset = contentOffset;
@@ -275,7 +286,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 		PMTagCVCell *cell = (PMTagCVCell *)[self.tagsCollectionView cellForItemAtIndexPath:selectedIndexPath];
 		[self.bookmark removeTag:cell.label.text];
 		self.tagsDataSource.tags = self.bookmark.tags;
-		[self.tagsCollectionView deleteItemsAtIndexPaths:selectedItems];
+		[self.tagsCollectionView reloadData];
 		[self updateTagsRowHeight];
 	}
 }
@@ -362,8 +373,9 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	} else if (textField == self.extendedTextField) {
 		self.bookmark.extended = textField.text;
 	} else if (textField == self.tagsTextField) {
-		[self addTags:textField.text];
-		textField.text = @"";
+		if (![textField.text isEqualToString:@""]) {
+			[self addTags:textField.text];
+		}
 	}
 }
 
@@ -390,7 +402,6 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 			[textField resignFirstResponder];
 		} else {
 			[self addTags:textField.text];
-			textField.text = @"";
 		}
 	}
 	return NO;
