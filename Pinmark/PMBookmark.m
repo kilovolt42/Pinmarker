@@ -16,6 +16,20 @@
 
 #pragma mark - Initializers
 
+- (id)init {
+	if (self = [super init]) {
+		self.url = nil;
+		self.description = nil;
+		self.extended = nil;
+		self.dt = nil;
+		self.replace = YES;
+		self.shared = YES;
+		self.toread = NO;
+		self.tags = nil;
+	}
+	return self;
+}
+
 - (id)initWithParameters:(NSDictionary *)parameters {
 	if (self = [super init]) {
 		self.url = parameters[@"url"];
@@ -47,6 +61,24 @@
 	parameters[@"shared"] = self.shared ? @"yes" : @"no";
 	parameters[@"toread"] = self.toread ? @"yes" : @"no";
 	return [parameters copy];
+}
+
+- (void)addTags:(NSString *)tags {
+	NSCharacterSet *commaSpaceSet = [NSCharacterSet characterSetWithCharactersInString:@", "];
+	NSMutableArray *newTags = [NSMutableArray arrayWithArray:[tags componentsSeparatedByCharactersInSet:commaSpaceSet]];
+	[newTags removeObject:@""];
+	for (NSString *newTag in newTags) {
+		NSMutableArray *tempTags = [NSMutableArray arrayWithArray:self.tags];
+		[tempTags removeObject:newTag];
+		[tempTags addObject:newTag];
+		self.tags = [tempTags copy];
+	}
+}
+
+- (void)removeTag:(NSString *)tag {
+	NSMutableArray *tempTags = [NSMutableArray arrayWithArray:self.tags];
+	[tempTags removeObject:tag];
+	self.tags = [tempTags copy];
 }
 
 #pragma mark -

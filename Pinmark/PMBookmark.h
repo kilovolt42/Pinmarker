@@ -21,5 +21,7 @@
 
 - (id)initWithParameters:(NSDictionary *)parameters;
 - (NSDictionary *)parameters;
+- (void)addTags:(NSString *)tags;
+- (void)removeTag:(NSString *)tag;
 
 @end

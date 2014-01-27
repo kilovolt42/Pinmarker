@@ -15,8 +15,8 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 #pragma mark - Properties
 
-- (NSMutableArray *)tags {
-	if (!_tags) _tags = [NSMutableArray new];
+- (NSArray *)tags {
+	if (!_tags) _tags = @[];
 	return _tags;
 }
 

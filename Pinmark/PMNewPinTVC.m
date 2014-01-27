@@ -41,9 +41,16 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 #pragma mark - Properties
 
+@synthesize bookmark = _bookmark;
+
 - (PMPinboardManager *)manager {
 	if (!_manager) _manager = [PMPinboardManager new];
 	return _manager;
+}
+
+- (PMBookmark *)bookmark {
+	if (!_bookmark) _bookmark = [PMBookmark new];
+	return _bookmark;
 }
 
 - (void)setBookmark:(PMBookmark *)bookmark {
@@ -109,20 +116,9 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	}
 }
 
-// TODO: model should be updated constantly
-- (void)updateBookmark {
-	self.bookmark = [[PMBookmark alloc] initWithParameters:@{ @"url": self.URLTextField.text,
-															  @"description": self.descriptionTextField.text,
-															  @"extended": self.extendedTextField.text,
-															  @"tags": [[self.tagsDataSource.tags copy] componentsJoinedByString:@" "],
-															  @"toread": self.toReadSwitch.on ? @"yes" : @"no",
-															  @"shared": self.sharedSwitch.on ? @"no" : @"yes" }];
-}
-
 - (IBAction)pin:(UIBarButtonItem *)sender {
 	if (![self isReadyToPin]) return;
-	[self.activeField resignFirstResponder];
-	[self updateBookmark];
+	[self.activeField resignFirstResponder]; // makes sure text field ends editing and saves text to bookmark
 	
 	UIActivityIndicatorView *indicatorButton = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	[indicatorButton startAnimating];
@@ -151,6 +147,14 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 				  [weakSelf reportErrorWithMessage:nil];
 				  if (weakSelf.xFailure) weakSelf.xFailure(operation, error);
 			  }];
+}
+
+- (IBAction)toggledToReadSwitch:(UISwitch *)sender {
+	self.bookmark.toread = sender.on;
+}
+
+- (IBAction)toggledSharedSwitch:(UISwitch *)sender {
+	self.bookmark.shared = !sender.on;
 }
 
 #pragma mark - Methods
@@ -243,33 +247,35 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 }
 
 - (void)addTags:(NSString *)tags {
-	NSCharacterSet *commaSpaceSet = [NSCharacterSet characterSetWithCharactersInString:@", "];
-	NSMutableArray *newTags = [NSMutableArray arrayWithArray:[tags componentsSeparatedByCharactersInSet:commaSpaceSet]];
-	[newTags removeObject:@""];
-	for (NSString *newTag in newTags) {
-		[self.tagsDataSource.tags removeObject:newTag];
-		[self.tagsDataSource.tags addObject:newTag];
-	}
+	[self.bookmark addTags:tags];
+	self.tagsDataSource.tags = self.bookmark.tags;
 	[self.tagsCollectionView reloadData];
 	[self scrollToLastTag];
 	[self updateTagsRowHeight];
 }
 
 - (void)scrollToLastTag {
-	NSIndexPath *lastTag = [NSIndexPath indexPathForItem:[self.tagsDataSource.tags count] - 1 inSection:0];
-	[self.tagsCollectionView scrollToItemAtIndexPath:lastTag atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
-	CGPoint contentOffset = self.tagsCollectionView.contentOffset;
-	contentOffset.x += 15.0;
-	self.tagsCollectionView.contentOffset = contentOffset;
+	if ([self.tagsCollectionView numberOfItemsInSection:0]) {
+		NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:[self.tagsDataSource.tags count] - 1 inSection:0];
+		
+		[self.tagsCollectionView scrollToItemAtIndexPath:lastIndexPath
+										atScrollPosition:UICollectionViewScrollPositionRight
+												animated:YES];
+		
+		CGPoint contentOffset = self.tagsCollectionView.contentOffset;
+		contentOffset.x += 15.0;
+		self.tagsCollectionView.contentOffset = contentOffset;
+	}
 }
 
 - (void)deleteTag:(id)sender {
 	NSArray *selectedItems = [self.tagsCollectionView indexPathsForSelectedItems];
 	if ([selectedItems count]) {
-		NSIndexPath *selectedItem = [selectedItems firstObject];
-		[self.tagsDataSource.tags removeObjectAtIndex:[selectedItem item]];
-		[self.tagsCollectionView deleteItemsAtIndexPaths:@[selectedItem]];
-		[self.tagsCollectionView reloadData];
+		NSIndexPath *selectedIndexPath = [selectedItems firstObject];
+		PMTagCVCell *cell = (PMTagCVCell *)[self.tagsCollectionView cellForItemAtIndexPath:selectedIndexPath];
+		[self.bookmark removeTag:cell.label.text];
+		self.tagsDataSource.tags = self.bookmark.tags;
+		[self.tagsCollectionView deleteItemsAtIndexPaths:selectedItems];
 		[self updateTagsRowHeight];
 	}
 }
@@ -302,7 +308,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 		[menuController setMenuItems:@[deleteTag]];
 		[menuController setTargetRect:cell.frame inView:collectionView];
 		[menuController setMenuVisible:YES animated:YES];
-	} else {
+	} else if (collectionView == self.suggestedTagsCollectionView) {
 		[self addTags:self.suggestedTagsDataSource.tags[[indexPath item]]];
 		self.suggestedTagsDataSource.tags = nil;
 		[self.suggestedTagsCollectionView reloadData];
@@ -348,13 +354,26 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	self.activeField = textField;
 }
 
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+	if (textField == self.URLTextField) {
+		self.bookmark.url = textField.text;
+	} else if (textField == self.descriptionTextField) {
+		self.bookmark.description = textField.text;
+	} else if (textField == self.extendedTextField) {
+		self.bookmark.extended = textField.text;
+	} else if (textField == self.tagsTextField) {
+		[self addTags:textField.text];
+		textField.text = @"";
+	}
+}
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
 	if (textField == self.tagsTextField) {
 		if (self.manager.userTags) {
 			NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
 			NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", newString];
 			NSArray *results = [self.manager.userTags filteredArrayUsingPredicate:searchPredicate];
-			self.suggestedTagsDataSource.tags = [NSMutableArray arrayWithArray:results];
+			self.suggestedTagsDataSource.tags = results;
 			[self.suggestedTagsCollectionView reloadData];
 			[self updateTagsRowHeight];
 		}
