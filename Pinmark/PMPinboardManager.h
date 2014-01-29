@@ -21,5 +21,6 @@
 - (void)add:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))successCallback failure:(void (^)(AFHTTPRequestOperation *, NSError *))failureCallback;
 - (void)requestTags:(void(^)(NSDictionary *))successCallback failure:(void(^)(NSError *))failureCallback;
 - (void)requestRecommendedTags:(NSDictionary *)parameters success:(void (^)(NSArray *))successCallback failure:(void (^)(NSError *))failureCallback;
+- (void)requestPostForURL:(NSString *)url success:(void (^)(NSDictionary *))successCallback failure:(void (^)(NSError *))failureCallback;
 
 @end
