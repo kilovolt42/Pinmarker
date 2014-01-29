@@ -13,6 +13,7 @@
 #import "PMBookmark.h"
 #import "PMTagCVCell.h"
 #import "PMTagsDataSource.h"
+#import "PMInputAccessoryView.h"
 
 @interface PMNewPinTVC () <UITextFieldDelegate, UICollectionViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *URLTextField;
@@ -20,11 +21,11 @@
 @property (weak, nonatomic) IBOutlet UITextField *extendedTextField;
 @property (weak, nonatomic) IBOutlet UITextField *tagsTextField;
 @property (weak, nonatomic) IBOutlet UICollectionView *tagsCollectionView;
-@property (weak, nonatomic) IBOutlet UICollectionView *suggestedTagsCollectionView;
+@property (weak, nonatomic) UICollectionView *suggestedTagsCollectionView;
 @property (weak, nonatomic) IBOutlet UISwitch *toReadSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *sharedSwitch;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tagsCVHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *suggestedTagsCVHeightConstraint;
+@property (weak, nonatomic) PMInputAccessoryView *keyboardAccessory;
 @property (weak, nonatomic) id activeField;
 @property (strong, nonatomic) PMPinboardManager *manager;
 @property (nonatomic, copy) void (^xSuccess)(AFHTTPRequestOperation *, id);
@@ -89,6 +90,16 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	[_suggestedTagsCollectionView registerNib:cellNib forCellWithReuseIdentifier:tagCellIdentifier];
 }
 
+- (void)setKeyboardAccessory:(PMInputAccessoryView *)keyboardAccessory {
+	_keyboardAccessory = keyboardAccessory;
+	[_keyboardAccessory.hideKeyboardButton addTarget:self action:@selector(dismissKeyboard) forControlEvents:UIControlEventTouchUpInside];
+	self.suggestedTagsCollectionView = _keyboardAccessory.suggestedTagsCollectionView;
+	self.URLTextField.inputAccessoryView = _keyboardAccessory;
+	self.descriptionTextField.inputAccessoryView = _keyboardAccessory;
+	self.extendedTextField.inputAccessoryView = _keyboardAccessory;
+	self.tagsTextField.inputAccessoryView = _keyboardAccessory;
+}
+
 #pragma mark - UIViewController
 
 - (void)viewDidLoad {
@@ -97,9 +108,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	self.descriptionTextField.delegate = self;
 	self.tagsTextField.delegate = self;
 	self.extendedTextField.delegate = self;
-	
-	UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-	[self.navigationController.navigationBar addGestureRecognizer:tap];
+	self.keyboardAccessory = [[[NSBundle mainBundle] loadNibNamed:@"PMInputAccessoryView" owner:self options:nil] firstObject];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -204,8 +213,6 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	self.extendedTextField.text = self.bookmark.extended;
 	self.tagsDataSource.tags = self.bookmark.tags;
 	[self.tagsCollectionView reloadData];
-	self.suggestedTagsDataSource.tags = nil;
-	[self.suggestedTagsCollectionView reloadData];
 	self.toReadSwitch.on = self.bookmark.toread;
 	self.sharedSwitch.on = !self.bookmark.shared;
 	[self updateTagsRowHeight];
@@ -262,6 +269,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	self.tagsTextField.text = @"";
 	[self scrollToLastTag];
 	[self updateTagsRowHeight];
+	[self.keyboardAccessory hideSuggestedTags];
 }
 
 - (void)scrollToLastTag {
@@ -384,10 +392,15 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 		if (self.manager.userTags) {
 			NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
 			NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", newString];
-			NSArray *results = [self.manager.userTags filteredArrayUsingPredicate:searchPredicate];
-			self.suggestedTagsDataSource.tags = results;
+			NSMutableArray *results = [NSMutableArray arrayWithArray:[self.manager.userTags filteredArrayUsingPredicate:searchPredicate]];
+			[results removeObjectsInArray:self.bookmark.tags];
+			self.suggestedTagsDataSource.tags = [results copy];
 			[self.suggestedTagsCollectionView reloadData];
-			[self updateTagsRowHeight];
+			if ([results count]) {
+				[self.keyboardAccessory showSuggestedTags];
+			} else {
+				[self.keyboardAccessory hideSuggestedTags];
+			}
 		}
 	}
 	return YES;
@@ -409,19 +422,12 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.item == 3) {
-		if ([self.tagsCollectionView numberOfItemsInSection:0]) {
+		if ([self.tagsDataSource.tags count]) {
 			self.tagsCVHeightConstraint.constant = 44.0;
 		} else {
 			self.tagsCVHeightConstraint.constant = 0.0;
 		}
-		
-		if ([self.suggestedTagsCollectionView numberOfItemsInSection:0]) {
-			self.suggestedTagsCVHeightConstraint.constant = 44.0;
-		} else {
-			self.suggestedTagsCVHeightConstraint.constant = 0.0;
-		}
-		
-		return self.tagsTextField.frame.size.height + self.tagsCVHeightConstraint.constant + self.suggestedTagsCVHeightConstraint.constant;
+		return self.tagsTextField.frame.size.height + self.tagsCVHeightConstraint.constant;
 	}
 	return 44.0;
 }
