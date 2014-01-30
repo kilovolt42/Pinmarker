@@ -14,6 +14,8 @@
 #import "PMTagCVCell.h"
 #import "PMTagsDataSource.h"
 #import "PMInputAccessoryView.h"
+#import "PMSettingsTVC.h"
+#import "PMAddAccountVC.h"
 
 @interface PMNewPinTVC () <UITextFieldDelegate, UICollectionViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *URLTextField;
@@ -34,6 +36,7 @@
 @property (strong, nonatomic) PMTagsDataSource *tagsDataSource;
 @property (strong, nonatomic) PMTagsDataSource *suggestedTagsDataSource;
 @property (strong, nonatomic) PMTagCVCell *sizingCell;
+@property (nonatomic) BOOL needsLogin;
 @end
 
 static NSString *tagCellIdentifier = @"Tag Cell";
@@ -113,8 +116,20 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	if (!self.manager.authToken) [self login];
-	self.title = self.manager.username;
+	if (!self.manager.defaultUser) [self login];
+	self.title = self.manager.defaultUser;
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"Login Segue"]) {
+		UIViewController *destinationVC = segue.destinationViewController;
+		PMAddAccountVC *addAccountVC = (PMAddAccountVC *)destinationVC;
+		addAccountVC.manager = self.manager;
+	} else if ([segue.identifier isEqualToString:@"Settings"]) {
+		UIViewController *destinationVC = segue.destinationViewController;
+		PMSettingsTVC *settingsTVC = (PMSettingsTVC *)destinationVC;
+		settingsTVC.manager = self.manager;
+	}
 }
 
 #pragma mark - IBAction
@@ -177,7 +192,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 		return;
 	}
 	
-	if (!parameters[@"auth_token"] && !self.manager.authToken) {
+	if (!parameters[@"auth_token"] && !self.manager.defaultUser) {
 		[self login];
 	}
 	
@@ -219,7 +234,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 }
 
 - (void)login {
-	[self.navigationController performSegueWithIdentifier:@"Login Segue" sender:self];
+	[self performSegueWithIdentifier:@"Login Segue" sender:self];
 }
 
 - (BOOL)isReadyToPin {
@@ -248,7 +263,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 }
 
 - (void)resetNavigationBar {
-	self.title = self.manager.username;
+	self.title = self.manager.defaultUser;
 	self.navigationController.navigationBar.barTintColor = nil;
 }
 

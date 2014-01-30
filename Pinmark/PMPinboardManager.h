@@ -11,16 +11,17 @@
 
 @interface PMPinboardManager : NSObject
 
-@property (strong, nonatomic, readonly) NSString *authToken;
-@property (strong, nonatomic, readonly) NSString *username;
+@property (strong, nonatomic) NSString *defaultUser; // setter does nothing if new value is not in allUsers
+@property (strong, nonatomic, readonly) NSArray *associatedUsers;
 @property (strong, nonatomic, readonly) NSArray *userTags;
 
 + (NSDictionary *)pinboardSpecificParametersFromParameters:(NSDictionary *)parameters;
-- (void)addAccountForAPIToken:(NSString *)token completionHandler:(void (^)(NSError *))completionHandler;
-- (void)addAccountForUsername:(NSString *)username password:(NSString *)password completionHandler:(void (^)(NSError *))completionHandler;
+- (void)addAccountForAPIToken:(NSString *)token asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler;
+- (void)addAccountForUsername:(NSString *)username password:(NSString *)password asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler;
 - (void)add:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))successCallback failure:(void (^)(AFHTTPRequestOperation *, NSError *))failureCallback;
 - (void)requestTags:(void(^)(NSDictionary *))successCallback failure:(void(^)(NSError *))failureCallback;
 - (void)requestRecommendedTags:(NSDictionary *)parameters success:(void (^)(NSArray *))successCallback failure:(void (^)(NSError *))failureCallback;
 - (void)requestPostForURL:(NSString *)url success:(void (^)(NSDictionary *))successCallback failure:(void (^)(NSError *))failureCallback;
+- (NSString *)tokenNumberForUser:(NSString *)user;
 
 @end

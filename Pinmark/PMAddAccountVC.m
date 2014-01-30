@@ -7,7 +7,6 @@
 //
 
 #import "PMAddAccountVC.h"
-#import "PMPinboardManager.h"
 
 @interface PMAddAccountVC () <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
@@ -18,17 +17,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *search1PasswordButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
-@property (strong, nonatomic) PMPinboardManager *manager;
 @end
 
 @implementation PMAddAccountVC
-
-#pragma mark - Properties
-
-- (PMPinboardManager *)manager {
-	if (!_manager) _manager = [PMPinboardManager new];
-	return _manager;
-}
 
 #pragma mark - UIViewController
 
@@ -116,7 +107,8 @@
 		if (error) {
 			weakSelf.statusLabel.text = @"Please try again";
 		} else {
-			[weakSelf performSegueWithIdentifier:@"Complete Login Segue" sender:weakSelf];
+//			[weakSelf performSegueWithIdentifier:@"Complete Login Segue" sender:weakSelf];
+			[weakSelf dismissViewControllerAnimated:YES completion:nil];
 		}
 	};
 	
@@ -125,12 +117,13 @@
 		if (error) {
 			if (password) {
 				[self activateActivityIndicator];
-				[self.manager addAccountForUsername:username password:password completionHandler:usernamePasswordCompletionHandler];
+				[self.manager addAccountForUsername:username password:password asDefault:YES completionHandler:usernamePasswordCompletionHandler];
 			} else {
 				weakSelf.statusLabel.text = @"Please try again";
 			}
 		} else {
-			[weakSelf performSegueWithIdentifier:@"Complete Login Segue" sender:weakSelf];
+//			[weakSelf performSegueWithIdentifier:@"Complete Login Segue" sender:weakSelf];
+			[weakSelf dismissViewControllerAnimated:YES completion:nil];
 		}
 	};
 	
@@ -140,23 +133,24 @@
 			if (username) {
 				[self activateActivityIndicator];
 				NSString *usernameToken = [username stringByAppendingFormat:@":%@", tokenComponents[1]];
-				[self.manager addAccountForAPIToken:usernameToken completionHandler:usernameTokenCompletionHandler];
+				[self.manager addAccountForAPIToken:usernameToken asDefault:YES completionHandler:usernameTokenCompletionHandler];
 			} else {
 				weakSelf.statusLabel.text = @"Please try again";
 			}
 		} else {
-			[weakSelf performSegueWithIdentifier:@"Complete Login Segue" sender:weakSelf];
+//			[weakSelf performSegueWithIdentifier:@"Complete Login Segue" sender:weakSelf];
+			[weakSelf dismissViewControllerAnimated:YES completion:nil];
 		}
 	};
 	
 	if (didProvideTwoUsernames) {
-		[self.manager addAccountForAPIToken:token completionHandler:tokenCompletionHandler];
+		[self.manager addAccountForAPIToken:token asDefault:YES completionHandler:tokenCompletionHandler];
 	} else if (username) {
 		if (token) {
 			NSString *usernameToken = [username stringByAppendingFormat:@":%@", tokenComponents[0]];
-			[self.manager addAccountForAPIToken:usernameToken completionHandler:usernameTokenCompletionHandler];
+			[self.manager addAccountForAPIToken:usernameToken asDefault:YES completionHandler:usernameTokenCompletionHandler];
 		} else if (password) {
-			[self.manager addAccountForUsername:username password:password completionHandler:usernamePasswordCompletionHandler];
+			[self.manager addAccountForUsername:username password:password asDefault:YES completionHandler:usernamePasswordCompletionHandler];
 		} else {
 			[weakSelf deactiveActivityIndicator];
 			self.statusLabel.text = @"Password or API Token required";

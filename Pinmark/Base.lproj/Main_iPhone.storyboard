@@ -193,6 +193,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="vAw-r1-hrI">
+                        <barButtonItem key="leftBarButtonItem" title="Settings" id="F5S-CX-Gj4">
+                            <connections>
+                                <segue destination="YhT-tQ-Dwe" kind="push" identifier="Settings" id="aww-kR-UBs"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Bookmark" id="K3p-4H-lk9">
                             <connections>
                                 <action selector="pin:" destination="FsJ-qN-eCd" id="o6l-D9-Sz0"/>
@@ -208,11 +213,70 @@
                         <outlet property="tagsCollectionView" destination="fjA-FE-hIj" id="Z2p-0N-biW"/>
                         <outlet property="tagsTextField" destination="KKd-Mm-SOm" id="QLV-oK-sE3"/>
                         <outlet property="toReadSwitch" destination="uI2-u2-kLw" id="Hvg-5K-ypP"/>
+                        <segue destination="SEA-vV-Adi" kind="modal" identifier="Login Segue" id="KiJ-1r-Yaf"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oUT-Ph-lRS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="878" y="76"/>
+        </scene>
+        <!--SettingsTVC-->
+        <scene sceneID="Tsb-OQ-nFP">
+            <objects>
+                <tableViewController id="YhT-tQ-Dwe" customClass="PMSettingsTVC" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="W7C-gx-AyA">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Account Cell" textLabel="GwJ-gE-x8q" style="IBUITableViewCellStyleDefault" id="tFn-bZ-MJ7">
+                                <rect key="frame" x="0.0" y="119" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tFn-bZ-MJ7" id="3cd-wa-I6M">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GwJ-gE-x8q">
+                                            <rect key="frame" x="15" y="0.0" width="290" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Add Account Cell" textLabel="IMK-qh-8Mj" style="IBUITableViewCellStyleDefault" id="FrC-Vf-Ts4">
+                                <rect key="frame" x="0.0" y="163" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FrC-Vf-Ts4" id="aCf-uU-2be">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Add Account" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IMK-qh-8Mj">
+                                            <rect key="frame" x="15" y="0.0" width="270" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="SEA-vV-Adi" kind="modal" identifier="Login Segue" id="gY4-Aj-PX4"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="YhT-tQ-Dwe" id="Pbg-f9-NW1"/>
+                            <outlet property="delegate" destination="YhT-tQ-Dwe" id="WBO-qf-kp0"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="n7S-cV-VbK"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pxB-6O-1P9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1382" y="76"/>
         </scene>
         <!--Add AccountVC-->
         <scene sceneID="NR3-Q6-0Qt">
@@ -357,7 +421,6 @@
                     <nil name="viewControllers"/>
                     <connections>
                         <segue destination="FsJ-qN-eCd" kind="relationship" relationship="rootViewController" id="aAm-Em-72X"/>
-                        <segue destination="SEA-vV-Adi" kind="modal" identifier="Login Segue" id="R9I-Sd-AFf"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5q-26-iDe" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -373,4 +436,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="gY4-Aj-PX4"/>
+    </inferredMetricsTieBreakers>
 </document>
