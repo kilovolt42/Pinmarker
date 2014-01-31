@@ -9,7 +9,7 @@
 #import "PMSettingsTVC.h"
 #import "PMAddAccountVC.h"
 
-@interface PMSettingsTVC ()
+@interface PMSettingsTVC () <PMAddAccountVCDelegate>
 @property (strong, nonatomic) NSArray *accounts;
 @end
 
@@ -33,7 +33,28 @@
 	if ([segue.identifier isEqualToString:@"Login Segue"]) {
 		UIViewController *destinationVC = segue.destinationViewController;
 		PMAddAccountVC *addAccountVC = (PMAddAccountVC *)destinationVC;
+		addAccountVC.delegate = self;
 		addAccountVC.manager = self.manager;
+	}
+}
+
+#pragma mark - PMAddAccountVCDelegate
+
+- (void)didAddAccount {
+	[self.navigationController popViewControllerAnimated:YES];
+	[self.tableView reloadData];
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSInteger section = indexPath.section;
+	NSInteger row = indexPath.row;
+	if (section == 0 && row != [self.accounts count]) {
+		NSString *account = self.accounts[row];
+		[self.manager setDefaultUser:account];
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+		[tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
 	}
 }
 
@@ -59,6 +80,8 @@
 		cell.textLabel.text = self.accounts[[indexPath item]];
 		if ([self.accounts[[indexPath item]] isEqualToString:self.manager.defaultUser]) {
 			cell.accessoryType = UITableViewCellAccessoryCheckmark;
+		} else {
+			cell.accessoryType = UITableViewCellAccessoryNone;
 		}
 	}
 	
@@ -66,7 +89,8 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return @"Accounts";
+	if (section == 0) return @"Accounts";
+	return @"";
 }
 
 @end

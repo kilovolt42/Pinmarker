@@ -263,7 +263,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="SEA-vV-Adi" kind="modal" identifier="Login Segue" id="gY4-Aj-PX4"/>
+                                    <segue destination="SEA-vV-Adi" kind="push" identifier="Login Segue" id="gY4-Aj-PX4"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -278,7 +278,7 @@
             </objects>
             <point key="canvasLocation" x="1382" y="76"/>
         </scene>
-        <!--Add AccountVC-->
+        <!--Add AccountVC - Information-->
         <scene sceneID="NR3-Q6-0Qt">
             <objects>
                 <viewController id="SEA-vV-Adi" customClass="PMAddAccountVC" sceneMemberID="viewController">
@@ -290,19 +290,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account Information" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2vu-xy-dFt">
-                                <rect key="frame" x="84" y="40" width="152" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6mp-4M-exp">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" adjustsFontSizeToFit="NO" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="6mp-4M-exp">
                                 <rect key="frame" x="20" y="80" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HgM-GY-KHc">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" adjustsFontSizeToFit="NO" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="HgM-GY-KHc">
                                 <rect key="frame" x="20" y="118" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -314,7 +308,7 @@
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="API Token" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7Z3-O9-xag">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="API Token" adjustsFontSizeToFit="NO" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="7Z3-O9-xag">
                                 <rect key="frame" x="20" y="181" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -367,15 +361,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="kB6-Ho-QUU" secondAttribute="trailing" constant="20" id="1Mm-qx-jHh"/>
+                            <constraint firstItem="6mp-4M-exp" firstAttribute="top" secondItem="HhO-MA-3we" secondAttribute="bottom" constant="16" id="2Ex-9b-e16"/>
                             <constraint firstItem="LJ0-XV-mLX" firstAttribute="centerY" secondItem="JOK-Lz-VfE" secondAttribute="centerY" id="2OL-fE-bey"/>
                             <constraint firstItem="LJ0-XV-mLX" firstAttribute="leading" secondItem="JOK-Lz-VfE" secondAttribute="trailing" constant="8" id="EeJ-KA-Ej6"/>
                             <constraint firstItem="8JE-wo-FT4" firstAttribute="top" secondItem="HgM-GY-KHc" secondAttribute="bottom" constant="8" id="MSM-aZ-qcz"/>
                             <constraint firstAttribute="centerX" secondItem="FvE-O2-3Kw" secondAttribute="centerX" id="NQM-Aa-ZTv"/>
-                            <constraint firstItem="6mp-4M-exp" firstAttribute="top" secondItem="2vu-xy-dFt" secondAttribute="bottom" constant="20" id="O0a-Cj-T2i"/>
                             <constraint firstItem="HgM-GY-KHc" firstAttribute="top" secondItem="6mp-4M-exp" secondAttribute="bottom" constant="8" id="OO7-eL-HuR"/>
                             <constraint firstItem="HgM-GY-KHc" firstAttribute="leading" secondItem="7x5-yt-9b8" secondAttribute="leading" constant="20" id="Ryg-tR-lKl"/>
-                            <constraint firstItem="2vu-xy-dFt" firstAttribute="top" secondItem="HhO-MA-3we" secondAttribute="bottom" constant="20" id="T6p-Gw-AZ5"/>
-                            <constraint firstAttribute="centerX" secondItem="2vu-xy-dFt" secondAttribute="centerX" id="TUW-DY-cB8"/>
                             <constraint firstItem="JOK-Lz-VfE" firstAttribute="top" secondItem="7Z3-O9-xag" secondAttribute="bottom" constant="20" id="U8M-3f-uNc"/>
                             <constraint firstAttribute="trailing" secondItem="6mp-4M-exp" secondAttribute="trailing" constant="20" id="Y8Y-Rn-8Cm"/>
                             <constraint firstItem="7Z3-O9-xag" firstAttribute="leading" secondItem="7x5-yt-9b8" secondAttribute="leading" constant="20" id="YZi-xD-F15"/>
@@ -391,7 +383,7 @@
                             <constraint firstItem="I9U-dB-Nfr" firstAttribute="leading" secondItem="7x5-yt-9b8" secondAttribute="leading" constant="20" id="sdV-rj-Hnv"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="gP1-KN-6Ts"/>
+                    <navigationItem key="navigationItem" title="Information" id="gP1-KN-6Ts"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="activityIndicator" destination="LJ0-XV-mLX" id="fDL-MI-n9f"/>
@@ -401,13 +393,11 @@
                         <outlet property="submitButton" destination="JOK-Lz-VfE" id="jWZ-hy-h7U"/>
                         <outlet property="tokenTextField" destination="7Z3-O9-xag" id="e2B-7T-oGj"/>
                         <outlet property="usernameTextField" destination="6mp-4M-exp" id="AAE-r3-4UP"/>
-                        <segue destination="p6T-RU-uEb" kind="unwind" identifier="Complete Login Segue" unwindAction="completeLogin:" id="oFR-he-d6h"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p5S-9o-3tI" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="p6T-RU-uEb" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="878" y="-632"/>
+            <point key="canvasLocation" x="1382" y="-634"/>
         </scene>
         <!--NavigationVC-->
         <scene sceneID="0Gv-dD-Qg8">

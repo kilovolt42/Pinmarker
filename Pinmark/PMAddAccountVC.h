@@ -9,8 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "PMPinboardManager.h"
 
+@protocol PMAddAccountVCDelegate
+- (void)didAddAccount;
+@end
+
 @interface PMAddAccountVC : UIViewController
 
+@property (weak, nonatomic) id<PMAddAccountVCDelegate> delegate;
 @property (strong, nonatomic) PMPinboardManager *manager;
 
 @end

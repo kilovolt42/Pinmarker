@@ -107,8 +107,7 @@
 		if (error) {
 			weakSelf.statusLabel.text = @"Please try again";
 		} else {
-//			[weakSelf performSegueWithIdentifier:@"Complete Login Segue" sender:weakSelf];
-			[weakSelf dismissViewControllerAnimated:YES completion:nil];
+			[self.delegate didAddAccount];
 		}
 	};
 	
@@ -122,8 +121,7 @@
 				weakSelf.statusLabel.text = @"Please try again";
 			}
 		} else {
-//			[weakSelf performSegueWithIdentifier:@"Complete Login Segue" sender:weakSelf];
-			[weakSelf dismissViewControllerAnimated:YES completion:nil];
+			[self.delegate didAddAccount];
 		}
 	};
 	
@@ -138,8 +136,7 @@
 				weakSelf.statusLabel.text = @"Please try again";
 			}
 		} else {
-//			[weakSelf performSegueWithIdentifier:@"Complete Login Segue" sender:weakSelf];
-			[weakSelf dismissViewControllerAnimated:YES completion:nil];
+			[self.delegate didAddAccount];
 		}
 	};
 	

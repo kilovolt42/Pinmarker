@@ -17,7 +17,7 @@
 #import "PMSettingsTVC.h"
 #import "PMAddAccountVC.h"
 
-@interface PMNewPinTVC () <UITextFieldDelegate, UICollectionViewDelegate>
+@interface PMNewPinTVC () <PMAddAccountVCDelegate, UITextFieldDelegate, UICollectionViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *URLTextField;
 @property (weak, nonatomic) IBOutlet UITextField *descriptionTextField;
 @property (weak, nonatomic) IBOutlet UITextField *extendedTextField;
@@ -124,6 +124,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	if ([segue.identifier isEqualToString:@"Login Segue"]) {
 		UIViewController *destinationVC = segue.destinationViewController;
 		PMAddAccountVC *addAccountVC = (PMAddAccountVC *)destinationVC;
+		addAccountVC.delegate = self;
 		addAccountVC.manager = self.manager;
 	} else if ([segue.identifier isEqualToString:@"Settings"]) {
 		UIViewController *destinationVC = segue.destinationViewController;
@@ -133,12 +134,6 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 }
 
 #pragma mark - IBAction
-
-- (IBAction)completeLogin:(UIStoryboardSegue *)segue {	
-	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-		[self dismissViewControllerAnimated:YES completion:nil];
-	}
-}
 
 - (IBAction)pin:(UIBarButtonItem *)sender {
 	if (![self isReadyToPin]) return;
@@ -329,6 +324,12 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
 	return self.isFirstResponder && action == @selector(deleteTag:);
+}
+
+#pragma mark - PMAddAccountVCDelegate
+
+- (void)didAddAccount {
+	[self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UICollectionViewDelegate

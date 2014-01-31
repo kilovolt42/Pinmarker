@@ -21,7 +21,7 @@ NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
 
 #pragma mark - Properties
 
-// subsequently sets associatedUsers
+// sets associatedUsers
 - (void)setAssociatedTokens:(NSArray *)associatedTokens {
 	if (associatedTokens) {
 		_associatedTokens = associatedTokens;
@@ -33,31 +33,27 @@ NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
 	}
 }
 
-// subsequently sets defaultUser and userTags
+// sets defaultUser and userTags
 - (void)setDefaultToken:(NSString *)defaultToken {
 	if (defaultToken) {
 		_defaultToken = defaultToken;
 		_defaultUser = [[defaultToken componentsSeparatedByString:@":"] firstObject];
-		__weak PMPinboardManager *weakSelf = self;
-		[self requestTags:^(NSDictionary *tags) {
-			weakSelf.userTags = [tags keysSortedByValueUsingComparator:^NSComparisonResult(id num1, id num2) {
-				if ([num1 integerValue] > [num2 integerValue]) {
-					return (NSComparisonResult)NSOrderedAscending;
-				} else if ([num1 integerValue] < [num2 integerValue]) {
-					return (NSComparisonResult)NSOrderedDescending;
-				} else {
-					return (NSComparisonResult)NSOrderedSame;
-				}
-			}];
-		} failure:nil];
+		[self loadUserTags];
 	}
 }
 
-// subsequently sets defaultToken
+// sets defaultToken
 - (void)setDefaultUser:(NSString *)defaultUser {
-	NSString *tokenNumber = [self tokenNumberForUser:defaultUser];
-	if (tokenNumber) {
-		_defaultToken = [NSString stringWithFormat:@"%@:%@", defaultUser, tokenNumber];
+	if (defaultUser && ![defaultUser isEqualToString:_defaultUser]) {
+		_defaultUser = defaultUser;
+		NSString *tokenNumber = [self tokenNumberForUser:defaultUser];
+		if (tokenNumber) {
+			NSString *token = [NSString stringWithFormat:@"%@:%@", defaultUser, tokenNumber];
+			_defaultToken = token;
+			[[NSUserDefaults standardUserDefaults] setObject:token forKey:PMDefaultTokenKey];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+			[self loadUserTags];
+		}
 	}
 }
 
@@ -233,6 +229,21 @@ NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
 		[[NSUserDefaults standardUserDefaults] setObject:token forKey:PMDefaultTokenKey];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
+}
+
+- (void)loadUserTags {
+	__weak PMPinboardManager *weakSelf = self;
+	[self requestTags:^(NSDictionary *tags) {
+		weakSelf.userTags = [tags keysSortedByValueUsingComparator:^NSComparisonResult(id num1, id num2) {
+			if ([num1 integerValue] > [num2 integerValue]) {
+				return (NSComparisonResult)NSOrderedAscending;
+			} else if ([num1 integerValue] < [num2 integerValue]) {
+				return (NSComparisonResult)NSOrderedDescending;
+			} else {
+				return (NSComparisonResult)NSOrderedSame;
+			}
+		}];
+	} failure:nil];
 }
 
 @end
