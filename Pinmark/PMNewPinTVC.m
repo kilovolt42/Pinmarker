@@ -36,7 +36,6 @@
 @property (strong, nonatomic) PMTagsDataSource *tagsDataSource;
 @property (strong, nonatomic) PMTagsDataSource *suggestedTagsDataSource;
 @property (strong, nonatomic) PMTagCVCell *sizingCell;
-@property (nonatomic) BOOL needsLogin;
 @end
 
 static NSString *tagCellIdentifier = @"Tag Cell";
@@ -112,6 +111,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	self.tagsTextField.delegate = self;
 	self.extendedTextField.delegate = self;
 	self.keyboardAccessory = [[[NSBundle mainBundle] loadNibNamed:@"PMInputAccessoryView" owner:self options:nil] firstObject];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -235,7 +235,6 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 - (BOOL)isReadyToPin {
 	if ([self.URLTextField.text isEqualToString:@""]) {
 		[self reportErrorWithMessage:@"URL Required"];
-		[self.URLTextField becomeFirstResponder];
 		return NO;
 	} else if ([self.descriptionTextField.text isEqualToString:@""]) {
 		[self reportErrorWithMessage:@"Title Required"];
@@ -314,6 +313,17 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	[self.tableView endUpdates];
 	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:3 inSection:0]];
 	[self.tableView scrollRectToVisible:cell.frame animated:YES];
+}
+
+- (void)keyboardDidHide:(NSNotification *)notification {
+	NSArray *selectedItems = [self.tagsCollectionView indexPathsForSelectedItems];
+	if ([selectedItems count]) {
+		NSIndexPath *selectedIndexPath = [selectedItems firstObject];
+		UICollectionViewCell *cell = [self.tagsCollectionView cellForItemAtIndexPath:selectedIndexPath];
+		UIMenuController *menuController = [UIMenuController sharedMenuController];
+		[menuController setTargetRect:cell.frame inView:self.tagsCollectionView];
+		[menuController update];
+	}
 }
 
 #pragma mark - UIResponder
