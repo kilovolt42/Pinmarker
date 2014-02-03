@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		27019F23189FFB6C00CDAE55 /* libBugshotKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27019F22189FFB6C00CDAE55 /* libBugshotKit.a */; };
+		27019F25189FFD6100CDAE55 /* Inconsolata.otf in Resources */ = {isa = PBXBuildFile; fileRef = 27019F24189FFCF800CDAE55 /* Inconsolata.otf */; };
 		2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2703C540185F7E6500570F0C /* PMNewPinTVC.m */; };
 		270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 270C4A4918628D6A000FC061 /* PMNavigationVC.m */; };
 		272C5CD3186DFF3E0079B95E /* PMTagCVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 272C5CD2186DFF3E0079B95E /* PMTagCVCell.m */; };
@@ -47,10 +49,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		27019F1F189FFB6C00CDAE55 /* BSKMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSKMainViewController.h; sourceTree = "<group>"; };
+		27019F20189FFB6C00CDAE55 /* BSKWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSKWindow.h; sourceTree = "<group>"; };
+		27019F21189FFB6C00CDAE55 /* BugshotKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugshotKit.h; sourceTree = "<group>"; };
+		27019F22189FFB6C00CDAE55 /* libBugshotKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBugshotKit.a; sourceTree = "<group>"; };
+		27019F24189FFCF800CDAE55 /* Inconsolata.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Inconsolata.otf; sourceTree = "<group>"; };
 		2703C53F185F7E6500570F0C /* PMNewPinTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMNewPinTVC.h; sourceTree = "<group>"; };
 		2703C540185F7E6500570F0C /* PMNewPinTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMNewPinTVC.m; sourceTree = "<group>"; };
 		2703C542185FD16100570F0C /* Bookmarklet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Bookmarklet.js; sourceTree = "<group>"; };
-		270C4A4718628CD3000FC061 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
+		270C4A4718628CD3000FC061 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		270C4A4818628D6A000FC061 /* PMNavigationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMNavigationVC.h; sourceTree = "<group>"; };
 		270C4A4918628D6A000FC061 /* PMNavigationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMNavigationVC.m; sourceTree = "<group>"; };
 		272C5CD1186DFF3E0079B95E /* PMTagCVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMTagCVCell.h; sourceTree = "<group>"; };
@@ -100,6 +107,7 @@
 			files = (
 				278EF429185B71E2003A27D3 /* CoreGraphics.framework in Frameworks */,
 				278EF42B185B71E2003A27D3 /* UIKit.framework in Frameworks */,
+				27019F23189FFB6C00CDAE55 /* libBugshotKit.a in Frameworks */,
 				278EF427185B71E2003A27D3 /* Foundation.framework in Frameworks */,
 				82960B3C2A964DE68159B981 /* libPods.a in Frameworks */,
 			);
@@ -118,6 +126,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		27019F1D189FFB5B00CDAE55 /* BugshotKit */ = {
+			isa = PBXGroup;
+			children = (
+				27019F1E189FFB6C00CDAE55 /* BugshotKit */,
+				27019F22189FFB6C00CDAE55 /* libBugshotKit.a */,
+			);
+			name = BugshotKit;
+			sourceTree = "<group>";
+		};
+		27019F1E189FFB6C00CDAE55 /* BugshotKit */ = {
+			isa = PBXGroup;
+			children = (
+				27019F1F189FFB6C00CDAE55 /* BSKMainViewController.h */,
+				27019F20189FFB6C00CDAE55 /* BSKWindow.h */,
+				27019F21189FFB6C00CDAE55 /* BugshotKit.h */,
+			);
+			path = BugshotKit;
+			sourceTree = "<group>";
+		};
 		272C5CDC1871028A0079B95E /* Tags */ = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +162,7 @@
 			children = (
 				278EF42C185B71E2003A27D3 /* Pinmark */,
 				278EF44E185B71E2003A27D3 /* PinmarkTests */,
+				27019F1D189FFB5B00CDAE55 /* BugshotKit */,
 				278EF425185B71E2003A27D3 /* Frameworks */,
 				278EF424185B71E2003A27D3 /* Products */,
 			);
@@ -198,6 +226,7 @@
 				2703C542185FD16100570F0C /* Bookmarklet.js */,
 				270C4A4718628CD3000FC061 /* Podfile */,
 				AE2FE771354E43FD945BDE89 /* Pods.xcconfig */,
+				27019F24189FFCF800CDAE55 /* Inconsolata.otf */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -324,6 +353,7 @@
 				278EF442185B71E2003A27D3 /* Images.xcassets in Resources */,
 				278EF43A185B71E2003A27D3 /* Main_iPhone.storyboard in Resources */,
 				272C5CD5186F626D0079B95E /* PMTagCVCell.xib in Resources */,
+				27019F25189FFD6100CDAE55 /* Inconsolata.otf in Resources */,
 				278EF431185B71E2003A27D3 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -528,8 +558,29 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Pinmark/Pinmark-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					/Users/Kyle/Developer/Pinmark,
+				);
 				INFOPLIST_FILE = "Pinmark/Pinmark-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/Kyle/Developer/Pinmark,
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					MobileCoreServices,
+					"-framework",
+					Security,
+					"-framework",
+					SystemConfiguration,
+					"-lBugshotKit",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -545,8 +596,17 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Pinmark/Pinmark-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					/Users/Kyle/Developer/Pinmark,
+				);
 				INFOPLIST_FILE = "Pinmark/Pinmark-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/Kyle/Developer/Pinmark,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

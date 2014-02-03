@@ -9,6 +9,10 @@
 #import "PMAppDelegate.h"
 #import "PMNavigationVC.h"
 
+#if defined(DEBUG) || defined(ADHOC)
+#import "BugshotKit.h"
+#endif
+
 @implementation PMAppDelegate
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -16,6 +20,7 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	[BugshotKit enableWithNumberOfTouches:3 performingGestures:BSKInvocationGestureDoubleTap feedbackEmailAddress:@"kyle@kilovolt42.com"];
     return YES;
 }
 							
