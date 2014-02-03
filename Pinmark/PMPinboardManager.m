@@ -50,9 +50,9 @@ NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
 		if (tokenNumber) {
 			NSString *token = [NSString stringWithFormat:@"%@:%@", defaultUser, tokenNumber];
 			_defaultToken = token;
+			[self loadUserTags];
 			[[NSUserDefaults standardUserDefaults] setObject:token forKey:PMDefaultTokenKey];
 			[[NSUserDefaults standardUserDefaults] synchronize];
-			[self loadUserTags];
 		}
 	}
 }
@@ -61,10 +61,17 @@ NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
 
 - (id)init {
 	if (self = [super init]) {
-		self.associatedTokens = [[NSUserDefaults standardUserDefaults] valueForKey:PMAssociatedTokensKey];
-		if (self.associatedTokens) {
-			self.defaultToken = [[NSUserDefaults standardUserDefaults] valueForKey:PMDefaultTokenKey];
-			if (!self.defaultToken) self.defaultToken = [_associatedTokens firstObject];
+		_associatedTokens = [[NSUserDefaults standardUserDefaults] valueForKey:PMAssociatedTokensKey];
+		if (_associatedTokens) {
+			NSMutableArray *associatedUsers = [NSMutableArray new];
+			for (NSString *token in _associatedTokens) {
+				[associatedUsers addObject:[[token componentsSeparatedByString:@":"] firstObject]];
+			}
+			_associatedUsers = [associatedUsers copy];
+			_defaultToken = [[NSUserDefaults standardUserDefaults] valueForKey:PMDefaultTokenKey];
+			if (!_defaultToken) _defaultToken = [_associatedTokens firstObject];
+			_defaultUser = [[_defaultToken componentsSeparatedByString:@":"] firstObject];
+			[self loadUserTags];
 		}
 	}
 	return self;

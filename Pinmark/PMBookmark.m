@@ -18,32 +18,32 @@
 
 - (id)init {
 	if (self = [super init]) {
-		self.url = nil;
-		self.description = nil;
-		self.extended = nil;
-		self.dt = nil;
-		self.replace = YES;
-		self.shared = YES;
-		self.toread = NO;
-		self.tags = nil;
+		_url = nil;
+		_description = nil;
+		_extended = nil;
+		_dt = nil;
+		_replace = YES;
+		_shared = YES;
+		_toread = NO;
+		_tags = nil;
 	}
 	return self;
 }
 
 - (id)initWithParameters:(NSDictionary *)parameters {
 	if (self = [super init]) {
-		self.url = parameters[@"url"];
-		self.description = parameters[@"description"];
-		self.extended = parameters[@"extended"];
-		self.dt = parameters[@"dt"] ? [self.dateFormatter dateFromString:parameters[@"dt"]] : nil;
-		self.replace = parameters[@"replace"] ? [[parameters[@"replace"] lowercaseString] isEqualToString:@"yes"] : YES;
-		self.shared = parameters[@"shared"] ? [[parameters[@"shared"] lowercaseString] isEqualToString:@"yes"] : YES;
-		self.toread = parameters[@"toread"] ? [[parameters[@"toread"] lowercaseString] isEqualToString:@"yes"] : NO;
+		_url = parameters[@"url"];
+		_description = parameters[@"description"];
+		_extended = parameters[@"extended"];
+		_dt = parameters[@"dt"] ? [self.dateFormatter dateFromString:parameters[@"dt"]] : nil;
+		_replace = parameters[@"replace"] ? [[parameters[@"replace"] lowercaseString] isEqualToString:@"yes"] : YES;
+		_shared = parameters[@"shared"] ? [[parameters[@"shared"] lowercaseString] isEqualToString:@"yes"] : YES;
+		_toread = parameters[@"toread"] ? [[parameters[@"toread"] lowercaseString] isEqualToString:@"yes"] : NO;
 		
 		NSCharacterSet *commaSpaceSet = [NSCharacterSet characterSetWithCharactersInString:@", "];
 		NSMutableArray *newTags = [NSMutableArray arrayWithArray:[parameters[@"tags"] componentsSeparatedByCharactersInSet:commaSpaceSet]];
 		[newTags removeObject:@""];
-		self.tags = [newTags copy];
+		_tags = [newTags copy];
 	}
 	return self;
 }
