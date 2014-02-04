@@ -11,6 +11,7 @@
 
 #if defined(DEBUG) || defined(ADHOC)
 #import "BugshotKit.h"
+#import "TestFlight.h"
 #endif
 
 @implementation PMAppDelegate
@@ -20,7 +21,8 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	[BugshotKit enableWithNumberOfTouches:3 performingGestures:BSKInvocationGestureDoubleTap feedbackEmailAddress:@"kyle@kilovolt42.com"];
+	[TestFlight takeOff:@"b04f90cd-6ff4-4fea-a5f8-52493618c772"];
+	[BugshotKit enableWithNumberOfTouches:1 performingGestures:BSKInvocationGestureSwipeFromRightEdge feedbackEmailAddress:@"kyle@kilovolt42.com"];
     return YES;
 }
 							
