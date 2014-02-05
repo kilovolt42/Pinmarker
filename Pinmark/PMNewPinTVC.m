@@ -339,7 +339,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 #pragma mark - PMAddAccountVCDelegate
 
 - (void)didAddAccount {
-	[self.navigationController popViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UICollectionViewDelegate
