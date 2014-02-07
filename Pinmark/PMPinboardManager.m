@@ -39,6 +39,10 @@ NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
 		_defaultToken = defaultToken;
 		_defaultUser = [[defaultToken componentsSeparatedByString:@":"] firstObject];
 		[self loadUserTags];
+	} else {
+		_defaultToken = nil;
+		_defaultUser = nil;
+		_userTags = nil;
 	}
 }
 
@@ -124,6 +128,11 @@ NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
 			 NSLog(@"Error: %@", error);
 			 completionHandler(error);
 		 }];
+}
+
+- (void)removeAccountForUsername:(NSString *)username {
+	NSString *token = [username stringByAppendingFormat:@":%@", [self tokenNumberForUser:username]];
+	[self dissociateToken:token];
 }
 
 - (void)add:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))successCallback failure:(void (^)(AFHTTPRequestOperation *, NSError *))failureCallback {
@@ -235,6 +244,27 @@ NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
 		self.defaultToken = token;
 		[[NSUserDefaults standardUserDefaults] setObject:token forKey:PMDefaultTokenKey];
 		[[NSUserDefaults standardUserDefaults] synchronize];
+	}
+}
+
+- (void)dissociateToken:(NSString *)token {
+	NSMutableArray *newTokens = [NSMutableArray arrayWithArray:self.associatedTokens];
+	[newTokens removeObject:token];
+	[[NSUserDefaults standardUserDefaults] setObject:newTokens forKey:PMAssociatedTokensKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+	self.associatedTokens = newTokens;
+	
+	if ([token isEqualToString:self.defaultToken]) {
+		if ([self.associatedTokens count] > 0) {
+			self.defaultToken = self.associatedTokens[0];
+			[[NSUserDefaults standardUserDefaults] setObject:self.defaultToken forKey:PMDefaultTokenKey];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+		} else {
+			self.defaultToken = nil;
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:PMDefaultTokenKey];
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:PMAssociatedTokensKey];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+		}
 	}
 }
 

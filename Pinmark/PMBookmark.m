@@ -67,10 +67,10 @@
 	NSCharacterSet *commaSpaceSet = [NSCharacterSet characterSetWithCharactersInString:@", "];
 	NSMutableArray *newTags = [NSMutableArray arrayWithArray:[tags componentsSeparatedByCharactersInSet:commaSpaceSet]];
 	[newTags removeObject:@""];
-	for (NSString *newTag in newTags) {
+	for (NSString *newTag in [newTags reverseObjectEnumerator]) {
 		NSMutableArray *tempTags = [NSMutableArray arrayWithArray:self.tags];
 		[tempTags removeObject:newTag];
-		[tempTags addObject:newTag];
+		[tempTags insertObject:newTag atIndex:0];
 		self.tags = [tempTags copy];
 	}
 }

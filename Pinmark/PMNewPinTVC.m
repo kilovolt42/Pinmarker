@@ -276,24 +276,9 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	[self.suggestedTagsCollectionView reloadData];
 	
 	self.tagsTextField.text = @"";
-	[self scrollToLastTag];
+	[self.tagsCollectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
 	[self updateTagsRowHeight];
 	[self.keyboardAccessory hideSuggestedTags];
-}
-
-- (void)scrollToLastTag {
-	if ([self.tagsCollectionView numberOfItemsInSection:0]) {
-		NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:[self.tagsDataSource.tags count] - 1 inSection:0];
-		
-		[self.tagsCollectionView scrollToItemAtIndexPath:lastIndexPath
-										atScrollPosition:UICollectionViewScrollPositionRight
-												animated:YES];
-		
-		// TODO: this is bad - if there is no need to scroll (say content width less than screen width) then if mucks up the content offset
-		CGPoint contentOffset = self.tagsCollectionView.contentOffset;
-		contentOffset.x += 15.0;
-		self.tagsCollectionView.contentOffset = contentOffset;
-	}
 }
 
 - (void)deleteTag:(id)sender {

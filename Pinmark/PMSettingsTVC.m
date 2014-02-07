@@ -11,6 +11,7 @@
 
 @interface PMSettingsTVC () <PMAddAccountVCDelegate>
 @property (strong, nonatomic) NSArray *accounts;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
 @end
 
 @implementation PMSettingsTVC
@@ -27,10 +28,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = @"Settings";
+	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"Login Segue"]) {
+		[self setEditing:NO animated:YES];
 		UIViewController *destinationVC = segue.destinationViewController;
 		PMAddAccountVC *addAccountVC = (PMAddAccountVC *)destinationVC;
 		addAccountVC.delegate = self;
@@ -42,6 +45,7 @@
 
 - (void)didAddAccount {
 	[self.navigationController popViewControllerAnimated:YES];
+	self.accounts = self.manager.associatedUsers;
 	[self.tableView reloadData];
 }
 
@@ -73,15 +77,17 @@
 	static NSString *addAccountCellID = @"Add Account Cell";
 	
 	UITableViewCell *cell;
-	if ([indexPath item] == [self.accounts count]) {
+	if (indexPath.row == [self.accounts count]) {
 		cell = [tableView dequeueReusableCellWithIdentifier:addAccountCellID forIndexPath:indexPath];
 	} else {
 		cell = [tableView dequeueReusableCellWithIdentifier:accountCellID forIndexPath:indexPath];
-		cell.textLabel.text = self.accounts[[indexPath item]];
-		if ([self.accounts[[indexPath item]] isEqualToString:self.manager.defaultUser]) {
+		cell.textLabel.text = self.accounts[indexPath.row];
+		if ([self.accounts[indexPath.row] isEqualToString:self.manager.defaultUser]) {
 			cell.accessoryType = UITableViewCellAccessoryCheckmark;
+			cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
 		} else {
 			cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.editingAccessoryType = UITableViewCellAccessoryNone;
 		}
 	}
 	
@@ -91,6 +97,29 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0) return @"Accounts";
 	return @"";
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.row == [self.accounts count]) return NO;
+	return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		[self.manager removeAccountForUsername:self.accounts[indexPath.row]];
+		self.accounts = self.manager.associatedUsers;
+		[self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+		if ([self.accounts count] == 0) {
+			[self setEditing:NO animated:YES];
+		} else {
+			NSUInteger defaultUserIndex = [self.accounts indexOfObject:self.manager.defaultUser];
+			if (defaultUserIndex != NSNotFound) {
+				UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:defaultUserIndex inSection:0]];
+				cell.accessoryType = UITableViewCellAccessoryCheckmark;
+				cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
+			}
+		}
+	}
 }
 
 @end

@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		27019F25189FFD6100CDAE55 /* Inconsolata.otf in Resources */ = {isa = PBXBuildFile; fileRef = 27019F24189FFCF800CDAE55 /* Inconsolata.otf */; };
 		27019F4118A17A9400CDAE55 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27019F3B18A17A9400CDAE55 /* libTestFlight.a */; };
-		27019F4218A17A9400CDAE55 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 27019F3C18A17A9400CDAE55 /* README.md */; };
-		27019F4318A17A9400CDAE55 /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 27019F3D18A17A9400CDAE55 /* release_notes.md */; };
 		27019F4518A17AFC00CDAE55 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27019F4418A17AFC00CDAE55 /* libz.dylib */; };
 		2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2703C540185F7E6500570F0C /* PMNewPinTVC.m */; };
 		270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 270C4A4918628D6A000FC061 /* PMNavigationVC.m */; };
@@ -348,6 +346,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = kilovolt42;
 				TargetAttributes = {
+					278EF422185B71E2003A27D3 = {
+						DevelopmentTeam = 793AL65W3G;
+					};
 					278EF446185B71E2003A27D3 = {
 						TestTargetID = 278EF422185B71E2003A27D3;
 					};
@@ -377,14 +378,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27019F4318A17A9400CDAE55 /* release_notes.md in Resources */,
 				277AA7AF1896DC080015A3EF /* PMInputAccessoryView.xib in Resources */,
 				278EF43D185B71E2003A27D3 /* Main_iPad.storyboard in Resources */,
 				278EF442185B71E2003A27D3 /* Images.xcassets in Resources */,
 				278EF43A185B71E2003A27D3 /* Main_iPhone.storyboard in Resources */,
 				272C5CD5186F626D0079B95E /* PMTagCVCell.xib in Resources */,
 				27019F25189FFD6100CDAE55 /* Inconsolata.otf in Resources */,
-				27019F4218A17A9400CDAE55 /* README.md in Resources */,
 				278EF431185B71E2003A27D3 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -600,6 +599,7 @@
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Pinmark/Pinmark-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -639,6 +639,7 @@
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Pinmark/Pinmark-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
