@@ -8,11 +8,8 @@
 
 #import "PMAppDelegate.h"
 #import "PMNavigationVC.h"
-
-#if defined(DEBUG) || defined(ADHOC)
 #import "BugshotKit.h"
 #import "TestFlight.h"
-#endif
 
 @implementation PMAppDelegate
 

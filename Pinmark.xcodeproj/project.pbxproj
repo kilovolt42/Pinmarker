@@ -12,6 +12,7 @@
 		27019F4518A17AFC00CDAE55 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27019F4418A17AFC00CDAE55 /* libz.dylib */; };
 		2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2703C540185F7E6500570F0C /* PMNewPinTVC.m */; };
 		270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 270C4A4918628D6A000FC061 /* PMNavigationVC.m */; };
+		271FAF9918AA9F1E0011C41E /* NSString+Pinmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 271FAF9818AA9F1E0011C41E /* NSString+Pinmark.m */; };
 		272C5CD3186DFF3E0079B95E /* PMTagCVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 272C5CD2186DFF3E0079B95E /* PMTagCVCell.m */; };
 		272C5CD5186F626D0079B95E /* PMTagCVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 272C5CD4186F626D0079B95E /* PMTagCVCell.xib */; };
 		273C36D518A2B8EC00184AA9 /* libBugshotKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 273C36D418A2B8EC00184AA9 /* libBugshotKit.a */; };
@@ -68,6 +69,8 @@
 		270C4A4718628CD3000FC061 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		270C4A4818628D6A000FC061 /* PMNavigationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMNavigationVC.h; sourceTree = "<group>"; };
 		270C4A4918628D6A000FC061 /* PMNavigationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMNavigationVC.m; sourceTree = "<group>"; };
+		271FAF9718AA9F1E0011C41E /* NSString+Pinmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Pinmark.h"; sourceTree = "<group>"; };
+		271FAF9818AA9F1E0011C41E /* NSString+Pinmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Pinmark.m"; sourceTree = "<group>"; };
 		272C5CD1186DFF3E0079B95E /* PMTagCVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMTagCVCell.h; sourceTree = "<group>"; };
 		272C5CD2186DFF3E0079B95E /* PMTagCVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMTagCVCell.m; sourceTree = "<group>"; };
 		272C5CD4186F626D0079B95E /* PMTagCVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMTagCVCell.xib; sourceTree = "<group>"; };
@@ -245,6 +248,8 @@
 				278EF436185B71E2003A27D3 /* PMAppDelegate.m */,
 				2781196A186A0516006B93AB /* NSURL+Pinmark.h */,
 				2781196B186A0516006B93AB /* NSURL+Pinmark.m */,
+				271FAF9718AA9F1E0011C41E /* NSString+Pinmark.h */,
+				271FAF9818AA9F1E0011C41E /* NSString+Pinmark.m */,
 				278EF42E185B71E2003A27D3 /* Pinmark-Info.plist */,
 				278EF42F185B71E2003A27D3 /* InfoPlist.strings */,
 				278EF432185B71E2003A27D3 /* main.m */,
@@ -458,6 +463,7 @@
 				277AA7B21896DC200015A3EF /* PMInputAccessoryView.m in Sources */,
 				2781196C186A0516006B93AB /* NSURL+Pinmark.m in Sources */,
 				278EF437185B71E2003A27D3 /* PMAppDelegate.m in Sources */,
+				271FAF9918AA9F1E0011C41E /* NSString+Pinmark.m in Sources */,
 				2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */,
 				27D2DC3418777A9B0054D187 /* PMBookmark.m in Sources */,
 				277FFAC018918BE900DFD907 /* PMTagsDataSource.m in Sources */,

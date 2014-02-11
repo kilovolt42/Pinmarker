@@ -7,6 +7,7 @@
 //
 
 #import "PMPinboardManager.h"
+#import "NSString+Pinmark.h"
 
 @interface PMPinboardManager ()
 @property (strong, nonatomic) NSString *defaultToken;
@@ -116,6 +117,9 @@ NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
 	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
+	
+	username = [username urlEncodeUsingEncoding:NSUTF8StringEncoding];
+	password = [password urlEncodeUsingEncoding:NSUTF8StringEncoding];
 	
 	[manager GET:[NSString stringWithFormat:@"https://%@:%@@api.pinboard.in/v1/user/api_token", username, password]
 	  parameters:@{ @"format": @"json" }

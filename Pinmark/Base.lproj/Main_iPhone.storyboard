@@ -193,12 +193,12 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="vAw-r1-hrI">
-                        <barButtonItem key="leftBarButtonItem" title="Settings" id="F5S-CX-Gj4">
+                        <barButtonItem key="leftBarButtonItem" image="Cog" id="F5S-CX-Gj4">
                             <connections>
                                 <segue destination="YhT-tQ-Dwe" kind="push" identifier="Settings" id="aww-kR-UBs"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Bookmark" id="K3p-4H-lk9">
+                        <barButtonItem key="rightBarButtonItem" title="Add" id="K3p-4H-lk9">
                             <connections>
                                 <action selector="pin:" destination="FsJ-qN-eCd" id="o6l-D9-Sz0"/>
                             </connections>
@@ -420,6 +420,7 @@
     </scenes>
     <resources>
         <image name="1Password" width="26" height="26"/>
+        <image name="Cog" width="26" height="26"/>
     </resources>
     <color key="tintColor" red="0.100145833" green="0.50943091789999995" blue="0.56008848850000004" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
