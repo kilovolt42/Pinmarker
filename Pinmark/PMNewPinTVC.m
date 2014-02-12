@@ -37,6 +37,7 @@
 @property (strong, nonatomic) PMTagsDataSource *tagsDataSource;
 @property (strong, nonatomic) PMTagsDataSource *suggestedTagsDataSource;
 @property (strong, nonatomic) PMTagCVCell *sizingCell;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *postButton;
 @end
 
 static NSString *tagCellIdentifier = @"Tag Cell";
@@ -107,12 +108,16 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bookmarkBecamePostable:) name:PMBookmarkDidBecomePostableNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bookmarkBecameUnpostable:) name:PMBookmarkDidBecomeUnpostableNotification object:nil];
+	
 	self.URLTextField.delegate = self;
 	self.descriptionTextField.delegate = self;
 	self.tagsTextField.delegate = self;
 	self.extendedTextField.delegate = self;
 	self.keyboardAccessory = [[[NSBundle mainBundle] loadNibNamed:@"PMInputAccessoryView" owner:self options:nil] firstObject];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -156,7 +161,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 						  weakSelf.bookmark = [PMBookmark new];
 						  if (weakSelf.xSuccess) weakSelf.xSuccess(operation, responseObject);
 					  }
-					  else if ([resultCode isEqualToString:@"missing url"]) [weakSelf reportErrorWithMessage:@"Missing URL"];
+					  else if ([resultCode isEqualToString:@"missing url"]) [weakSelf reportErrorWithMessage:@"Invalid URL"];
 					  else if ([resultCode isEqualToString:@"must provide title"]) [weakSelf reportErrorWithMessage:@"Missing Title"];
 					  else if ([resultCode isEqualToString:@"item already exists"]) [weakSelf reportErrorWithMessage:@"Already Bookmarked"];
 					  else [weakSelf reportErrorWithMessage:nil];
@@ -259,7 +264,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (void)resetNavigationBar {
 	self.title = self.manager.defaultUser;
-	self.navigationController.navigationBar.barTintColor = nil;
+	self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:26/255.0 green:130/255.0 blue:143/255.0 alpha:1.0];
 }
 
 - (void)dismissKeyboard {
@@ -309,6 +314,29 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 		UIMenuController *menuController = [UIMenuController sharedMenuController];
 		[menuController setTargetRect:cell.frame inView:self.tagsCollectionView];
 		[menuController update];
+	}
+}
+
+- (void)bookmarkBecamePostable:(NSNotification *)notification {
+	self.postButton.enabled = YES;
+}
+
+- (void)bookmarkBecameUnpostable:(NSNotification *)notification {
+	self.postButton.enabled = NO;
+}
+
+- (void)updateSuggestedTagsForTag:(NSString *)tag {
+	if (self.manager.userTags) {
+		NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", tag];
+		NSMutableArray *results = [NSMutableArray arrayWithArray:[self.manager.userTags filteredArrayUsingPredicate:searchPredicate]];
+		[results removeObjectsInArray:self.bookmark.tags];
+		self.suggestedTagsDataSource.tags = [results copy];
+		[self.suggestedTagsCollectionView reloadData];
+		if ([results count]) {
+			[self.keyboardAccessory showSuggestedTags];
+		} else {
+			[self.keyboardAccessory hideSuggestedTags];
+		}
 	}
 }
 
@@ -399,21 +427,29 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	}
 }
 
+- (BOOL)textFieldShouldClear:(UITextField *)textField {
+	if (textField == self.URLTextField) {
+		self.bookmark.url = @"";
+	} else if (textField == self.descriptionTextField) {
+		self.bookmark.description = @"";
+	} else if (textField == self.extendedTextField) {
+		self.bookmark.extended = @"";
+	} else if (textField == self.tagsTextField) {
+		[self updateSuggestedTagsForTag:@""];
+	}
+	return YES;
+}
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-	if (textField == self.tagsTextField) {
-		if (self.manager.userTags) {
-			NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
-			NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", newString];
-			NSMutableArray *results = [NSMutableArray arrayWithArray:[self.manager.userTags filteredArrayUsingPredicate:searchPredicate]];
-			[results removeObjectsInArray:self.bookmark.tags];
-			self.suggestedTagsDataSource.tags = [results copy];
-			[self.suggestedTagsCollectionView reloadData];
-			if ([results count]) {
-				[self.keyboardAccessory showSuggestedTags];
-			} else {
-				[self.keyboardAccessory hideSuggestedTags];
-			}
-		}
+	NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+	if (textField == self.URLTextField) {
+		self.bookmark.url = newString;
+	} else if (textField == self.descriptionTextField) {
+		self.bookmark.description = newString;
+	} else if (textField == self.extendedTextField) {
+		self.bookmark.extended = newString;
+	} else if (textField == self.tagsTextField) {
+		[self updateSuggestedTagsForTag:newString];
 	}
 	return YES;
 }

@@ -7,12 +7,40 @@
 //
 
 #import "PMBookmark.h"
+#import "NSString+Pinmark.h"
+
+NSString * const PMBookmarkDidBecomePostableNotification = @"PMBookmarkDidBecomePostableNotification";
+NSString * const PMBookmarkDidBecomeUnpostableNotification = @"PMBookmarkDidBecomeUnpostableNotification";
 
 @interface PMBookmark ()
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (assign, nonatomic, getter=isPostable) BOOL postable;
 @end
 
 @implementation PMBookmark
+
+#pragma mark - Properties
+
+- (void)setUrl:(NSString *)url {
+	_url = url;
+	[self updatePostable];
+}
+
+- (void)setDescription:(NSString *)description {
+	_description = description;
+	[self updatePostable];
+}
+
+- (void)setPostable:(BOOL)postable {
+	if (_postable == postable) return;
+	_postable = postable;
+	
+	if (_postable == YES) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:PMBookmarkDidBecomePostableNotification object:self];
+	} else {
+		[[NSNotificationCenter defaultCenter] postNotificationName:PMBookmarkDidBecomeUnpostableNotification object:self];
+	}
+}
 
 #pragma mark - Initializers
 
@@ -26,6 +54,8 @@
 		_shared = YES;
 		_toread = NO;
 		_tags = nil;
+		_postable = NO;
+		[[NSNotificationCenter defaultCenter] postNotificationName:PMBookmarkDidBecomeUnpostableNotification object:self];
 	}
 	return self;
 }
@@ -44,6 +74,8 @@
 		NSMutableArray *newTags = [NSMutableArray arrayWithArray:[parameters[@"tags"] componentsSeparatedByCharactersInSet:commaSpaceSet]];
 		[newTags removeObject:@""];
 		_tags = [newTags copy];
+		
+		[self updatePostable];
 	}
 	return self;
 }
@@ -89,6 +121,14 @@
 		_dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
 	}
 	return _dateFormatter;
+}
+
+- (void)updatePostable {
+	if ([self.url isValidURL] && [self.description length]) {
+		self.postable = YES;
+	} else {
+		self.postable = NO;
+	}
 }
 
 @end

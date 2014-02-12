@@ -103,7 +103,7 @@
                                                     </collectionViewFlowLayout>
                                                     <cells/>
                                                 </collectionView>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add Tags" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KKd-Mm-SOm">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add Tags" adjustsFontSizeToFit="NO" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KKd-Mm-SOm">
                                                     <rect key="frame" x="15" y="44" width="290" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <constraints>
@@ -198,7 +198,7 @@
                                 <segue destination="YhT-tQ-Dwe" kind="push" identifier="Settings" id="aww-kR-UBs"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Post" id="K3p-4H-lk9">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Post" id="K3p-4H-lk9">
                             <connections>
                                 <action selector="pin:" destination="FsJ-qN-eCd" id="o6l-D9-Sz0"/>
                             </connections>
@@ -208,6 +208,7 @@
                         <outlet property="URLTextField" destination="WYr-1Q-haB" id="Lo5-sv-JmT"/>
                         <outlet property="descriptionTextField" destination="XKO-Sk-Xpd" id="UtZ-y9-Gai"/>
                         <outlet property="extendedTextField" destination="MoP-vU-7bQ" id="prl-Ei-wJc"/>
+                        <outlet property="postButton" destination="K3p-4H-lk9" id="RUc-ve-9q0"/>
                         <outlet property="sharedSwitch" destination="W9p-Du-tUZ" id="h9Y-tI-srW"/>
                         <outlet property="tagsCVHeightConstraint" destination="1GY-RB-FhD" id="3Rz-Mr-xo4"/>
                         <outlet property="tagsCollectionView" destination="fjA-FE-hIj" id="Z2p-0N-biW"/>
@@ -384,6 +385,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Information" id="gP1-KN-6Ts"/>
+                    <keyCommands/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="activityIndicator" destination="LJ0-XV-mLX" id="fDL-MI-n9f"/>

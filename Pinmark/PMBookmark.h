@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString * const PMBookmarkDidBecomePostableNotification;
+extern NSString * const PMBookmarkDidBecomeUnpostableNotification;
+
 @interface PMBookmark : NSObject
 
 @property (strong, nonatomic) NSString *url;
