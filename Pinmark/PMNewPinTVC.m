@@ -186,13 +186,20 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 #pragma mark - Methods
 
 - (void)openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-	NSString *command = [url lastPathComponent];
 	NSString *host = [url host];
-	NSDictionary *parameters = [url queryParameters];
+	NSString *command;
+	
+	if ([[url path] isEqualToString:@""]) {
+		command = host;
+	} else {
+		command = [url lastPathComponent];
+	}
 	
 	if (![command isEqualToString:@"add"]) {
 		return;
 	}
+	
+	NSDictionary *parameters = [url queryParameters];
 	
 	if (!parameters[@"auth_token"] && !self.manager.defaultUser) {
 		[self login];
