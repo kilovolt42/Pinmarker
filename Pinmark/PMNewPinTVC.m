@@ -18,7 +18,7 @@
 #import "PMAddAccountVC.h"
 #import "NSString+Pinmark.h"
 
-@interface PMNewPinTVC () <PMAddAccountVCDelegate, UITextFieldDelegate, UICollectionViewDelegate>
+@interface PMNewPinTVC () <PMAddAccountVCDelegate, PMSettingsTVCDelegate, UITextFieldDelegate, UICollectionViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *URLTextField;
 @property (weak, nonatomic) IBOutlet UITextField *descriptionTextField;
 @property (weak, nonatomic) IBOutlet UITextField *extendedTextField;
@@ -128,13 +128,14 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"Login Segue"]) {
-		UIViewController *destinationVC = segue.destinationViewController;
-		PMAddAccountVC *addAccountVC = (PMAddAccountVC *)destinationVC;
+		UINavigationController *navigationController = segue.destinationViewController;
+		PMAddAccountVC *addAccountVC = [navigationController.viewControllers firstObject];
 		addAccountVC.delegate = self;
 		addAccountVC.manager = self.manager;
 	} else if ([segue.identifier isEqualToString:@"Settings"]) {
-		UIViewController *destinationVC = segue.destinationViewController;
-		PMSettingsTVC *settingsTVC = (PMSettingsTVC *)destinationVC;
+		UINavigationController *navigationController = segue.destinationViewController;
+		PMSettingsTVC *settingsTVC = [navigationController.viewControllers firstObject];
+		settingsTVC.delegate = self;
 		settingsTVC.manager = self.manager;
 	}
 }
@@ -257,7 +258,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 }
 
 - (void)reportErrorWithMessage:(NSString *)message {
-	self.title = message ? message : @"Error";
+	self.navigationItem.prompt = message ? message : @"Error";
 	self.navigationController.navigationBar.barTintColor = [UIColor redColor];
 	[self performSelector:@selector(resetNavigationBar) withObject:self afterDelay:2.0];
 }
@@ -353,6 +354,12 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 #pragma mark - PMAddAccountVCDelegate
 
 - (void)didAddAccount {
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - PMSettingsTVCDelegate
+
+- (void)shouldCloseSettings {
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 

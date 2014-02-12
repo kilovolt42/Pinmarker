@@ -9,8 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "PMPinboardManager.h"
 
+@protocol PMSettingsTVCDelegate
+- (void)shouldCloseSettings;
+@end
+
 @interface PMSettingsTVC : UITableViewController
 
+@property (weak, nonatomic) id<PMSettingsTVCDelegate> delegate;
 @property (strong, nonatomic) PMPinboardManager *manager;
 
 @end

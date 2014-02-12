@@ -11,7 +11,6 @@
 
 @interface PMSettingsTVC () <PMAddAccountVCDelegate>
 @property (strong, nonatomic) NSArray *accounts;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
 @end
 
 @implementation PMSettingsTVC
@@ -39,6 +38,12 @@
 		addAccountVC.delegate = self;
 		addAccountVC.manager = self.manager;
 	}
+}
+
+#pragma mark - IBAction
+
+- (IBAction)close:(id)sender {
+	[self.delegate shouldCloseSettings];
 }
 
 #pragma mark - PMAddAccountVCDelegate
