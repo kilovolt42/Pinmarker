@@ -16,6 +16,7 @@
 #import "PMInputAccessoryView.h"
 #import "PMSettingsTVC.h"
 #import "PMAddAccountVC.h"
+#import "NSString+Pinmark.h"
 
 @interface PMNewPinTVC () <PMAddAccountVCDelegate, UITextFieldDelegate, UICollectionViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *URLTextField;
@@ -194,13 +195,13 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	if ([host isEqualToString:@"x-callback-url"]) {
 		if (parameters[@"x-success"]) {
 			self.xSuccess = ^void(AFHTTPRequestOperation *operation, id responseObject) {
-				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[parameters[@"x-success"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[parameters[@"x-success"] urlEncodeUsingEncoding:NSUTF8StringEncoding]]];
 			};
 		}
 		if (parameters[@"x-error"]) {
 			self.xFailure = ^void(AFHTTPRequestOperation *operation, NSError *error) {
 				NSString *xError = [NSString stringWithFormat:@"%@?errorCode=%ld&errorMessage=%@", parameters[@"x-error"], (long)[error code], [error domain]];
-				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[xError stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[xError urlEncodeUsingEncoding:NSUTF8StringEncoding]]];
 			};
 		}
 	} else {

@@ -15,6 +15,10 @@
 
 @implementation PMNavigationVC
 
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
 	UIViewController *viewController = self.viewControllers[0];
 	if ([viewController isKindOfClass:[PMNewPinTVC class]]) {
