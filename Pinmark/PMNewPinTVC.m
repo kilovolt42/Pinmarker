@@ -118,6 +118,10 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	self.tagsTextField.delegate = self;
 	self.extendedTextField.delegate = self;
 	self.keyboardAccessory = [[[NSBundle mainBundle] loadNibNamed:@"PMInputAccessoryView" owner:self options:nil] firstObject];
+	
+	UIMenuController *menuController = [UIMenuController sharedMenuController];
+	UIMenuItem *deleteTagMenuItem = [[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(deleteTag:)];
+	[menuController setMenuItems:@[deleteTagMenuItem]];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -290,7 +294,8 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	[self.suggestedTagsCollectionView reloadData];
 	
 	self.tagsTextField.text = @"";
-	[self.tagsCollectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+	NSIndexPath *lastTagIndexPath = [NSIndexPath indexPathForItem:[self.bookmark.tags count]-1 inSection:0];
+	[self.tagsCollectionView scrollToItemAtIndexPath:lastTagIndexPath atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
 	[self updateTagsRowHeight];
 	[self.keyboardAccessory hideSuggestedTags];
 }
@@ -317,11 +322,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 - (void)keyboardDidHide:(NSNotification *)notification {
 	NSArray *selectedItems = [self.tagsCollectionView indexPathsForSelectedItems];
 	if ([selectedItems count]) {
-		NSIndexPath *selectedIndexPath = [selectedItems firstObject];
-		UICollectionViewCell *cell = [self.tagsCollectionView cellForItemAtIndexPath:selectedIndexPath];
-		UIMenuController *menuController = [UIMenuController sharedMenuController];
-		[menuController setTargetRect:cell.frame inView:self.tagsCollectionView];
-		[menuController update];
+		[self showMenuForTagAtIndexPath:[selectedItems firstObject]];
 	}
 }
 
@@ -348,6 +349,21 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	}
 }
 
+- (void)deselectAllTagCells {
+	NSArray *selectedCells = [self.tagsCollectionView indexPathsForSelectedItems];
+	for (NSIndexPath *indexPath in selectedCells) {
+		[self.tagsCollectionView deselectItemAtIndexPath:indexPath animated:NO];
+	}
+}
+
+- (void)showMenuForTagAtIndexPath:(NSIndexPath *)indexPath {
+	[self becomeFirstResponder];
+	UICollectionViewCell *cell = [self.tagsCollectionView cellForItemAtIndexPath:indexPath];
+	UIMenuController *menuController = [UIMenuController sharedMenuController];
+	[menuController setTargetRect:cell.frame inView:self.tagsCollectionView];
+	[menuController setMenuVisible:YES animated:YES];
+}
+
 #pragma mark - UIResponder
 
 - (BOOL)canBecomeFirstResponder {
@@ -356,6 +372,11 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
 	return self.isFirstResponder && action == @selector(deleteTag:);
+}
+
+- (BOOL)becomeFirstResponder {
+	self.activeField = nil;
+	return [super becomeFirstResponder];
 }
 
 #pragma mark - PMAddAccountVCDelegate
@@ -374,13 +395,11 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	if (collectionView == self.tagsCollectionView) {
-		[self becomeFirstResponder];
-		UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-		UIMenuController *menuController = [UIMenuController sharedMenuController];
-		UIMenuItem *deleteTag = [[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(deleteTag:)];
-		[menuController setMenuItems:@[deleteTag]];
-		[menuController setTargetRect:cell.frame inView:collectionView];
-		[menuController setMenuVisible:YES animated:YES];
+		if (self.activeField == nil) {
+			[self showMenuForTagAtIndexPath:indexPath];
+		} else {
+			[self dismissKeyboard];
+		}
 	} else if (collectionView == self.suggestedTagsCollectionView) {
 		[self addTags:self.suggestedTagsDataSource.tags[[indexPath item]]];
 		self.suggestedTagsDataSource.tags = nil;
@@ -424,6 +443,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 #pragma mark - UITextFieldDelegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+	[self deselectAllTagCells];
 	self.activeField = textField;
 }
 

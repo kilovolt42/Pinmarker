@@ -285,7 +285,7 @@
             </objects>
             <point key="canvasLocation" x="1908" y="76"/>
         </scene>
-        <!--Add AccountVC - Information-->
+        <!--Add AccountVC - New Account-->
         <scene sceneID="NR3-Q6-0Qt">
             <objects>
                 <viewController id="SEA-vV-Adi" customClass="PMAddAccountVC" sceneMemberID="viewController">
@@ -390,7 +390,7 @@
                             <constraint firstItem="I9U-dB-Nfr" firstAttribute="leading" secondItem="7x5-yt-9b8" secondAttribute="leading" constant="20" id="sdV-rj-Hnv"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Information" id="gP1-KN-6Ts"/>
+                    <navigationItem key="navigationItem" title="New Account" id="gP1-KN-6Ts"/>
                     <keyCommands/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>

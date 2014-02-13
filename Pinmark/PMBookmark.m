@@ -99,10 +99,10 @@ NSString * const PMBookmarkDidBecomeUnpostableNotification = @"PMBookmarkDidBeco
 	NSCharacterSet *commaSpaceSet = [NSCharacterSet characterSetWithCharactersInString:@", "];
 	NSMutableArray *newTags = [NSMutableArray arrayWithArray:[tags componentsSeparatedByCharactersInSet:commaSpaceSet]];
 	[newTags removeObject:@""];
-	for (NSString *newTag in [newTags reverseObjectEnumerator]) {
+	for (NSString *newTag in newTags) {
 		NSMutableArray *tempTags = [NSMutableArray arrayWithArray:self.tags];
 		[tempTags removeObject:newTag];
-		[tempTags insertObject:newTag atIndex:0];
+		[tempTags addObject:newTag];
 		self.tags = [tempTags copy];
 	}
 }
