@@ -147,9 +147,9 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 #pragma mark - IBAction
 
 - (IBAction)pin:(UIBarButtonItem *)sender {
-	if (![self isReadyToPin]) return;
-	[self.activeField resignFirstResponder]; // makes sure text field ends editing and saves text to bookmark
+	[self dismissKeyboard]; // makes sure text field ends editing and saves text to bookmark
 	
+	[self disableFields];
 	UIActivityIndicatorView *indicatorButton = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	[indicatorButton startAnimating];
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicatorButton];
@@ -159,6 +159,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	[self.manager add:[self.bookmark parameters]
 			  success:^(AFHTTPRequestOperation *operation, id responseObject) {
 				  weakSelf.navigationItem.rightBarButtonItem = sender;
+				  [weakSelf enableFields];
 				  NSString *resultCode = responseObject[@"result_code"];
 				  if (resultCode) {
 					  if ([resultCode isEqualToString:@"done"]) {
@@ -174,6 +175,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 			  }
 			  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 				  weakSelf.navigationItem.rightBarButtonItem = sender;
+				  [weakSelf enableFields];
 				  [weakSelf reportErrorWithMessage:nil];
 				  if (weakSelf.xFailure) weakSelf.xFailure(operation, error);
 			  }];
@@ -250,33 +252,18 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	[self performSegueWithIdentifier:@"Login Segue" sender:self];
 }
 
-- (BOOL)isReadyToPin {
-	if ([self.URLTextField.text isEqualToString:@""]) {
-		[self reportErrorWithMessage:@"URL Required"];
-		return NO;
-	} else if ([self.descriptionTextField.text isEqualToString:@""]) {
-		[self reportErrorWithMessage:@"Title Required"];
-		[self.descriptionTextField becomeFirstResponder];
-		return NO;
-	}
-	return YES;
-}
-
 - (void)reportSuccess {
-	self.title = @"Success";
-	self.navigationController.navigationBar.barTintColor = [UIColor greenColor];
+	self.navigationItem.prompt = @"Success";
 	[self performSelector:@selector(resetNavigationBar) withObject:self afterDelay:2.0];
 }
 
 - (void)reportErrorWithMessage:(NSString *)message {
 	self.navigationItem.prompt = message ? message : @"Error";
-	self.navigationController.navigationBar.barTintColor = [UIColor redColor];
 	[self performSelector:@selector(resetNavigationBar) withObject:self afterDelay:2.0];
 }
 
 - (void)resetNavigationBar {
-	self.title = self.manager.defaultUser;
-	self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:26/255.0 green:130/255.0 blue:143/255.0 alpha:1.0];
+	self.navigationItem.prompt = nil;
 }
 
 - (void)dismissKeyboard {
@@ -362,6 +349,26 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	UIMenuController *menuController = [UIMenuController sharedMenuController];
 	[menuController setTargetRect:cell.frame inView:self.tagsCollectionView];
 	[menuController setMenuVisible:YES animated:YES];
+}
+
+- (void)disableFields {
+	self.URLTextField.enabled = NO;
+	self.descriptionTextField.enabled = NO;
+	self.extendedTextField.enabled = NO;
+	self.tagsCollectionView.allowsSelection = NO;
+	self.tagsTextField.enabled = NO;
+	self.toReadSwitch.enabled = NO;
+	self.sharedSwitch.enabled = NO;
+}
+
+- (void)enableFields {
+	self.URLTextField.enabled = YES;
+	self.descriptionTextField.enabled = YES;
+	self.extendedTextField.enabled = YES;
+	self.tagsCollectionView.allowsSelection = YES;
+	self.tagsTextField.enabled = YES;
+	self.toReadSwitch.enabled = YES;
+	self.sharedSwitch.enabled = YES;
 }
 
 #pragma mark - UIResponder

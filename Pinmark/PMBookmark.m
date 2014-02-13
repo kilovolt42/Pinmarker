@@ -124,7 +124,7 @@ NSString * const PMBookmarkDidBecomeUnpostableNotification = @"PMBookmarkDidBeco
 }
 
 - (void)updatePostable {
-	if ([self.url isValidURL] && [self.description length]) {
+	if ([self.url isPinboardPermittedURL] && [self.description length]) {
 		self.postable = YES;
 	} else {
 		self.postable = NO;

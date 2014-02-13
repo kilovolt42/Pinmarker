@@ -27,4 +27,10 @@ NSString * const PMAnyURLRegex = @"(?i)\\b((?:[a-z][\\w-]+:(?:/{1,3}|[a-z0-9%])|
 	return range.length > 0;
 }
 
+- (BOOL)isPinboardPermittedURL {
+	NSArray *schemes = @[@"http", @"https", @"javascript", @"mailto", @"ftp", @"file", @"feed"];
+	NSURL *url = [NSURL URLWithString:self];
+	return [schemes containsObject:[url scheme]] && [self isValidURL];
+}
+
 @end

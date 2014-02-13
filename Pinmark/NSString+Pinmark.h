@@ -26,4 +26,12 @@
  */
 - (BOOL)isValidURL;
 
+/**
+ * Determines whether the string qualifies as a URL using isValidURL: and whether its scheme matches those
+ * allowed by Pinboard's API. Permitted schemes include http, https, javascript, mailto, ftp, file, and feed.
+ *
+ * @return YES if permitted by Pinboard, otherwise NO.
+ */
+- (BOOL)isPinboardPermittedURL;
+
 @end
