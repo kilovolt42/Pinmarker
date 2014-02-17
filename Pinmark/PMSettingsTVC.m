@@ -8,6 +8,7 @@
 
 #import "PMSettingsTVC.h"
 #import "PMAddAccountVC.h"
+#import "PMPasteboardPreferenceTVCell.h"
 
 @interface PMSettingsTVC () <PMAddAccountVCDelegate>
 @property (strong, nonatomic) NSArray *accounts;
@@ -70,30 +71,38 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+	return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.accounts count] + 1;
+	if (section == 0) return [self.accounts count] + 1;
+	if (section == 1) return 1;
+	return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	static NSString *accountCellID = @"Account Cell";
 	static NSString *addAccountCellID = @"Add Account Cell";
+	static NSString *pasteboardPreferenceCellID = @"Pasteboard Preference Cell";
 	
 	UITableViewCell *cell;
-	if (indexPath.row == [self.accounts count]) {
-		cell = [tableView dequeueReusableCellWithIdentifier:addAccountCellID forIndexPath:indexPath];
-	} else {
-		cell = [tableView dequeueReusableCellWithIdentifier:accountCellID forIndexPath:indexPath];
-		cell.textLabel.text = self.accounts[indexPath.row];
-		if ([self.accounts[indexPath.row] isEqualToString:self.manager.defaultUser]) {
-			cell.accessoryType = UITableViewCellAccessoryCheckmark;
-			cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
+	if (indexPath.section == 0) {
+		if (indexPath.row == [self.accounts count]) {
+			cell = [tableView dequeueReusableCellWithIdentifier:addAccountCellID forIndexPath:indexPath];
 		} else {
-			cell.accessoryType = UITableViewCellAccessoryNone;
-			cell.editingAccessoryType = UITableViewCellAccessoryNone;
+			cell = [tableView dequeueReusableCellWithIdentifier:accountCellID forIndexPath:indexPath];
+			cell.textLabel.text = self.accounts[indexPath.row];
+			if ([self.accounts[indexPath.row] isEqualToString:self.manager.defaultUser]) {
+				cell.accessoryType = UITableViewCellAccessoryCheckmark;
+				cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
+			} else {
+				cell.accessoryType = UITableViewCellAccessoryNone;
+				cell.editingAccessoryType = UITableViewCellAccessoryNone;
+			}
 		}
+	} else if (indexPath.section == 1) {
+		cell = [tableView dequeueReusableCellWithIdentifier:pasteboardPreferenceCellID];
+		[(PMPasteboardPreferenceTVCell *)cell setup];
 	}
 	
 	return cell;
@@ -104,9 +113,14 @@
 	return @"";
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+	if (section == 1) return @"Automatically paste URLs from the clipboard for new posts.";
+	return nil;
+}
+
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == [self.accounts count]) return NO;
-	return YES;
+	if (indexPath.section == 0 && indexPath.row != [self.accounts count]) return YES;
+	return NO;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {

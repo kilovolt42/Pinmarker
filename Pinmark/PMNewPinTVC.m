@@ -17,6 +17,7 @@
 #import "PMSettingsTVC.h"
 #import "PMAddAccountVC.h"
 #import "NSString+Pinmark.h"
+#import "PMAppDelegate.h"
 
 @interface PMNewPinTVC () <PMAddAccountVCDelegate, PMSettingsTVCDelegate, UITextFieldDelegate, UICollectionViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *URLTextField;
@@ -109,9 +110,13 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bookmarkBecamePostable:) name:PMBookmarkDidBecomePostableNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bookmarkBecameUnpostable:) name:PMBookmarkDidBecomeUnpostableNotification object:nil];
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+	[notificationCenter addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(bookmarkBecamePostable:) name:PMBookmarkDidBecomePostableNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(bookmarkBecameUnpostable:) name:PMBookmarkDidBecomeUnpostableNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(applicationDidFinishLaunching:) name:UIApplicationDidFinishLaunchingNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	
 	self.URLTextField.delegate = self;
 	self.descriptionTextField.delegate = self;
@@ -269,6 +274,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 - (void)dismissKeyboard {
 	[self.activeField resignFirstResponder];
 	self.activeField = nil;
+	[self.tableView scrollsToTop];
 }
 
 - (void)addTags:(NSString *)tags {
@@ -369,6 +375,38 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	self.tagsTextField.enabled = YES;
 	self.toReadSwitch.enabled = YES;
 	self.sharedSwitch.enabled = YES;
+}
+
+- (void)attemptToPasteURLFromPasteboard {
+	if ([self.URLTextField.text isEqualToString:@""]) {
+		NSNumber *pasteboardPreferenceWrapper = [[NSUserDefaults standardUserDefaults] objectForKey:PMPasteboardPreferenceKey];
+		if (pasteboardPreferenceWrapper && [pasteboardPreferenceWrapper boolValue]) {
+			NSString *pasteboardString = [UIPasteboard generalPasteboard].string;
+			if ([pasteboardString isPinboardPermittedURL]) {
+				self.URLTextField.text = pasteboardString;
+				self.bookmark.url = pasteboardString;
+			}
+		}
+	}
+}
+
+- (void)applicationDidFinishLaunching:(NSNotification *)notification {
+	[self attemptToPasteURLFromPasteboard];
+}
+
+- (void)applicationWillEnterForeground:(NSNotification *)notification {
+	[self attemptToPasteURLFromPasteboard];
+}
+
+- (void)applicationDidEnterBackground:(NSNotification *)notification {
+	if (self.activeField == self.tagsTextField) {
+		NSString *tagsText = self.tagsTextField.text;
+		self.tagsTextField.text = @"";
+		[self dismissKeyboard];
+		self.tagsTextField.text = tagsText;
+	} else {
+		[self dismissKeyboard];
+	}
 }
 
 #pragma mark - UIResponder

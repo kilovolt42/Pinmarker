@@ -36,6 +36,7 @@
 		278EF453185B71E2003A27D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 278EF451185B71E2003A27D3 /* InfoPlist.strings */; };
 		278EF455185B71E2003A27D3 /* PinmarkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF454185B71E2003A27D3 /* PinmarkTests.m */; };
 		279719D2189960A400D58BC7 /* PMSettingsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 279719D1189960A400D58BC7 /* PMSettingsTVC.m */; };
+		27C701BD18B172F8005228E4 /* PMPasteboardPreferenceTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C701BC18B172F8005228E4 /* PMPasteboardPreferenceTVCell.m */; };
 		27D2DC3418777A9B0054D187 /* PMBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D2DC3318777A9B0054D187 /* PMBookmark.m */; };
 		27DA5B501885BB0500AEE0F5 /* PMAddAccountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DA5B4F1885BB0500AEE0F5 /* PMAddAccountVC.m */; };
 		82960B3C2A964DE68159B981 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6E13E9115194BF18C9C2D1A /* libPods.a */; };
@@ -104,6 +105,8 @@
 		278EF454185B71E2003A27D3 /* PinmarkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PinmarkTests.m; sourceTree = "<group>"; };
 		279719D0189960A400D58BC7 /* PMSettingsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMSettingsTVC.h; sourceTree = "<group>"; };
 		279719D1189960A400D58BC7 /* PMSettingsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMSettingsTVC.m; sourceTree = "<group>"; };
+		27C701BB18B172F8005228E4 /* PMPasteboardPreferenceTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMPasteboardPreferenceTVCell.h; sourceTree = "<group>"; };
+		27C701BC18B172F8005228E4 /* PMPasteboardPreferenceTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMPasteboardPreferenceTVCell.m; sourceTree = "<group>"; };
 		27D2DC3218777A9B0054D187 /* PMBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMBookmark.h; sourceTree = "<group>"; };
 		27D2DC3318777A9B0054D187 /* PMBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBookmark.m; sourceTree = "<group>"; };
 		27DA5B4E1885BB0500AEE0F5 /* PMAddAccountVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMAddAccountVC.h; sourceTree = "<group>"; };
@@ -227,8 +230,7 @@
 				270C4A4918628D6A000FC061 /* PMNavigationVC.m */,
 				2703C53F185F7E6500570F0C /* PMNewPinTVC.h */,
 				2703C540185F7E6500570F0C /* PMNewPinTVC.m */,
-				279719D0189960A400D58BC7 /* PMSettingsTVC.h */,
-				279719D1189960A400D58BC7 /* PMSettingsTVC.m */,
+				27C701BE18B17300005228E4 /* Settings */,
 				27DA5B511885BB0900AEE0F5 /* Add Account */,
 				272C5CDC1871028A0079B95E /* Tags */,
 				27DA5B521885BB1C00AEE0F5 /* Bookmarks */,
@@ -278,6 +280,17 @@
 				278EF451185B71E2003A27D3 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		27C701BE18B17300005228E4 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				279719D0189960A400D58BC7 /* PMSettingsTVC.h */,
+				279719D1189960A400D58BC7 /* PMSettingsTVC.m */,
+				27C701BB18B172F8005228E4 /* PMPasteboardPreferenceTVCell.h */,
+				27C701BC18B172F8005228E4 /* PMPasteboardPreferenceTVCell.m */,
+			);
+			name = Settings;
 			sourceTree = "<group>";
 		};
 		27DA5B511885BB0900AEE0F5 /* Add Account */ = {
@@ -463,6 +476,7 @@
 				277AA7B21896DC200015A3EF /* PMInputAccessoryView.m in Sources */,
 				2781196C186A0516006B93AB /* NSURL+Pinmark.m in Sources */,
 				278EF437185B71E2003A27D3 /* PMAppDelegate.m in Sources */,
+				27C701BD18B172F8005228E4 /* PMPasteboardPreferenceTVCell.m in Sources */,
 				271FAF9918AA9F1E0011C41E /* NSString+Pinmark.m in Sources */,
 				2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */,
 				27D2DC3418777A9B0054D187 /* PMBookmark.m in Sources */,

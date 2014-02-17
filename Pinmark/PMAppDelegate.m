@@ -11,9 +11,23 @@
 #import "BugshotKit.h"
 #import "TestFlight.h"
 
+NSString * const PMDidInitializeDefaults = @"PMDidInitializeDefaults";
+NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";
+NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
+NSString * const PMPasteboardPreferenceKey = @"PMPasteboardPreferenceKey";
+
 @implementation PMAppDelegate
 
+- (void)initializeDefaults {
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	[userDefaults setObject:[NSNumber numberWithBool:YES] forKey:PMPasteboardPreferenceKey];
+	[userDefaults setBool:YES forKey:PMDidInitializeDefaults];
+}
+
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	if (![[NSUserDefaults standardUserDefaults] boolForKey:PMDidInitializeDefaults]) {
+		[self initializeDefaults];
+	}
 	return YES;
 }
 

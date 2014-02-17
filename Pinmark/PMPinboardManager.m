@@ -8,15 +8,13 @@
 
 #import "PMPinboardManager.h"
 #import "NSString+Pinmark.h"
+#import "PMAppDelegate.h"
 
 @interface PMPinboardManager ()
 @property (strong, nonatomic) NSString *defaultToken;
 @property (strong, nonatomic) NSArray *associatedTokens;
 @property (strong, nonatomic, readwrite) NSArray *userTags;
 @end
-
-NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";
-NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
 
 @implementation PMPinboardManager
 
@@ -56,8 +54,9 @@ NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
 			NSString *token = [NSString stringWithFormat:@"%@:%@", defaultUser, tokenNumber];
 			_defaultToken = token;
 			[self loadUserTags];
-			[[NSUserDefaults standardUserDefaults] setObject:token forKey:PMDefaultTokenKey];
-			[[NSUserDefaults standardUserDefaults] synchronize];
+			NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+			[userDefaults setObject:token forKey:PMDefaultTokenKey];
+			[userDefaults synchronize];
 		}
 	}
 }
@@ -66,14 +65,15 @@ NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
 
 - (id)init {
 	if (self = [super init]) {
-		_associatedTokens = [[NSUserDefaults standardUserDefaults] valueForKey:PMAssociatedTokensKey];
+		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+		_associatedTokens = [userDefaults valueForKey:PMAssociatedTokensKey];
 		if (_associatedTokens) {
 			NSMutableArray *associatedUsers = [NSMutableArray new];
 			for (NSString *token in _associatedTokens) {
 				[associatedUsers addObject:[[token componentsSeparatedByString:@":"] firstObject]];
 			}
 			_associatedUsers = [associatedUsers copy];
-			_defaultToken = [[NSUserDefaults standardUserDefaults] valueForKey:PMDefaultTokenKey];
+			_defaultToken = [userDefaults valueForKey:PMDefaultTokenKey];
 			if (!_defaultToken) _defaultToken = [_associatedTokens firstObject];
 			_defaultUser = [[_defaultToken componentsSeparatedByString:@":"] firstObject];
 			[self loadUserTags];
@@ -230,44 +230,46 @@ NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
 #pragma mark -
 
 - (void)associateToken:(NSString *)token asDefault:(BOOL)asDefault {
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	if (self.associatedTokens) {
 		if (![self.associatedTokens containsObject:token]) {
 			NSMutableArray *newTokens = [NSMutableArray arrayWithArray:self.associatedTokens];
 			[newTokens addObject:token];
-			[[NSUserDefaults standardUserDefaults] setObject:newTokens forKey:PMAssociatedTokensKey];
-			[[NSUserDefaults standardUserDefaults] synchronize];
+			[userDefaults setObject:newTokens forKey:PMAssociatedTokensKey];
+			[userDefaults synchronize];
 			self.associatedTokens = newTokens;
 		}
 	} else {
-		[[NSUserDefaults standardUserDefaults] setObject:@[token] forKey:PMAssociatedTokensKey];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+		[userDefaults setObject:@[token] forKey:PMAssociatedTokensKey];
+		[userDefaults synchronize];
 		self.associatedTokens = @[token];
 	}
 	
 	if (asDefault || !self.defaultToken) {
 		self.defaultToken = token;
-		[[NSUserDefaults standardUserDefaults] setObject:token forKey:PMDefaultTokenKey];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+		[userDefaults setObject:token forKey:PMDefaultTokenKey];
+		[userDefaults synchronize];
 	}
 }
 
 - (void)dissociateToken:(NSString *)token {
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	NSMutableArray *newTokens = [NSMutableArray arrayWithArray:self.associatedTokens];
 	[newTokens removeObject:token];
-	[[NSUserDefaults standardUserDefaults] setObject:newTokens forKey:PMAssociatedTokensKey];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[userDefaults setObject:newTokens forKey:PMAssociatedTokensKey];
+	[userDefaults synchronize];
 	self.associatedTokens = newTokens;
 	
 	if ([token isEqualToString:self.defaultToken]) {
 		if ([self.associatedTokens count] > 0) {
 			self.defaultToken = self.associatedTokens[0];
-			[[NSUserDefaults standardUserDefaults] setObject:self.defaultToken forKey:PMDefaultTokenKey];
-			[[NSUserDefaults standardUserDefaults] synchronize];
+			[userDefaults setObject:self.defaultToken forKey:PMDefaultTokenKey];
+			[userDefaults synchronize];
 		} else {
 			self.defaultToken = nil;
-			[[NSUserDefaults standardUserDefaults] removeObjectForKey:PMDefaultTokenKey];
-			[[NSUserDefaults standardUserDefaults] removeObjectForKey:PMAssociatedTokensKey];
-			[[NSUserDefaults standardUserDefaults] synchronize];
+			[userDefaults removeObjectForKey:PMDefaultTokenKey];
+			[userDefaults removeObjectForKey:PMAssociatedTokensKey];
+			[userDefaults synchronize];
 		}
 	}
 }

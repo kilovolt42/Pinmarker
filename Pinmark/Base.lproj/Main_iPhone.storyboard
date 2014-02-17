@@ -267,6 +267,39 @@
                                     <segue destination="SEA-vV-Adi" kind="push" identifier="Login Segue" id="Jzk-ga-GX6"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Pasteboard Preference Cell" id="pzK-z3-xuO" customClass="PMPasteboardPreferenceTVCell">
+                                <rect key="frame" x="0.0" y="207" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pzK-z3-xuO" id="icW-kj-xVi">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="URL from Clipboard" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9l6-3F-lhX">
+                                            <rect key="frame" x="15" y="11" width="161" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bDb-tl-h4H">
+                                            <rect key="frame" x="256" y="6" width="51" height="31"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="onTintColor" red="0.100145833" green="0.50943091789999995" blue="0.56008848850000004" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                            <connections>
+                                                <action selector="toggledSwitch:" destination="pzK-z3-xuO" eventType="valueChanged" id="8L5-Jn-quG"/>
+                                            </connections>
+                                        </switch>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="centerY" secondItem="bDb-tl-h4H" secondAttribute="centerY" id="37W-nw-aYh"/>
+                                        <constraint firstAttribute="centerY" secondItem="9l6-3F-lhX" secondAttribute="centerY" id="78O-Tk-8Zv"/>
+                                        <constraint firstAttribute="trailing" secondItem="bDb-tl-h4H" secondAttribute="trailing" constant="15" id="bsQ-sX-cKg"/>
+                                        <constraint firstItem="9l6-3F-lhX" firstAttribute="leading" secondItem="icW-kj-xVi" secondAttribute="leading" constant="15" id="hiF-Ux-BGh"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="preferenceSwitch" destination="bDb-tl-h4H" id="hmQ-jo-aXm"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="YhT-tQ-Dwe" id="Pbg-f9-NW1"/>
