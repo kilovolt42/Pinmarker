@@ -114,9 +114,8 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	[notificationCenter addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 	[notificationCenter addObserver:self selector:@selector(bookmarkBecamePostable:) name:PMBookmarkDidBecomePostableNotification object:nil];
 	[notificationCenter addObserver:self selector:@selector(bookmarkBecameUnpostable:) name:PMBookmarkDidBecomeUnpostableNotification object:nil];
-	[notificationCenter addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
-	[notificationCenter addObserver:self selector:@selector(applicationDidFinishLaunching:) name:UIApplicationDidFinishLaunchingNotification object:nil];
-	[notificationCenter addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 	
 	self.URLTextField.delegate = self;
 	self.descriptionTextField.delegate = self;
@@ -390,15 +389,11 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	}
 }
 
-- (void)applicationDidFinishLaunching:(NSNotification *)notification {
+- (void)applicationDidBecomeActive:(NSNotification *)notification {
 	[self attemptToPasteURLFromPasteboard];
 }
 
-- (void)applicationWillEnterForeground:(NSNotification *)notification {
-	[self attemptToPasteURLFromPasteboard];
-}
-
-- (void)applicationDidEnterBackground:(NSNotification *)notification {
+- (void)applicationWillResignActive:(NSNotification *)notification {
 	if (self.activeField == self.tagsTextField) {
 		NSString *tagsText = self.tagsTextField.text;
 		self.tagsTextField.text = @"";
