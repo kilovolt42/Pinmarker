@@ -21,7 +21,7 @@
 
 @interface PMNewPinTVC () <PMAddAccountVCDelegate, PMSettingsTVCDelegate, UITextFieldDelegate, UICollectionViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *URLTextField;
-@property (weak, nonatomic) IBOutlet UITextField *descriptionTextField;
+@property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 @property (weak, nonatomic) IBOutlet UITextField *extendedTextField;
 @property (weak, nonatomic) IBOutlet UITextField *tagsTextField;
 @property (weak, nonatomic) IBOutlet UICollectionView *tagsCollectionView;
@@ -100,7 +100,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	[_keyboardAccessory.hideKeyboardButton addTarget:self action:@selector(dismissKeyboard) forControlEvents:UIControlEventTouchUpInside];
 	self.suggestedTagsCollectionView = _keyboardAccessory.suggestedTagsCollectionView;
 	self.URLTextField.inputAccessoryView = _keyboardAccessory;
-	self.descriptionTextField.inputAccessoryView = _keyboardAccessory;
+	self.titleTextField.inputAccessoryView = _keyboardAccessory;
 	self.extendedTextField.inputAccessoryView = _keyboardAccessory;
 	self.tagsTextField.inputAccessoryView = _keyboardAccessory;
 }
@@ -118,7 +118,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	[notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 	
 	self.URLTextField.delegate = self;
-	self.descriptionTextField.delegate = self;
+	self.titleTextField.delegate = self;
 	self.tagsTextField.delegate = self;
 	self.extendedTextField.delegate = self;
 	self.keyboardAccessory = [[[NSBundle mainBundle] loadNibNamed:@"PMInputAccessoryView" owner:self options:nil] firstObject];
@@ -243,7 +243,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (void)updateFields {
 	self.URLTextField.text = self.bookmark.url;
-	self.descriptionTextField.text = self.bookmark.description;
+	self.titleTextField.text = self.bookmark.title;
 	self.extendedTextField.text = self.bookmark.extended;
 	self.tagsDataSource.tags = self.bookmark.tags;
 	[self.tagsCollectionView reloadData];
@@ -358,7 +358,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (void)disableFields {
 	self.URLTextField.enabled = NO;
-	self.descriptionTextField.enabled = NO;
+	self.titleTextField.enabled = NO;
 	self.extendedTextField.enabled = NO;
 	self.tagsCollectionView.allowsSelection = NO;
 	self.tagsTextField.enabled = NO;
@@ -368,7 +368,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (void)enableFields {
 	self.URLTextField.enabled = YES;
-	self.descriptionTextField.enabled = YES;
+	self.titleTextField.enabled = YES;
 	self.extendedTextField.enabled = YES;
 	self.tagsCollectionView.allowsSelection = YES;
 	self.tagsTextField.enabled = YES;
@@ -490,8 +490,8 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	if (textField == self.URLTextField) {
 		self.bookmark.url = textField.text;
-	} else if (textField == self.descriptionTextField) {
-		self.bookmark.description = textField.text;
+	} else if (textField == self.titleTextField) {
+		self.bookmark.title = textField.text;
 	} else if (textField == self.extendedTextField) {
 		self.bookmark.extended = textField.text;
 	} else if (textField == self.tagsTextField) {
@@ -504,8 +504,8 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 - (BOOL)textFieldShouldClear:(UITextField *)textField {
 	if (textField == self.URLTextField) {
 		self.bookmark.url = @"";
-	} else if (textField == self.descriptionTextField) {
-		self.bookmark.description = @"";
+	} else if (textField == self.titleTextField) {
+		self.bookmark.title = @"";
 	} else if (textField == self.extendedTextField) {
 		self.bookmark.extended = @"";
 	} else if (textField == self.tagsTextField) {
@@ -518,8 +518,8 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
 	if (textField == self.URLTextField) {
 		self.bookmark.url = newString;
-	} else if (textField == self.descriptionTextField) {
-		self.bookmark.description = newString;
+	} else if (textField == self.titleTextField) {
+		self.bookmark.title = newString;
 	} else if (textField == self.extendedTextField) {
 		self.bookmark.extended = newString;
 	} else if (textField == self.tagsTextField) {
@@ -529,8 +529,8 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	if (textField == self.URLTextField) [self.descriptionTextField becomeFirstResponder];
-	else if (textField == self.descriptionTextField) [self.extendedTextField becomeFirstResponder];
+	if (textField == self.URLTextField) [self.titleTextField becomeFirstResponder];
+	else if (textField == self.titleTextField) [self.extendedTextField becomeFirstResponder];
 	else if (textField == self.extendedTextField) [self.tagsTextField becomeFirstResponder];
 	else if (textField == self.tagsTextField) {
 		if ([textField.text isEqualToString:@""]) {

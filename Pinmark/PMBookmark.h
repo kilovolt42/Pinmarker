@@ -11,16 +11,16 @@
 extern NSString * const PMBookmarkDidBecomePostableNotification;
 extern NSString * const PMBookmarkDidBecomeUnpostableNotification;
 
-@interface PMBookmark : NSObject
+@interface PMBookmark : NSObject <NSCopying, NSCoding, NSSecureCoding>
 
-@property (strong, nonatomic) NSString *url;
-@property (strong, nonatomic) NSString *description;
-@property (strong, nonatomic) NSString *extended;
-@property (strong, nonatomic) NSArray *tags;
-@property (strong, nonatomic) NSDate *dt;
-@property (assign, nonatomic) BOOL replace;
-@property (assign, nonatomic) BOOL shared;
-@property (assign, nonatomic) BOOL toread;
+@property (nonatomic, copy) NSString *url;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *extended;
+@property (nonatomic, copy) NSArray *tags;
+@property (nonatomic, copy) NSDate *dt;
+@property (nonatomic) BOOL replace;
+@property (nonatomic) BOOL shared;
+@property (nonatomic) BOOL toread;
 
 - (id)initWithParameters:(NSDictionary *)parameters;
 - (NSDictionary *)parameters;
