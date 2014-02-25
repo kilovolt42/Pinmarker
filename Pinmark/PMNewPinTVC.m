@@ -42,6 +42,7 @@
 @end
 
 static NSString *tagCellIdentifier = @"Tag Cell";
+static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
 @implementation PMNewPinTVC
 
@@ -55,12 +56,17 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 }
 
 - (PMBookmark *)bookmark {
-	if (!_bookmark) _bookmark = [PMBookmark new];
+	if (!_bookmark) {
+		_bookmark = [PMBookmark new];
+		[_bookmark addObserver:self forKeyPath:@"postable" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
+	}
 	return _bookmark;
 }
 
 - (void)setBookmark:(PMBookmark *)bookmark {
+	if (_bookmark) [_bookmark removeObserver:self forKeyPath:@"postable" context:&PMNewPinTVCContext];
 	_bookmark = bookmark;
+	[_bookmark addObserver:self forKeyPath:@"postable" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
 	[self updateFields];
 }
 
@@ -112,8 +118,6 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-	[notificationCenter addObserver:self selector:@selector(bookmarkBecamePostable:) name:PMBookmarkDidBecomePostableNotification object:nil];
-	[notificationCenter addObserver:self selector:@selector(bookmarkBecameUnpostable:) name:PMBookmarkDidBecomeUnpostableNotification object:nil];
 	[notificationCenter addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	[notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 	
@@ -318,14 +322,6 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	}
 }
 
-- (void)bookmarkBecamePostable:(NSNotification *)notification {
-	self.postButton.enabled = YES;
-}
-
-- (void)bookmarkBecameUnpostable:(NSNotification *)notification {
-	self.postButton.enabled = NO;
-}
-
 - (void)updateSuggestedTagsForTag:(NSString *)tag {
 	if (self.manager.userTags) {
 		NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", tag];
@@ -401,6 +397,18 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 		self.tagsTextField.text = tagsText;
 	} else {
 		[self dismissKeyboard];
+	}
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	if (context == &PMNewPinTVCContext) {
+		if ([keyPath isEqualToString:@"postable"]) {
+			self.postButton.enabled = self.bookmark.postable;
+		}
+	} else {
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	}
 }
 

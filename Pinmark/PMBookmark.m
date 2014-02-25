@@ -9,12 +9,8 @@
 #import "PMBookmark.h"
 #import "NSString+Pinmark.h"
 
-NSString * const PMBookmarkDidBecomePostableNotification = @"PMBookmarkDidBecomePostableNotification";
-NSString * const PMBookmarkDidBecomeUnpostableNotification = @"PMBookmarkDidBecomeUnpostableNotification";
-
 @interface PMBookmark ()
 @property (nonatomic) NSDateFormatter *dateFormatter;
-@property (nonatomic, readwrite, getter=isPostable) BOOL postable;
 @end
 
 #define DEFAULT_REPLACE_VALUE YES
@@ -25,14 +21,12 @@ NSString * const PMBookmarkDidBecomeUnpostableNotification = @"PMBookmarkDidBeco
 
 #pragma mark - Properties
 
-- (void)setUrl:(NSString *)url {
-	_url = url;
-	[self updatePostable];
-}
-
-- (void)setTitle:(NSString *)title {
-	_title = title;
-	[self updatePostable];
+- (BOOL)isPostable {
+	if ([self.url isPinboardPermittedURL] && [self.title length]) {
+		return YES;
+	} else {
+		return NO;
+	}
 }
 
 - (NSDateFormatter *)dateFormatter {
@@ -41,17 +35,6 @@ NSString * const PMBookmarkDidBecomeUnpostableNotification = @"PMBookmarkDidBeco
 		_dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
 	}
 	return _dateFormatter;
-}
-
-- (void)setPostable:(BOOL)postable {
-	if (postable == _postable) return;
-	_postable = postable;
-	
-	if (_postable) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:PMBookmarkDidBecomePostableNotification object:self];
-	} else {
-		[[NSNotificationCenter defaultCenter] postNotificationName:PMBookmarkDidBecomeUnpostableNotification object:self];
-	}
 }
 
 #pragma mark - Initializers
@@ -66,8 +49,6 @@ NSString * const PMBookmarkDidBecomeUnpostableNotification = @"PMBookmarkDidBeco
 		_shared = DEFAULT_SHARED_VALUE;
 		_toread = DEFAULT_TOREAD_VALUE;
 		_tags = nil;
-		_postable = NO;
-		[[NSNotificationCenter defaultCenter] postNotificationName:PMBookmarkDidBecomeUnpostableNotification object:self];
 	}
 	return self;
 }
@@ -122,8 +103,6 @@ NSString * const PMBookmarkDidBecomeUnpostableNotification = @"PMBookmarkDidBeco
 			[tagsArray removeObject:@""];
 			_tags = [tagsArray copy];
 		}
-		
-		[self updatePostable];
 	}
 	return self;
 }
@@ -159,16 +138,6 @@ NSString * const PMBookmarkDidBecomeUnpostableNotification = @"PMBookmarkDidBeco
 	NSMutableArray *tempTags = [NSMutableArray arrayWithArray:self.tags];
 	[tempTags removeObject:tag];
 	self.tags = [tempTags copy];
-}
-
-#pragma mark -
-
-- (void)updatePostable {
-	if ([self.url isPinboardPermittedURL] && [self.title length]) {
-		self.postable = YES;
-	} else {
-		self.postable = NO;
-	}
 }
 
 #pragma mark - NSObject
@@ -210,7 +179,6 @@ NSString * const PMBookmarkDidBecomeUnpostableNotification = @"PMBookmarkDidBeco
 		_shared = [decoder decodeBoolForKey:@"shared"];
 		_toread = [decoder decodeBoolForKey:@"toread"];
 		_tags = [decoder decodeObjectOfClass:[NSArray class] forKey:@"tags"];
-		[self updatePostable];
 	}
 	return self;
 }
@@ -228,6 +196,12 @@ NSString * const PMBookmarkDidBecomeUnpostableNotification = @"PMBookmarkDidBeco
 
 + (BOOL)supportsSecureCoding {
 	return YES;
+}
+
+#pragma mark - KVC / KVO
+
++ (NSSet *)keyPathsForValuesAffectingPostable {
+	return [NSSet setWithArray:@[@"url", @"title"]];
 }
 
 @end
