@@ -21,6 +21,7 @@ extern NSString * const PMBookmarkDidBecomeUnpostableNotification;
 @property (nonatomic) BOOL replace;
 @property (nonatomic) BOOL shared;
 @property (nonatomic) BOOL toread;
+@property (nonatomic, readonly, getter=isPostable) BOOL postable;
 
 - (id)initWithParameters:(NSDictionary *)parameters;
 - (NSDictionary *)parameters;

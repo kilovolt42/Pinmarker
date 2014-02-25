@@ -14,7 +14,7 @@ NSString * const PMBookmarkDidBecomeUnpostableNotification = @"PMBookmarkDidBeco
 
 @interface PMBookmark ()
 @property (nonatomic) NSDateFormatter *dateFormatter;
-@property (nonatomic, getter=isPostable) BOOL postable;
+@property (nonatomic, readwrite, getter=isPostable) BOOL postable;
 @end
 
 #define DEFAULT_REPLACE_VALUE YES
@@ -181,11 +181,11 @@ NSString * const PMBookmarkDidBecomeUnpostableNotification = @"PMBookmarkDidBeco
 	return (self.url == other.url || [self.url isEqual:other.url]) &&
 		   (self.title == other.title || [self.title isEqual:other.title]) &&
 		   (self.extended == other.extended || [self.extended isEqual:other.extended]) &&
-		   (self.dt == other.dt || [self.dt isEqual:other.dt]) &&
+		   (self.dt == other.dt || [self.dt isEqualToDate:other.dt]) &&
 		   (self.replace == other.replace) &&
 		   (self.shared == other.shared) &&
 		   (self.toread == other.toread) &&
-		   (self.tags == other.tags || [self.tags isEqual:other.tags]);
+		   (self.tags == other.tags || [self.tags isEqualToArray:other.tags]);
 }
 
 - (NSUInteger)hash {
