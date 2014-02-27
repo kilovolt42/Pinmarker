@@ -54,7 +54,7 @@
 }
 
 - (id)initWithParameters:(NSDictionary *)parameters {
-	if (self = [super init]) {
+	if (self = [self init]) {
 		NSString *url = parameters[@"url"];
 		if ([url isKindOfClass:[NSString class]]) {
 			_url = [url copy];

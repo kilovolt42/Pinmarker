@@ -15,7 +15,7 @@
 
 @interface PMAddAccountVC : UIViewController
 
-@property (weak, nonatomic) id<PMAddAccountVCDelegate> delegate;
-@property (strong, nonatomic) PMPinboardManager *manager;
+@property (nonatomic, weak) id<PMAddAccountVCDelegate> delegate;
+@property (nonatomic) PMPinboardManager *manager;
 
 @end

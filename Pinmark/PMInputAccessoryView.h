@@ -10,8 +10,8 @@
 
 @interface PMInputAccessoryView : UIInputView
 
-@property (weak, nonatomic) IBOutlet UIButton *hideKeyboardButton;
-@property (weak, nonatomic) IBOutlet UICollectionView *suggestedTagsCollectionView;
+@property (nonatomic, weak) IBOutlet UIButton *hideKeyboardButton;
+@property (nonatomic, weak) IBOutlet UICollectionView *suggestedTagsCollectionView;
 
 - (void)showSuggestedTags;
 - (void)hideSuggestedTags;

@@ -15,7 +15,7 @@
 
 @interface PMSettingsTVC : UITableViewController
 
-@property (weak, nonatomic) id<PMSettingsTVCDelegate> delegate;
-@property (strong, nonatomic) PMPinboardManager *manager;
+@property (nonatomic, weak) id<PMSettingsTVCDelegate> delegate;
+@property (nonatomic) PMPinboardManager *manager;
 
 @end

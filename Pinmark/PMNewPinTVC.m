@@ -20,25 +20,25 @@
 #import "PMAppDelegate.h"
 
 @interface PMNewPinTVC () <PMAddAccountVCDelegate, PMSettingsTVCDelegate, UITextFieldDelegate, UICollectionViewDelegate>
-@property (weak, nonatomic) IBOutlet UITextField *URLTextField;
-@property (weak, nonatomic) IBOutlet UITextField *titleTextField;
-@property (weak, nonatomic) IBOutlet UITextField *extendedTextField;
-@property (weak, nonatomic) IBOutlet UITextField *tagsTextField;
-@property (weak, nonatomic) IBOutlet UICollectionView *tagsCollectionView;
-@property (weak, nonatomic) UICollectionView *suggestedTagsCollectionView;
-@property (weak, nonatomic) IBOutlet UISwitch *toReadSwitch;
-@property (weak, nonatomic) IBOutlet UISwitch *sharedSwitch;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tagsCVHeightConstraint;
-@property (weak, nonatomic) PMInputAccessoryView *keyboardAccessory;
-@property (weak, nonatomic) id activeField;
-@property (strong, nonatomic) PMPinboardManager *manager;
+@property (nonatomic, weak) IBOutlet UITextField *URLTextField;
+@property (nonatomic, weak) IBOutlet UITextField *titleTextField;
+@property (nonatomic, weak) IBOutlet UITextField *extendedTextField;
+@property (nonatomic, weak) IBOutlet UITextField *tagsTextField;
+@property (nonatomic, weak) IBOutlet UICollectionView *tagsCollectionView;
+@property (nonatomic, weak) UICollectionView *suggestedTagsCollectionView;
+@property (nonatomic, weak) IBOutlet UISwitch *toReadSwitch;
+@property (nonatomic, weak) IBOutlet UISwitch *sharedSwitch;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *tagsCVHeightConstraint;
+@property (nonatomic, weak) PMInputAccessoryView *keyboardAccessory;
+@property (nonatomic, weak) id activeField;
+@property (nonatomic) PMPinboardManager *manager;
 @property (nonatomic, copy) void (^xSuccess)(AFHTTPRequestOperation *, id);
 @property (nonatomic, copy) void (^xFailure)(AFHTTPRequestOperation *, NSError *);
-@property (strong, nonatomic) PMBookmark *bookmark;
-@property (strong, nonatomic) PMTagsDataSource *tagsDataSource;
-@property (strong, nonatomic) PMTagsDataSource *suggestedTagsDataSource;
-@property (strong, nonatomic) PMTagCVCell *sizingCell;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *postButton;
+@property (nonatomic) PMBookmark *bookmark;
+@property (nonatomic) PMTagsDataSource *tagsDataSource;
+@property (nonatomic) PMTagsDataSource *suggestedTagsDataSource;
+@property (nonatomic) PMTagCVCell *sizingCell;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *postButton;
 @end
 
 static NSString *tagCellIdentifier = @"Tag Cell";

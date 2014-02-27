@@ -10,6 +10,6 @@
 
 @interface PMTagsDataSource : NSObject <UICollectionViewDataSource>
 
-@property (strong, nonatomic) NSArray *tags;
+@property (nonatomic, copy) NSArray *tags;
 
 @end

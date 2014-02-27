@@ -10,7 +10,7 @@
 #import "PMAppDelegate.h"
 
 @interface PMPasteboardPreferenceTVCell ()
-@property (weak, nonatomic) IBOutlet UISwitch *preferenceSwitch;
+@property (nonatomic, weak) IBOutlet UISwitch *preferenceSwitch;
 @end
 
 @implementation PMPasteboardPreferenceTVCell

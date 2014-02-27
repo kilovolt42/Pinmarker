@@ -11,7 +11,7 @@
 #import "PMPasteboardPreferenceTVCell.h"
 
 @interface PMSettingsTVC () <PMAddAccountVCDelegate>
-@property (strong, nonatomic) NSArray *accounts;
+@property (nonatomic, copy) NSArray *accounts;
 @end
 
 @implementation PMSettingsTVC
