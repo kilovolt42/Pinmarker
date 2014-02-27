@@ -11,9 +11,9 @@
 
 @interface PMPinboardManager : NSObject
 
-@property (strong, nonatomic) NSString *defaultUser; // setter does nothing if new value is not in allUsers
-@property (strong, nonatomic, readonly) NSArray *associatedUsers;
-@property (strong, nonatomic, readonly) NSArray *userTags;
+@property (nonatomic, copy) NSString *defaultUser; // setter does nothing if new value is not in allUsers
+@property (nonatomic, readonly) NSArray *associatedUsers;
+@property (nonatomic, readonly) NSArray *userTags;
 
 + (NSDictionary *)pinboardSpecificParametersFromParameters:(NSDictionary *)parameters;
 - (void)addAccountForAPIToken:(NSString *)token asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler;

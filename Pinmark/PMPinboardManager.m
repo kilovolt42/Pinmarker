@@ -11,73 +11,51 @@
 #import "PMAppDelegate.h"
 
 @interface PMPinboardManager ()
-@property (strong, nonatomic) NSString *defaultToken;
-@property (strong, nonatomic) NSArray *associatedTokens;
-@property (strong, nonatomic, readwrite) NSArray *userTags;
+@property (nonatomic, copy) NSString *defaultToken;
+@property (nonatomic, copy) NSArray *associatedTokens;
+@property (nonatomic, readwrite) NSArray *userTags;
 @end
 
 @implementation PMPinboardManager
 
 #pragma mark - Properties
 
-// sets associatedUsers
-- (void)setAssociatedTokens:(NSArray *)associatedTokens {
-	if (associatedTokens) {
-		_associatedTokens = associatedTokens;
+- (NSString *)defaultUser {
+	if (self.defaultToken) {
+		return [[self.defaultToken componentsSeparatedByString:@":"] firstObject];
+	} else {
+		return nil;
+	}
+}
+
+- (NSArray *)associatedUsers {
+	if ([self.associatedTokens count]) {
 		NSMutableArray *associatedUsers = [NSMutableArray new];
 		for (NSString *token in self.associatedTokens) {
 			[associatedUsers addObject:[[token componentsSeparatedByString:@":"] firstObject]];
 		}
-		_associatedUsers = [associatedUsers copy];
-	}
-}
-
-// sets defaultUser and userTags
-- (void)setDefaultToken:(NSString *)defaultToken {
-	if (defaultToken) {
-		_defaultToken = defaultToken;
-		_defaultUser = [[defaultToken componentsSeparatedByString:@":"] firstObject];
-		[self loadUserTags];
+		return [associatedUsers copy];
 	} else {
-		_defaultToken = nil;
-		_defaultUser = nil;
-		_userTags = nil;
+		return nil;
 	}
 }
 
-// sets defaultToken
-- (void)setDefaultUser:(NSString *)defaultUser {
-	if (defaultUser && ![defaultUser isEqualToString:_defaultUser]) {
-		_defaultUser = defaultUser;
-		NSString *tokenNumber = [self tokenNumberForUser:defaultUser];
-		if (tokenNumber) {
-			NSString *token = [NSString stringWithFormat:@"%@:%@", defaultUser, tokenNumber];
-			_defaultToken = token;
-			[self loadUserTags];
-			NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-			[userDefaults setObject:token forKey:PMDefaultTokenKey];
-			[userDefaults synchronize];
-		}
+#pragma mark -
+
+- (NSString *)defaultToken {
+	if (!_defaultToken) {
+		_defaultToken = [self.associatedTokens firstObject];
 	}
+	return _defaultToken;
 }
 
 #pragma mark - Initializers
 
 - (id)init {
 	if (self = [super init]) {
-		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-		_associatedTokens = [userDefaults valueForKey:PMAssociatedTokensKey];
-		if (_associatedTokens) {
-			NSMutableArray *associatedUsers = [NSMutableArray new];
-			for (NSString *token in _associatedTokens) {
-				[associatedUsers addObject:[[token componentsSeparatedByString:@":"] firstObject]];
-			}
-			_associatedUsers = [associatedUsers copy];
-			_defaultToken = [userDefaults valueForKey:PMDefaultTokenKey];
-			if (!_defaultToken) _defaultToken = [_associatedTokens firstObject];
-			_defaultUser = [[_defaultToken componentsSeparatedByString:@":"] firstObject];
-			[self loadUserTags];
-		}
+		_associatedTokens = [[NSUserDefaults standardUserDefaults] valueForKey:PMAssociatedTokensKey];
+		_defaultToken = [[NSUserDefaults standardUserDefaults] valueForKey:PMDefaultTokenKey];
+		if (_defaultToken) [self loadUserTags];
 	}
 	return self;
 }
@@ -275,17 +253,13 @@
 }
 
 - (void)loadUserTags {
-	__weak PMPinboardManager *weakSelf = self;
+	NSComparisonResult (^comparator)(id num1, id num2) = ^NSComparisonResult(id num1, id num2) {
+		if ([num1 integerValue] > [num2 integerValue]) return (NSComparisonResult)NSOrderedAscending;
+		else if ([num1 integerValue] < [num2 integerValue]) return (NSComparisonResult)NSOrderedDescending;
+		else return (NSComparisonResult)NSOrderedSame;
+	};
 	[self requestTags:^(NSDictionary *tags) {
-		weakSelf.userTags = [tags keysSortedByValueUsingComparator:^NSComparisonResult(id num1, id num2) {
-			if ([num1 integerValue] > [num2 integerValue]) {
-				return (NSComparisonResult)NSOrderedAscending;
-			} else if ([num1 integerValue] < [num2 integerValue]) {
-				return (NSComparisonResult)NSOrderedDescending;
-			} else {
-				return (NSComparisonResult)NSOrderedSame;
-			}
-		}];
+		self.userTags = [tags keysSortedByValueUsingComparator:comparator];
 	} failure:nil];
 }
 
