@@ -20,7 +20,7 @@
 @property (nonatomic) BOOL toread;
 @property (nonatomic, readonly, getter=isPostable) BOOL postable;
 
-- (id)initWithParameters:(NSDictionary *)parameters;
+- (instancetype)initWithParameters:(NSDictionary *)parameters;
 - (NSDictionary *)parameters;
 - (void)addTags:(NSString *)tags;
 - (void)removeTag:(NSString *)tag;

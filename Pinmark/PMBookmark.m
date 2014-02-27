@@ -39,7 +39,7 @@
 
 #pragma mark - Initializers
 
-- (id)init {
+- (instancetype)init {
 	if (self = [super init]) {
 		_url = nil;
 		_title = nil;
@@ -53,7 +53,7 @@
 	return self;
 }
 
-- (id)initWithParameters:(NSDictionary *)parameters {
+- (instancetype)initWithParameters:(NSDictionary *)parameters {
 	if (self = [self init]) {
 		NSString *url = parameters[@"url"];
 		if ([url isKindOfClass:[NSString class]]) {

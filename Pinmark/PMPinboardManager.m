@@ -51,7 +51,7 @@
 
 #pragma mark - Initializers
 
-- (id)init {
+- (instancetype)init {
 	if (self = [super init]) {
 		_associatedTokens = [[NSUserDefaults standardUserDefaults] valueForKey:PMAssociatedTokensKey];
 		_defaultToken = [[NSUserDefaults standardUserDefaults] valueForKey:PMDefaultTokenKey];
