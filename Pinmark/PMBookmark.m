@@ -13,10 +13,6 @@
 @property (nonatomic) NSDateFormatter *dateFormatter;
 @end
 
-#define DEFAULT_REPLACE_VALUE YES
-#define DEFAULT_SHARED_VALUE YES
-#define DEFAULT_TOREAD_VALUE NO
-
 @implementation PMBookmark
 
 #pragma mark - Properties
@@ -45,9 +41,9 @@
 		_title = nil;
 		_extended = nil;
 		_dt = nil;
-		_replace = DEFAULT_REPLACE_VALUE;
-		_shared = DEFAULT_SHARED_VALUE;
-		_toread = DEFAULT_TOREAD_VALUE;
+		_replace = YES;
+		_shared = YES;
+		_toread = NO;
 		_tags = nil;
 	}
 	return self;
@@ -78,22 +74,16 @@
 		NSString *replace = parameters[@"replace"];
 		if ([replace isKindOfClass:[NSString class]]) {
 			_replace = [[replace lowercaseString] isEqualToString:@"yes"];
-		} else {
-			_replace = DEFAULT_REPLACE_VALUE;
 		}
 		
 		NSString *shared = parameters[@"shared"];
 		if ([shared isKindOfClass:[NSString class]]) {
 			_shared = [[shared lowercaseString] isEqualToString:@"yes"];
-		} else {
-			_shared = DEFAULT_SHARED_VALUE;
 		}
 		
 		NSString *toread = parameters[@"toread"];
 		if ([toread isKindOfClass:[NSString class]]) {
 			_toread = [[toread lowercaseString] isEqualToString:@"yes"];
-		} else {
-			_toread = DEFAULT_TOREAD_VALUE;
 		}
 		
 		NSString *tagsString = parameters[@"tags"];
