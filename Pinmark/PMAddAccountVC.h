@@ -10,12 +10,14 @@
 #import "PMPinboardManager.h"
 
 @protocol PMAddAccountVCDelegate
-- (void)didAddAccount;
+
+- (void)didFinishAddingAccount;
+- (BOOL)shouldAddAccountAsDefault;
+
 @end
 
 @interface PMAddAccountVC : UIViewController
 
 @property (nonatomic, weak) id<PMAddAccountVCDelegate> delegate;
-@property (nonatomic) PMPinboardManager *manager;
 
 @end

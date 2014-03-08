@@ -10,6 +10,7 @@
 #import "PMNavigationVC.h"
 #import "BugshotKit.h"
 #import "TestFlight.h"
+#import "PMPinboardManager.h"
 
 NSString * const PMDidInitializeDefaults = @"PMDidInitializeDefaults";
 NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";

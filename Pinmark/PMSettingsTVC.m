@@ -9,26 +9,51 @@
 #import "PMSettingsTVC.h"
 #import "PMAddAccountVC.h"
 #import "PMPasteboardPreferenceTVCell.h"
+#import "PMPinboardManager.h"
 
 @interface PMSettingsTVC () <PMAddAccountVCDelegate>
 @property (nonatomic, copy) NSArray *accounts;
+@property (nonatomic, readonly) NSString *defaultAccount;
 @end
 
 @implementation PMSettingsTVC
 
 #pragma mark - Properties
 
-- (void)setManager:(PMPinboardManager *)manager {
-	_manager = manager;
-	self.accounts = manager.associatedUsers;
+- (void)setAccounts:(NSArray *)accounts {
+	_accounts = accounts;
+	
+	UIBarButtonItem *closeButton = self.navigationItem.leftBarButtonItem;
+	if ([accounts count]) {
+		closeButton.title = @"Close";
+		closeButton.action = @selector(close:);
+		self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	} else {
+		closeButton.title = @"Login";
+		closeButton.action = @selector(login:);
+		self.navigationItem.rightBarButtonItem = nil;
+	}
 }
 
-#pragma mark - UIViewController
+- (NSString *)defaultAccount {
+	return [[[PMPinboardManager sharedManager].defaultToken componentsSeparatedByString:@":"] firstObject];
+}
+
+#pragma mark - Life Cycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = @"Settings";
-	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[self loadAccounts];
+	[self.tableView reloadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -37,22 +62,39 @@
 		UIViewController *destinationVC = segue.destinationViewController;
 		PMAddAccountVC *addAccountVC = (PMAddAccountVC *)destinationVC;
 		addAccountVC.delegate = self;
-		addAccountVC.manager = self.manager;
 	}
 }
 
-#pragma mark - IBAction
+#pragma mark - Methods
+
+- (void)loadAccounts {
+	NSArray *tokens = [PMPinboardManager sharedManager].associatedTokens;
+	NSMutableArray *accounts = [NSMutableArray new];
+	for (NSString *token in tokens) {
+		[accounts addObject:[[token componentsSeparatedByString:@":"] firstObject]];
+	}
+	self.accounts = [accounts copy];
+}
+
+#pragma mark - Actions
 
 - (IBAction)close:(id)sender {
-	[self.delegate shouldCloseSettings];
+	[self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)login:(id)sender {
+	[self performSegueWithIdentifier:@"Login Segue" sender:self];
 }
 
 #pragma mark - PMAddAccountVCDelegate
 
-- (void)didAddAccount {
-	[self.navigationController popViewControllerAnimated:YES];
-	self.accounts = self.manager.associatedUsers;
+- (void)didFinishAddingAccount {
 	[self.tableView reloadData];
+	[self.navigationController popViewControllerAnimated:YES];
+}
+
+- (BOOL)shouldAddAccountAsDefault {
+	return NO;
 }
 
 #pragma mark - UITableViewDelegate
@@ -62,7 +104,11 @@
 	NSInteger row = indexPath.row;
 	if (section == 0 && row != [self.accounts count]) {
 		NSString *account = self.accounts[row];
-		[self.manager setDefaultUser:account];
+		
+		PMPinboardManager *manager = [PMPinboardManager sharedManager];
+		NSString *token = [account stringByAppendingFormat:@":%@", [manager tokenNumberForUsername:account]];
+		manager.defaultToken = token;
+		
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		[tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
 	}
@@ -92,7 +138,7 @@
 		} else {
 			cell = [tableView dequeueReusableCellWithIdentifier:accountCellID forIndexPath:indexPath];
 			cell.textLabel.text = self.accounts[indexPath.row];
-			if ([self.accounts[indexPath.row] isEqualToString:self.manager.defaultUser]) {
+			if ([self.accounts[indexPath.row] isEqualToString:self.defaultAccount]) {
 				cell.accessoryType = UITableViewCellAccessoryCheckmark;
 				cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
 			} else {
@@ -125,13 +171,15 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		[self.manager removeAccountForUsername:self.accounts[indexPath.row]];
-		self.accounts = self.manager.associatedUsers;
+		[[PMPinboardManager sharedManager] removeAccountForUsername:self.accounts[indexPath.row]];
+		[self loadAccounts];
 		[self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+		
 		if ([self.accounts count] == 0) {
 			[self setEditing:NO animated:YES];
+			[tableView reloadData];
 		} else {
-			NSUInteger defaultUserIndex = [self.accounts indexOfObject:self.manager.defaultUser];
+			NSUInteger defaultUserIndex = [self.accounts indexOfObject:self.defaultAccount];
 			if (defaultUserIndex != NSNotFound) {
 				UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:defaultUserIndex inSection:0]];
 				cell.accessoryType = UITableViewCellAccessoryCheckmark;

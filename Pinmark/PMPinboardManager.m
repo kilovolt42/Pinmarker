@@ -7,40 +7,19 @@
 //
 
 #import "PMPinboardManager.h"
+#import <AFNetworking/AFNetworking.h>
 #import "NSString+Pinmark.h"
 #import "PMAppDelegate.h"
 
 @interface PMPinboardManager ()
-@property (nonatomic, copy) NSString *defaultToken;
-@property (nonatomic, copy) NSArray *associatedTokens;
-@property (nonatomic, readwrite) NSArray *userTags;
+@property (nonatomic, readwrite) NSArray *associatedTokens;
 @end
 
 @implementation PMPinboardManager
 
 #pragma mark - Properties
 
-- (NSString *)defaultUser {
-	if (self.defaultToken) {
-		return [[self.defaultToken componentsSeparatedByString:@":"] firstObject];
-	} else {
-		return nil;
-	}
-}
-
-- (NSArray *)associatedUsers {
-	if ([self.associatedTokens count]) {
-		NSMutableArray *associatedUsers = [NSMutableArray new];
-		for (NSString *token in self.associatedTokens) {
-			[associatedUsers addObject:[[token componentsSeparatedByString:@":"] firstObject]];
-		}
-		return [associatedUsers copy];
-	} else {
-		return nil;
-	}
-}
-
-#pragma mark -
+@synthesize defaultToken = _defaultToken;
 
 - (NSString *)defaultToken {
 	if (!_defaultToken) {
@@ -49,18 +28,53 @@
 	return _defaultToken;
 }
 
+- (void)setDefaultToken:(NSString *)defaultToken {
+	BOOL isAssociatedToken = [self.associatedTokens containsObject:defaultToken];
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	
+	if (isAssociatedToken) {
+		_defaultToken = defaultToken;
+		[userDefaults setObject:defaultToken forKey:PMDefaultTokenKey];
+		[userDefaults synchronize];
+	}
+	
+	else if (!defaultToken) {
+		_defaultToken = nil;
+		[userDefaults removeObjectForKey:PMDefaultTokenKey];
+		[userDefaults synchronize];
+	}
+}
+
 #pragma mark - Initializers
 
 - (instancetype)init {
-	if (self = [super init]) {
+	@throw [NSException exceptionWithName:@"Singleton"
+								   reason:@"Use +sharedManager"
+								 userInfo:nil];
+	return nil;
+}
+
+- (instancetype)initPrivate {
+	self = [super init];
+	if (self) {
 		_associatedTokens = [[NSUserDefaults standardUserDefaults] valueForKey:PMAssociatedTokensKey];
 		_defaultToken = [[NSUserDefaults standardUserDefaults] valueForKey:PMDefaultTokenKey];
-		if (_defaultToken) [self loadUserTags];
 	}
 	return self;
 }
 
 #pragma mark - Methods
+
++ (instancetype)sharedManager {
+	static PMPinboardManager *sharedManager = nil;
+	
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		sharedManager = [[self alloc] initPrivate];
+	});
+	
+	return sharedManager;
+}
 
 + (NSDictionary *)pinboardSpecificParametersFromParameters:(NSDictionary *)parameters {
 	NSMutableDictionary *pinboardParameters = [NSMutableDictionary new];
@@ -70,6 +84,8 @@
 	}
 	return [pinboardParameters copy];
 }
+
+#pragma mark Manage Users
 
 - (void)addAccountForAPIToken:(NSString *)token asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -113,9 +129,23 @@
 }
 
 - (void)removeAccountForUsername:(NSString *)username {
-	NSString *token = [username stringByAppendingFormat:@":%@", [self tokenNumberForUser:username]];
+	NSString *token = [username stringByAppendingFormat:@":%@", [self tokenNumberForUsername:username]];
 	[self dissociateToken:token];
 }
+
+- (NSString *)tokenNumberForUsername:(NSString *)username {
+	for (NSString *token in self.associatedTokens) {
+		NSArray *tokenComponents = [token componentsSeparatedByString:@":"];
+		if ([[tokenComponents firstObject] isEqualToString:username]) return [tokenComponents lastObject];
+	}
+	return nil;
+}
+
+- (NSString *)authTokenForUsername:(NSString *)username {
+	return [username stringByAppendingFormat:@":%@", [self tokenNumberForUsername:username]];
+}
+
+#pragma mark Post
 
 - (void)add:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))successCallback failure:(void (^)(AFHTTPRequestOperation *, NSError *))failureCallback {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -123,8 +153,7 @@
 	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
 	
 	NSMutableDictionary *mutableParameters = [parameters mutableCopy];
-	[mutableParameters addEntriesFromDictionary:@{ @"format": @"json" }];
-	if (!mutableParameters[@"auth_token"]) mutableParameters[@"auth_token"] = self.defaultToken;
+	mutableParameters[@"format"] = @"json";
 	
 	[manager GET:@"https://api.pinboard.in/v1/posts/add"
 	  parameters:mutableParameters
@@ -138,12 +167,14 @@
 		 }];
 }
 
-- (void)requestTags:(void (^)(NSDictionary *))successCallback failure:(void (^)(NSError *))failureCallback {
+#pragma mark Request
+
+- (void)requestTagsWithAuthToken:(NSString *)authToken success:(void (^)(NSDictionary *))successCallback failure:(void (^)(NSError *))failureCallback {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
 	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
 	
-	NSDictionary *parameters = @{ @"format": @"json", @"auth_token": self.defaultToken };
+	NSDictionary *parameters = @{ @"format": @"json", @"auth_token": authToken };
 	
 	[manager GET:@"https://api.pinboard.in/v1/tags/get"
 	  parameters:parameters
@@ -163,8 +194,7 @@
 	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
 	
 	NSMutableDictionary *mutableParameters = [parameters mutableCopy];
-	[mutableParameters addEntriesFromDictionary:@{ @"format": @"json" }];
-	if (!mutableParameters[@"auth_token"]) mutableParameters[@"auth_token"] = self.defaultToken;
+	mutableParameters[@"format"] = @"json";
 	
 	[manager GET:@"https://api.pinboard.in/v1/posts/suggest"
 	  parameters:mutableParameters
@@ -178,12 +208,12 @@
 		 }];
 }
 
-- (void)requestPostForURL:(NSString *)url success:(void (^)(NSDictionary *))successCallback failure:(void (^)(NSError *))failureCallback {
+- (void)requestPostForURL:(NSString *)url withAuthToken:(NSString *)authToken success:(void (^)(NSDictionary *))successCallback failure:(void (^)(NSError *))failureCallback {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
 	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
 	
-	NSDictionary *parameters = @{@"url": url, @"format": @"json", @"auth_token": self.defaultToken };
+	NSDictionary *parameters = @{@"url": url, @"format": @"json", @"auth_token": authToken };
 	
 	[manager GET:@"https://api.pinboard.in/v1/posts/get"
 	  parameters:parameters
@@ -197,14 +227,6 @@
 		 }];
 }
 
-- (NSString *)tokenNumberForUser:(NSString *)user {
-	for (NSString *token in self.associatedTokens) {
-		NSArray *tokenComponents = [token componentsSeparatedByString:@":"];
-		if ([[tokenComponents firstObject] isEqualToString:user]) return [tokenComponents lastObject];
-	}
-	return nil;
-}
-
 #pragma mark -
 
 - (void)associateToken:(NSString *)token asDefault:(BOOL)asDefault {
@@ -213,20 +235,18 @@
 		if (![self.associatedTokens containsObject:token]) {
 			NSMutableArray *newTokens = [NSMutableArray arrayWithArray:self.associatedTokens];
 			[newTokens addObject:token];
+			self.associatedTokens = [newTokens copy];
 			[userDefaults setObject:newTokens forKey:PMAssociatedTokensKey];
 			[userDefaults synchronize];
-			self.associatedTokens = newTokens;
 		}
 	} else {
+		self.associatedTokens = @[token];
 		[userDefaults setObject:@[token] forKey:PMAssociatedTokensKey];
 		[userDefaults synchronize];
-		self.associatedTokens = @[token];
 	}
 	
 	if (asDefault || !self.defaultToken) {
 		self.defaultToken = token;
-		[userDefaults setObject:token forKey:PMDefaultTokenKey];
-		[userDefaults synchronize];
 	}
 }
 
@@ -234,33 +254,20 @@
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	NSMutableArray *newTokens = [NSMutableArray arrayWithArray:self.associatedTokens];
 	[newTokens removeObject:token];
-	[userDefaults setObject:newTokens forKey:PMAssociatedTokensKey];
-	[userDefaults synchronize];
-	self.associatedTokens = newTokens;
+	
+	if ([newTokens count]) {
+		self.associatedTokens = [newTokens copy];
+		[userDefaults setObject:newTokens forKey:PMAssociatedTokensKey];
+		[userDefaults synchronize];
+	} else {
+		self.associatedTokens = nil;
+		[userDefaults removeObjectForKey:PMAssociatedTokensKey];
+		[userDefaults synchronize];
+	}
 	
 	if ([token isEqualToString:self.defaultToken]) {
-		if ([self.associatedTokens count] > 0) {
-			self.defaultToken = self.associatedTokens[0];
-			[userDefaults setObject:self.defaultToken forKey:PMDefaultTokenKey];
-			[userDefaults synchronize];
-		} else {
-			self.defaultToken = nil;
-			[userDefaults removeObjectForKey:PMDefaultTokenKey];
-			[userDefaults removeObjectForKey:PMAssociatedTokensKey];
-			[userDefaults synchronize];
-		}
+		self.defaultToken = [self.associatedTokens firstObject];
 	}
-}
-
-- (void)loadUserTags {
-	NSComparisonResult (^comparator)(id num1, id num2) = ^NSComparisonResult(id num1, id num2) {
-		if ([num1 integerValue] > [num2 integerValue]) return (NSComparisonResult)NSOrderedAscending;
-		else if ([num1 integerValue] < [num2 integerValue]) return (NSComparisonResult)NSOrderedDescending;
-		else return (NSComparisonResult)NSOrderedSame;
-	};
-	[self requestTags:^(NSDictionary *tags) {
-		self.userTags = [tags keysSortedByValueUsingComparator:comparator];
-	} failure:nil];
 }
 
 @end

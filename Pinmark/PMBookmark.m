@@ -18,7 +18,7 @@
 #pragma mark - Properties
 
 - (BOOL)isPostable {
-	if ([self.url isPinboardPermittedURL] && [self.title length]) {
+	if ([self.url isPinboardPermittedURL] && [self.title length] && [self.authToken length]) {
 		return YES;
 	} else {
 		return NO;
@@ -37,59 +37,50 @@
 
 - (instancetype)init {
 	if (self = [super init]) {
-		_url = nil;
-		_title = nil;
-		_extended = nil;
-		_dt = nil;
+		_authToken = @"";
+		_url = @"";
+		_title = @"";
+		_extended = @"";
+		_dt = [NSDate new];
 		_replace = YES;
 		_shared = YES;
 		_toread = NO;
-		_tags = nil;
+		_tags = @[];
 	}
 	return self;
 }
 
 - (instancetype)initWithParameters:(NSDictionary *)parameters {
 	if (self = [self init]) {
-		NSString *url = parameters[@"url"];
-		if ([url isKindOfClass:[NSString class]]) {
-			_url = [url copy];
+		for (id parameter in [parameters allValues]) {
+			if (![parameter isKindOfClass:[NSString class]]) return self;
 		}
+		
+		NSString *url = parameters[@"url"];
+		if (url) _url = [url copy];
 		
 		NSString *title = parameters[@"description"];
-		if ([title isKindOfClass:[NSString class]]) {
-			_title = [title copy];
-		}
+		if (title) _title = [title copy];
 		
 		NSString *extended = parameters[@"extended"];
-		if ([extended isKindOfClass:[NSString class]]) {
-			_extended = [extended copy];
-		}
+		if (extended) _extended = [extended copy];
 		
 		NSString *dt = parameters[@"dt"];
-		if ([dt isKindOfClass:[NSString class]]) {
-			_dt = [self.dateFormatter dateFromString:dt];
-		}
+		if (dt) _dt = [self.dateFormatter dateFromString:dt];
 		
 		NSString *replace = parameters[@"replace"];
-		if ([replace isKindOfClass:[NSString class]]) {
-			_replace = [[replace lowercaseString] isEqualToString:@"yes"];
-		}
+		if (replace) _replace = [[replace lowercaseString] isEqualToString:@"yes"];
 		
 		NSString *shared = parameters[@"shared"];
-		if ([shared isKindOfClass:[NSString class]]) {
-			_shared = [[shared lowercaseString] isEqualToString:@"yes"];
-		}
+		if (shared) _shared = [[shared lowercaseString] isEqualToString:@"yes"];
 		
 		NSString *toread = parameters[@"toread"];
-		if ([toread isKindOfClass:[NSString class]]) {
-			_toread = [[toread lowercaseString] isEqualToString:@"yes"];
-		}
+		if (toread) _toread = [[toread lowercaseString] isEqualToString:@"yes"];
 		
-		NSString *tagsString = parameters[@"tags"];
-		if ([tagsString isKindOfClass:[NSString class]]) {
+		NSString *tags = parameters[@"tags"];
+		if (tags) {
 			NSCharacterSet *commaSpaceSet = [NSCharacterSet characterSetWithCharactersInString:@", "];
-			NSMutableArray *tagsArray = [NSMutableArray arrayWithArray:[tagsString componentsSeparatedByCharactersInSet:commaSpaceSet]];
+			NSMutableArray *tagsArray = [NSMutableArray arrayWithArray:[tags componentsSeparatedByCharactersInSet:commaSpaceSet]];
 			[tagsArray removeObject:@""];
 			_tags = [tagsArray copy];
 		}
@@ -100,16 +91,15 @@
 #pragma mark - Methods
 
 - (NSDictionary *)parameters {
-	NSMutableDictionary *parameters = [NSMutableDictionary new];
-	if (self.url) parameters[@"url"] = self.url;
-	if (self.title) parameters[@"description"] = self.title;
-	if (self.extended) parameters[@"extended"] = self.extended;
-	if (self.tags) parameters[@"tags"] = [self.tags componentsJoinedByString:@" "];
-	if (self.dt) parameters[@"dt"] = [self.dateFormatter stringFromDate:self.dt];
-	parameters[@"replace"] = self.replace ? @"yes" : @"no";
-	parameters[@"shared"] = self.shared ? @"yes" : @"no";
-	parameters[@"toread"] = self.toread ? @"yes" : @"no";
-	return [parameters copy];
+	return @{ @"auth_token"  : self.authToken,
+			  @"url"		 : self.url,
+			  @"description" : self.title,
+			  @"extended"	 : self.extended,
+			  @"tags"		 : self.tags,
+			  @"dt"			 : self.dt,
+			  @"replace"	 : self.replace ? @"yes" : @"no",
+			  @"shared"		 : self.shared ? @"yes" : @"no",
+			  @"toread"		 : self.toread ? @"yes" : @"no" };
 }
 
 - (void)addTags:(NSString *)tags {
@@ -161,6 +151,7 @@
 
 - (id)initWithCoder:(NSCoder *)decoder {
 	if (self = [super init]) {
+		_authToken = [decoder decodeObjectOfClass:[NSString class] forKey:@"authToken"];
 		_url = [decoder decodeObjectOfClass:[NSString class] forKey:@"url"];
 		_title = [decoder decodeObjectOfClass:[NSString class] forKey:@"title"];
 		_extended = [decoder decodeObjectOfClass:[NSString class] forKey:@"extended"];
@@ -174,6 +165,7 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
+	[encoder encodeObject:self.authToken forKey:@"authToken"];
 	[encoder encodeObject:self.url forKey:@"url"];
 	[encoder encodeObject:self.title forKey:@"title"];
 	[encoder encodeObject:self.extended forKey:@"extended"];
@@ -191,7 +183,7 @@
 #pragma mark - KVC / KVO
 
 + (NSSet *)keyPathsForValuesAffectingPostable {
-	return [NSSet setWithArray:@[@"url", @"title"]];
+	return [NSSet setWithArray:@[@"authToken", @"url", @"title"]];
 }
 
 @end

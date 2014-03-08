@@ -7,6 +7,7 @@
 //
 
 #import "PMAddAccountVC.h"
+#import "PMPinboardManager.h"
 
 @interface PMAddAccountVC () <UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
@@ -21,7 +22,7 @@
 
 @implementation PMAddAccountVC
 
-#pragma mark - UIViewController
+#pragma mark - Life Cycle
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
@@ -64,7 +65,7 @@
 	self.activeField = nil;
 }
 
-#pragma mark - IBAction
+#pragma mark - Actions
 
 /*
  *  It is possible for the user to input multiple usernames, one in the username text field and one
@@ -78,6 +79,8 @@
  *  If none of these attempts are successful the user is notified to try again.
  */
 - (IBAction)submitButtonPressed {
+	PMPinboardManager *manager = [PMPinboardManager sharedManager];
+	
 	self.statusLabel.text = @"";
 	[self.activeField resignFirstResponder];
 	[self activateActivityIndicator];
@@ -107,7 +110,7 @@
 		if (error) {
 			weakSelf.statusLabel.text = @"Please try again";
 		} else {
-			[self.delegate didAddAccount];
+			[self.delegate didFinishAddingAccount];
 		}
 	};
 	
@@ -116,12 +119,15 @@
 		if (error) {
 			if (password) {
 				[self activateActivityIndicator];
-				[self.manager addAccountForUsername:username password:password asDefault:YES completionHandler:usernamePasswordCompletionHandler];
+				[manager addAccountForUsername:username
+									  password:password
+									 asDefault:[self.delegate shouldAddAccountAsDefault]
+							 completionHandler:usernamePasswordCompletionHandler];
 			} else {
 				weakSelf.statusLabel.text = @"Please try again";
 			}
 		} else {
-			[self.delegate didAddAccount];
+			[self.delegate didFinishAddingAccount];
 		}
 	};
 	
@@ -131,23 +137,28 @@
 			if (username) {
 				[self activateActivityIndicator];
 				NSString *usernameToken = [username stringByAppendingFormat:@":%@", tokenComponents[1]];
-				[self.manager addAccountForAPIToken:usernameToken asDefault:YES completionHandler:usernameTokenCompletionHandler];
+				[manager addAccountForAPIToken:usernameToken
+									 asDefault:[self.delegate shouldAddAccountAsDefault]
+							 completionHandler:usernameTokenCompletionHandler];
 			} else {
 				weakSelf.statusLabel.text = @"Please try again";
 			}
 		} else {
-			[self.delegate didAddAccount];
+			[self.delegate didFinishAddingAccount];
 		}
 	};
 	
 	if (didProvideTwoUsernames) {
-		[self.manager addAccountForAPIToken:token asDefault:YES completionHandler:tokenCompletionHandler];
+		[manager addAccountForAPIToken:token asDefault:YES completionHandler:tokenCompletionHandler];
 	} else if (username) {
 		if (token) {
 			NSString *usernameToken = [username stringByAppendingFormat:@":%@", tokenComponents[0]];
-			[self.manager addAccountForAPIToken:usernameToken asDefault:YES completionHandler:usernameTokenCompletionHandler];
+			[manager addAccountForAPIToken:usernameToken asDefault:YES completionHandler:usernameTokenCompletionHandler];
 		} else if (password) {
-			[self.manager addAccountForUsername:username password:password asDefault:YES completionHandler:usernamePasswordCompletionHandler];
+			[manager addAccountForUsername:username
+								  password:password
+								 asDefault:[self.delegate shouldAddAccountAsDefault]
+						 completionHandler:usernamePasswordCompletionHandler];
 		} else {
 			[weakSelf deactiveActivityIndicator];
 			self.statusLabel.text = @"Password or API Token required";

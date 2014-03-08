@@ -193,11 +193,21 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="vAw-r1-hrI">
+                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" image="Cog" id="F5S-CX-Gj4">
                             <connections>
                                 <segue destination="qUK-PV-I2G" kind="modal" identifier="Settings" modalTransitionStyle="coverVertical" id="aww-kR-UBs"/>
                             </connections>
                         </barButtonItem>
+                        <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3Di-tP-UtR">
+                            <rect key="frame" x="96" y="6" width="128" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                            <state key="normal" title="Title">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
                         <barButtonItem key="rightBarButtonItem" enabled="NO" title="Post" style="done" id="K3p-4H-lk9">
                             <connections>
                                 <action selector="pin:" destination="FsJ-qN-eCd" id="o6l-D9-Sz0"/>
@@ -214,7 +224,6 @@
                         <outlet property="tagsTextField" destination="KKd-Mm-SOm" id="QLV-oK-sE3"/>
                         <outlet property="titleTextField" destination="XKO-Sk-Xpd" id="biX-G4-egF"/>
                         <outlet property="toReadSwitch" destination="uI2-u2-kLw" id="Hvg-5K-ypP"/>
-                        <segue destination="dE5-c8-mce" kind="modal" identifier="Login Segue" id="KiJ-1r-Yaf"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oUT-Ph-lRS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -321,7 +330,7 @@
         <!--Add AccountVC - New Account-->
         <scene sceneID="NR3-Q6-0Qt">
             <objects>
-                <viewController id="SEA-vV-Adi" customClass="PMAddAccountVC" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Add Account VC" id="SEA-vV-Adi" customClass="PMAddAccountVC" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="HhO-MA-3we"/>
                         <viewControllerLayoutGuide type="bottom" id="oqp-vo-Eyj"/>
@@ -438,12 +447,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p5S-9o-3tI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2434" y="-704"/>
+            <point key="canvasLocation" x="2420" y="76"/>
         </scene>
         <!--NavigationVC-->
         <scene sceneID="0Gv-dD-Qg8">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Q2S-zl-2nx" customClass="PMNavigationVC" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="New Pin Navigation" automaticallyAdjustsScrollViewInsets="NO" id="Q2S-zl-2nx" customClass="PMNavigationVC" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="wNX-Af-azj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -481,25 +490,6 @@
             </objects>
             <point key="canvasLocation" x="1382" y="76"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="ssn-p8-nMJ">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dE5-c8-mce" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" id="Vny-mb-y2v"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="5Ek-OM-GaU">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="SEA-vV-Adi" kind="relationship" relationship="rootViewController" id="9lH-lQ-vOr"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gD4-xI-al9" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1908" y="-704"/>
-        </scene>
     </scenes>
     <resources>
         <image name="1Password" width="26" height="26"/>
@@ -511,7 +501,4 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
-    <inferredMetricsTieBreakers>
-        <segue reference="Jzk-ga-GX6"/>
-    </inferredMetricsTieBreakers>
 </document>

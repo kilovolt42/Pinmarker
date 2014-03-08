@@ -7,19 +7,19 @@
 //
 
 #import "PMNewPinTVC.h"
-#import <AFNetworking/AFNetworking.h>
-#import "PMPinboardManager.h"
+#import "PMAppDelegate.h"
+
 #import "NSURL+Pinmark.h"
-#import "PMBookmark.h"
+#import "NSString+Pinmark.h"
+
 #import "PMTagCVCell.h"
 #import "PMTagsDataSource.h"
 #import "PMInputAccessoryView.h"
-#import "PMSettingsTVC.h"
-#import "PMAddAccountVC.h"
-#import "NSString+Pinmark.h"
-#import "PMAppDelegate.h"
 
-@interface PMNewPinTVC () <PMAddAccountVCDelegate, PMSettingsTVCDelegate, UITextFieldDelegate, UICollectionViewDelegate>
+#import "PMBookmark.h"
+#import "PMBookmarkStore.h"
+
+@interface PMNewPinTVC () <UITextFieldDelegate, UICollectionViewDelegate>
 @property (nonatomic, weak) IBOutlet UITextField *URLTextField;
 @property (nonatomic, weak) IBOutlet UITextField *titleTextField;
 @property (nonatomic, weak) IBOutlet UITextField *extendedTextField;
@@ -31,9 +31,8 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *tagsCVHeightConstraint;
 @property (nonatomic, weak) PMInputAccessoryView *keyboardAccessory;
 @property (nonatomic, weak) id activeField;
-@property (nonatomic) PMPinboardManager *manager;
-@property (nonatomic, copy) void (^xSuccess)(AFHTTPRequestOperation *, id);
-@property (nonatomic, copy) void (^xFailure)(AFHTTPRequestOperation *, NSError *);
+@property (nonatomic, copy) void (^xSuccess)(id);
+@property (nonatomic, copy) void (^xFailure)(NSError *);
 @property (nonatomic) PMBookmark *bookmark;
 @property (nonatomic) PMTagsDataSource *tagsDataSource;
 @property (nonatomic) PMTagsDataSource *suggestedTagsDataSource;
@@ -48,26 +47,17 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
 #pragma mark - Properties
 
-@synthesize bookmark = _bookmark;
-
-- (PMPinboardManager *)manager {
-	if (!_manager) _manager = [PMPinboardManager new];
-	return _manager;
-}
-
-- (PMBookmark *)bookmark {
-	if (!_bookmark) {
-		_bookmark = [PMBookmark new];
-		[_bookmark addObserver:self forKeyPath:@"postable" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
-	}
-	return _bookmark;
-}
-
 - (void)setBookmark:(PMBookmark *)bookmark {
-	if (_bookmark) [_bookmark removeObserver:self forKeyPath:@"postable" context:&PMNewPinTVCContext];
+	if (_bookmark) {
+		[self removeBookmarkObservers];
+	}
+	
 	_bookmark = bookmark;
-	[_bookmark addObserver:self forKeyPath:@"postable" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
-	[self updateFields];
+	
+	if (_bookmark) {
+		[self addBookmarkObservers];
+		[self updateFields];
+	}
 }
 
 - (PMTagsDataSource *)tagsDataSource {
@@ -111,7 +101,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	self.tagsTextField.inputAccessoryView = _keyboardAccessory;
 }
 
-#pragma mark - UIViewController
+#pragma mark - Life Cycle
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
@@ -130,63 +120,78 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	UIMenuController *menuController = [UIMenuController sharedMenuController];
 	UIMenuItem *deleteTagMenuItem = [[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(deleteTag:)];
 	[menuController setMenuItems:@[deleteTagMenuItem]];
+	
+	self.bookmark = [[PMBookmarkStore sharedStore] createBookmark];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-	if (!self.manager.defaultUser) [self login];
-	self.title = self.manager.defaultUser;
+- (void)dealloc {
+	[self removeBookmarkObservers];
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	if ([segue.identifier isEqualToString:@"Login Segue"]) {
-		UINavigationController *navigationController = segue.destinationViewController;
-		PMAddAccountVC *addAccountVC = [navigationController.viewControllers firstObject];
-		addAccountVC.delegate = self;
-		addAccountVC.manager = self.manager;
-	} else if ([segue.identifier isEqualToString:@"Settings"]) {
-		UINavigationController *navigationController = segue.destinationViewController;
-		PMSettingsTVC *settingsTVC = [navigationController.viewControllers firstObject];
-		settingsTVC.delegate = self;
-		settingsTVC.manager = self.manager;
+#pragma mark -
+
+- (void)applicationDidBecomeActive:(NSNotification *)notification {
+	[self attemptToPasteURLFromPasteboard];
+}
+
+- (void)applicationWillResignActive:(NSNotification *)notification {
+	if (self.activeField == self.tagsTextField) {
+		NSString *tagsText = self.tagsTextField.text;
+		self.tagsTextField.text = @"";
+		[self dismissKeyboard];
+		self.tagsTextField.text = tagsText;
+	} else {
+		[self dismissKeyboard];
 	}
 }
 
-#pragma mark - IBAction
+- (void)addBookmarkObservers {
+	[_bookmark addObserver:self forKeyPath:@"postable" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
+	[_bookmark addObserver:self forKeyPath:@"authToken" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
+}
+
+- (void)removeBookmarkObservers {
+	[self.bookmark removeObserver:self forKeyPath:@"postable" context:&PMNewPinTVCContext];
+	[self.bookmark removeObserver:self forKeyPath:@"authToken" context:&PMNewPinTVCContext];
+}
+
+#pragma mark - Actions
 
 - (IBAction)pin:(UIBarButtonItem *)sender {
 	[self dismissKeyboard]; // makes sure text field ends editing and saves text to bookmark
 	
 	[self disableFields];
-	UIActivityIndicatorView *indicatorButton = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	UIActivityIndicatorView *indicatorButton = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
 	[indicatorButton startAnimating];
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicatorButton];
 	
-	__weak PMNewPinTVC *weakSelf = self;
+	NSDictionary *responseDictionary = @{ @"missing url" : @"Invalid URL",
+										  @"must provide title" : @"Missing Title",
+										  @"item already exists" : @"Already Bookmarked" };
 	
-	[self.manager add:[self.bookmark parameters]
-			  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-				  weakSelf.navigationItem.rightBarButtonItem = sender;
-				  [weakSelf enableFields];
-				  NSString *resultCode = responseObject[@"result_code"];
-				  if (resultCode) {
-					  if ([resultCode isEqualToString:@"done"]) {
-						  [weakSelf reportSuccess];
-						  weakSelf.bookmark = [PMBookmark new];
-						  if (weakSelf.xSuccess) weakSelf.xSuccess(operation, responseObject);
-					  }
-					  else if ([resultCode isEqualToString:@"missing url"]) [weakSelf reportErrorWithMessage:@"Invalid URL"];
-					  else if ([resultCode isEqualToString:@"must provide title"]) [weakSelf reportErrorWithMessage:@"Missing Title"];
-					  else if ([resultCode isEqualToString:@"item already exists"]) [weakSelf reportErrorWithMessage:@"Already Bookmarked"];
-					  else [weakSelf reportErrorWithMessage:nil];
-				  }
-			  }
-			  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-				  weakSelf.navigationItem.rightBarButtonItem = sender;
-				  [weakSelf enableFields];
-				  [weakSelf reportErrorWithMessage:nil];
-				  if (weakSelf.xFailure) weakSelf.xFailure(operation, error);
-			  }];
+	PMBookmarkStore *store = [PMBookmarkStore sharedStore];
+	[store postBookmark:self.bookmark
+				success:^(id responseObject) {
+					self.navigationItem.rightBarButtonItem = sender;
+					[self enableFields];
+					NSString *resultCode = responseObject[@"result_code"];
+					if (resultCode) {
+						if ([resultCode isEqualToString:@"done"]) {
+							[self reportSuccess];
+							self.bookmark = [store createBookmark];
+							if (self.xSuccess) self.xSuccess(responseObject);
+						} else {
+							NSString *report = responseDictionary[resultCode];
+							[self reportErrorWithMessage:report];
+						}
+					}
+				}
+				failure:^(NSError *error) {
+					self.navigationItem.rightBarButtonItem = sender;
+					[self enableFields];
+					[self reportErrorWithMessage:nil];
+					if (self.xFailure) self.xFailure(error);
+				}];
 }
 
 - (IBAction)toggledToReadSwitch:(UISwitch *)sender {
@@ -195,6 +200,22 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
 - (IBAction)toggledSharedSwitch:(UISwitch *)sender {
 	self.bookmark.shared = !sender.on;
+}
+
+- (void)deleteTag:(id)sender {
+	NSArray *selectedItems = [self.tagsCollectionView indexPathsForSelectedItems];
+	if ([selectedItems count]) {
+		NSIndexPath *selectedIndexPath = [selectedItems firstObject];
+		PMTagCVCell *cell = (PMTagCVCell *)[self.tagsCollectionView cellForItemAtIndexPath:selectedIndexPath];
+		[self.bookmark removeTag:cell.label.text];
+		self.tagsDataSource.tags = self.bookmark.tags;
+		[self.tagsCollectionView reloadData];
+		[self updateTagsRowHeight];
+	}
+}
+
+- (void)showUsernameSheet:(id)sender {
+	
 }
 
 #pragma mark - Methods
@@ -215,18 +236,14 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	
 	NSDictionary *parameters = [url queryParameters];
 	
-	if (!parameters[@"auth_token"] && !self.manager.defaultUser) {
-		[self login];
-	}
-	
 	if ([host isEqualToString:@"x-callback-url"]) {
 		if (parameters[@"x-success"]) {
-			self.xSuccess = ^void(AFHTTPRequestOperation *operation, id responseObject) {
+			self.xSuccess = ^void(id responseObject) {
 				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[parameters[@"x-success"] urlEncodeUsingEncoding:NSUTF8StringEncoding]]];
 			};
 		}
 		if (parameters[@"x-error"]) {
-			self.xFailure = ^void(AFHTTPRequestOperation *operation, NSError *error) {
+			self.xFailure = ^void(NSError *error) {
 				NSString *xError = [NSString stringWithFormat:@"%@?errorCode=%ld&errorMessage=%@", parameters[@"x-error"], (long)[error code], [error domain]];
 				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[xError urlEncodeUsingEncoding:NSUTF8StringEncoding]]];
 			};
@@ -237,9 +254,9 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	}
 	
 	if (parameters[@"wait"] && [parameters[@"wait"] isEqualToString:@"no"]) {
-		[self.manager add:[PMPinboardManager pinboardSpecificParametersFromParameters:parameters] success:self.xSuccess failure:self.xFailure];
+		[[PMBookmarkStore sharedStore] postBookmark:self.bookmark success:self.xSuccess failure:self.xFailure];
 	} else {
-		self.bookmark = [[PMBookmark alloc] initWithParameters:parameters];
+		self.bookmark = [[PMBookmarkStore sharedStore] createBookmarkWithParameters:parameters];
 	}
 }
 
@@ -254,10 +271,6 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	self.toReadSwitch.on = self.bookmark.toread;
 	self.sharedSwitch.on = !self.bookmark.shared;
 	[self updateTagsRowHeight];
-}
-
-- (void)login {
-	[self performSegueWithIdentifier:@"Login Segue" sender:self];
 }
 
 - (void)reportSuccess {
@@ -296,18 +309,6 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	[self.keyboardAccessory hideSuggestedTags];
 }
 
-- (void)deleteTag:(id)sender {
-	NSArray *selectedItems = [self.tagsCollectionView indexPathsForSelectedItems];
-	if ([selectedItems count]) {
-		NSIndexPath *selectedIndexPath = [selectedItems firstObject];
-		PMTagCVCell *cell = (PMTagCVCell *)[self.tagsCollectionView cellForItemAtIndexPath:selectedIndexPath];
-		[self.bookmark removeTag:cell.label.text];
-		self.tagsDataSource.tags = self.bookmark.tags;
-		[self.tagsCollectionView reloadData];
-		[self updateTagsRowHeight];
-	}
-}
-
 - (void)updateTagsRowHeight {
 	[self.tableView beginUpdates];
 	[self.tableView endUpdates];
@@ -323,18 +324,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 }
 
 - (void)updateSuggestedTagsForTag:(NSString *)tag {
-	if (self.manager.userTags) {
-		NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", tag];
-		NSMutableArray *results = [NSMutableArray arrayWithArray:[self.manager.userTags filteredArrayUsingPredicate:searchPredicate]];
-		[results removeObjectsInArray:self.bookmark.tags];
-		self.suggestedTagsDataSource.tags = [results copy];
-		[self.suggestedTagsCollectionView reloadData];
-		if ([results count]) {
-			[self.keyboardAccessory showSuggestedTags];
-		} else {
-			[self.keyboardAccessory hideSuggestedTags];
-		}
-	}
+	
 }
 
 - (void)deselectAllTagCells {
@@ -385,27 +375,18 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	}
 }
 
-- (void)applicationDidBecomeActive:(NSNotification *)notification {
-	[self attemptToPasteURLFromPasteboard];
-}
-
-- (void)applicationWillResignActive:(NSNotification *)notification {
-	if (self.activeField == self.tagsTextField) {
-		NSString *tagsText = self.tagsTextField.text;
-		self.tagsTextField.text = @"";
-		[self dismissKeyboard];
-		self.tagsTextField.text = tagsText;
-	} else {
-		[self dismissKeyboard];
-	}
-}
-
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 	if (context == &PMNewPinTVCContext) {
 		if ([keyPath isEqualToString:@"postable"]) {
 			self.postButton.enabled = self.bookmark.postable;
+		}
+		else if ([keyPath isEqualToString:@"authToken"]) {
+			NSString *username = [[self.bookmark.authToken componentsSeparatedByString:@":"] firstObject];
+			UIButton *titleButton = (UIButton *)self.navigationItem.titleView;
+			[titleButton setTitle:username forState:UIControlStateNormal];
+			[titleButton addTarget:self action:@selector(showUsernameSheet:) forControlEvents:UIControlEventTouchUpInside];
 		}
 	} else {
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -425,12 +406,6 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 - (BOOL)becomeFirstResponder {
 	self.activeField = nil;
 	return [super becomeFirstResponder];
-}
-
-#pragma mark - PMAddAccountVCDelegate
-
-- (void)didAddAccount {
-	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - PMSettingsTVCDelegate

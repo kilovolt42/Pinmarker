@@ -12,6 +12,7 @@
 		27019F4518A17AFC00CDAE55 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27019F4418A17AFC00CDAE55 /* libz.dylib */; };
 		2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2703C540185F7E6500570F0C /* PMNewPinTVC.m */; };
 		270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 270C4A4918628D6A000FC061 /* PMNavigationVC.m */; };
+		270F437818C7BE9200757DCB /* PMBookmarkStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 270F437718C7BE9200757DCB /* PMBookmarkStore.m */; };
 		271FAF9918AA9F1E0011C41E /* NSString+Pinmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 271FAF9818AA9F1E0011C41E /* NSString+Pinmark.m */; };
 		272338B718BCFB6800F80497 /* PinmarkBookmarksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 272338B618BCFB6800F80497 /* PinmarkBookmarksTests.m */; };
 		272C5CD3186DFF3E0079B95E /* PMTagCVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 272C5CD2186DFF3E0079B95E /* PMTagCVCell.m */; };
@@ -71,6 +72,8 @@
 		270C4A4718628CD3000FC061 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		270C4A4818628D6A000FC061 /* PMNavigationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMNavigationVC.h; sourceTree = "<group>"; };
 		270C4A4918628D6A000FC061 /* PMNavigationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMNavigationVC.m; sourceTree = "<group>"; };
+		270F437618C7BE9200757DCB /* PMBookmarkStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMBookmarkStore.h; sourceTree = "<group>"; };
+		270F437718C7BE9200757DCB /* PMBookmarkStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBookmarkStore.m; sourceTree = "<group>"; };
 		271FAF9718AA9F1E0011C41E /* NSString+Pinmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Pinmark.h"; sourceTree = "<group>"; };
 		271FAF9818AA9F1E0011C41E /* NSString+Pinmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Pinmark.m"; sourceTree = "<group>"; };
 		272338B618BCFB6800F80497 /* PinmarkBookmarksTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinmarkBookmarksTests.m; sourceTree = "<group>"; };
@@ -226,6 +229,8 @@
 		278EF42C185B71E2003A27D3 /* Pinmark */ = {
 			isa = PBXGroup;
 			children = (
+				278EF435185B71E2003A27D3 /* PMAppDelegate.h */,
+				278EF436185B71E2003A27D3 /* PMAppDelegate.m */,
 				278EF438185B71E2003A27D3 /* Main_iPhone.storyboard */,
 				278EF43B185B71E2003A27D3 /* Main_iPad.storyboard */,
 				270C4A4818628D6A000FC061 /* PMNavigationVC.h */,
@@ -248,8 +253,6 @@
 		278EF42D185B71E2003A27D3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				278EF435185B71E2003A27D3 /* PMAppDelegate.h */,
-				278EF436185B71E2003A27D3 /* PMAppDelegate.m */,
 				2781196A186A0516006B93AB /* NSURL+Pinmark.h */,
 				2781196B186A0516006B93AB /* NSURL+Pinmark.m */,
 				271FAF9718AA9F1E0011C41E /* NSString+Pinmark.h */,
@@ -312,6 +315,8 @@
 				278119671869F917006B93AB /* PMPinboardManager.m */,
 				27D2DC3218777A9B0054D187 /* PMBookmark.h */,
 				27D2DC3318777A9B0054D187 /* PMBookmark.m */,
+				270F437618C7BE9200757DCB /* PMBookmarkStore.h */,
+				270F437718C7BE9200757DCB /* PMBookmarkStore.m */,
 			);
 			name = Bookmarks;
 			sourceTree = "<group>";
@@ -481,6 +486,7 @@
 				278EF437185B71E2003A27D3 /* PMAppDelegate.m in Sources */,
 				27C701BD18B172F8005228E4 /* PMPasteboardPreferenceTVCell.m in Sources */,
 				271FAF9918AA9F1E0011C41E /* NSString+Pinmark.m in Sources */,
+				270F437818C7BE9200757DCB /* PMBookmarkStore.m in Sources */,
 				2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */,
 				27D2DC3418777A9B0054D187 /* PMBookmark.m in Sources */,
 				277FFAC018918BE900DFD907 /* PMTagsDataSource.m in Sources */,

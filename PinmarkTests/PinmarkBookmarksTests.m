@@ -94,4 +94,16 @@
 	XCTAssert(![bookmark.tags containsObject:@"coffee"], @"Bookmark should not contain the tag 'coffee'");
 }
 
+- (void)testGarbageIn {
+	PMBookmark *bookmark = [[PMBookmark alloc] initWithParameters:@{ @"url" : @[],
+																	 @"description" : @{},
+																	 @"replace" : [NSDate date],
+																	 @"tags" : @42 }];
+	
+	XCTAssert([bookmark.url isEqualToString:@""], @"Bookmark should have a blank string URL");
+	XCTAssert([bookmark.title isEqualToString:@""], @"Bookmark should have a blank string title");
+	XCTAssert(bookmark.replace == YES, "Bookmark should have replace bool set to YES");
+	XCTAssert([bookmark.tags isEqualToArray:@[]], @"Bookmark should have an empty tags array");
+}
+
 @end
