@@ -29,8 +29,7 @@
 		278EF431185B71E2003A27D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 278EF42F185B71E2003A27D3 /* InfoPlist.strings */; };
 		278EF433185B71E2003A27D3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF432185B71E2003A27D3 /* main.m */; };
 		278EF437185B71E2003A27D3 /* PMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF436185B71E2003A27D3 /* PMAppDelegate.m */; };
-		278EF43A185B71E2003A27D3 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 278EF438185B71E2003A27D3 /* Main_iPhone.storyboard */; };
-		278EF43D185B71E2003A27D3 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 278EF43B185B71E2003A27D3 /* Main_iPad.storyboard */; };
+		278EF43A185B71E2003A27D3 /* Pinmark.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 278EF438185B71E2003A27D3 /* Pinmark.storyboard */; };
 		278EF442185B71E2003A27D3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 278EF441185B71E2003A27D3 /* Images.xcassets */; };
 		278EF449185B71E2003A27D3 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF448185B71E2003A27D3 /* XCTest.framework */; };
 		278EF44A185B71E2003A27D3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF426185B71E2003A27D3 /* Foundation.framework */; };
@@ -100,8 +99,7 @@
 		278EF434185B71E2003A27D3 /* Pinmark-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pinmark-Prefix.pch"; sourceTree = "<group>"; };
 		278EF435185B71E2003A27D3 /* PMAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PMAppDelegate.h; sourceTree = "<group>"; };
 		278EF436185B71E2003A27D3 /* PMAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PMAppDelegate.m; sourceTree = "<group>"; };
-		278EF439185B71E2003A27D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
-		278EF43C185B71E2003A27D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		278EF439185B71E2003A27D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Pinmark.storyboard; sourceTree = "<group>"; };
 		278EF441185B71E2003A27D3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		278EF447185B71E2003A27D3 /* PinmarkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinmarkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		278EF448185B71E2003A27D3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -229,10 +227,9 @@
 		278EF42C185B71E2003A27D3 /* Pinmark */ = {
 			isa = PBXGroup;
 			children = (
+				278EF438185B71E2003A27D3 /* Pinmark.storyboard */,
 				278EF435185B71E2003A27D3 /* PMAppDelegate.h */,
 				278EF436185B71E2003A27D3 /* PMAppDelegate.m */,
-				278EF438185B71E2003A27D3 /* Main_iPhone.storyboard */,
-				278EF43B185B71E2003A27D3 /* Main_iPad.storyboard */,
 				270C4A4818628D6A000FC061 /* PMNavigationVC.h */,
 				270C4A4918628D6A000FC061 /* PMNavigationVC.m */,
 				2703C53F185F7E6500570F0C /* PMNewPinTVC.h */,
@@ -405,9 +402,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				277AA7AF1896DC080015A3EF /* PMInputAccessoryView.xib in Resources */,
-				278EF43D185B71E2003A27D3 /* Main_iPad.storyboard in Resources */,
 				278EF442185B71E2003A27D3 /* Images.xcassets in Resources */,
-				278EF43A185B71E2003A27D3 /* Main_iPhone.storyboard in Resources */,
+				278EF43A185B71E2003A27D3 /* Pinmark.storyboard in Resources */,
 				272C5CD5186F626D0079B95E /* PMTagCVCell.xib in Resources */,
 				27019F25189FFD6100CDAE55 /* Inconsolata.otf in Resources */,
 				278EF431185B71E2003A27D3 /* InfoPlist.strings in Resources */,
@@ -521,20 +517,12 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		278EF438185B71E2003A27D3 /* Main_iPhone.storyboard */ = {
+		278EF438185B71E2003A27D3 /* Pinmark.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				278EF439185B71E2003A27D3 /* Base */,
 			);
-			name = Main_iPhone.storyboard;
-			sourceTree = "<group>";
-		};
-		278EF43B185B71E2003A27D3 /* Main_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				278EF43C185B71E2003A27D3 /* Base */,
-			);
-			name = Main_iPad.storyboard;
+			name = Pinmark.storyboard;
 			sourceTree = "<group>";
 		};
 		278EF451185B71E2003A27D3 /* InfoPlist.strings */ = {
