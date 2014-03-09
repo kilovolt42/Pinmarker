@@ -9,7 +9,7 @@
 #import "PMSettingsTVC.h"
 #import "PMAddAccountVC.h"
 #import "PMPasteboardPreferenceTVCell.h"
-#import "PMPinboardManager.h"
+#import "PMAccountStore.h"
 
 @interface PMSettingsTVC () <PMAddAccountVCDelegate>
 @property (nonatomic, copy) NSArray *accounts;
@@ -36,7 +36,7 @@
 }
 
 - (NSString *)defaultAccount {
-	return [[[PMPinboardManager sharedManager].defaultToken componentsSeparatedByString:@":"] firstObject];
+	return [[[PMAccountStore sharedStore].defaultToken componentsSeparatedByString:@":"] firstObject];
 }
 
 #pragma mark - Life Cycle
@@ -68,7 +68,7 @@
 #pragma mark - Methods
 
 - (void)loadAccounts {
-	NSArray *tokens = [PMPinboardManager sharedManager].associatedTokens;
+	NSArray *tokens = [PMAccountStore sharedStore].associatedTokens;
 	NSMutableArray *accounts = [NSMutableArray new];
 	for (NSString *token in tokens) {
 		[accounts addObject:[[token componentsSeparatedByString:@":"] firstObject]];
@@ -105,9 +105,9 @@
 	if (section == 0 && row != [self.accounts count]) {
 		NSString *account = self.accounts[row];
 		
-		PMPinboardManager *manager = [PMPinboardManager sharedManager];
-		NSString *token = [account stringByAppendingFormat:@":%@", [manager tokenNumberForUsername:account]];
-		manager.defaultToken = token;
+		PMAccountStore *store = [PMAccountStore sharedStore];
+		NSString *token = [account stringByAppendingFormat:@":%@", [store tokenNumberForUsername:account]];
+		store.defaultToken = token;
 		
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		[tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
@@ -171,7 +171,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		[[PMPinboardManager sharedManager] removeAccountForUsername:self.accounts[indexPath.row]];
+		[[PMAccountStore sharedStore] removeAccountForUsername:self.accounts[indexPath.row]];
 		[self loadAccounts];
 		[self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 		

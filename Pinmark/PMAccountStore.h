@@ -1,12 +1,12 @@
 //
-//  PMPinboardManager.h
+//  PMAccountStore.h
 //  Pinmark
 //
-//  Created by Kyle Stevens on 12/24/13.
-//  Copyright (c) 2013 kilovolt42. All rights reserved.
+//  Created by Kyle Stevens on 3/8/14.
+//  Copyright (c) 2014 kilovolt42. All rights reserved.
 //
 
-/* 
+/*
  * About defaultUser and defaultToken:
  *
  * Methods that access Pinboard's API never call defaultToken or defaultUser. An API token parameter
@@ -17,32 +17,19 @@
 
 #import <Foundation/Foundation.h>
 
-@class AFHTTPRequestOperation;
-
-@interface PMPinboardManager : NSObject
+@interface PMAccountStore : NSObject
 
 @property (nonatomic, copy) NSString *defaultToken;
 @property (nonatomic, readonly) NSArray *associatedTokens;
 
-+ (instancetype)sharedManager;
-+ (NSDictionary *)pinboardSpecificParametersFromParameters:(NSDictionary *)parameters;
-
-#pragma mark - Manage Users
++ (instancetype)sharedStore;
 
 - (void)addAccountForAPIToken:(NSString *)token asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler;
 - (void)addAccountForUsername:(NSString *)username password:(NSString *)password asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler;
+
 - (void)removeAccountForUsername:(NSString *)username;
+
 - (NSString *)tokenNumberForUsername:(NSString *)username;
 - (NSString *)authTokenForUsername:(NSString *)username;
-
-#pragma mark - Post
-
-- (void)add:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))successCallback failure:(void (^)(AFHTTPRequestOperation *, NSError *))failureCallback;
-
-#pragma mark - Request
-
-- (void)requestTagsWithAuthToken:(NSString *)authToken success:(void(^)(NSDictionary *))successCallback failure:(void(^)(NSError *))failureCallback;
-- (void)requestRecommendedTags:(NSDictionary *)parameters success:(void (^)(NSArray *))successCallback failure:(void (^)(NSError *))failureCallback;
-- (void)requestPostForURL:(NSString *)url withAuthToken:(NSString *)authToken success:(void (^)(NSDictionary *))successCallback failure:(void (^)(NSError *))failureCallback;
 
 @end

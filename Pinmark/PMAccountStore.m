@@ -1,21 +1,21 @@
 //
-//  PMPinboardManager.m
+//  PMAccountStore.m
 //  Pinmark
 //
-//  Created by Kyle Stevens on 12/24/13.
-//  Copyright (c) 2013 kilovolt42. All rights reserved.
+//  Created by Kyle Stevens on 3/8/14.
+//  Copyright (c) 2014 kilovolt42. All rights reserved.
 //
 
-#import "PMPinboardManager.h"
+#import "PMAccountStore.h"
 #import <AFNetworking/AFNetworking.h>
 #import "NSString+Pinmark.h"
 #import "PMAppDelegate.h"
 
-@interface PMPinboardManager ()
+@interface PMAccountStore ()
 @property (nonatomic, readwrite) NSArray *associatedTokens;
 @end
 
-@implementation PMPinboardManager
+@implementation PMAccountStore
 
 #pragma mark - Properties
 
@@ -49,7 +49,7 @@
 
 - (instancetype)init {
 	@throw [NSException exceptionWithName:@"Singleton"
-								   reason:@"Use +sharedManager"
+								   reason:@"Use +sharedStore"
 								 userInfo:nil];
 	return nil;
 }
@@ -65,27 +65,16 @@
 
 #pragma mark - Methods
 
-+ (instancetype)sharedManager {
-	static PMPinboardManager *sharedManager = nil;
++ (instancetype)sharedStore {
+	static PMAccountStore *sharedStore = nil;
 	
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		sharedManager = [[self alloc] initPrivate];
+		sharedStore = [[PMAccountStore alloc] initPrivate];
 	});
 	
-	return sharedManager;
+	return sharedStore;
 }
-
-+ (NSDictionary *)pinboardSpecificParametersFromParameters:(NSDictionary *)parameters {
-	NSMutableDictionary *pinboardParameters = [NSMutableDictionary new];
-	for (NSString *key in @[@"url", @"description", @"extended", @"tags", @"dt", @"replace", @"shared", @"toread", @"auth_token"]) {
-		if (parameters[key]) pinboardParameters[key] = parameters[key];
-		else pinboardParameters[key] = @"";
-	}
-	return [pinboardParameters copy];
-}
-
-#pragma mark Manage Users
 
 - (void)addAccountForAPIToken:(NSString *)token asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -143,88 +132,6 @@
 
 - (NSString *)authTokenForUsername:(NSString *)username {
 	return [username stringByAppendingFormat:@":%@", [self tokenNumberForUsername:username]];
-}
-
-#pragma mark Post
-
-- (void)add:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))successCallback failure:(void (^)(AFHTTPRequestOperation *, NSError *))failureCallback {
-	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
-	
-	NSMutableDictionary *mutableParameters = [parameters mutableCopy];
-	mutableParameters[@"format"] = @"json";
-	
-	[manager GET:@"https://api.pinboard.in/v1/posts/add"
-	  parameters:mutableParameters
-		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-			 NSLog(@"Response Object: %@", responseObject);
-			 if (successCallback) successCallback(operation, responseObject);
-		 }
-		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-			 NSLog(@"Error: %@", error);
-			 if (failureCallback) failureCallback(operation, error);
-		 }];
-}
-
-#pragma mark Request
-
-- (void)requestTagsWithAuthToken:(NSString *)authToken success:(void (^)(NSDictionary *))successCallback failure:(void (^)(NSError *))failureCallback {
-	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
-	
-	NSDictionary *parameters = @{ @"format": @"json", @"auth_token": authToken };
-	
-	[manager GET:@"https://api.pinboard.in/v1/tags/get"
-	  parameters:parameters
-		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-			 NSLog(@"Response Object: %@", responseObject);
-			 if (successCallback) successCallback((NSDictionary *)responseObject);
-		 }
-		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-			 NSLog(@"Error: %@", error);
-			 if (failureCallback) failureCallback(error);
-		 }];
-}
-
-- (void)requestRecommendedTags:(NSDictionary *)parameters success:(void (^)(NSArray *))successCallback failure:(void (^)(NSError *))failureCallback {
-	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
-	
-	NSMutableDictionary *mutableParameters = [parameters mutableCopy];
-	mutableParameters[@"format"] = @"json";
-	
-	[manager GET:@"https://api.pinboard.in/v1/posts/suggest"
-	  parameters:mutableParameters
-		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-			 NSLog(@"Response Object: %@", responseObject);
-			 if (successCallback) successCallback(((NSArray *)responseObject)[1][@"recommended"]);
-		 }
-		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-			 NSLog(@"Error: %@", error);
-			 if (failureCallback) failureCallback(error);
-		 }];
-}
-
-- (void)requestPostForURL:(NSString *)url withAuthToken:(NSString *)authToken success:(void (^)(NSDictionary *))successCallback failure:(void (^)(NSError *))failureCallback {
-	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
-	
-	NSDictionary *parameters = @{@"url": url, @"format": @"json", @"auth_token": authToken };
-	
-	[manager GET:@"https://api.pinboard.in/v1/posts/get"
-	  parameters:parameters
-		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-			 NSLog(@"Response Object: %@", responseObject);
-			 if (successCallback) successCallback((NSDictionary *)responseObject);
-		 }
-		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-			 NSLog(@"Error: %@", error);
-			 if (failureCallback) failureCallback(error);
-		 }];
 }
 
 #pragma mark -

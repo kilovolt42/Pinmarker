@@ -7,8 +7,9 @@
 //
 
 #import "PMBookmarkStore.h"
+#import <AFNetworking/AFNetworking.h>
 #import "PMBookmark.h"
-#import "PMPinboardManager.h"
+#import "PMAccountStore.h"
 
 @implementation PMBookmarkStore
 
@@ -44,7 +45,7 @@
 
 - (PMBookmark *)createBookmark {
 	PMBookmark *bookmark = [PMBookmark new];
-	bookmark.authToken = [PMPinboardManager sharedManager].defaultToken;
+	bookmark.authToken = [PMAccountStore sharedStore].defaultToken;
 	return bookmark;
 }
 
@@ -52,24 +53,30 @@
 	PMBookmark *bookmark = [[PMBookmark alloc] initWithParameters:parameters];
 	
 	if (!bookmark.authToken) {
-		bookmark.authToken = [PMPinboardManager sharedManager].defaultToken;
+		bookmark.authToken = [PMAccountStore sharedStore].defaultToken;
 	}
 	
 	return bookmark;
 }
 
 - (void)postBookmark:(PMBookmark *)bookmark success:(void (^)(id))successCallback failure:(void (^)(NSError *))failureCallback {
-	PMPinboardManager *manager = [PMPinboardManager sharedManager];
+	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
 	
-	void (^successBlock)(AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
-		successCallback(responseObject);
-	};
+	NSMutableDictionary *mutableParameters = [[bookmark parameters] mutableCopy];
+	mutableParameters[@"format"] = @"json";
 	
-	void (^failureBlock)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error) {
-		failureCallback(error);
-	};
-	
-	[manager add:[bookmark parameters] success:successBlock failure:failureBlock];
+	[manager GET:@"https://api.pinboard.in/v1/posts/add"
+	  parameters:mutableParameters
+		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+			 NSLog(@"Response Object: %@", responseObject);
+			 if (successCallback) successCallback(responseObject);
+		 }
+		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+			 NSLog(@"Error: %@", error);
+			 if (failureCallback) failureCallback(error);
+		 }];
 }
 
 @end

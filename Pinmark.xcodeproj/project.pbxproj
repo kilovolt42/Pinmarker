@@ -18,10 +18,10 @@
 		272C5CD3186DFF3E0079B95E /* PMTagCVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 272C5CD2186DFF3E0079B95E /* PMTagCVCell.m */; };
 		272C5CD5186F626D0079B95E /* PMTagCVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 272C5CD4186F626D0079B95E /* PMTagCVCell.xib */; };
 		273C36D518A2B8EC00184AA9 /* libBugshotKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 273C36D418A2B8EC00184AA9 /* libBugshotKit.a */; };
+		27409CAB18CBDAAE006C97BB /* PMAccountStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 27409CAA18CBDAAE006C97BB /* PMAccountStore.m */; };
 		277AA7AF1896DC080015A3EF /* PMInputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 277AA7AE1896DC080015A3EF /* PMInputAccessoryView.xib */; };
 		277AA7B21896DC200015A3EF /* PMInputAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 277AA7B11896DC200015A3EF /* PMInputAccessoryView.m */; };
 		277FFAC018918BE900DFD907 /* PMTagsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 277FFABF18918BE900DFD907 /* PMTagsDataSource.m */; };
-		278119681869F917006B93AB /* PMPinboardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 278119671869F917006B93AB /* PMPinboardManager.m */; };
 		2781196C186A0516006B93AB /* NSURL+Pinmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781196B186A0516006B93AB /* NSURL+Pinmark.m */; };
 		278EF427185B71E2003A27D3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF426185B71E2003A27D3 /* Foundation.framework */; };
 		278EF429185B71E2003A27D3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF428185B71E2003A27D3 /* CoreGraphics.framework */; };
@@ -81,13 +81,13 @@
 		272C5CD2186DFF3E0079B95E /* PMTagCVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMTagCVCell.m; sourceTree = "<group>"; };
 		272C5CD4186F626D0079B95E /* PMTagCVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMTagCVCell.xib; sourceTree = "<group>"; };
 		273C36D418A2B8EC00184AA9 /* libBugshotKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBugshotKit.a; sourceTree = "<group>"; };
+		27409CA918CBDAAE006C97BB /* PMAccountStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMAccountStore.h; sourceTree = "<group>"; };
+		27409CAA18CBDAAE006C97BB /* PMAccountStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMAccountStore.m; sourceTree = "<group>"; };
 		277AA7AE1896DC080015A3EF /* PMInputAccessoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMInputAccessoryView.xib; sourceTree = "<group>"; };
 		277AA7B01896DC200015A3EF /* PMInputAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMInputAccessoryView.h; sourceTree = "<group>"; };
 		277AA7B11896DC200015A3EF /* PMInputAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMInputAccessoryView.m; sourceTree = "<group>"; };
 		277FFABE18918BE900DFD907 /* PMTagsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMTagsDataSource.h; sourceTree = "<group>"; };
 		277FFABF18918BE900DFD907 /* PMTagsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMTagsDataSource.m; sourceTree = "<group>"; };
-		278119661869F917006B93AB /* PMPinboardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMPinboardManager.h; sourceTree = "<group>"; };
-		278119671869F917006B93AB /* PMPinboardManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMPinboardManager.m; sourceTree = "<group>"; };
 		2781196A186A0516006B93AB /* NSURL+Pinmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Pinmark.h"; sourceTree = "<group>"; };
 		2781196B186A0516006B93AB /* NSURL+Pinmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Pinmark.m"; sourceTree = "<group>"; };
 		278EF423185B71E2003A27D3 /* Pinmark.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pinmark.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -238,7 +238,7 @@
 				2703C53F185F7E6500570F0C /* PMNewPinTVC.h */,
 				2703C540185F7E6500570F0C /* PMNewPinTVC.m */,
 				27C701BE18B17300005228E4 /* Settings */,
-				27DA5B511885BB0900AEE0F5 /* Add Account */,
+				27DA5B511885BB0900AEE0F5 /* Accounts */,
 				272C5CDC1871028A0079B95E /* Tags */,
 				27DA5B521885BB1C00AEE0F5 /* Bookmarks */,
 				277AA7AE1896DC080015A3EF /* PMInputAccessoryView.xib */,
@@ -299,20 +299,20 @@
 			name = Settings;
 			sourceTree = "<group>";
 		};
-		27DA5B511885BB0900AEE0F5 /* Add Account */ = {
+		27DA5B511885BB0900AEE0F5 /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
 				27DA5B4E1885BB0500AEE0F5 /* PMAddAccountVC.h */,
 				27DA5B4F1885BB0500AEE0F5 /* PMAddAccountVC.m */,
+				27409CA918CBDAAE006C97BB /* PMAccountStore.h */,
+				27409CAA18CBDAAE006C97BB /* PMAccountStore.m */,
 			);
-			name = "Add Account";
+			name = Accounts;
 			sourceTree = "<group>";
 		};
 		27DA5B521885BB1C00AEE0F5 /* Bookmarks */ = {
 			isa = PBXGroup;
 			children = (
-				278119661869F917006B93AB /* PMPinboardManager.h */,
-				278119671869F917006B93AB /* PMPinboardManager.m */,
 				27D2DC3218777A9B0054D187 /* PMBookmark.h */,
 				27D2DC3318777A9B0054D187 /* PMBookmark.m */,
 				270F437618C7BE9200757DCB /* PMBookmarkStore.h */,
@@ -477,10 +477,10 @@
 			files = (
 				278EF433185B71E2003A27D3 /* main.m in Sources */,
 				279719D2189960A400D58BC7 /* PMSettingsTVC.m in Sources */,
+				27409CAB18CBDAAE006C97BB /* PMAccountStore.m in Sources */,
 				270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */,
 				27DA5B501885BB0500AEE0F5 /* PMAddAccountVC.m in Sources */,
 				272C5CD3186DFF3E0079B95E /* PMTagCVCell.m in Sources */,
-				278119681869F917006B93AB /* PMPinboardManager.m in Sources */,
 				277AA7B21896DC200015A3EF /* PMInputAccessoryView.m in Sources */,
 				2781196C186A0516006B93AB /* NSURL+Pinmark.m in Sources */,
 				278EF437185B71E2003A27D3 /* PMAppDelegate.m in Sources */,
