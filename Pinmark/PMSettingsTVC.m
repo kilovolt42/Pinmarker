@@ -106,8 +106,7 @@
 		NSString *account = self.accounts[row];
 		
 		PMAccountStore *store = [PMAccountStore sharedStore];
-		NSString *token = [account stringByAppendingFormat:@":%@", [store tokenNumberForUsername:account]];
-		store.defaultToken = token;
+		store.defaultToken = [store authTokenForUsername:account];
 		
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		[tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];

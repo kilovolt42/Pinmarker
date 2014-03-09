@@ -26,10 +26,7 @@
 
 - (void)addAccountForAPIToken:(NSString *)token asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler;
 - (void)addAccountForUsername:(NSString *)username password:(NSString *)password asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler;
-
 - (void)removeAccountForUsername:(NSString *)username;
-
-- (NSString *)tokenNumberForUsername:(NSString *)username;
 - (NSString *)authTokenForUsername:(NSString *)username;
 
 @end

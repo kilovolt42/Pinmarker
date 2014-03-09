@@ -56,6 +56,9 @@
 			if (![parameter isKindOfClass:[NSString class]]) return self;
 		}
 		
+		NSString *authToken = parameters[@"auth_token"];
+		if (authToken) _authToken = [authToken copy];
+		
 		NSString *url = parameters[@"url"];
 		if (url) _url = [url copy];
 		
@@ -95,8 +98,8 @@
 			  @"url"		 : self.url,
 			  @"description" : self.title,
 			  @"extended"	 : self.extended,
-			  @"tags"		 : self.tags,
-			  @"dt"			 : self.dt,
+			  @"tags"		 : [self.tags componentsJoinedByString:@" "],
+			  @"dt"			 : [self.dateFormatter stringFromDate:self.dt],
 			  @"replace"	 : self.replace ? @"yes" : @"no",
 			  @"shared"		 : self.shared ? @"yes" : @"no",
 			  @"toread"		 : self.toread ? @"yes" : @"no" };

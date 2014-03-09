@@ -122,6 +122,12 @@
 	[self dissociateToken:token];
 }
 
+- (NSString *)authTokenForUsername:(NSString *)username {
+	return [username stringByAppendingFormat:@":%@", [self tokenNumberForUsername:username]];
+}
+
+#pragma mark -
+
 - (NSString *)tokenNumberForUsername:(NSString *)username {
 	for (NSString *token in self.associatedTokens) {
 		NSArray *tokenComponents = [token componentsSeparatedByString:@":"];
@@ -129,12 +135,6 @@
 	}
 	return nil;
 }
-
-- (NSString *)authTokenForUsername:(NSString *)username {
-	return [username stringByAppendingFormat:@":%@", [self tokenNumberForUsername:username]];
-}
-
-#pragma mark -
 
 - (void)associateToken:(NSString *)token asDefault:(BOOL)asDefault {
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];

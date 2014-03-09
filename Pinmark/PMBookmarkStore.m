@@ -52,7 +52,7 @@
 - (PMBookmark *)createBookmarkWithParameters:(NSDictionary *)parameters {
 	PMBookmark *bookmark = [[PMBookmark alloc] initWithParameters:parameters];
 	
-	if (!bookmark.authToken) {
+	if (!bookmark.authToken || [bookmark.authToken isEqualToString:@""]) {
 		bookmark.authToken = [PMAccountStore sharedStore].defaultToken;
 	}
 	

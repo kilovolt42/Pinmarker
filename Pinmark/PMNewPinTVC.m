@@ -19,6 +19,8 @@
 #import "PMBookmark.h"
 #import "PMBookmarkStore.h"
 
+#import "PMTagStore.h"
+
 @interface PMNewPinTVC () <UITextFieldDelegate, UICollectionViewDelegate>
 @property (nonatomic, weak) IBOutlet UITextField *URLTextField;
 @property (nonatomic, weak) IBOutlet UITextField *titleTextField;
@@ -55,6 +57,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	_bookmark = bookmark;
 	
 	if (_bookmark) {
+		[[PMTagStore sharedStore] loadTagsForAuthToken:_bookmark.authToken];
 		[self addBookmarkObservers];
 		[self updateFields];
 	}
@@ -324,7 +327,19 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 }
 
 - (void)updateSuggestedTagsForTag:(NSString *)tag {
-	
+	NSArray *tags = [[PMTagStore sharedStore] tagsForAuthToken:self.bookmark.authToken];
+	if (tags) {
+		NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", tag];
+		NSMutableArray *results = [NSMutableArray arrayWithArray:[tags filteredArrayUsingPredicate:searchPredicate]];
+		[results removeObjectsInArray:self.bookmark.tags];
+		self.suggestedTagsDataSource.tags = [results copy];
+		[self.suggestedTagsCollectionView reloadData];
+		if ([results count]) {
+			[self.keyboardAccessory showSuggestedTags];
+		} else {
+			[self.keyboardAccessory hideSuggestedTags];
+		}
+	}
 }
 
 - (void)deselectAllTagCells {
