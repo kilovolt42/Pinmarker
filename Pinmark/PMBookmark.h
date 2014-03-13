@@ -8,6 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ * Bookmarks attempt to behave intelligently when the user account environment changes.
+ * They will respond to changes in three ways:
+ *
+ * 1) If the bookmark does not have an token and the user adds a token, the bookmark
+ *    will adopt that new token.
+ * 2) If the token the bookmark is using is updated by the user the bookmark will
+ *    use the new token.
+ * 3) If the token the bookmark is using is removed by the user the bookmark will
+ *    use the default token if one exists.
+ */
+
 @interface PMBookmark : NSObject <NSCopying, NSCoding, NSSecureCoding>
 
 @property (nonatomic, copy) NSString *authToken;

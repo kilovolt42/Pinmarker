@@ -11,6 +11,7 @@
 @protocol PMAddAccountVCDelegate
 
 - (void)didFinishAddingAccount;
+- (void)didFinishUpdatingAccount;
 - (BOOL)shouldAddAccountAsDefault;
 
 @end
@@ -18,5 +19,6 @@
 @interface PMAddAccountVC : UIViewController
 
 @property (nonatomic, weak) id<PMAddAccountVCDelegate> delegate;
+@property (nonatomic) NSString *username;
 
 @end

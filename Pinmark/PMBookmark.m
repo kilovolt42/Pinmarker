@@ -8,6 +8,7 @@
 
 #import "PMBookmark.h"
 #import "NSString+Pinmark.h"
+#import "PMAccountStore.h"
 
 @interface PMBookmark ()
 @property (nonatomic) NSDateFormatter *dateFormatter;
@@ -46,6 +47,10 @@
 		_shared = YES;
 		_toread = NO;
 		_tags = @[];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddToken:) name:PMAccountStoreDidAddTokenNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateToken:) name:PMAccountStoreDidUpdateTokenNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemoveToken:) name:PMAccountStoreDidRemoveTokenNotification object:nil];
 	}
 	return self;
 }
@@ -91,6 +96,10 @@
 	return self;
 }
 
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Methods
 
 - (NSDictionary *)parameters {
@@ -121,6 +130,27 @@
 	NSMutableArray *tempTags = [NSMutableArray arrayWithArray:self.tags];
 	[tempTags removeObject:tag];
 	self.tags = [tempTags copy];
+}
+
+- (void)didAddToken:(NSNotification *)notification {
+	if ([self.authToken isEqualToString:@""] || !self.authToken) {
+		self.authToken = notification.userInfo[PMAccountStoreTokenKey];
+	}
+}
+
+- (void)didUpdateToken:(NSNotification *)notification {
+	NSString *oldToken = notification.userInfo[PMAccountStoreOldTokenKey];
+	if ([self.authToken isEqualToString:oldToken]) {
+		NSString *newToken = notification.userInfo[PMAccountStoreTokenKey];
+		self.authToken = newToken;
+	}
+}
+
+- (void)didRemoveToken:(NSNotification *)notification {
+	NSString *removedToken = notification.userInfo[PMAccountStoreTokenKey];
+	if ([self.authToken isEqualToString:removedToken]) {
+		self.authToken = [PMAccountStore sharedStore].defaultToken;
+	}
 }
 
 #pragma mark - NSObject
