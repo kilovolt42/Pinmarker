@@ -21,7 +21,9 @@
 
 #import "PMTagStore.h"
 
-@interface PMNewPinTVC () <UITextFieldDelegate, UICollectionViewDelegate>
+#import "PMAccountStore.h"
+
+@interface PMNewPinTVC () <UITextFieldDelegate, UICollectionViewDelegate, UIActionSheetDelegate>
 @property (nonatomic, weak) IBOutlet UITextField *URLTextField;
 @property (nonatomic, weak) IBOutlet UITextField *titleTextField;
 @property (nonatomic, weak) IBOutlet UITextField *extendedTextField;
@@ -218,7 +220,22 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 }
 
 - (void)showUsernameSheet:(id)sender {
+	UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil
+													   delegate:self
+											  cancelButtonTitle:nil
+										 destructiveButtonTitle:nil
+											  otherButtonTitles:nil];
 	
+	NSArray *tokens = [PMAccountStore sharedStore].associatedTokens;
+	
+	for (NSString *title in tokens) {
+		[sheet addButtonWithTitle:[[title componentsSeparatedByString:@":"] firstObject]];
+	}
+	
+	[sheet addButtonWithTitle:@"Cancel"];
+	sheet.cancelButtonIndex = [tokens count];
+	
+	[sheet showInView:self.view.window];
 }
 
 #pragma mark - Methods
@@ -339,6 +356,8 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 		} else {
 			[self.keyboardAccessory hideSuggestedTags];
 		}
+	} else {
+		[self.keyboardAccessory hideSuggestedTags];
 	}
 }
 
@@ -402,6 +421,9 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 			UIButton *titleButton = (UIButton *)self.navigationItem.titleView;
 			[titleButton setTitle:username forState:UIControlStateNormal];
 			[titleButton addTarget:self action:@selector(showUsernameSheet:) forControlEvents:UIControlEventTouchUpInside];
+			if (self.activeField == self.tagsTextField) {
+				[self updateSuggestedTagsForTag:self.tagsTextField.text];
+			}
 		}
 	} else {
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -423,10 +445,14 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	return [super becomeFirstResponder];
 }
 
-#pragma mark - PMSettingsTVCDelegate
+#pragma mark - UIActionSheetDelegate
 
-- (void)shouldCloseSettings {
-	[self dismissViewControllerAnimated:YES completion:nil];
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	NSArray *tokens = [PMAccountStore sharedStore].associatedTokens;
+	
+	if (buttonIndex < [tokens count]) {
+		self.bookmark.authToken = tokens[buttonIndex];
+	}
 }
 
 #pragma mark - UICollectionViewDelegate
