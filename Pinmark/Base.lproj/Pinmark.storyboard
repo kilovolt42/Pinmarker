@@ -15,30 +15,45 @@
                         <sections>
                             <tableViewSection id="bBy-nq-7En">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="URL Cell" id="FYR-Mk-i9q">
-                                        <rect key="frame" x="0.0" y="99" width="320" height="44"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="URL Cell" rowHeight="67" id="FYR-Mk-i9q">
+                                        <rect key="frame" x="0.0" y="99" width="320" height="67"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FYR-Mk-i9q" id="mS5-Zy-AXs">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="URL" adjustsFontSizeToFit="NO" minimumFontSize="18" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="WYr-1Q-haB">
                                                     <rect key="frame" x="15" y="0.0" width="290" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="43" id="TQI-Sp-khF"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="URL" returnKeyType="next"/>
                                                 </textField>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J6f-bL-vpc">
+                                                    <rect key="frame" x="15" y="43" width="290" height="15"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="15" id="vc9-WK-MLw"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="J6f-bL-vpc" firstAttribute="top" secondItem="WYr-1Q-haB" secondAttribute="bottom" id="3jx-0R-CDk"/>
                                                 <constraint firstAttribute="trailing" secondItem="WYr-1Q-haB" secondAttribute="trailing" constant="15" id="WlY-NR-9EW"/>
+                                                <constraint firstAttribute="trailing" secondItem="J6f-bL-vpc" secondAttribute="trailing" constant="15" id="c6v-v3-oDa"/>
                                                 <constraint firstItem="WYr-1Q-haB" firstAttribute="top" secondItem="mS5-Zy-AXs" secondAttribute="top" id="iJH-G6-Q7d"/>
                                                 <constraint firstItem="WYr-1Q-haB" firstAttribute="leading" secondItem="mS5-Zy-AXs" secondAttribute="leading" constant="15" id="lxz-8i-jeI"/>
-                                                <constraint firstAttribute="bottom" secondItem="WYr-1Q-haB" secondAttribute="bottom" id="urx-Ty-HN5"/>
+                                                <constraint firstItem="J6f-bL-vpc" firstAttribute="leading" secondItem="mS5-Zy-AXs" secondAttribute="leading" constant="15" id="sXM-Cd-d9l"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Description Cell" id="Dt8-U4-mVg">
-                                        <rect key="frame" x="0.0" y="143" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="166" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dt8-U4-mVg" id="JQ1-kq-xJt">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -60,7 +75,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Extended Cell" id="HJE-9x-2VN">
-                                        <rect key="frame" x="0.0" y="187" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="210" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HJE-9x-2VN" id="9dm-8T-Gw7">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -82,7 +97,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tags Cell" rowHeight="88" id="Nya-DV-bfQ">
-                                        <rect key="frame" x="0.0" y="231" width="320" height="88"/>
+                                        <rect key="frame" x="0.0" y="254" width="320" height="88"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nya-DV-bfQ" id="42E-Nl-Oru">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="87"/>
@@ -124,7 +139,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="To Read Cell" id="rsj-Dw-eBk">
-                                        <rect key="frame" x="0.0" y="319" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="342" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rsj-Dw-eBk" id="aur-1S-hku">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -155,7 +170,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Shared Cell" id="jWV-Zc-s2d">
-                                        <rect key="frame" x="0.0" y="363" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="386" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jWV-Zc-s2d" id="smo-7Z-FMP">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -216,6 +231,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="URLTextField" destination="WYr-1Q-haB" id="Lo5-sv-JmT"/>
+                        <outlet property="datePostedLabel" destination="J6f-bL-vpc" id="cnw-dA-7n5"/>
                         <outlet property="extendedTextField" destination="MoP-vU-7bQ" id="prl-Ei-wJc"/>
                         <outlet property="postButton" destination="K3p-4H-lk9" id="RUc-ve-9q0"/>
                         <outlet property="sharedSwitch" destination="W9p-Du-tUZ" id="h9Y-tI-srW"/>

@@ -27,11 +27,12 @@
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *extended;
 @property (nonatomic, copy) NSArray *tags;
-@property (nonatomic, copy) NSDate *dt;
+@property (nonatomic) NSDate *dt;
 @property (nonatomic) BOOL replace;
 @property (nonatomic) BOOL shared;
 @property (nonatomic) BOOL toread;
 @property (nonatomic, readonly, getter=isPostable) BOOL postable;
+@property (nonatomic) NSDate *lastPosted;
 
 /**
  * Create a bookmark from string parameters using keys matching the Pinboard API. All values

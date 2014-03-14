@@ -25,6 +25,7 @@
 
 @interface PMNewPinTVC () <UITextFieldDelegate, UICollectionViewDelegate, UIActionSheetDelegate>
 @property (nonatomic, weak) IBOutlet UITextField *URLTextField;
+@property (weak, nonatomic) IBOutlet UILabel *datePostedLabel;
 @property (nonatomic, weak) IBOutlet UITextField *titleTextField;
 @property (nonatomic, weak) IBOutlet UITextField *extendedTextField;
 @property (nonatomic, weak) IBOutlet UITextField *tagsTextField;
@@ -42,6 +43,7 @@
 @property (nonatomic) PMTagsDataSource *suggestedTagsDataSource;
 @property (nonatomic) PMTagCVCell *sizingCell;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *postButton;
+@property (nonatomic) NSDateFormatter *dateFormatter;
 @end
 
 static NSString *tagCellIdentifier = @"Tag Cell";
@@ -106,6 +108,14 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	self.tagsTextField.inputAccessoryView = _keyboardAccessory;
 }
 
+- (NSDateFormatter *)dateFormatter {
+	if (!_dateFormatter) {
+		_dateFormatter = [NSDateFormatter new];
+		_dateFormatter.dateStyle = NSDateFormatterLongStyle;
+	}
+	return _dateFormatter;
+}
+
 #pragma mark - Life Cycle
 
 - (void)viewDidLoad {
@@ -153,11 +163,13 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 - (void)addBookmarkObservers {
 	[_bookmark addObserver:self forKeyPath:@"postable" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
 	[_bookmark addObserver:self forKeyPath:@"authToken" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
+	[_bookmark addObserver:self forKeyPath:@"lastPosted" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
 }
 
 - (void)removeBookmarkObservers {
 	[self.bookmark removeObserver:self forKeyPath:@"postable" context:&PMNewPinTVCContext];
 	[self.bookmark removeObserver:self forKeyPath:@"authToken" context:&PMNewPinTVCContext];
+	[self.bookmark removeObserver:self forKeyPath:@"lastPosted" context:&PMNewPinTVCContext];
 }
 
 #pragma mark - Actions
@@ -336,6 +348,11 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	[self.tableView scrollRectToVisible:cell.frame animated:YES];
 }
 
+- (void)updateURLRowHeight {
+	[self.tableView beginUpdates];
+	[self.tableView endUpdates];
+}
+
 - (void)keyboardDidHide:(NSNotification *)notification {
 	NSArray *selectedItems = [self.tagsCollectionView indexPathsForSelectedItems];
 	if ([selectedItems count]) {
@@ -425,6 +442,15 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 				[self updateSuggestedTagsForTag:self.tagsTextField.text];
 			}
 		}
+		else if ([keyPath isEqualToString:@"lastPosted"]) {
+			if (self.bookmark.lastPosted) {
+				self.datePostedLabel.text = [NSString stringWithFormat:@"Last posted %@", [self.dateFormatter stringFromDate:self.bookmark.lastPosted]];
+				[self updateURLRowHeight];
+			} else {
+				self.datePostedLabel.text = @"";
+				[self updateURLRowHeight];
+			}
+		}
 	} else {
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	}
@@ -465,7 +491,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 			[self dismissKeyboard];
 		}
 	} else if (collectionView == self.suggestedTagsCollectionView) {
-		[self addTags:self.suggestedTagsDataSource.tags[[indexPath item]]];
+		[self addTags:self.suggestedTagsDataSource.tags[indexPath.item]];
 		self.suggestedTagsDataSource.tags = nil;
 		[self.suggestedTagsCollectionView reloadData];
 		self.tagsTextField.text = @"";
@@ -477,9 +503,9 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
 	if (collectionView == self.tagsCollectionView) {
-		self.sizingCell.label.text = self.tagsDataSource.tags[[indexPath item]];
+		self.sizingCell.label.text = self.tagsDataSource.tags[indexPath.item];
 	} else {
-		self.sizingCell.label.text = self.suggestedTagsDataSource.tags[[indexPath item]];
+		self.sizingCell.label.text = self.suggestedTagsDataSource.tags[indexPath.item];
 	}
 	return [self.sizingCell suggestedSizeForCell];
 }
@@ -540,9 +566,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
 	NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
-	if (textField == self.URLTextField) {
-		self.bookmark.url = newString;
-	} else if (textField == self.titleTextField) {
+	if (textField == self.titleTextField) {
 		self.bookmark.title = newString;
 	} else if (textField == self.extendedTextField) {
 		self.bookmark.extended = newString;
@@ -567,7 +591,13 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.item == 3) {
+	if (indexPath.row == 0) {
+		if (self.bookmark.lastPosted) {
+			return 67.0;
+		}
+		return 44.0;
+	}
+	if (indexPath.row == 3) {
 		if ([self.tagsDataSource.tags count]) {
 			self.tagsCVHeightConstraint.constant = 44.0;
 		} else {

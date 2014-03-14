@@ -47,6 +47,7 @@
 		_shared = YES;
 		_toread = NO;
 		_tags = @[];
+		_lastPosted = nil;
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddToken:) name:PMAccountStoreDidAddTokenNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateToken:) name:PMAccountStoreDidUpdateTokenNotification object:nil];
@@ -193,6 +194,7 @@
 		_shared = [decoder decodeBoolForKey:@"shared"];
 		_toread = [decoder decodeBoolForKey:@"toread"];
 		_tags = [decoder decodeObjectOfClass:[NSArray class] forKey:@"tags"];
+		_lastPosted = [decoder decodeObjectOfClass:[NSDate class] forKey:@"lastPosted"];
 	}
 	return self;
 }
@@ -207,6 +209,7 @@
 	[encoder encodeBool:self.shared forKey:@"shared"];
 	[encoder encodeBool:self.toread forKey:@"toread"];
 	[encoder encodeObject:self.tags forKey:@"tags"];
+	[encoder encodeObject:self.lastPosted forKey:@"lastPosted"];
 }
 
 + (BOOL)supportsSecureCoding {
