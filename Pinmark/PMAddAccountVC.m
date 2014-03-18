@@ -9,16 +9,22 @@
 #import "PMAddAccountVC.h"
 #import "PMAccountStore.h"
 
-@interface PMAddAccountVC () <UITextFieldDelegate>
+@interface PMAddAccountVC () <UIActionSheetDelegate, UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
 @property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
 @property (nonatomic, weak) IBOutlet UITextField *tokenTextField;
 @property (nonatomic, weak) UIView *activeField;
 @property (nonatomic, weak) IBOutlet UIButton *submitButton;
+@property (nonatomic, weak) IBOutlet UIButton *deleteButton;
 @property (nonatomic, weak) IBOutlet UIButton *search1PasswordButton;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (nonatomic, weak) IBOutlet UILabel *statusLabel;
+@property (nonatomic, weak) IBOutlet UILabel *welcomeLabel;
+@property (nonatomic, weak) IBOutlet UILabel *instructionsLabel;
+@property (nonatomic, weak) IBOutlet UIView *formView;
 @property (nonatomic) BOOL updatingExistingAccount;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *instructionsLabelTopConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *formViewTopConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *deleteButtonTopConstraint;
 @end
 
 @implementation PMAddAccountVC
@@ -26,20 +32,19 @@
 #pragma mark - Properties
 
 - (void)setUpdatingExistingAccount:(BOOL)updatingExistingAccount {
-	if (_updatingExistingAccount == updatingExistingAccount) {
-		return;
-	}
-	
 	_updatingExistingAccount = updatingExistingAccount;
-	
 	if (_updatingExistingAccount) {
 		self.title = @"Update";
+		self.instructionsLabel.text = @"To update, enter the new API token or the account password:";
 		self.usernameTextField.enabled = NO;
 		[self.submitButton setTitle:@"Update Account" forState:UIControlStateNormal];
+		self.deleteButton.hidden = NO;
 	} else {
 		self.title = @"Add";
+		self.instructionsLabel.text = @"Add a Pinboard account:";
 		self.usernameTextField.enabled = YES;
 		[self.submitButton setTitle:@"Add Account" forState:UIControlStateNormal];
+		self.deleteButton.hidden = YES;
 	}
 }
 
@@ -63,13 +68,23 @@
 		UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
 		[self.view addGestureRecognizer:tap];
 	}
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	if (self.username) {
 		self.usernameTextField.text = self.username;
 		self.updatingExistingAccount = YES;
+	} else {
+		self.updatingExistingAccount = NO;
 	}
+}
+
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (BOOL)disablesAutomaticKeyboardDismissal {
@@ -101,6 +116,38 @@
 	}
 }
 
+- (void)keyboardWillShow:(NSNotification *)notification {
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:[notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
+	[UIView setAnimationCurve:[notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue]];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+	
+	self.instructionsLabel.alpha = 0.0;
+	self.deleteButton.alpha = 0.0;
+	
+	CGFloat displacement = self.instructionsLabel.frame.size.height;
+	self.formViewTopConstraint.constant = -displacement;
+	self.deleteButtonTopConstraint.constant = 2.0 * (displacement + 8.0);
+	[self.view layoutIfNeeded];
+	
+	[UIView commitAnimations];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:[notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
+	[UIView setAnimationCurve:[notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue]];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+	
+	self.instructionsLabel.alpha = 1.0;
+	self.deleteButton.alpha = 1.0;
+	self.formViewTopConstraint.constant = 20.0;
+	self.deleteButtonTopConstraint.constant = 8.0;
+	[self.view layoutIfNeeded];
+	
+	[UIView commitAnimations];
+}
+
 #pragma mark - Actions
 
 /*
@@ -117,7 +164,8 @@
 - (IBAction)submitButtonPressed {
 	PMAccountStore *store = [PMAccountStore sharedStore];
 	
-	self.statusLabel.text = @"";
+	self.instructionsLabel.hidden = YES;
+	self.instructionsLabel.text = @" ";
 	[self.activeField resignFirstResponder];
 	[self activateActivityIndicator];
 	
@@ -144,7 +192,12 @@
 	void (^usernamePasswordCompletionHandler)(NSError *) = ^(NSError *error) {
 		[self deactiveActivityIndicator];
 		if (error) {
-			self.statusLabel.text = @"Please try again";
+			if (error.code == -1001) {
+				self.instructionsLabel.text = @"The connection timed out, please try again later.";
+			} else {
+				self.instructionsLabel.text = @"Please try again.";
+			}
+			self.instructionsLabel.hidden = NO;
 		} else {
 			[self finish];
 		}
@@ -161,7 +214,12 @@
 					[store addAccountForUsername:username password:password asDefault:asDefault completionHandler:usernamePasswordCompletionHandler];
 				}
 			} else {
-				self.statusLabel.text = @"Please try again";
+				if (error.code == -1001) {
+					self.instructionsLabel.text = @"The connection timed out, please try again later.";
+				} else {
+					self.instructionsLabel.text = @"Please try again.";
+				}
+				self.instructionsLabel.hidden = NO;
 			}
 		} else {
 			[self finish];
@@ -180,7 +238,12 @@
 					[store addAccountForAPIToken:usernameToken asDefault:asDefault completionHandler:usernameTokenCompletionHandler];
 				}
 			} else {
-				self.statusLabel.text = @"Please try again";
+				if (error.code == -1001) {
+					self.instructionsLabel.text = @"The connection timed out, please try again later.";
+				} else {
+					self.instructionsLabel.text = @"Please try again.";
+				}
+				self.instructionsLabel.hidden = NO;
 			}
 		} else {
 			[self finish];
@@ -209,12 +272,27 @@
 			}
 		} else {
 			[self deactiveActivityIndicator];
-			self.statusLabel.text = @"Password or API Token required";
+			if (self.updatingExistingAccount) {
+				self.instructionsLabel.text = [NSString stringWithFormat:@"An API token or a password is required to update %@:", username];
+			} else {
+				self.instructionsLabel.text = [NSString stringWithFormat:@"An API token or a password is required to add %@:", username];
+			}
+			self.instructionsLabel.hidden = NO;
 		}
 	} else {
 		[self deactiveActivityIndicator];
-		self.statusLabel.text = @"Username or API Token required";
+		self.instructionsLabel.text = @"An API token or a username/password pair is required to add an account:";
+		self.instructionsLabel.hidden = NO;
 	}
+}
+
+- (IBAction)deleteButtonPressed {
+	UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:@"Are you sure you want to delete %@?", self.username]
+													   delegate:self
+											  cancelButtonTitle:@"Cancel"
+										 destructiveButtonTitle:@"Delete Account"
+											  otherButtonTitles:nil];
+	[sheet showInView:self.view.window];
 }
 
 - (IBAction)search1PasswordButtonPressed {
@@ -227,6 +305,14 @@
 							   delegate:nil
 					  cancelButtonTitle:@"OK"
 					  otherButtonTitles:nil] show];
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex == actionSheet.destructiveButtonIndex) {
+		[self.delegate didRequestToRemoveAccountForUsername:self.username];
+	}
 }
 
 #pragma mark - UITextFieldDelegate

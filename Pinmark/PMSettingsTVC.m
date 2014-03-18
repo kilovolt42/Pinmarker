@@ -14,7 +14,6 @@
 @interface PMSettingsTVC () <PMAddAccountVCDelegate>
 @property (nonatomic, copy) NSArray *accounts;
 @property (nonatomic, readonly) NSString *defaultAccount;
-@property (nonatomic) NSString *accountToEdit;
 @end
 
 @implementation PMSettingsTVC
@@ -57,20 +56,6 @@
 	[super viewDidAppear:animated];
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	if ([segue.identifier isEqualToString:@"Login Segue"]) {
-		[self setEditing:NO animated:YES];
-		UIViewController *destinationVC = segue.destinationViewController;
-		PMAddAccountVC *addAccountVC = (PMAddAccountVC *)destinationVC;
-		addAccountVC.delegate = self;
-		
-		if (self.accountToEdit) {
-			addAccountVC.username = self.accountToEdit;
-			self.accountToEdit = nil;
-		}
-	}
-}
-
 #pragma mark - Methods
 
 - (void)loadAccounts {
@@ -82,6 +67,12 @@
 	self.accounts = [accounts copy];
 }
 
+- (void)addNewAccount {
+	PMAddAccountVC *addAccountVC = [[PMAddAccountVC alloc] init];
+	addAccountVC.delegate = self;
+	[self.navigationController pushViewController:addAccountVC animated:YES];
+}
+
 #pragma mark - Actions
 
 - (IBAction)close:(id)sender {
@@ -89,7 +80,7 @@
 }
 
 - (void)login:(id)sender {
-	[self performSegueWithIdentifier:@"Login Segue" sender:self];
+	[self addNewAccount];
 }
 
 #pragma mark - PMAddAccountVCDelegate
@@ -108,21 +99,35 @@
 	return NO;
 }
 
+- (void)didRequestToRemoveAccountForUsername:(NSString *)username {
+	[[PMAccountStore sharedStore] removeAccountForUsername:username];
+	[self loadAccounts];
+	[self.tableView reloadData];
+	[self.navigationController popViewControllerAnimated:YES];
+}
+
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
 	NSInteger section = indexPath.section;
 	NSInteger row = indexPath.row;
-	if (section == 0 && row != [self.accounts count]) {
-		if (self.isEditing) {
-			PMAccountStore *store = [PMAccountStore sharedStore];
-			store.defaultToken = [store authTokenForUsername:self.accounts[row]];
-			[tableView deselectRowAtIndexPath:indexPath animated:YES];
-			[tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+	
+	if (section == 0) {
+		if (row == [self.accounts count]) {
+			[self addNewAccount];
 		} else {
-			self.accountToEdit = self.accounts[row];
-			[self performSegueWithIdentifier:@"Login Segue" sender:self];
-			[tableView deselectRowAtIndexPath:indexPath animated:YES];
+			if (self.isEditing) {
+				PMAccountStore *store = [PMAccountStore sharedStore];
+				store.defaultToken = [store authTokenForUsername:self.accounts[row]];
+				[tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+			} else {
+				PMAddAccountVC *addAccountVC = [[PMAddAccountVC alloc] init];
+				addAccountVC.delegate = self;
+				addAccountVC.username = self.accounts[row];
+				[self.navigationController pushViewController:addAccountVC animated:YES];
+			}
 		}
 	}
 }

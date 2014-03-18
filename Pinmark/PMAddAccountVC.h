@@ -14,6 +14,10 @@
 - (void)didFinishUpdatingAccount;
 - (BOOL)shouldAddAccountAsDefault;
 
+@optional
+
+- (void)didRequestToRemoveAccountForUsername:(NSString *)username;
+
 @end
 
 @interface PMAddAccountVC : UIViewController
