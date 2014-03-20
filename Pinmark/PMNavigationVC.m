@@ -15,7 +15,7 @@
 
 @implementation PMNavigationVC
 
--(UIStatusBarStyle)preferredStatusBarStyle{
+- (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;
 }
 
