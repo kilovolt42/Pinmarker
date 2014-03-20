@@ -3,19 +3,19 @@
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "Pinmark Settings.png",
+      "filename" : "Pinmarker Settings.png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "Pinmark Spotlight.png",
+      "filename" : "Pinmarker Spotlight.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "Pinmark App.png",
+      "filename" : "Pinmarker.png",
       "scale" : "2x"
     }
   ],
