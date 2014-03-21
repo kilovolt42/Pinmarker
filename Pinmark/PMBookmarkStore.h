@@ -10,20 +10,25 @@
 
 @class PMBookmark;
 
+/**
+ * Right now the bookmark store does not have any sense of a bookmark stack. When a new
+ * bookmark is created, the previously stored bookmark is over written if one existed.
+ * Users should still call -lastBookmark to obtain the previously stored bookmark or a
+ * blank bookmark if no bookmark is stored.
+ */
 @interface PMBookmarkStore : NSObject
 
 + (instancetype)sharedStore;
 
 /**
- * Creates a new blank bookmark and adds it to the bookmark stack.
+ * Creates a new blank bookmark.
  *
  * @return A new blank bookmark.
  */
 - (PMBookmark *)createBookmark;
 
 /**
- * Creates a new bookmark using the provided Pinboard complient parameters and
- * adds it to the bookmark stack.
+ * Creates a new bookmark using the provided Pinboard complient parameters.
  *
  * @param parameters Pinboard complient parameters.
  *
@@ -48,7 +53,7 @@
 - (void)postBookmark:(PMBookmark *)bookmark success:(void (^)(id))successCallback failure:(void (^)(NSError *))failureCallback;
 
 /**
- * Remove a bookmark from the bookmark stack.
+ * Remove a bookmark.
  *
  * @param bookmark Bookmark to remove.
  */

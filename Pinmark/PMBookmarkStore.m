@@ -87,7 +87,7 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	PMBookmark *bookmark = [PMBookmark new];
 	bookmark.authToken = [PMAccountStore sharedStore].defaultToken;
 	
-	[self.bookmarks addObject:bookmark];
+	self.bookmarks[0] = bookmark;
 	[bookmark addObserver:self forKeyPath:@"url" options:NSKeyValueObservingOptionInitial context:&PMBookmarkStoreContext];
 	
 	[self saveBookmarks];
@@ -102,7 +102,7 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 		bookmark.authToken = [PMAccountStore sharedStore].defaultToken;
 	}
 	
-	[self.bookmarks addObject:bookmark];
+	self.bookmarks[0] = bookmark;
 	[bookmark addObserver:self forKeyPath:@"url" options:NSKeyValueObservingOptionInitial context:&PMBookmarkStoreContext];
 	
 	[self saveBookmarks];
@@ -130,7 +130,7 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	  parameters:mutableParameters
 		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
 			 NSLog(@"Response Object: %@", responseObject);
-			 if ([responseObject[@"result_code"] isEqualToString:@"success"]) {
+			 if ([responseObject[@"result_code"] isEqualToString:@"done"]) {
 				 [bookmark removeObserver:self forKeyPath:@"url" context:&PMBookmarkStoreContext];
 				 [self.bookmarks removeObject:bookmark];
 				 [self saveBookmarks];

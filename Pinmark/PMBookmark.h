@@ -38,6 +38,8 @@
  * Create a bookmark from string parameters using keys matching the Pinboard API. All values
  * must be NSString objects, otherwise a blank bookmark is returned.
  *
+ * @param parameters Dictionary of string values with Pinboard parameter keys.
+ *
  * @return Bookmark initialized using Pinboard API compatible string parameters.
  */
 - (instancetype)initWithParameters:(NSDictionary *)parameters;
