@@ -17,6 +17,7 @@
 @property (nonatomic, weak) IBOutlet UIButton *submitButton;
 @property (nonatomic, weak) IBOutlet UIButton *deleteButton;
 @property (nonatomic, weak) IBOutlet UIButton *search1PasswordButton;
+@property (nonatomic, weak) IBOutlet UIButton *informationButton;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, weak) IBOutlet UILabel *welcomeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *instructionsLabel;
@@ -148,6 +149,26 @@
 	[UIView commitAnimations];
 }
 
+- (void)disableFields {
+	self.tokenTextField.enabled = NO;
+	self.usernameTextField.enabled = NO;
+	self.passwordTextField.enabled = NO;
+	self.submitButton.enabled = NO;
+	self.deleteButton.enabled = NO;
+	self.search1PasswordButton.enabled = NO;
+	self.informationButton.enabled = NO;
+}
+
+- (void)enableFields {
+	self.tokenTextField.enabled = YES;
+	self.usernameTextField.enabled = YES;
+	self.passwordTextField.enabled = YES;
+	self.submitButton.enabled = YES;
+	self.deleteButton.enabled = YES;
+	self.search1PasswordButton.enabled = YES;
+	self.informationButton.enabled = YES;
+}
+
 #pragma mark - Actions
 
 /*
@@ -167,6 +188,7 @@
 	self.instructionsLabel.hidden = YES;
 	self.instructionsLabel.text = @" ";
 	[self.activeField resignFirstResponder];
+	[self disableFields];
 	[self activateActivityIndicator];
 	
 	NSString *username = self.usernameTextField.text;
@@ -198,7 +220,9 @@
 				self.instructionsLabel.text = @"Please try again.";
 			}
 			self.instructionsLabel.hidden = NO;
+			[self enableFields];
 		} else {
+			[self enableFields];
 			[self finish];
 		}
 	};
@@ -220,8 +244,10 @@
 					self.instructionsLabel.text = @"Please try again.";
 				}
 				self.instructionsLabel.hidden = NO;
+				[self enableFields];
 			}
 		} else {
+			[self enableFields];
 			[self finish];
 		}
 	};
@@ -244,8 +270,10 @@
 					self.instructionsLabel.text = @"Please try again.";
 				}
 				self.instructionsLabel.hidden = NO;
+				[self enableFields];
 			}
 		} else {
+			[self enableFields];
 			[self finish];
 		}
 	};
@@ -278,11 +306,13 @@
 				self.instructionsLabel.text = [NSString stringWithFormat:@"An API token or a password is required to add %@:", username];
 			}
 			self.instructionsLabel.hidden = NO;
+			[self enableFields];
 		}
 	} else {
 		[self deactiveActivityIndicator];
 		self.instructionsLabel.text = @"An API token or a username/password pair is required to add an account:";
 		self.instructionsLabel.hidden = NO;
+		[self enableFields];
 	}
 }
 

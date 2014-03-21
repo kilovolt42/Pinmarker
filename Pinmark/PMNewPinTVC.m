@@ -405,6 +405,10 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	self.tagsTextField.enabled = NO;
 	self.toReadSwitch.enabled = NO;
 	self.sharedSwitch.enabled = NO;
+	self.navigationItem.leftBarButtonItem.enabled = NO;
+	
+	UIButton *titleButton = (UIButton *)self.navigationItem.titleView;
+	titleButton.enabled = NO;
 }
 
 - (void)enableFields {
@@ -415,6 +419,10 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	self.tagsTextField.enabled = YES;
 	self.toReadSwitch.enabled = YES;
 	self.sharedSwitch.enabled = YES;
+	self.navigationItem.leftBarButtonItem.enabled = YES;
+	
+	UIButton *titleButton = (UIButton *)self.navigationItem.titleView;
+	titleButton.enabled = YES;
 }
 
 - (void)attemptToPasteURLFromPasteboard {

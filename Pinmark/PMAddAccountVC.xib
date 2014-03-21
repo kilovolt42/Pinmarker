@@ -11,6 +11,7 @@
                 <outlet property="deleteButtonTopConstraint" destination="jlN-V1-Iw5" id="pbn-0C-pHM"/>
                 <outlet property="formView" destination="Pqz-QE-yHH" id="mqL-gQ-rC8"/>
                 <outlet property="formViewTopConstraint" destination="zuV-aK-e5h" id="Lte-nb-hgt"/>
+                <outlet property="informationButton" destination="6UU-N4-Vp2" id="EAm-yJ-N01"/>
                 <outlet property="instructionsLabel" destination="Xdt-k2-Y62" id="JHw-Fz-oeM"/>
                 <outlet property="instructionsLabelTopConstraint" destination="fIk-vN-TRV" id="UbD-pk-k0M"/>
                 <outlet property="passwordTextField" destination="XVb-Pe-knQ" id="WJv-a2-j2q"/>
