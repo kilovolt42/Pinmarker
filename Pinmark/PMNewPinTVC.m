@@ -136,7 +136,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	UIMenuItem *deleteTagMenuItem = [[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(deleteTag:)];
 	[menuController setMenuItems:@[deleteTagMenuItem]];
 	
-	self.bookmark = [[PMBookmarkStore sharedStore] createBookmark];
+	self.bookmark = [[PMBookmarkStore sharedStore] lastBookmark];
 }
 
 - (void)dealloc {
@@ -195,7 +195,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 					if (resultCode) {
 						if ([resultCode isEqualToString:@"done"]) {
 							[self reportSuccess];
-							self.bookmark = [store createBookmark];
+							self.bookmark = [store lastBookmark];
 							if (self.xSuccess) self.xSuccess(responseObject);
 						} else {
 							NSString *report = responseDictionary[resultCode];
@@ -268,9 +268,13 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	
 	NSDictionary *parameters = [url queryParameters];
 	
+	__weak PMNewPinTVC *weakSelf = self;
+	PMBookmarkStore *bookmarkStore = [PMBookmarkStore sharedStore];
+	
 	if ([host isEqualToString:@"x-callback-url"]) {
 		if (parameters[@"x-success"]) {
 			self.xSuccess = ^void(id responseObject) {
+				weakSelf.bookmark = [bookmarkStore lastBookmark];
 				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[parameters[@"x-success"] urlEncodeUsingEncoding:NSUTF8StringEncoding]]];
 			};
 		}
@@ -285,10 +289,10 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 		self.xFailure = nil;
 	}
 	
+	self.bookmark = [[PMBookmarkStore sharedStore] createBookmarkWithParameters:parameters];
+	
 	if (parameters[@"wait"] && [parameters[@"wait"] isEqualToString:@"no"]) {
 		[[PMBookmarkStore sharedStore] postBookmark:self.bookmark success:self.xSuccess failure:self.xFailure];
-	} else {
-		self.bookmark = [[PMBookmarkStore sharedStore] createBookmarkWithParameters:parameters];
 	}
 }
 

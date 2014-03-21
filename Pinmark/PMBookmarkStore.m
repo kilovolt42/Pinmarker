@@ -43,7 +43,21 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 - (instancetype)initPrivate {
 	self = [super init];
 	if (self) {
+		NSString *path = [self bookmarksArchivePath];
+		_bookmarks = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
 		
+		if (!_bookmarks) {
+			_bookmarks = [NSMutableArray new];
+		} else {
+			for (PMBookmark *bookmark in self.bookmarks) {
+				[bookmark addObserver:self forKeyPath:@"url" options:NSKeyValueObservingOptionInitial context:&PMBookmarkStoreContext];
+			}
+		}
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(applicationDidEnterBackground:)
+													 name:UIApplicationDidEnterBackgroundNotification
+												   object:nil];
 	}
 	return self;
 }
@@ -52,6 +66,8 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	for (PMBookmark *bookmark in self.bookmarks) {
 		[bookmark removeObserver:self forKeyPath:@"url" context:&PMBookmarkStoreContext];
 	}
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 #pragma mark - Methods
@@ -74,6 +90,8 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	[self.bookmarks addObject:bookmark];
 	[bookmark addObserver:self forKeyPath:@"url" options:NSKeyValueObservingOptionInitial context:&PMBookmarkStoreContext];
 	
+	[self saveBookmarks];
+	
 	return bookmark;
 }
 
@@ -87,6 +105,16 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	[self.bookmarks addObject:bookmark];
 	[bookmark addObserver:self forKeyPath:@"url" options:NSKeyValueObservingOptionInitial context:&PMBookmarkStoreContext];
 	
+	[self saveBookmarks];
+	
+	return bookmark;
+}
+
+- (PMBookmark *)lastBookmark {
+	PMBookmark *bookmark = [self.bookmarks lastObject];
+	if (!bookmark) {
+		bookmark = [self createBookmark];
+	}
 	return bookmark;
 }
 
@@ -102,14 +130,24 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	  parameters:mutableParameters
 		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
 			 NSLog(@"Response Object: %@", responseObject);
-			 [bookmark removeObserver:self forKeyPath:@"url" context:&PMBookmarkStoreContext];
-			 [self.bookmarks removeObject:bookmark];
-			 if (successCallback) successCallback(responseObject);
+			 if ([responseObject[@"result_code"] isEqualToString:@"success"]) {
+				 [bookmark removeObserver:self forKeyPath:@"url" context:&PMBookmarkStoreContext];
+				 [self.bookmarks removeObject:bookmark];
+				 [self saveBookmarks];
+				 if (successCallback) successCallback(responseObject);
+			 } else {
+				 if (failureCallback) failureCallback(nil);
+			 }
 		 }
 		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 			 NSLog(@"Error: %@", error);
 			 if (failureCallback) failureCallback(error);
 		 }];
+}
+
+- (void)discardBookmark:(PMBookmark *)bookmark {
+	[self.bookmarks removeObject:bookmark];
+	[self saveBookmarks];
 }
 
 #pragma mark -
@@ -131,6 +169,21 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 			 NSLog(@"Error: %@", error);
 			 if (failureCallback) failureCallback(error);
 		 }];
+}
+
+- (NSString *)bookmarksArchivePath {
+	NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentDirectory = [documentDirectories firstObject];
+	return [documentDirectory stringByAppendingPathComponent:@"bookmarks.archive"];
+}
+
+- (BOOL)saveBookmarks {
+	NSString *path = [self bookmarksArchivePath];
+	return [NSKeyedArchiver archiveRootObject:self.bookmarks toFile:path];
+}
+
+- (void)applicationDidEnterBackground:(NSNotification *)notification {
+	[self saveBookmarks];
 }
 
 #pragma mark - KVO
