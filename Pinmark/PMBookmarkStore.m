@@ -54,10 +54,7 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 			}
 		}
 		
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(applicationDidEnterBackground:)
-													 name:UIApplicationDidEnterBackgroundNotification
-												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	}
 	return self;
 }
@@ -67,7 +64,7 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 		[bookmark removeObserver:self forKeyPath:@"url" context:&PMBookmarkStoreContext];
 	}
 	
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Methods

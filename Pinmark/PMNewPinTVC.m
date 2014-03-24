@@ -140,6 +140,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
 - (void)dealloc {
 	[self removeBookmarkObservers];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark -
