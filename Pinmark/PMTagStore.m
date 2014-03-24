@@ -13,7 +13,13 @@
 @interface PMTagStore ()
 @property (nonatomic) NSMutableDictionary *tags;
 @property (nonatomic) NSMutableArray *tagsLoadingQueue;
+@property (nonatomic) NSMutableDictionary *tagsCoherence;
 @end
+
+typedef NS_ENUM(NSUInteger, PMTagStoreCoherence) {
+	PMTagStoreCoherenceValid,
+	PMTagStoreCoherenceDirty
+};
 
 @implementation PMTagStore
 
@@ -27,6 +33,16 @@
 - (NSMutableArray *)tagsLoadingQueue {
 	if (!_tagsLoadingQueue) _tagsLoadingQueue = [NSMutableArray new];
 	return _tagsLoadingQueue;
+}
+
+- (NSMutableDictionary *)tagCoherence {
+	if (!_tagsCoherence) {
+		_tagsCoherence = [NSMutableDictionary new];
+		for (NSString *token in [self.tags allKeys]) {
+			_tagsCoherence[token] = @(PMTagStoreCoherenceDirty);
+		}
+	}
+	return _tagsCoherence;
 }
 
 #pragma mark - Initializers
@@ -74,14 +90,20 @@
 }
 
 - (NSArray *)tagsForAuthToken:(NSString *)authToken {
-	NSArray *tags = self.tags[authToken];
+	NSNumber *coherence = self.tagCoherence[authToken];
 	
-	if (!tags) {
+	if (!coherence || [coherence unsignedIntegerValue] == PMTagStoreCoherenceDirty) {
 		[self loadTagsForAuthToken:authToken];
 	}
 	
-	return tags;
+	return self.tags[authToken];
 }
+
+- (void)markTagsDirtyForAuthToken:(NSString *)authToken {
+	self.tagsCoherence[authToken] = @(PMTagStoreCoherenceDirty);
+}
+
+#pragma mark -
 
 - (void)loadTagsForAuthToken:(NSString *)authToken {
 	if (!authToken) return;
@@ -91,13 +113,12 @@
 							   success:^(NSDictionary *tags) {
 								   self.tags[authToken] = [[[tags keysSortedByValueUsingSelector:@selector(compare:)] reverseObjectEnumerator] allObjects];
 								   [self.tagsLoadingQueue removeObject:authToken];
+								   self.tagsCoherence[authToken] = @(PMTagStoreCoherenceValid);
 								   [self saveTags];
 							   }
 							   failure:nil];
 	}
 }
-
-#pragma mark -
 
 - (void)requestTagsWithAuthToken:(NSString *)authToken success:(void (^)(NSDictionary *))successCallback failure:(void (^)(NSError *))failureCallback {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -125,8 +146,14 @@
 }
 
 - (BOOL)saveTags {
+	// Filter out tags associated with a foreign API token from URL schemes
+	NSMutableDictionary *tagsToSave = [NSMutableDictionary new];
+	for (NSString *token in [PMAccountStore sharedStore].associatedTokens) {
+		tagsToSave[token] = self.tags[token];
+	}
+	
 	NSString *path = [self tagsArchivePath];
-	return [NSKeyedArchiver archiveRootObject:self.tags toFile:path];
+	return [NSKeyedArchiver archiveRootObject:tagsToSave toFile:path];
 }
 
 - (void)tokenAdded:(NSNotification *)notificaiton {
@@ -144,6 +171,7 @@
 - (void)tokenRemoved:(NSNotification *)notificaiton {
 	NSString *token = notificaiton.userInfo[PMAccountStoreTokenKey];
 	[self.tags removeObjectForKey:token];
+	[self.tagCoherence removeObjectForKey:token];
 	[self saveTags];
 }
 

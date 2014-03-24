@@ -13,5 +13,6 @@
 + (instancetype)sharedStore;
 
 - (NSArray *)tagsForAuthToken:(NSString *)authToken;
+- (void)markTagsDirtyForAuthToken:(NSString *)authToken;
 
 @end

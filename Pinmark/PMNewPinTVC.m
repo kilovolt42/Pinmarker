@@ -64,6 +64,8 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 		[self addBookmarkObservers];
 		[self updateFields];
 	}
+	
+	[[PMTagStore sharedStore] markTagsDirtyForAuthToken:_bookmark.authToken];
 }
 
 - (PMTagsDataSource *)tagsDataSource {
