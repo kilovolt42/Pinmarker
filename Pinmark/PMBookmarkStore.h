@@ -50,7 +50,7 @@
  * @param successCallback Callback block called when posting was successful.
  * @param failureCallback Callback block called when posting was unsuccessful.
  */
-- (void)postBookmark:(PMBookmark *)bookmark success:(void (^)(id))successCallback failure:(void (^)(NSError *))failureCallback;
+- (void)postBookmark:(PMBookmark *)bookmark success:(void (^)(id))successCallback failure:(void (^)(NSError *, id))failureCallback;
 
 /**
  * Remove a bookmark.

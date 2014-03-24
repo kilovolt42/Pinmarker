@@ -125,7 +125,7 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	return bookmark;
 }
 
-- (void)postBookmark:(PMBookmark *)bookmark success:(void (^)(id))successCallback failure:(void (^)(NSError *))failureCallback {
+- (void)postBookmark:(PMBookmark *)bookmark success:(void (^)(id))successCallback failure:(void (^)(NSError *, id))failureCallback {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
 	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
@@ -143,12 +143,12 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 				 [self saveBookmarks];
 				 if (successCallback) successCallback(responseObject);
 			 } else {
-				 if (failureCallback) failureCallback(nil);
+				 if (failureCallback) failureCallback(nil, responseObject);
 			 }
 		 }
 		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 			 NSLog(@"Error: %@", error);
-			 if (failureCallback) failureCallback(error);
+			 if (failureCallback) failureCallback(error, nil);
 		 }];
 }
 

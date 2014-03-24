@@ -37,7 +37,7 @@
 @property (nonatomic, weak) PMInputAccessoryView *keyboardAccessory;
 @property (nonatomic, weak) id activeField;
 @property (nonatomic, copy) void (^xSuccess)(id);
-@property (nonatomic, copy) void (^xFailure)(NSError *);
+@property (nonatomic, copy) void (^xFailure)(NSError *, id);
 @property (nonatomic) PMBookmark *bookmark;
 @property (nonatomic) PMTagsDataSource *tagsDataSource;
 @property (nonatomic) PMTagsDataSource *suggestedTagsDataSource;
@@ -193,23 +193,22 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 				success:^(id responseObject) {
 					self.navigationItem.rightBarButtonItem = sender;
 					[self enableFields];
-					NSString *resultCode = responseObject[@"result_code"];
-					if (resultCode) {
-						if ([resultCode isEqualToString:@"done"]) {
-							[self reportSuccess];
-							self.bookmark = [store lastBookmark];
-							if (self.xSuccess) self.xSuccess(responseObject);
-						} else {
-							NSString *report = responseDictionary[resultCode];
-							[self reportErrorWithMessage:report];
-						}
+					[self reportSuccess];
+					self.bookmark = [store lastBookmark];
+					if (self.xSuccess) {
+						self.xSuccess(responseObject);
 					}
 				}
-				failure:^(NSError *error) {
+				failure:^(NSError *error, id responseObject) {
 					self.navigationItem.rightBarButtonItem = sender;
 					[self enableFields];
-					[self reportErrorWithMessage:nil];
-					if (self.xFailure) self.xFailure(error);
+					if (responseObject) {
+						NSString *resultCode = responseObject[@"result_code"];
+						[self reportErrorWithMessage:responseDictionary[resultCode]];
+					} else {
+						[self reportErrorWithMessage:nil];
+					}
+					if (self.xFailure) self.xFailure(error, responseObject);
 				}];
 }
 
@@ -281,7 +280,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 			};
 		}
 		if (parameters[@"x-error"]) {
-			self.xFailure = ^void(NSError *error) {
+			self.xFailure = ^void(NSError *error, id responseObject) {
 				NSString *xError = [NSString stringWithFormat:@"%@?errorCode=%ld&errorMessage=%@", parameters[@"x-error"], (long)[error code], [error domain]];
 				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[xError urlEncodeUsingEncoding:NSUTF8StringEncoding]]];
 			};
