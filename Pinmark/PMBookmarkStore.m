@@ -84,6 +84,11 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	PMBookmark *bookmark = [PMBookmark new];
 	bookmark.authToken = [PMAccountStore sharedStore].defaultToken;
 	
+	PMBookmark *previousBookmark = [self.bookmarks firstObject];
+	if (previousBookmark) {
+		[previousBookmark removeObserver:self forKeyPath:@"url" context:&PMBookmarkStoreContext];
+	}
+	
 	self.bookmarks[0] = bookmark;
 	[bookmark addObserver:self forKeyPath:@"url" options:NSKeyValueObservingOptionInitial context:&PMBookmarkStoreContext];
 	
@@ -97,6 +102,11 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	
 	if (!bookmark.authToken || [bookmark.authToken isEqualToString:@""]) {
 		bookmark.authToken = [PMAccountStore sharedStore].defaultToken;
+	}
+	
+	PMBookmark *previousBookmark = [self.bookmarks firstObject];
+	if (previousBookmark) {
+		[previousBookmark removeObserver:self forKeyPath:@"url" context:&PMBookmarkStoreContext];
 	}
 	
 	self.bookmarks[0] = bookmark;
