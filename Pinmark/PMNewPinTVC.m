@@ -61,7 +61,6 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	_bookmark = bookmark;
 	
 	if (_bookmark) {
-		[[PMTagStore sharedStore] loadTagsForAuthToken:_bookmark.authToken];
 		[self addBookmarkObservers];
 		[self updateFields];
 	}

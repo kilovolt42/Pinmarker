@@ -12,6 +12,8 @@
 #import "TestFlight.h"
 #import "PMAccountStore.h"
 #import "PMAddAccountVC.h"
+#import "PMTagStore.h"
+#import "PMBookmarkStore.h"
 
 NSString * const PMDidInitializeDefaults = @"PMDidInitializeDefaults";
 NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";
@@ -40,6 +42,10 @@ NSString * const PMPasteboardPreferenceKey = @"PMPasteboardPreferenceKey";
 		[TestFlight takeOff:@"b04f90cd-6ff4-4fea-a5f8-52493618c772"];
 		[BugshotKit enableWithNumberOfTouches:1 performingGestures:BSKInvocationGestureSwipeFromRightEdge feedbackEmailAddress:@"kyle@kilovolt42.com"];
 	}
+	
+	[PMAccountStore sharedStore];
+	[PMTagStore sharedStore];
+	[PMBookmarkStore sharedStore];
 	
 	NSString *token = [PMAccountStore sharedStore].defaultToken;
 	if (!token || [token isEqualToString:@""]) {

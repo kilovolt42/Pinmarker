@@ -8,6 +8,7 @@
 
 #import "PMTagStore.h"
 #import <AFNetworking/AFNetworking.h>
+#import "PMAccountStore.h"
 
 @interface PMTagStore ()
 @property (nonatomic) NSMutableDictionary *tags;
@@ -40,7 +41,17 @@
 - (instancetype)initPrivate {
 	self = [super init];
 	if (self) {
+		NSString *path = [self tagsArchivePath];
+		_tags = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
 		
+		if (!_tags) {
+			_tags = [NSMutableDictionary new];
+		}
+		
+		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+		[center addObserver:self selector:@selector(tokenAdded:) name:PMAccountStoreDidAddTokenNotification object:nil];
+		[center addObserver:self selector:@selector(tokenUpdated:) name:PMAccountStoreDidUpdateTokenNotification object:nil];
+		[center addObserver:self selector:@selector(tokenRemoved:) name:PMAccountStoreDidRemoveTokenNotification object:nil];
 	}
 	return self;
 }
@@ -76,7 +87,9 @@
 							   success:^(NSDictionary *tags) {
 								   self.tags[authToken] = [[[tags keysSortedByValueUsingSelector:@selector(compare:)] reverseObjectEnumerator] allObjects];
 								   [self.tagsLoadingQueue removeObject:authToken];
-							   } failure:nil];
+								   [self saveTags];
+							   }
+							   failure:nil];
 	}
 }
 
@@ -99,6 +112,35 @@
 			 NSLog(@"Error: %@", error);
 			 if (failureCallback) failureCallback(error);
 		 }];
+}
+
+- (NSString *)tagsArchivePath {
+	NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentDirectory = [documentDirectories firstObject];
+	return [documentDirectory stringByAppendingPathComponent:@"tags.archive"];
+}
+
+- (BOOL)saveTags {
+	NSString *path = [self tagsArchivePath];
+	return [NSKeyedArchiver archiveRootObject:self.tags toFile:path];
+}
+
+- (void)tokenAdded:(NSNotification *)notificaiton {
+	NSString *token = notificaiton.userInfo[PMAccountStoreTokenKey];
+	[self loadTagsForAuthToken:token];
+}
+
+- (void)tokenUpdated:(NSNotification *)notificaiton {
+	NSString *oldToken = notificaiton.userInfo[PMAccountStoreOldTokenKey];
+	NSString *newToken = notificaiton.userInfo[PMAccountStoreTokenKey];
+	[self.tags removeObjectForKey:oldToken];
+	[self loadTagsForAuthToken:newToken];
+}
+
+- (void)tokenRemoved:(NSNotification *)notificaiton {
+	NSString *token = notificaiton.userInfo[PMAccountStoreTokenKey];
+	[self.tags removeObjectForKey:token];
+	[self saveTags];
 }
 
 @end
