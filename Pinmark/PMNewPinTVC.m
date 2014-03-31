@@ -119,8 +119,22 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
 #pragma mark - Life Cycle
 
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
+	UIViewController *vc = nil;
+	
+	UIStoryboard *storyboard = [coder decodeObjectForKey:UIStateRestorationViewControllerStoryboardKey];
+	if (storyboard) {
+		vc = (PMNewPinTVC *)[storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+		vc.restorationClass = [self class];
+	}
+	
+	return vc;
+}
+
 - (void)viewDidLoad {
 	[super viewDidLoad];
+	
+	self.restorationClass = [self class];
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];

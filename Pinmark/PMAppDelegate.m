@@ -32,8 +32,13 @@ NSString * const PMPasteboardPreferenceKey = @"PMPasteboardPreferenceKey";
 	if (application.applicationState == UIApplicationStateInactive) {
 		if (![[NSUserDefaults standardUserDefaults] boolForKey:PMDidInitializeDefaults]) {
 			[self initializeDefaults];
+			
+			[PMAccountStore sharedStore];
+			[PMTagStore sharedStore];
+			[PMBookmarkStore sharedStore];
 		}
 	}
+	
 	return YES;
 }
 
@@ -41,17 +46,13 @@ NSString * const PMPasteboardPreferenceKey = @"PMPasteboardPreferenceKey";
 	if (application.applicationState == UIApplicationStateInactive) {
 		[TestFlight takeOff:@"b04f90cd-6ff4-4fea-a5f8-52493618c772"];
 		[BugshotKit enableWithNumberOfTouches:1 performingGestures:BSKInvocationGestureSwipeFromRightEdge feedbackEmailAddress:@"kyle@kilovolt42.com"];
-	}
-	
-	[PMAccountStore sharedStore];
-	[PMTagStore sharedStore];
-	[PMBookmarkStore sharedStore];
-	
-	NSString *token = [PMAccountStore sharedStore].defaultToken;
-	if (!token || [token isEqualToString:@""]) {
-		PMAddAccountVC *addVC = [[PMAddAccountVC alloc] init];
-		addVC.delegate = self;
-		self.window.rootViewController = addVC;
+		
+		NSString *token = [PMAccountStore sharedStore].defaultToken;
+		if (!token || [token isEqualToString:@""]) {
+			PMAddAccountVC *addVC = [[PMAddAccountVC alloc] init];
+			addVC.delegate = self;
+			self.window.rootViewController = addVC;
+		}
 	}
 	
     return YES;
@@ -66,12 +67,25 @@ NSString * const PMPasteboardPreferenceKey = @"PMPasteboardPreferenceKey";
 	return YES;
 }
 
+- (UIViewController *)application:(UIApplication *)application viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
+	return nil;
+}
+
+- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
+	return YES;
+}
+
+- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
+	return YES;
+}
+
 #pragma mark - Methods
 
 - (void)initializeDefaults {
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	[userDefaults setObject:[NSNumber numberWithBool:YES] forKey:PMPasteboardPreferenceKey];
 	[userDefaults setBool:YES forKey:PMDidInitializeDefaults];
+	[userDefaults synchronize];
 }
 
 #pragma mark - PMAddAccountVCDelegate

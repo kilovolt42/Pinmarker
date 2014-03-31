@@ -15,6 +15,18 @@
 
 @implementation PMNavigationVC
 
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
+	UIViewController *vc = nil;
+	
+	UIStoryboard *storyboard = [coder decodeObjectForKey:UIStateRestorationViewControllerStoryboardKey];
+	if (storyboard) {
+		vc = (PMNewPinTVC *)[storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+		vc.restorationClass = [self class];
+	}
+	
+	return vc;
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;
 }
@@ -25,6 +37,11 @@
 		PMNewPinTVC *newPinTVC = (PMNewPinTVC *)viewController;
 		[newPinTVC openURL:url sourceApplication:sourceApplication annotation:annotation];
 	}
+}
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	self.restorationClass = [self class];
 }
 
 @end

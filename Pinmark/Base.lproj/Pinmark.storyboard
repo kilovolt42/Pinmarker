@@ -7,7 +7,7 @@
         <!--New PinTVC-->
         <scene sceneID="dJk-K7-FsA">
             <objects>
-                <tableViewController id="FsJ-qN-eCd" customClass="PMNewPinTVC" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="PMNewPinTVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="FsJ-qN-eCd" customClass="PMNewPinTVC" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="Z5c-9N-ie7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -343,7 +343,7 @@
         <!--NavigationVC-->
         <scene sceneID="0Gv-dD-Qg8">
             <objects>
-                <navigationController storyboardIdentifier="New Pin Navigation" automaticallyAdjustsScrollViewInsets="NO" id="Q2S-zl-2nx" customClass="PMNavigationVC" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="PMNavigationVC" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Q2S-zl-2nx" customClass="PMNavigationVC" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="wNX-Af-azj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

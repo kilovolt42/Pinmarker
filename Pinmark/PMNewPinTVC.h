@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PMNewPinTVC : UITableViewController
+@interface PMNewPinTVC : UITableViewController <UIViewControllerRestoration>
 
 - (void)openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation;
 
