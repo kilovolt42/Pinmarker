@@ -1,6 +1,6 @@
 //
 //  PMAddAccountVC.m
-//  Pinmark
+//  Pinmarker
 //
 //  Created by Kyle Stevens on 1/14/14.
 //  Copyright (c) 2014 kilovolt42. All rights reserved.
@@ -330,7 +330,7 @@
 
 - (IBAction)informationButtonPressed {
 	[[[UIAlertView alloc] initWithTitle:@"About Your Account"
-								message:@"Pinmark uses your password to obtain your API token. Pinmark only keeps a copy of your API token, not your password. If you change your API token you will need to login again to continue using Pinmark."
+								message:@"Pinmarker uses your password to obtain your API token. Pinmarker only keeps a copy of your API token, not your password. If you change your API token you will need to login again to continue using Pinmarker."
 							   delegate:nil
 					  cancelButtonTitle:@"OK"
 					  otherButtonTitles:nil] show];

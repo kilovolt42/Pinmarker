@@ -26,11 +26,11 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.kilovolt42.pinmark.schemes</string>
+			<string>com.kilovolt42.pinmarker.schemes</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.kilovolt42.pinmark</string>
-				<string>pinmark</string>
+				<string>com.kilovolt42.pinmarker</string>
+				<string>pinmarker</string>
 			</array>
 		</dict>
 	</array>
@@ -41,7 +41,7 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Pinmark</string>
 	<key>UIMainStoryboardFile~ipad</key>
-	<string>Main_iPad</string>
+	<string></string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

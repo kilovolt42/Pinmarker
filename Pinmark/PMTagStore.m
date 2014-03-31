@@ -1,6 +1,6 @@
 //
 //  PMTagStore.m
-//  Pinmark
+//  Pinmarker
 //
 //  Created by Kyle Stevens on 3/8/14.
 //  Copyright (c) 2014 kilovolt42. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  PMAddAccountVC.h
-//  Pinmark
+//  Pinmarker
 //
 //  Created by Kyle Stevens on 1/14/14.
 //  Copyright (c) 2014 kilovolt42. All rights reserved.

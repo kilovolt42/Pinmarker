@@ -1,6 +1,6 @@
 //
 //  PMTagCell.m
-//  Pinmark
+//  Pinmarker
 //
 //  Created by Kyle Stevens on 12/27/13.
 //  Copyright (c) 2013 kilovolt42. All rights reserved.
