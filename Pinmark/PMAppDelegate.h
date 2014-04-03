@@ -11,7 +11,6 @@
 extern NSString * const PMDidInitializeDefaults;
 extern NSString * const PMAssociatedTokensKey;
 extern NSString * const PMDefaultTokenKey;
-extern NSString * const PMPasteboardPreferenceKey;
 
 @interface PMAppDelegate : UIResponder <UIApplicationDelegate>
 

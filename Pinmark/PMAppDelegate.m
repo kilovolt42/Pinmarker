@@ -15,10 +15,8 @@
 #import "PMTagStore.h"
 #import "PMBookmarkStore.h"
 
-NSString * const PMDidInitializeDefaults = @"PMDidInitializeDefaults";
 NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";
 NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
-NSString * const PMPasteboardPreferenceKey = @"PMPasteboardPreferenceKey";
 
 @interface PMAppDelegate () <PMAddAccountVCDelegate>
 
@@ -30,13 +28,9 @@ NSString * const PMPasteboardPreferenceKey = @"PMPasteboardPreferenceKey";
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	if (application.applicationState == UIApplicationStateInactive) {
-		if (![[NSUserDefaults standardUserDefaults] boolForKey:PMDidInitializeDefaults]) {
-			[self initializeDefaults];
-			
-			[PMAccountStore sharedStore];
-			[PMTagStore sharedStore];
-			[PMBookmarkStore sharedStore];
-		}
+		[PMAccountStore sharedStore];
+		[PMTagStore sharedStore];
+		[PMBookmarkStore sharedStore];
 	}
 	
 	return YES;
@@ -77,15 +71,6 @@ NSString * const PMPasteboardPreferenceKey = @"PMPasteboardPreferenceKey";
 
 - (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
 	return YES;
-}
-
-#pragma mark - Methods
-
-- (void)initializeDefaults {
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-	[userDefaults setObject:[NSNumber numberWithBool:YES] forKey:PMPasteboardPreferenceKey];
-	[userDefaults setBool:YES forKey:PMDidInitializeDefaults];
-	[userDefaults synchronize];
 }
 
 #pragma mark - PMAddAccountVCDelegate

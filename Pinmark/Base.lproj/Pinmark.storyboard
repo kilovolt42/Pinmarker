@@ -23,7 +23,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="URL" adjustsFontSizeToFit="NO" minimumFontSize="18" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="WYr-1Q-haB">
-                                                    <rect key="frame" x="15" y="0.0" width="290" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="208" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="43" id="TQI-Sp-khF"/>
@@ -41,12 +41,24 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e0a-rh-F5E">
+                                                    <rect key="frame" x="231" y="7" width="74" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" title="Paste URL">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="pasteURL:" destination="FsJ-qN-eCd" eventType="touchUpInside" id="huq-WR-rPa"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="e0a-rh-F5E" secondAttribute="trailing" constant="15" id="2wN-71-lnb"/>
                                                 <constraint firstItem="J6f-bL-vpc" firstAttribute="top" secondItem="WYr-1Q-haB" secondAttribute="bottom" id="3jx-0R-CDk"/>
-                                                <constraint firstAttribute="trailing" secondItem="WYr-1Q-haB" secondAttribute="trailing" constant="15" id="WlY-NR-9EW"/>
+                                                <constraint firstItem="e0a-rh-F5E" firstAttribute="leading" secondItem="WYr-1Q-haB" secondAttribute="trailing" constant="8" id="DJQ-aB-aog"/>
                                                 <constraint firstAttribute="trailing" secondItem="J6f-bL-vpc" secondAttribute="trailing" constant="15" id="c6v-v3-oDa"/>
                                                 <constraint firstItem="WYr-1Q-haB" firstAttribute="top" secondItem="mS5-Zy-AXs" secondAttribute="top" id="iJH-G6-Q7d"/>
+                                                <constraint firstItem="e0a-rh-F5E" firstAttribute="centerY" secondItem="WYr-1Q-haB" secondAttribute="centerY" id="lTf-MF-PKE"/>
                                                 <constraint firstItem="WYr-1Q-haB" firstAttribute="leading" secondItem="mS5-Zy-AXs" secondAttribute="leading" constant="15" id="lxz-8i-jeI"/>
                                                 <constraint firstItem="J6f-bL-vpc" firstAttribute="leading" secondItem="mS5-Zy-AXs" secondAttribute="leading" constant="15" id="sXM-Cd-d9l"/>
                                             </constraints>
@@ -231,8 +243,10 @@
                     </navigationItem>
                     <connections>
                         <outlet property="URLTextField" destination="WYr-1Q-haB" id="Lo5-sv-JmT"/>
+                        <outlet property="URLTextFieldTrailingConstraint" destination="DJQ-aB-aog" id="Eji-nQ-MLH"/>
                         <outlet property="datePostedLabel" destination="J6f-bL-vpc" id="cnw-dA-7n5"/>
                         <outlet property="extendedTextField" destination="MoP-vU-7bQ" id="prl-Ei-wJc"/>
+                        <outlet property="pasteURLButton" destination="e0a-rh-F5E" id="Lah-K2-3mO"/>
                         <outlet property="postButton" destination="K3p-4H-lk9" id="RUc-ve-9q0"/>
                         <outlet property="sharedSwitch" destination="W9p-Du-tUZ" id="h9Y-tI-srW"/>
                         <outlet property="tagsCVHeightConstraint" destination="1GY-RB-FhD" id="3Rz-Mr-xo4"/>

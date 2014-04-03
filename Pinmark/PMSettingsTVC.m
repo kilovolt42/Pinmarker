@@ -8,7 +8,6 @@
 
 #import "PMSettingsTVC.h"
 #import "PMAddAccountVC.h"
-#import "PMPasteboardPreferenceTVCell.h"
 #import "PMAccountStore.h"
 
 @interface PMSettingsTVC () <PMAddAccountVCDelegate>
@@ -135,19 +134,17 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 2;
+	return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 0) return [self.accounts count] + 1;
-	if (section == 1) return 1;
 	return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	static NSString *accountCellID = @"Account Cell";
 	static NSString *addAccountCellID = @"Add Account Cell";
-	static NSString *pasteboardPreferenceCellID = @"Pasteboard Preference Cell";
 	
 	UITableViewCell *cell;
 	if (indexPath.section == 0) {
@@ -162,9 +159,6 @@
 				cell.editingAccessoryType = UITableViewCellAccessoryNone;
 			}
 		}
-	} else if (indexPath.section == 1) {
-		cell = [tableView dequeueReusableCellWithIdentifier:pasteboardPreferenceCellID];
-		[(PMPasteboardPreferenceTVCell *)cell setup];
 	}
 	
 	return cell;
@@ -173,11 +167,6 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0) return @"Accounts";
 	return @"";
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-	if (section == 1) return @"Automatically paste URLs from the clipboard for new posts.";
-	return nil;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {

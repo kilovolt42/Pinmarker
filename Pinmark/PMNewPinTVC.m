@@ -7,7 +7,6 @@
 //
 
 #import "PMNewPinTVC.h"
-#import "PMAppDelegate.h"
 
 #import "NSURL+Pinmark.h"
 #import "NSString+Pinmark.h"
@@ -44,6 +43,8 @@
 @property (nonatomic) PMTagCVCell *sizingCell;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *postButton;
 @property (nonatomic) NSDateFormatter *dateFormatter;
+@property (weak, nonatomic) IBOutlet UIButton *pasteURLButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *URLTextFieldTrailingConstraint;
 @end
 
 static NSString *tagCellIdentifier = @"Tag Cell";
@@ -140,12 +141,15 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	[notificationCenter addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 	[notificationCenter addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	[notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(updatePasteURLButton) name:UIPasteboardChangedNotification object:nil];
 	
 	self.URLTextField.delegate = self;
 	self.titleTextField.delegate = self;
 	self.tagsTextField.delegate = self;
 	self.extendedTextField.delegate = self;
 	self.keyboardAccessory = [[[NSBundle mainBundle] loadNibNamed:@"PMInputAccessoryView" owner:self options:nil] firstObject];
+	
+	[self.URLTextField addTarget:self action:@selector(updatePasteURLButton) forControlEvents:UIControlEventEditingChanged];
 	
 	UIMenuController *menuController = [UIMenuController sharedMenuController];
 	UIMenuItem *deleteTagMenuItem = [[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(deleteTag:)];
@@ -162,7 +166,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 #pragma mark -
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
-	[self attemptToPasteURLFromPasteboard];
+	[self updatePasteURLButton];
 }
 
 - (void)applicationWillResignActive:(NSNotification *)notification {
@@ -263,6 +267,12 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	sheet.cancelButtonIndex = [tokens count];
 	
 	[sheet showInView:self.view.window];
+}
+
+- (IBAction)pasteURL:(id)sender {
+	NSString *pasteboardString = [UIPasteboard generalPasteboard].string;
+	self.URLTextField.text = pasteboardString;
+	[self updatePasteURLButton];
 }
 
 #pragma mark - Methods
@@ -440,15 +450,21 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	titleButton.enabled = YES;
 }
 
-- (void)attemptToPasteURLFromPasteboard {
-	if ([self.URLTextField.text isEqualToString:@""]) {
-		NSNumber *pasteboardPreferenceWrapper = [[NSUserDefaults standardUserDefaults] objectForKey:PMPasteboardPreferenceKey];
-		if (pasteboardPreferenceWrapper && [pasteboardPreferenceWrapper boolValue]) {
-			NSString *pasteboardString = [UIPasteboard generalPasteboard].string;
-			if ([pasteboardString isPinboardPermittedURL]) {
-				self.URLTextField.text = pasteboardString;
-				self.bookmark.url = pasteboardString;
-			}
+- (void)updatePasteURLButton {
+	NSString *URLTextFieldString = self.URLTextField.text;
+	NSString *pasteboardString = [UIPasteboard generalPasteboard].string;
+	
+	if (URLTextFieldString && [URLTextFieldString isEqualToString:@""] && [pasteboardString isPinboardPermittedURL]) {
+		if (self.pasteURLButton.hidden) {
+			self.pasteURLButton.hidden = NO;
+			self.URLTextFieldTrailingConstraint.constant = 8.0;
+			[[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]] layoutIfNeeded];
+		}
+	} else {
+		if (!self.pasteURLButton.hidden) {
+			self.pasteURLButton.hidden = YES;
+			self.URLTextFieldTrailingConstraint.constant = -(self.pasteURLButton.frame.size.width);
+			[[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]] layoutIfNeeded];
 		}
 	}
 }
