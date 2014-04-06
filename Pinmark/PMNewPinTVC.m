@@ -149,8 +149,6 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	self.extendedTextField.delegate = self;
 	self.keyboardAccessory = [[[NSBundle mainBundle] loadNibNamed:@"PMInputAccessoryView" owner:self options:nil] firstObject];
 	
-	[self.URLTextField addTarget:self action:@selector(updatePasteURLButton) forControlEvents:UIControlEventEditingChanged];
-	
 	UIMenuController *menuController = [UIMenuController sharedMenuController];
 	UIMenuItem *deleteTagMenuItem = [[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(deleteTag:)];
 	[menuController setMenuItems:@[deleteTagMenuItem]];
@@ -230,12 +228,38 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 				}];
 }
 
+- (IBAction)URLTextFieldEditingChanged:(UITextField *)textField {
+	if ([textField.text isEqualToString:@""]) {
+		self.bookmark.url = @"";
+	}
+	[self updatePasteURLButton];
+}
+
+- (IBAction)titleTextFieldEditingChanged:(UITextField *)textField {
+	self.bookmark.title = textField.text;
+}
+
+- (IBAction)extendedTextFieldEditingChanged:(UITextField *)textField {
+	self.bookmark.extended = textField.text;
+}
+
+- (IBAction)tagsTextFieldEditingChanged:(UITextField *)textField {
+	[self updateSuggestedTagsForTag:textField.text];
+}
+
 - (IBAction)toggledToReadSwitch:(UISwitch *)sender {
 	self.bookmark.toread = sender.on;
 }
 
 - (IBAction)toggledSharedSwitch:(UISwitch *)sender {
 	self.bookmark.shared = !sender.on;
+}
+
+- (IBAction)pasteURL:(id)sender {
+	NSString *pasteboardString = [UIPasteboard generalPasteboard].string;
+	self.URLTextField.text = pasteboardString;
+	self.bookmark.url = pasteboardString;
+	[self updatePasteURLButton];
 }
 
 - (void)deleteTag:(id)sender {
@@ -267,12 +291,6 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	sheet.cancelButtonIndex = [tokens count];
 	
 	[sheet showInView:self.view.window];
-}
-
-- (IBAction)pasteURL:(id)sender {
-	NSString *pasteboardString = [UIPasteboard generalPasteboard].string;
-	self.URLTextField.text = pasteboardString;
-	[self updatePasteURLButton];
 }
 
 #pragma mark - Methods
@@ -458,13 +476,11 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 		if (self.pasteURLButton.hidden) {
 			self.pasteURLButton.hidden = NO;
 			self.URLTextFieldTrailingConstraint.constant = 8.0;
-			[[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]] layoutIfNeeded];
 		}
 	} else {
 		if (!self.pasteURLButton.hidden) {
 			self.pasteURLButton.hidden = YES;
 			self.URLTextFieldTrailingConstraint.constant = -(self.pasteURLButton.frame.size.width);
-			[[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]] layoutIfNeeded];
 		}
 	}
 }
@@ -583,40 +599,11 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	if (textField == self.URLTextField) {
 		self.bookmark.url = textField.text;
-	} else if (textField == self.titleTextField) {
-		self.bookmark.title = textField.text;
-	} else if (textField == self.extendedTextField) {
-		self.bookmark.extended = textField.text;
 	} else if (textField == self.tagsTextField) {
 		if (![textField.text isEqualToString:@""]) {
 			[self addTags:textField.text];
 		}
 	}
-}
-
-- (BOOL)textFieldShouldClear:(UITextField *)textField {
-	if (textField == self.URLTextField) {
-		self.bookmark.url = @"";
-	} else if (textField == self.titleTextField) {
-		self.bookmark.title = @"";
-	} else if (textField == self.extendedTextField) {
-		self.bookmark.extended = @"";
-	} else if (textField == self.tagsTextField) {
-		[self updateSuggestedTagsForTag:@""];
-	}
-	return YES;
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-	NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
-	if (textField == self.titleTextField) {
-		self.bookmark.title = newString;
-	} else if (textField == self.extendedTextField) {
-		self.bookmark.extended = newString;
-	} else if (textField == self.tagsTextField) {
-		[self updateSuggestedTagsForTag:newString];
-	}
-	return YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

@@ -30,6 +30,9 @@
                                                     </constraints>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="URL" returnKeyType="next"/>
+                                                    <connections>
+                                                        <action selector="URLTextFieldEditingChanged:" destination="FsJ-qN-eCd" eventType="editingChanged" id="6Pb-2m-EIs"/>
+                                                    </connections>
                                                 </textField>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J6f-bL-vpc">
                                                     <rect key="frame" x="15" y="43" width="290" height="15"/>
@@ -55,8 +58,9 @@
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="e0a-rh-F5E" secondAttribute="trailing" constant="15" id="2wN-71-lnb"/>
                                                 <constraint firstItem="J6f-bL-vpc" firstAttribute="top" secondItem="WYr-1Q-haB" secondAttribute="bottom" id="3jx-0R-CDk"/>
-                                                <constraint firstItem="e0a-rh-F5E" firstAttribute="leading" secondItem="WYr-1Q-haB" secondAttribute="trailing" constant="8" id="DJQ-aB-aog"/>
+                                                <constraint firstItem="e0a-rh-F5E" firstAttribute="leading" secondItem="WYr-1Q-haB" secondAttribute="trailing" priority="999" constant="8" id="DJQ-aB-aog"/>
                                                 <constraint firstAttribute="trailing" secondItem="J6f-bL-vpc" secondAttribute="trailing" constant="15" id="c6v-v3-oDa"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WYr-1Q-haB" secondAttribute="trailing" constant="15" id="fM3-9c-ECq"/>
                                                 <constraint firstItem="WYr-1Q-haB" firstAttribute="top" secondItem="mS5-Zy-AXs" secondAttribute="top" id="iJH-G6-Q7d"/>
                                                 <constraint firstItem="e0a-rh-F5E" firstAttribute="centerY" secondItem="WYr-1Q-haB" secondAttribute="centerY" id="lTf-MF-PKE"/>
                                                 <constraint firstItem="WYr-1Q-haB" firstAttribute="leading" secondItem="mS5-Zy-AXs" secondAttribute="leading" constant="15" id="lxz-8i-jeI"/>
@@ -76,6 +80,9 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="next"/>
+                                                    <connections>
+                                                        <action selector="titleTextFieldEditingChanged:" destination="FsJ-qN-eCd" eventType="editingChanged" id="evZ-1F-cuM"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -98,6 +105,9 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="next"/>
+                                                    <connections>
+                                                        <action selector="extendedTextFieldEditingChanged:" destination="FsJ-qN-eCd" eventType="editingChanged" id="gjc-c4-L38"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -138,6 +148,9 @@
                                                     </constraints>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
+                                                    <connections>
+                                                        <action selector="tagsTextFieldEditingChanged:" destination="FsJ-qN-eCd" eventType="editingChanged" id="4Ed-QO-bKg"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
