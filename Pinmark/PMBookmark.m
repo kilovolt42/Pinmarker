@@ -42,7 +42,7 @@
 		_url = @"";
 		_title = @"";
 		_extended = @"";
-		_dt = [NSDate new];
+		_dt = nil;
 		_replace = YES;
 		_shared = YES;
 		_toread = NO;
@@ -109,7 +109,7 @@
 			  @"description" : self.title,
 			  @"extended"	 : self.extended,
 			  @"tags"		 : [self.tags componentsJoinedByString:@" "],
-			  @"dt"			 : [self.dateFormatter stringFromDate:self.dt],
+			  @"dt"			 : self.dt ? [self.dateFormatter stringFromDate:self.dt] : @"",
 			  @"replace"	 : self.replace ? @"yes" : @"no",
 			  @"shared"		 : self.shared ? @"yes" : @"no",
 			  @"toread"		 : self.toread ? @"yes" : @"no" };
@@ -184,7 +184,7 @@
 #pragma mark - NSCoding / NSSecureCoding
 
 - (id)initWithCoder:(NSCoder *)decoder {
-	if (self = [super init]) {
+	if (self = [self init]) {
 		_authToken = [decoder decodeObjectOfClass:[NSString class] forKey:@"authToken"];
 		_url = [decoder decodeObjectOfClass:[NSString class] forKey:@"url"];
 		_title = [decoder decodeObjectOfClass:[NSString class] forKey:@"title"];
@@ -204,7 +204,7 @@
 	[encoder encodeObject:self.url forKey:@"url"];
 	[encoder encodeObject:self.title forKey:@"title"];
 	[encoder encodeObject:self.extended forKey:@"extended"];
-	[encoder encodeObject:self.dt forKey:@"dt"];
+	if (self.dt) [encoder encodeObject:self.dt forKey:@"dt"];
 	[encoder encodeBool:self.replace forKey:@"replace"];
 	[encoder encodeBool:self.shared forKey:@"shared"];
 	[encoder encodeBool:self.toread forKey:@"toread"];
