@@ -130,11 +130,11 @@ typedef NS_ENUM(NSUInteger, PMTagStoreCoherence) {
 	[manager GET:@"https://api.pinboard.in/v1/tags/get"
 	  parameters:parameters
 		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-			 NSLog(@"Response Object: %@", responseObject);
+			 PMLog(@"Response Object: %@", responseObject);
 			 if (successCallback) successCallback((NSDictionary *)responseObject);
 		 }
 		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-			 NSLog(@"Error: %@", error);
+			 PMLog(@"Error: %@", error);
 			 if (failureCallback) failureCallback(error);
 		 }];
 }

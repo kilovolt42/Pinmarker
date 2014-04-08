@@ -136,7 +136,7 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	[manager GET:@"https://api.pinboard.in/v1/posts/add"
 	  parameters:mutableParameters
 		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-			 NSLog(@"Response Object: %@", responseObject);
+			 PMLog(@"Response Object: %@", responseObject);
 			 if ([responseObject[@"result_code"] isEqualToString:@"done"]) {
 				 [bookmark removeObserver:self forKeyPath:@"url" context:&PMBookmarkStoreContext];
 				 [self.bookmarks removeObject:bookmark];
@@ -147,7 +147,7 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 			 }
 		 }
 		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-			 NSLog(@"Error: %@", error);
+			 PMLog(@"Error: %@", error);
 			 if (failureCallback) failureCallback(error, nil);
 		 }];
 }
@@ -169,11 +169,11 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	[manager GET:@"https://api.pinboard.in/v1/posts/get"
 	  parameters:parameters
 		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-			 NSLog(@"Response Object: %@", responseObject);
+			 PMLog(@"Response Object: %@", responseObject);
 			 if (successCallback) successCallback((NSDictionary *)responseObject);
 		 }
 		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-			 NSLog(@"Error: %@", error);
+			 PMLog(@"Error: %@", error);
 			 if (failureCallback) failureCallback(error);
 		 }];
 }

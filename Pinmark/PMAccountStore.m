@@ -86,12 +86,12 @@ NSString * const PMAccountStoreOldTokenKey = @"PMAccountStoreOldTokenKey";
 - (void)addAccountForAPIToken:(NSString *)token asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler {
 	[self requestAPITokenForAPIToken:token
 							 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-								 NSLog(@"Response Object: %@", responseObject);
+								 PMLog(@"Response Object: %@", responseObject);
 								 [self associateToken:token asDefault:(BOOL)asDefault];
 								 completionHandler(nil);
 							 }
 							 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-								 NSLog(@"Error: %@", error);
+								 PMLog(@"Error: %@", error);
 								 completionHandler(error);
 							 }];
 }
@@ -100,12 +100,12 @@ NSString * const PMAccountStoreOldTokenKey = @"PMAccountStoreOldTokenKey";
 	[self requestAPITokenForUsername:username
 							password:password
 							 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-								 NSLog(@"Response Object: %@", responseObject);
+								 PMLog(@"Response Object: %@", responseObject);
 								 [self associateToken:[NSString stringWithFormat:@"%@:%@", username, responseObject[@"result"]] asDefault:(BOOL)asDefault];
 								 completionHandler(nil);
 							 }
 							 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-								 NSLog(@"Error: %@", error);
+								 PMLog(@"Error: %@", error);
 								 completionHandler(error);
 							 }];
 }
@@ -113,12 +113,12 @@ NSString * const PMAccountStoreOldTokenKey = @"PMAccountStoreOldTokenKey";
 - (void)updateAccountForAPIToken:(NSString *)token asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler {
 	[self requestAPITokenForAPIToken:token
 							 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-								 NSLog(@"Response Object: %@", responseObject);
+								 PMLog(@"Response Object: %@", responseObject);
 								 [self updateToken:token asDefault:(BOOL)asDefault];
 								 completionHandler(nil);
 							 }
 							 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-								 NSLog(@"Error: %@", error);
+								 PMLog(@"Error: %@", error);
 								 completionHandler(error);
 							 }];
 }
@@ -127,12 +127,12 @@ NSString * const PMAccountStoreOldTokenKey = @"PMAccountStoreOldTokenKey";
 	[self requestAPITokenForUsername:username
 							password:password
 							 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-								 NSLog(@"Response Object: %@", responseObject);
+								 PMLog(@"Response Object: %@", responseObject);
 								 [self updateToken:[NSString stringWithFormat:@"%@:%@", username, responseObject[@"result"]] asDefault:(BOOL)asDefault];
 								 completionHandler(nil);
 							 }
 							 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-								 NSLog(@"Error: %@", error);
+								 PMLog(@"Error: %@", error);
 								 completionHandler(error);
 							 }];
 }
