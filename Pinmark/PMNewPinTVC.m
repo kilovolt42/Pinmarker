@@ -43,8 +43,6 @@
 @property (nonatomic) PMTagCVCell *sizingCell;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *postButton;
 @property (nonatomic) NSDateFormatter *dateFormatter;
-@property (weak, nonatomic) IBOutlet UIButton *pasteURLButton;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *URLTextFieldTrailingConstraint;
 @end
 
 static NSString *tagCellIdentifier = @"Tag Cell";
@@ -139,9 +137,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-	[notificationCenter addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	[notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
-	[notificationCenter addObserver:self selector:@selector(updatePasteURLButton) name:UIPasteboardChangedNotification object:nil];
 	
 	self.URLTextField.delegate = self;
 	self.titleTextField.delegate = self;
@@ -162,10 +158,6 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 }
 
 #pragma mark -
-
-- (void)applicationDidBecomeActive:(NSNotification *)notification {
-	[self updatePasteURLButton];
-}
 
 - (void)applicationWillResignActive:(NSNotification *)notification {
 	if (self.activeField == self.tagsTextField) {
@@ -232,7 +224,6 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	if ([textField.text isEqualToString:@""]) {
 		self.bookmark.url = @"";
 	}
-	[self updatePasteURLButton];
 }
 
 - (IBAction)titleTextFieldEditingChanged:(UITextField *)textField {
@@ -253,13 +244,6 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
 - (IBAction)toggledSharedSwitch:(UISwitch *)sender {
 	self.bookmark.shared = !sender.on;
-}
-
-- (IBAction)pasteURL:(id)sender {
-	NSString *pasteboardString = [UIPasteboard generalPasteboard].string;
-	self.URLTextField.text = pasteboardString;
-	self.bookmark.url = pasteboardString;
-	[self updatePasteURLButton];
 }
 
 - (void)deleteTag:(id)sender {
@@ -466,23 +450,6 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	
 	UIButton *titleButton = (UIButton *)self.navigationItem.titleView;
 	titleButton.enabled = YES;
-}
-
-- (void)updatePasteURLButton {
-	NSString *URLTextFieldString = self.URLTextField.text;
-	NSString *pasteboardString = [UIPasteboard generalPasteboard].string;
-	
-	if (URLTextFieldString && [URLTextFieldString isEqualToString:@""] && [pasteboardString isPinboardPermittedURL]) {
-		if (self.pasteURLButton.hidden) {
-			self.pasteURLButton.hidden = NO;
-			self.URLTextFieldTrailingConstraint.constant = 8.0;
-		}
-	} else {
-		if (!self.pasteURLButton.hidden) {
-			self.pasteURLButton.hidden = YES;
-			self.URLTextFieldTrailingConstraint.constant = -(self.pasteURLButton.frame.size.width);
-		}
-	}
 }
 
 #pragma mark - KVO
