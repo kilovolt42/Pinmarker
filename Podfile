@@ -1,2 +1,3 @@
 platform :ios, '7.1'
-pod 'AFNetworking', '~> 2.2.0'
+pod 'AFNetworking'
+pod 'BugshotKit'

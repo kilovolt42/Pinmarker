@@ -8,12 +8,14 @@
 
 #import "PMAppDelegate.h"
 #import "PMNavigationVC.h"
-#import "BugshotKit.h"
-#import "TestFlight.h"
 #import "PMAccountStore.h"
 #import "PMAddAccountVC.h"
 #import "PMTagStore.h"
 #import "PMBookmarkStore.h"
+
+#if defined(DEBUG) || defined(ADHOC)
+#import "BugshotKit.h"
+#endif
 
 NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";
 NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
@@ -38,8 +40,9 @@ NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	if (application.applicationState == UIApplicationStateInactive) {
-		[TestFlight takeOff:@"b04f90cd-6ff4-4fea-a5f8-52493618c772"];
+#if defined(DEBUG) || defined(ADHOC)
 		[BugshotKit enableWithNumberOfTouches:1 performingGestures:BSKInvocationGestureSwipeFromRightEdge feedbackEmailAddress:@"kyle@kilovolt42.com"];
+#endif
 		
 		NSString *token = [PMAccountStore sharedStore].defaultToken;
 		if (!token || [token isEqualToString:@""]) {
