@@ -8,7 +8,6 @@
 
 #import "PMBookmark.h"
 #import "NSString+Pinmark.h"
-#import "PMAccountStore.h"
 
 @interface PMBookmark ()
 @property (nonatomic) NSDateFormatter *dateFormatter;
@@ -19,7 +18,7 @@
 #pragma mark - Properties
 
 - (BOOL)isPostable {
-	if ([self.url isPinboardPermittedURL] && [self.title length] && [self.authToken length]) {
+	if ([self.url isPinboardPermittedURL] && [self.title length] && [self.username length]) {
 		return YES;
 	} else {
 		return NO;
@@ -38,7 +37,7 @@
 
 - (instancetype)init {
 	if (self = [super init]) {
-		_authToken = @"";
+		_username = @"";
 		_url = @"";
 		_title = @"";
 		_extended = @"";
@@ -48,10 +47,6 @@
 		_toread = NO;
 		_tags = @[];
 		_lastPosted = nil;
-		
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddToken:) name:PMAccountStoreDidAddTokenNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateToken:) name:PMAccountStoreDidUpdateTokenNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemoveToken:) name:PMAccountStoreDidRemoveTokenNotification object:nil];
 	}
 	return self;
 }
@@ -62,8 +57,8 @@
 			if (![parameter isKindOfClass:[NSString class]]) return self;
 		}
 		
-		NSString *authToken = parameters[@"auth_token"];
-		if (authToken) _authToken = [authToken copy];
+		NSString *username = parameters[@"username"];
+		if (username) _username = [username copy];
 		
 		NSString *url = parameters[@"url"];
 		if (url) _url = [url copy];
@@ -104,8 +99,7 @@
 #pragma mark - Methods
 
 - (NSDictionary *)parameters {
-	return @{ @"auth_token"  : self.authToken,
-			  @"url"		 : self.url,
+	return @{ @"url"		 : self.url,
 			  @"description" : self.title,
 			  @"extended"	 : self.extended,
 			  @"tags"		 : [self.tags componentsJoinedByString:@" "],
@@ -131,27 +125,6 @@
 	NSMutableArray *tempTags = [NSMutableArray arrayWithArray:self.tags];
 	[tempTags removeObject:tag];
 	self.tags = [tempTags copy];
-}
-
-- (void)didAddToken:(NSNotification *)notification {
-	if ([self.authToken isEqualToString:@""] || !self.authToken) {
-		self.authToken = notification.userInfo[PMAccountStoreTokenKey];
-	}
-}
-
-- (void)didUpdateToken:(NSNotification *)notification {
-	NSString *oldToken = notification.userInfo[PMAccountStoreOldTokenKey];
-	if ([self.authToken isEqualToString:oldToken]) {
-		NSString *newToken = notification.userInfo[PMAccountStoreTokenKey];
-		self.authToken = newToken;
-	}
-}
-
-- (void)didRemoveToken:(NSNotification *)notification {
-	NSString *removedToken = notification.userInfo[PMAccountStoreTokenKey];
-	if ([self.authToken isEqualToString:removedToken]) {
-		self.authToken = [PMAccountStore sharedStore].defaultToken;
-	}
 }
 
 #pragma mark - NSObject
@@ -185,7 +158,7 @@
 
 - (id)initWithCoder:(NSCoder *)decoder {
 	if (self = [self init]) {
-		_authToken = [decoder decodeObjectOfClass:[NSString class] forKey:@"authToken"];
+		_username = [decoder decodeObjectOfClass:[NSString class] forKey:@"username"];
 		_url = [decoder decodeObjectOfClass:[NSString class] forKey:@"url"];
 		_title = [decoder decodeObjectOfClass:[NSString class] forKey:@"title"];
 		_extended = [decoder decodeObjectOfClass:[NSString class] forKey:@"extended"];
@@ -200,7 +173,7 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
-	[encoder encodeObject:self.authToken forKey:@"authToken"];
+	[encoder encodeObject:self.username forKey:@"username"];
 	[encoder encodeObject:self.url forKey:@"url"];
 	[encoder encodeObject:self.title forKey:@"title"];
 	[encoder encodeObject:self.extended forKey:@"extended"];
@@ -219,7 +192,7 @@
 #pragma mark - KVC / KVO
 
 + (NSSet *)keyPathsForValuesAffectingPostable {
-	return [NSSet setWithArray:@[@"authToken", @"url", @"title"]];
+	return [NSSet setWithArray:@[@"username", @"url", @"title"]];
 }
 
 @end

@@ -17,9 +17,6 @@
 #import "BugshotKit.h"
 #endif
 
-NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";
-NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
-
 @interface PMAppDelegate () <PMAddAccountVCDelegate>
 
 @end
@@ -44,8 +41,8 @@ NSString * const PMDefaultTokenKey = @"PMDefaultTokenKey";
 		[BugshotKit enableWithNumberOfTouches:1 performingGestures:BSKInvocationGestureSwipeFromRightEdge feedbackEmailAddress:@"kyle@kilovolt42.com"];
 #endif
 		
-		NSString *token = [PMAccountStore sharedStore].defaultToken;
-		if (!token || [token isEqualToString:@""]) {
+		NSString *username = [PMAccountStore sharedStore].defaultUsername;
+		if (!username || [username isEqualToString:@""]) {
 			PMAddAccountVC *addVC = [[PMAddAccountVC alloc] init];
 			addVC.delegate = self;
 			self.window.rootViewController = addVC;

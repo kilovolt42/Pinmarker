@@ -12,7 +12,7 @@
 
 + (instancetype)sharedStore;
 
-- (NSArray *)tagsForAuthToken:(NSString *)authToken;
-- (void)markTagsDirtyForAuthToken:(NSString *)authToken;
+- (NSArray *)tagsForUsername:(NSString *)username;
+- (void)markTagsDirtyForUsername:(NSString *)username;
 
 @end

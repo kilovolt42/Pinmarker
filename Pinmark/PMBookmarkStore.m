@@ -82,7 +82,7 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 
 - (PMBookmark *)createBookmark {
 	PMBookmark *bookmark = [PMBookmark new];
-	bookmark.authToken = [PMAccountStore sharedStore].defaultToken;
+	bookmark.username = [PMAccountStore sharedStore].defaultUsername;
 	
 	PMBookmark *previousBookmark = [self.bookmarks firstObject];
 	if (previousBookmark) {
@@ -100,8 +100,8 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 - (PMBookmark *)createBookmarkWithParameters:(NSDictionary *)parameters {
 	PMBookmark *bookmark = [[PMBookmark alloc] initWithParameters:parameters];
 	
-	if (!bookmark.authToken || [bookmark.authToken isEqualToString:@""]) {
-		bookmark.authToken = [PMAccountStore sharedStore].defaultToken;
+	if (!bookmark.username || [bookmark.username isEqualToString:@""]) {
+		bookmark.username = [PMAccountStore sharedStore].defaultUsername;
 	}
 	
 	PMBookmark *previousBookmark = [self.bookmarks firstObject];
@@ -132,6 +132,7 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	
 	NSMutableDictionary *mutableParameters = [[bookmark parameters] mutableCopy];
 	mutableParameters[@"format"] = @"json";
+	mutableParameters[@"auth_token"] = [[PMAccountStore sharedStore] authTokenForUsername:bookmark.username];
 	
 	[manager GET:@"https://api.pinboard.in/v1/posts/add"
 	  parameters:mutableParameters
@@ -164,7 +165,8 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
 	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
 	
-	NSDictionary *parameters = @{@"url": bookmark.url, @"format": @"json", @"auth_token": bookmark.authToken };
+	NSString *authToken = [[PMAccountStore sharedStore] authTokenForUsername:bookmark.username];
+	NSDictionary *parameters = @{@"url": bookmark.url, @"format": @"json", @"auth_token": authToken };
 	
 	[manager GET:@"https://api.pinboard.in/v1/posts/get"
 	  parameters:parameters

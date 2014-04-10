@@ -330,7 +330,7 @@
 
 - (IBAction)informationButtonPressed {
 	[[[UIAlertView alloc] initWithTitle:@"About Your Account"
-								message:@"Pinmarker uses your password to obtain your API token. Pinmarker only keeps a copy of your API token, not your password. If you change your API token you will need to login again to continue using Pinmarker."
+								message:@"Pinmarker securely stores your Pinboard API Token. Your password is not stored by Pinmarker and is only used to obtain a copy of your API Token. If your Pinboard API Token changes in the future you will need to update Pinmarker to continue bookmarking."
 							   delegate:nil
 					  cancelButtonTitle:@"OK"
 					  otherButtonTitles:nil] show];

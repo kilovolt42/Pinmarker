@@ -7,33 +7,33 @@
 //
 
 /**
- * Methods that access Pinboard's API never call defaultToken or defaultUser. An API token parameter
+ * Methods of this class that access Pinboard's API never use defaultUser. An API token parameter
  * must always be provided either as a method argument or as a key-value pair in a parameter dictionary,
  * otherwise the API request (not the method!) will fail. These request methods are just conveniences;
  * relevent parameters must always be passed in.
  *
  * The store sends out notifications when tokens are added, updated, or removed. Each notification
- * sends the significant token in the userInfo dictionary with the key PMAccountStoreTokenKey. For
- * example, the PMAccountStoreDidRemoveTokenNotification passes along the deleted token with that
- * key. The PMAccountStoreOldTokenKey is only used with PMAccountStoreDidUpdateTokenNotification to
- * pass along the token being replaced.
+ * sends the affected username in the userInfo dictionary with the key PMAccountStoreUsernameKey. For
+ * example, the PMAccountStoreDidRemoveUsernameNotification passes along the deleted username with that
+ * key. The PMAccountStoreOldUsernameKey is only used with PMAccountStoreDidUpdateUsernameNotification to
+ * pass along the username being replaced.
  *
- * To be notified about changes to the default token, use KVO to observe the defaultToken property.
+ * To be notified about changes to the default username, use KVO to observe the defaultUsername property.
  */
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const PMAccountStoreDidAddTokenNotification;
-extern NSString * const PMAccountStoreDidUpdateTokenNotification;
-extern NSString * const PMAccountStoreDidRemoveTokenNotification;
+extern NSString * const PMAccountStoreDidAddUsernameNotification;
+extern NSString * const PMAccountStoreDidUpdateUsernameNotification;
+extern NSString * const PMAccountStoreDidRemoveUsernameNotification;
 
-extern NSString * const PMAccountStoreTokenKey;
-extern NSString * const PMAccountStoreOldTokenKey;
+extern NSString * const PMAccountStoreUsernameKey;
+extern NSString * const PMAccountStoreOldUsernameKey;
 
 @interface PMAccountStore : NSObject
 
-@property (nonatomic, copy) NSString *defaultToken;
-@property (nonatomic, readonly) NSArray *associatedTokens;
+@property (nonatomic, copy) NSString *defaultUsername;
+@property (nonatomic, readonly) NSArray *associatedUsernames;
 
 + (instancetype)sharedStore;
 

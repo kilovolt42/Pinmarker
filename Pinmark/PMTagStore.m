@@ -9,6 +9,7 @@
 #import "PMTagStore.h"
 #import <AFNetworking/AFNetworking.h>
 #import "PMAccountStore.h"
+#import "NSString+Pinmark.h"
 
 @interface PMTagStore ()
 @property (nonatomic) NSMutableDictionary *tags;
@@ -38,8 +39,8 @@ typedef NS_ENUM(NSUInteger, PMTagStoreCoherence) {
 - (NSMutableDictionary *)tagCoherence {
 	if (!_tagsCoherence) {
 		_tagsCoherence = [NSMutableDictionary new];
-		for (NSString *token in [self.tags allKeys]) {
-			_tagsCoherence[token] = @(PMTagStoreCoherenceDirty);
+		for (NSString *username in [self.tags allKeys]) {
+			_tagsCoherence[username] = @(PMTagStoreCoherenceDirty);
 		}
 	}
 	return _tagsCoherence;
@@ -65,9 +66,9 @@ typedef NS_ENUM(NSUInteger, PMTagStoreCoherence) {
 		}
 		
 		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-		[center addObserver:self selector:@selector(tokenAdded:) name:PMAccountStoreDidAddTokenNotification object:nil];
-		[center addObserver:self selector:@selector(tokenUpdated:) name:PMAccountStoreDidUpdateTokenNotification object:nil];
-		[center addObserver:self selector:@selector(tokenRemoved:) name:PMAccountStoreDidRemoveTokenNotification object:nil];
+		[center addObserver:self selector:@selector(usernameAdded:) name:PMAccountStoreDidAddUsernameNotification object:nil];
+		[center addObserver:self selector:@selector(usernameUpdated:) name:PMAccountStoreDidUpdateUsernameNotification object:nil];
+		[center addObserver:self selector:@selector(usernameRemoved:) name:PMAccountStoreDidRemoveUsernameNotification object:nil];
 	}
 	return self;
 }
@@ -89,42 +90,43 @@ typedef NS_ENUM(NSUInteger, PMTagStoreCoherence) {
 	return sharedStore;
 }
 
-- (NSArray *)tagsForAuthToken:(NSString *)authToken {
-	NSNumber *coherence = self.tagCoherence[authToken];
+- (NSArray *)tagsForUsername:(NSString *)username {
+	NSNumber *coherence = self.tagCoherence[username];
 	
 	if (!coherence || [coherence unsignedIntegerValue] == PMTagStoreCoherenceDirty) {
-		[self loadTagsForAuthToken:authToken];
+		[self loadTagsForUsername:username];
 	}
 	
-	return self.tags[authToken];
+	return self.tags[username];
 }
 
-- (void)markTagsDirtyForAuthToken:(NSString *)authToken {
-	self.tagsCoherence[authToken] = @(PMTagStoreCoherenceDirty);
+- (void)markTagsDirtyForUsername:(NSString *)username {
+	self.tagsCoherence[username] = @(PMTagStoreCoherenceDirty);
 }
 
 #pragma mark -
 
-- (void)loadTagsForAuthToken:(NSString *)authToken {
-	if (!authToken) return;
-	if (![self.tagsLoadingQueue containsObject:authToken]) {
-		[self.tagsLoadingQueue addObject:authToken];
-		[self requestTagsWithAuthToken:authToken
+- (void)loadTagsForUsername:(NSString *)username {
+	if (!username) return;
+	if (![self.tagsLoadingQueue containsObject:username]) {
+		[self.tagsLoadingQueue addObject:username];
+		[self requestTagsWithUsername:username
 							   success:^(NSDictionary *tags) {
-								   self.tags[authToken] = [[[tags keysSortedByValueUsingSelector:@selector(compare:)] reverseObjectEnumerator] allObjects];
-								   [self.tagsLoadingQueue removeObject:authToken];
-								   self.tagsCoherence[authToken] = @(PMTagStoreCoherenceValid);
+								   self.tags[username] = [[[tags keysSortedByValueUsingSelector:@selector(compare:)] reverseObjectEnumerator] allObjects];
+								   [self.tagsLoadingQueue removeObject:username];
+								   self.tagsCoherence[username] = @(PMTagStoreCoherenceValid);
 								   [self saveTags];
 							   }
 							   failure:nil];
 	}
 }
 
-- (void)requestTagsWithAuthToken:(NSString *)authToken success:(void (^)(NSDictionary *))successCallback failure:(void (^)(NSError *))failureCallback {
+- (void)requestTagsWithUsername:(NSString *)username success:(void (^)(NSDictionary *))successCallback failure:(void (^)(NSError *))failureCallback {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
 	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
 	
+	NSString *authToken = [[PMAccountStore sharedStore] authTokenForUsername:username];
 	NSDictionary *parameters = @{ @"format": @"json", @"auth_token": authToken };
 	
 	[manager GET:@"https://api.pinboard.in/v1/tags/get"
@@ -148,30 +150,30 @@ typedef NS_ENUM(NSUInteger, PMTagStoreCoherence) {
 - (BOOL)saveTags {
 	// Filter out tags associated with a foreign API token from URL schemes
 	NSMutableDictionary *tagsToSave = [NSMutableDictionary new];
-	for (NSString *token in [PMAccountStore sharedStore].associatedTokens) {
-		tagsToSave[token] = self.tags[token];
+	for (NSString *username in [PMAccountStore sharedStore].associatedUsernames) {
+		tagsToSave[username] = self.tags[username];
 	}
 	
 	NSString *path = [self tagsArchivePath];
 	return [NSKeyedArchiver archiveRootObject:tagsToSave toFile:path];
 }
 
-- (void)tokenAdded:(NSNotification *)notificaiton {
-	NSString *token = notificaiton.userInfo[PMAccountStoreTokenKey];
-	[self loadTagsForAuthToken:token];
+- (void)usernameAdded:(NSNotification *)notificaiton {
+	NSString *username = notificaiton.userInfo[PMAccountStoreUsernameKey];
+	[self loadTagsForUsername:username];
 }
 
-- (void)tokenUpdated:(NSNotification *)notificaiton {
-	NSString *oldToken = notificaiton.userInfo[PMAccountStoreOldTokenKey];
-	NSString *newToken = notificaiton.userInfo[PMAccountStoreTokenKey];
-	[self.tags removeObjectForKey:oldToken];
-	[self loadTagsForAuthToken:newToken];
+- (void)usernameUpdated:(NSNotification *)notificaiton {
+	NSString *oldUsername = notificaiton.userInfo[PMAccountStoreOldUsernameKey];
+	NSString *newUsername = notificaiton.userInfo[PMAccountStoreUsernameKey];
+	[self.tags removeObjectForKey:oldUsername];
+	[self loadTagsForUsername:newUsername];
 }
 
-- (void)tokenRemoved:(NSNotification *)notificaiton {
-	NSString *token = notificaiton.userInfo[PMAccountStoreTokenKey];
-	[self.tags removeObjectForKey:token];
-	[self.tagCoherence removeObjectForKey:token];
+- (void)usernameRemoved:(NSNotification *)notificaiton {
+	NSString *username = notificaiton.userInfo[PMAccountStoreUsernameKey];
+	[self.tags removeObjectForKey:username];
+	[self.tagCoherence removeObjectForKey:username];
 	[self saveTags];
 }
 

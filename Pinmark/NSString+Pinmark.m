@@ -33,4 +33,12 @@ NSString * const PMAnyURLRegex = @"(?i)\\b((?:[a-z][\\w-]+:(?:/{1,3}|[a-z0-9%])|
 	return [schemes containsObject:[url scheme]] && [self isValidURL];
 }
 
+- (NSString *)tokenUsername {
+	return [[self componentsSeparatedByString:@":"] firstObject];
+}
+
+- (NSString *)tokenNumber {
+	return [[self componentsSeparatedByString:@":"] lastObject];
+}
+
 @end

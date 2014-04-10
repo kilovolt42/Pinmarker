@@ -34,4 +34,18 @@
  */
 - (BOOL)isPinboardPermittedURL;
 
+/**
+ * Return the username portion of the string, assumed to be a Pinboard API token.
+ *
+ * @return The username portion of the string.
+ */
+- (NSString *)tokenUsername;
+
+/**
+ * Return the number portion of the string, assumed to be a Pinboard API token.
+ *
+ * @return The number portion of the token.
+ */
+- (NSString *)tokenNumber;
+
 @end

@@ -9,10 +9,10 @@
 #import "PMSettingsTVC.h"
 #import "PMAddAccountVC.h"
 #import "PMAccountStore.h"
+#import "NSString+Pinmark.h"
 
 @interface PMSettingsTVC () <PMAddAccountVCDelegate>
 @property (nonatomic, copy) NSArray *accounts;
-@property (nonatomic, readonly) NSString *defaultAccount;
 @end
 
 @implementation PMSettingsTVC
@@ -32,10 +32,6 @@
 		closeButton.action = @selector(login:);
 		self.navigationItem.rightBarButtonItem = nil;
 	}
-}
-
-- (NSString *)defaultAccount {
-	return [[[PMAccountStore sharedStore].defaultToken componentsSeparatedByString:@":"] firstObject];
 }
 
 #pragma mark - Life Cycle
@@ -58,12 +54,7 @@
 #pragma mark - Methods
 
 - (void)loadAccounts {
-	NSArray *tokens = [PMAccountStore sharedStore].associatedTokens;
-	NSMutableArray *accounts = [NSMutableArray new];
-	for (NSString *token in tokens) {
-		[accounts addObject:[[token componentsSeparatedByString:@":"] firstObject]];
-	}
-	self.accounts = [accounts copy];
+	self.accounts = [PMAccountStore sharedStore].associatedUsernames;
 }
 
 - (void)addNewAccount {
@@ -119,7 +110,7 @@
 		} else {
 			if (self.isEditing) {
 				PMAccountStore *store = [PMAccountStore sharedStore];
-				store.defaultToken = [store authTokenForUsername:self.accounts[row]];
+				store.defaultUsername = self.accounts[row];
 				[tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
 			} else {
 				PMAddAccountVC *addAccountVC = [[PMAddAccountVC alloc] init];
@@ -155,7 +146,7 @@
 		} else {
 			cell = [tableView dequeueReusableCellWithIdentifier:accountCellID forIndexPath:indexPath];
 			cell.textLabel.text = self.accounts[indexPath.row];
-			if ([self.accounts[indexPath.row] isEqualToString:self.defaultAccount]) {
+			if ([self.accounts[indexPath.row] isEqualToString:[PMAccountStore sharedStore].defaultUsername]) {
 				cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
 			} else {
 				cell.editingAccessoryType = UITableViewCellAccessoryNone;
@@ -189,7 +180,7 @@
 			[self setEditing:NO animated:YES];
 			[tableView reloadData];
 		} else {
-			NSUInteger defaultUserIndex = [self.accounts indexOfObject:self.defaultAccount];
+			NSUInteger defaultUserIndex = [self.accounts indexOfObject:[PMAccountStore sharedStore].defaultUsername];
 			if (defaultUserIndex != NSNotFound) {
 				UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:defaultUserIndex inSection:0]];
 				cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;

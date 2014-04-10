@@ -67,8 +67,8 @@
 	bookmark.url = @"http://kilovolt42.com";
 	XCTAssert(!bookmark.postable, @"Bookmark with only URL and title should not be postable");
 	
-	bookmark.authToken = @"example:1234";
-	XCTAssert(bookmark.postable, @"Bookmark with URL, title, and authToken should be postable");
+	bookmark.username = @"example";
+	XCTAssert(bookmark.postable, @"Bookmark with URL, title, and username should be postable");
 	
 	// using initWithParameters
 	
@@ -81,8 +81,8 @@
 	bookmark = [[PMBookmark alloc] initWithParameters:@{ @"url": @"http://kilovolt42.com", @"description": @"Kyle Stevens" }];
 	XCTAssert(!bookmark.postable, @"Bookmark with only URL and title should not be postable");
 	
-	bookmark = [[PMBookmark alloc] initWithParameters:@{ @"url": @"http://kilovolt42.com", @"description": @"Kyle Stevens", @"auth_token": @"example:1234" }];
-	XCTAssert(bookmark.postable, @"Bookmark with URL, title, and authToken should be postable");
+	bookmark = [[PMBookmark alloc] initWithParameters:@{ @"url": @"http://kilovolt42.com", @"description": @"Kyle Stevens", @"username": @"example" }];
+	XCTAssert(bookmark.postable, @"Bookmark with URL, title, and username should be postable");
 }
 
 - (void)testAddTags {

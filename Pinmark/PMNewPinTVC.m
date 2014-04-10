@@ -64,7 +64,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 		[self updateFields];
 	}
 	
-	[[PMTagStore sharedStore] markTagsDirtyForAuthToken:_bookmark.authToken];
+	[[PMTagStore sharedStore] markTagsDirtyForUsername:_bookmark.username];
 }
 
 - (PMTagsDataSource *)tagsDataSource {
@@ -172,13 +172,13 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
 - (void)addBookmarkObservers {
 	[_bookmark addObserver:self forKeyPath:@"postable" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
-	[_bookmark addObserver:self forKeyPath:@"authToken" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
+	[_bookmark addObserver:self forKeyPath:@"username" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
 	[_bookmark addObserver:self forKeyPath:@"lastPosted" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
 }
 
 - (void)removeBookmarkObservers {
 	[self.bookmark removeObserver:self forKeyPath:@"postable" context:&PMNewPinTVCContext];
-	[self.bookmark removeObserver:self forKeyPath:@"authToken" context:&PMNewPinTVCContext];
+	[self.bookmark removeObserver:self forKeyPath:@"username" context:&PMNewPinTVCContext];
 	[self.bookmark removeObserver:self forKeyPath:@"lastPosted" context:&PMNewPinTVCContext];
 }
 
@@ -265,14 +265,14 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 										 destructiveButtonTitle:nil
 											  otherButtonTitles:nil];
 	
-	NSArray *tokens = [PMAccountStore sharedStore].associatedTokens;
+	NSArray *usernames = [PMAccountStore sharedStore].associatedUsernames;
 	
-	for (NSString *title in tokens) {
-		[sheet addButtonWithTitle:[[title componentsSeparatedByString:@":"] firstObject]];
+	for (NSString *username in usernames) {
+		[sheet addButtonWithTitle:username];
 	}
 	
 	[sheet addButtonWithTitle:@"Cancel"];
-	sheet.cancelButtonIndex = [tokens count];
+	sheet.cancelButtonIndex = [usernames count];
 	
 	[sheet showInView:self.view.window];
 }
@@ -392,7 +392,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 }
 
 - (void)updateSuggestedTagsForTag:(NSString *)tag {
-	NSArray *tags = [[PMTagStore sharedStore] tagsForAuthToken:self.bookmark.authToken];
+	NSArray *tags = [[PMTagStore sharedStore] tagsForUsername:self.bookmark.username];
 	if (tags) {
 		NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", tag];
 		NSMutableArray *results = [NSMutableArray arrayWithArray:[tags filteredArrayUsingPredicate:searchPredicate]];
@@ -459,10 +459,9 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 		if ([keyPath isEqualToString:@"postable"]) {
 			self.postButton.enabled = self.bookmark.postable;
 		}
-		else if ([keyPath isEqualToString:@"authToken"]) {
-			NSString *username = [[self.bookmark.authToken componentsSeparatedByString:@":"] firstObject];
+		else if ([keyPath isEqualToString:@"username"]) {
 			UIButton *titleButton = (UIButton *)self.navigationItem.titleView;
-			[titleButton setTitle:username forState:UIControlStateNormal];
+			[titleButton setTitle:self.bookmark.username forState:UIControlStateNormal];
 			[titleButton addTarget:self action:@selector(showUsernameSheet:) forControlEvents:UIControlEventTouchUpInside];
 			if (self.activeField == self.tagsTextField) {
 				[self updateSuggestedTagsForTag:self.tagsTextField.text];
@@ -500,10 +499,10 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	NSArray *tokens = [PMAccountStore sharedStore].associatedTokens;
+	NSArray *usernames = [PMAccountStore sharedStore].associatedUsernames;
 	
-	if (buttonIndex < [tokens count]) {
-		self.bookmark.authToken = tokens[buttonIndex];
+	if (buttonIndex < [usernames count]) {
+		self.bookmark.username = usernames[buttonIndex];
 	}
 }
 
