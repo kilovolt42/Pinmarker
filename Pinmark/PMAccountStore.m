@@ -10,6 +10,7 @@
 #import <AFNetworking/AFNetworking.h>
 #import "NSString+Pinmark.h"
 #import "PMAppDelegate.h"
+#import "Lockbox.h"
 
 NSString * const PMAccountStoreDidAddTokenNotification = @"PMAccountStoreDidAddTokenNotification";
 NSString * const PMAccountStoreDidUpdateTokenNotification = @"PMAccountStoreDidUpdateTokenNotification";
@@ -37,18 +38,15 @@ NSString * const PMAccountStoreOldTokenKey = @"PMAccountStoreOldTokenKey";
 
 - (void)setDefaultToken:(NSString *)defaultToken {
 	BOOL isAssociatedToken = [self.associatedTokens containsObject:defaultToken];
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	
 	if (isAssociatedToken) {
 		_defaultToken = defaultToken;
-		[userDefaults setObject:defaultToken forKey:PMDefaultTokenKey];
-		[userDefaults synchronize];
+		[Lockbox setString:_defaultToken forKey:PMDefaultTokenKey];
 	}
 	
 	else if (!defaultToken) {
 		_defaultToken = nil;
-		[userDefaults removeObjectForKey:PMDefaultTokenKey];
-		[userDefaults synchronize];
+		[Lockbox setString:nil forKey:PMDefaultTokenKey];
 	}
 }
 
@@ -64,8 +62,8 @@ NSString * const PMAccountStoreOldTokenKey = @"PMAccountStoreOldTokenKey";
 - (instancetype)initPrivate {
 	self = [super init];
 	if (self) {
-		_associatedTokens = [[NSUserDefaults standardUserDefaults] valueForKey:PMAssociatedTokensKey];
-		_defaultToken = [[NSUserDefaults standardUserDefaults] valueForKey:PMDefaultTokenKey];
+		_associatedTokens = [Lockbox arrayForKey:PMAssociatedTokensKey];
+		_defaultToken = [Lockbox stringForKey:PMDefaultTokenKey];
 	}
 	return self;
 }
@@ -184,20 +182,16 @@ NSString * const PMAccountStoreOldTokenKey = @"PMAccountStoreOldTokenKey";
 }
 
 - (void)associateToken:(NSString *)token asDefault:(BOOL)asDefault {
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-	
 	if (self.associatedTokens) {
 		if (![self.associatedTokens containsObject:token]) {
 			NSMutableArray *newTokens = [NSMutableArray arrayWithArray:self.associatedTokens];
 			[newTokens addObject:token];
 			self.associatedTokens = [newTokens copy];
-			[userDefaults setObject:newTokens forKey:PMAssociatedTokensKey];
-			[userDefaults synchronize];
+			[Lockbox setArray:self.associatedTokens forKey:PMAssociatedTokensKey];
 		}
 	} else {
 		self.associatedTokens = @[token];
-		[userDefaults setObject:@[token] forKey:PMAssociatedTokensKey];
-		[userDefaults synchronize];
+		[Lockbox setArray:self.associatedTokens forKey:PMAssociatedTokensKey];
 	}
 	
 	if (asDefault || !self.defaultToken) {
@@ -210,7 +204,6 @@ NSString * const PMAccountStoreOldTokenKey = @"PMAccountStoreOldTokenKey";
 }
 
 - (void)updateToken:(NSString *)token asDefault:(BOOL)asDefault {
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	NSString *username = [[token componentsSeparatedByString:@":"] firstObject];
 	NSString *oldToken;
 	
@@ -229,8 +222,7 @@ NSString * const PMAccountStoreOldTokenKey = @"PMAccountStoreOldTokenKey";
 		[newTokens replaceObjectAtIndex:oldTokenIndex withObject:token];
 		
 		self.associatedTokens = [newTokens copy];
-		[userDefaults setObject:newTokens forKey:PMAssociatedTokensKey];
-		[userDefaults synchronize];
+		[Lockbox setArray:self.associatedTokens forKey:PMAssociatedTokensKey];
 		
 		if (asDefault || !self.defaultToken || [self.defaultToken isEqualToString:oldToken]) {
 			self.defaultToken = token;
@@ -245,18 +237,15 @@ NSString * const PMAccountStoreOldTokenKey = @"PMAccountStoreOldTokenKey";
 
 - (void)dissociateToken:(NSString *)token {
 	if ([self.associatedTokens containsObject:token]) {
-		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 		NSMutableArray *newTokens = [NSMutableArray arrayWithArray:self.associatedTokens];
 		[newTokens removeObject:token];
 		
 		if ([newTokens count]) {
 			self.associatedTokens = [newTokens copy];
-			[userDefaults setObject:newTokens forKey:PMAssociatedTokensKey];
-			[userDefaults synchronize];
+			[Lockbox setArray:self.associatedTokens forKey:PMAssociatedTokensKey];
 		} else {
 			self.associatedTokens = nil;
-			[userDefaults removeObjectForKey:PMAssociatedTokensKey];
-			[userDefaults synchronize];
+			[Lockbox setArray:nil forKey:PMAssociatedTokensKey];
 		}
 		
 		if ([token isEqualToString:self.defaultToken]) {
