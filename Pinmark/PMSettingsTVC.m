@@ -134,17 +134,19 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 1;
+	return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 0) return [self.accounts count] + 1;
+	if (section == 1) return 1;
 	return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	static NSString *accountCellID = @"Account Cell";
 	static NSString *addAccountCellID = @"Add Account Cell";
+	static NSString *aboutCellID = @"About Cell";
 	
 	UITableViewCell *cell;
 	if (indexPath.section == 0) {
@@ -159,6 +161,9 @@
 				cell.editingAccessoryType = UITableViewCellAccessoryNone;
 			}
 		}
+	}
+	else if (indexPath.section == 1) {
+		cell = [tableView dequeueReusableCellWithIdentifier:aboutCellID];
 	}
 	
 	return cell;
