@@ -112,10 +112,12 @@ typedef NS_ENUM(NSUInteger, PMTagStoreCoherence) {
 		[self.tagsLoadingQueue addObject:username];
 		[self requestTagsWithUsername:username
 							   success:^(NSDictionary *tags) {
-								   self.tags[username] = [[[tags keysSortedByValueUsingSelector:@selector(compare:)] reverseObjectEnumerator] allObjects];
-								   [self.tagsLoadingQueue removeObject:username];
-								   self.tagsCoherence[username] = @(PMTagStoreCoherenceValid);
-								   [self saveTags];
+								   if ([tags isKindOfClass:[NSDictionary class]]) {
+									   self.tags[username] = [[[tags keysSortedByValueUsingSelector:@selector(compare:)] reverseObjectEnumerator] allObjects];
+									   [self.tagsLoadingQueue removeObject:username];
+									   self.tagsCoherence[username] = @(PMTagStoreCoherenceValid);
+									   [self saveTags];
+								   }
 							   }
 							   failure:nil];
 	}
