@@ -153,7 +153,8 @@ typedef NS_ENUM(NSUInteger, PMTagStoreCoherence) {
 	// Filter out tags associated with a foreign API token from URL schemes
 	NSMutableDictionary *tagsToSave = [NSMutableDictionary new];
 	for (NSString *username in [PMAccountStore sharedStore].associatedUsernames) {
-		tagsToSave[username] = self.tags[username];
+		NSArray *tagsForUsername = self.tags[username];
+		tagsToSave[username] = tagsForUsername ? tagsForUsername : @[];
 	}
 	
 	NSString *path = [self tagsArchivePath];
