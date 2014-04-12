@@ -55,6 +55,8 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 		}
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddUsername:) name:PMAccountStoreDidAddUsernameNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemoveUsername:) name:PMAccountStoreDidRemoveUsernameNotification object:nil];
 	}
 	return self;
 }
@@ -193,6 +195,29 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification {
 	[self saveBookmarks];
+}
+
+- (void)didAddUsername:(NSNotification *)notification {
+	NSString *newUsername = notification.userInfo[PMAccountStoreUsernameKey];
+	for (PMBookmark *bookmark in self.bookmarks) {
+		if (!bookmark.username || [bookmark.username isEqualToString:@""]) {
+			bookmark.username = newUsername;
+		}
+	}
+}
+
+- (void)didRemoveUsername:(NSNotification *)notification {
+	NSString *usernameRemoved = notification.userInfo[PMAccountStoreUsernameKey];
+	for (PMBookmark *bookmark in self.bookmarks) {
+		if ([bookmark.username isEqualToString:usernameRemoved]) {
+			NSString *defaultUsername = [PMAccountStore sharedStore].defaultUsername;
+			if (defaultUsername) {
+				bookmark.username = defaultUsername;
+			} else {
+				bookmark.username = @"";
+			}
+		}
+	}
 }
 
 #pragma mark - KVO

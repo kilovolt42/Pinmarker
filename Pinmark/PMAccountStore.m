@@ -263,7 +263,7 @@ NSString * const PMDefaultUsernameKey = @"PMDefaultUsernameKey";
 			[Lockbox setArray:nil forKey:PMAssociatedTokensKey];
 		}
 		
-		if ([token isEqualToString:[self authTokenForUsername:self.defaultUsername]]) {
+		if ([[token tokenUsername] isEqualToString:self.defaultUsername]) {
 			self.defaultUsername = [[self.associatedTokens firstObject] tokenUsername];
 		}
 		
