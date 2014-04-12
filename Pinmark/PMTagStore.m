@@ -161,20 +161,20 @@ typedef NS_ENUM(NSUInteger, PMTagStoreCoherence) {
 	return [NSKeyedArchiver archiveRootObject:tagsToSave toFile:path];
 }
 
-- (void)usernameAdded:(NSNotification *)notificaiton {
-	NSString *username = notificaiton.userInfo[PMAccountStoreUsernameKey];
+- (void)usernameAdded:(NSNotification *)notification {
+	NSString *username = notification.userInfo[PMAccountStoreUsernameKey];
 	[self loadTagsForUsername:username];
 }
 
-- (void)usernameUpdated:(NSNotification *)notificaiton {
-	NSString *oldUsername = notificaiton.userInfo[PMAccountStoreOldUsernameKey];
-	NSString *newUsername = notificaiton.userInfo[PMAccountStoreUsernameKey];
+- (void)usernameUpdated:(NSNotification *)notification {
+	NSString *oldUsername = notification.userInfo[PMAccountStoreOldUsernameKey];
+	NSString *newUsername = notification.userInfo[PMAccountStoreUsernameKey];
 	[self.tags removeObjectForKey:oldUsername];
 	[self loadTagsForUsername:newUsername];
 }
 
-- (void)usernameRemoved:(NSNotification *)notificaiton {
-	NSString *username = notificaiton.userInfo[PMAccountStoreUsernameKey];
+- (void)usernameRemoved:(NSNotification *)notification {
+	NSString *username = notification.userInfo[PMAccountStoreUsernameKey];
 	[self.tags removeObjectForKey:username];
 	[self.tagCoherence removeObjectForKey:username];
 	[self saveTags];
