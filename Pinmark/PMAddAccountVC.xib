@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -14,6 +14,7 @@
                 <outlet property="informationButton" destination="6UU-N4-Vp2" id="EAm-yJ-N01"/>
                 <outlet property="instructionsLabel" destination="Xdt-k2-Y62" id="JHw-Fz-oeM"/>
                 <outlet property="instructionsLabelTopConstraint" destination="fIk-vN-TRV" id="UbD-pk-k0M"/>
+                <outlet property="noPinboardAccountButton" destination="JvN-oU-1cK" id="lIA-ex-37P"/>
                 <outlet property="passwordTextField" destination="XVb-Pe-knQ" id="WJv-a2-j2q"/>
                 <outlet property="search1PasswordButton" destination="YII-dZ-EDc" id="O40-lW-kqf"/>
                 <outlet property="submitButton" destination="r6S-c6-4s8" id="yhp-6M-7To"/>
@@ -136,11 +137,23 @@
                         <action selector="deleteButtonPressed" destination="-1" eventType="touchUpInside" id="r9V-mR-gcu"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JvN-oU-1cK">
+                    <rect key="frame" x="50" y="440" width="221" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Don't have a Pinboard account?">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="noPinboardAccountButtonPressed:" destination="-1" eventType="touchUpInside" id="RTK-5E-3gR"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <color key="tintColor" red="0.100145833" green="0.50943091789999995" blue="0.56008848850000004" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="Xdt-k2-Y62" secondAttribute="trailing" constant="20" id="8z9-Bj-8lP"/>
+                <constraint firstAttribute="bottom" secondItem="JvN-oU-1cK" secondAttribute="bottom" constant="20" id="AAK-Wk-6Aw"/>
+                <constraint firstAttribute="centerX" secondItem="JvN-oU-1cK" secondAttribute="centerX" id="FGO-8U-6he"/>
                 <constraint firstItem="Xdt-k2-Y62" firstAttribute="leading" secondItem="7Ly-gh-0c1" secondAttribute="leading" constant="20" id="FVp-7P-9YF"/>
                 <constraint firstItem="Xdt-k2-Y62" firstAttribute="centerY" secondItem="n3I-HU-F3M" secondAttribute="centerY" id="QRS-SU-OAs"/>
                 <constraint firstAttribute="centerX" secondItem="nzN-Vm-c45" secondAttribute="centerX" id="Qn1-1B-T65"/>

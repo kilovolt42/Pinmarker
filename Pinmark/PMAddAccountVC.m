@@ -9,7 +9,7 @@
 #import "PMAddAccountVC.h"
 #import "PMAccountStore.h"
 
-@interface PMAddAccountVC () <UIActionSheetDelegate, UITextFieldDelegate>
+@interface PMAddAccountVC () <UIActionSheetDelegate, UIAlertViewDelegate, UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
 @property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
 @property (nonatomic, weak) IBOutlet UITextField *tokenTextField;
@@ -18,6 +18,7 @@
 @property (nonatomic, weak) IBOutlet UIButton *deleteButton;
 @property (nonatomic, weak) IBOutlet UIButton *search1PasswordButton;
 @property (nonatomic, weak) IBOutlet UIButton *informationButton;
+@property (nonatomic, weak) IBOutlet UIButton *noPinboardAccountButton;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, weak) IBOutlet UILabel *welcomeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *instructionsLabel;
@@ -40,12 +41,19 @@
 		self.usernameTextField.enabled = NO;
 		[self.submitButton setTitle:@"Update Account" forState:UIControlStateNormal];
 		self.deleteButton.hidden = NO;
+		self.noPinboardAccountButton.hidden = YES;
 	} else {
 		self.title = @"Add";
 		self.instructionsLabel.text = @"Add a Pinboard account:";
 		self.usernameTextField.enabled = YES;
 		[self.submitButton setTitle:@"Add Account" forState:UIControlStateNormal];
 		self.deleteButton.hidden = YES;
+		
+		if ([[PMAccountStore sharedStore].associatedUsernames count] == 0) {
+			self.noPinboardAccountButton.hidden = NO;
+		} else {
+			self.noPinboardAccountButton.hidden = YES;
+		}
 	}
 }
 
@@ -336,11 +344,27 @@
 					  otherButtonTitles:nil] show];
 }
 
+- (IBAction)noPinboardAccountButtonPressed:(id)sender {
+	[[[UIAlertView alloc] initWithTitle:@"No Pinboard Account?"
+								message:@"You must have a Pinboard account to use Pinmarker. Sign up at pinboard.in/signup"
+							   delegate:self
+					  cancelButtonTitle:@"Cancel"
+					  otherButtonTitles:@"Sign Up", nil] show];
+}
+
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
 		[self.delegate didRequestToRemoveAccountForUsername:self.username];
+	}
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Sign Up"]) {
+		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://pinboard.in/signup/"]];
 	}
 }
 
