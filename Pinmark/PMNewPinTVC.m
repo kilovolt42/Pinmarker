@@ -302,13 +302,13 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 		if (parameters[@"x-success"]) {
 			self.xSuccess = ^void(id responseObject) {
 				weakSelf.bookmark = [bookmarkStore lastBookmark];
-				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[parameters[@"x-success"] urlEncodeUsingEncoding:NSUTF8StringEncoding]]];
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:parameters[@"x-success"]]];
 			};
 		}
 		if (parameters[@"x-error"]) {
 			self.xFailure = ^void(NSError *error, id responseObject) {
 				NSString *xError = [NSString stringWithFormat:@"%@?errorCode=%ld&errorMessage=%@", parameters[@"x-error"], (long)[error code], [error domain]];
-				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[xError urlEncodeUsingEncoding:NSUTF8StringEncoding]]];
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:xError]];
 			};
 		}
 	} else {
