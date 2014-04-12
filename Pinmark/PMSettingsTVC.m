@@ -172,7 +172,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-	if (section == 0) {
+	if (section == 0 && [[PMAccountStore sharedStore].associatedUsernames count]) {
 		return @"Select which account to bookmark with. To update an account, tap Edit and select an account to update.";
 	}
 	return @"";
