@@ -49,6 +49,11 @@
 static NSString *tagCellIdentifier = @"Tag Cell";
 static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
+#define URL_CELL_INDEX 0
+#define TITLE_CELL_INDEX 1
+#define TAGS_CELL_INDEX 2
+#define DESCRIPTION_CELL_INDEX 3
+
 @implementation PMNewPinTVC
 
 #pragma mark - Properties
@@ -391,7 +396,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 - (void)updateTagsRowHeight {
 	[self.tableView beginUpdates];
 	[self.tableView endUpdates];
-	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:3 inSection:0]];
+	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:TAGS_CELL_INDEX inSection:0]];
 	[self.tableView scrollRectToVisible:cell.frame animated:YES];
 }
 
@@ -610,13 +615,13 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == 0) {
+	if (indexPath.row == URL_CELL_INDEX) {
 		if (self.bookmark.lastPosted) {
 			return 67.0;
 		}
 		return 44.0;
 	}
-	if (indexPath.row == 2) {
+	if (indexPath.row == TAGS_CELL_INDEX) {
 		if ([self.tagsDataSource.tags count]) {
 			self.tagsCVHeightConstraint.constant = 44.0;
 		} else {
