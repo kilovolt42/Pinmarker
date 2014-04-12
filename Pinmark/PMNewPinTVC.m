@@ -574,15 +574,15 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	if (textField == self.URLTextField) [self.titleTextField becomeFirstResponder];
-	else if (textField == self.titleTextField) [self.extendedTextField becomeFirstResponder];
-	else if (textField == self.extendedTextField) [self.tagsTextField becomeFirstResponder];
+	else if (textField == self.titleTextField) [self.tagsTextField becomeFirstResponder];
 	else if (textField == self.tagsTextField) {
 		if ([textField.text isEqualToString:@""]) {
-			[textField resignFirstResponder];
+			[self.extendedTextField becomeFirstResponder];
 		} else {
 			[self addTags:textField.text];
 		}
 	}
+	else if (textField == self.extendedTextField) [self.extendedTextField resignFirstResponder];
 	return NO;
 }
 
@@ -593,7 +593,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 		}
 		return 44.0;
 	}
-	if (indexPath.row == 3) {
+	if (indexPath.row == 2) {
 		if ([self.tagsDataSource.tags count]) {
 			self.tagsCVHeightConstraint.constant = 44.0;
 		} else {

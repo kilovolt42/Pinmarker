@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Q2S-zl-2nx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Q2S-zl-2nx">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -80,33 +80,8 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Extended Cell" id="HJE-9x-2VN">
-                                        <rect key="frame" x="0.0" y="210" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HJE-9x-2VN" id="9dm-8T-Gw7">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Description" adjustsFontSizeToFit="NO" minimumFontSize="18" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="MoP-vU-7bQ">
-                                                    <rect key="frame" x="15" y="0.0" width="290" height="43"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="next"/>
-                                                    <connections>
-                                                        <action selector="extendedTextFieldEditingChanged:" destination="FsJ-qN-eCd" eventType="editingChanged" id="gjc-c4-L38"/>
-                                                    </connections>
-                                                </textField>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="MoP-vU-7bQ" firstAttribute="top" secondItem="9dm-8T-Gw7" secondAttribute="top" id="Jrx-A7-Zda"/>
-                                                <constraint firstAttribute="bottom" secondItem="MoP-vU-7bQ" secondAttribute="bottom" id="VIP-cF-6ag"/>
-                                                <constraint firstItem="MoP-vU-7bQ" firstAttribute="leading" secondItem="9dm-8T-Gw7" secondAttribute="leading" constant="15" id="k5N-G1-ylP"/>
-                                                <constraint firstAttribute="trailing" secondItem="MoP-vU-7bQ" secondAttribute="trailing" constant="15" id="s65-SG-FG4"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tags Cell" rowHeight="88" id="Nya-DV-bfQ">
-                                        <rect key="frame" x="0.0" y="254" width="320" height="88"/>
+                                        <rect key="frame" x="0.0" y="210" width="320" height="88"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nya-DV-bfQ" id="42E-Nl-Oru">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="87"/>
@@ -127,7 +102,7 @@
                                                     </collectionViewFlowLayout>
                                                     <cells/>
                                                 </collectionView>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add Tags" adjustsFontSizeToFit="NO" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KKd-Mm-SOm">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Tags" adjustsFontSizeToFit="NO" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KKd-Mm-SOm">
                                                     <rect key="frame" x="15" y="44" width="290" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <constraints>
@@ -147,6 +122,31 @@
                                                 <constraint firstItem="KKd-Mm-SOm" firstAttribute="top" secondItem="fjA-FE-hIj" secondAttribute="bottom" id="aJW-wZ-022"/>
                                                 <constraint firstAttribute="trailing" secondItem="KKd-Mm-SOm" secondAttribute="trailing" constant="15" id="bqb-LL-HPg"/>
                                                 <constraint firstItem="fjA-FE-hIj" firstAttribute="leading" secondItem="42E-Nl-Oru" secondAttribute="leading" id="e4b-Tc-6ND"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Extended Cell" id="HJE-9x-2VN">
+                                        <rect key="frame" x="0.0" y="298" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HJE-9x-2VN" id="9dm-8T-Gw7">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Description" adjustsFontSizeToFit="NO" minimumFontSize="18" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="MoP-vU-7bQ">
+                                                    <rect key="frame" x="15" y="0.0" width="290" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="next"/>
+                                                    <connections>
+                                                        <action selector="extendedTextFieldEditingChanged:" destination="FsJ-qN-eCd" eventType="editingChanged" id="gjc-c4-L38"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="MoP-vU-7bQ" firstAttribute="top" secondItem="9dm-8T-Gw7" secondAttribute="top" id="Jrx-A7-Zda"/>
+                                                <constraint firstAttribute="bottom" secondItem="MoP-vU-7bQ" secondAttribute="bottom" id="VIP-cF-6ag"/>
+                                                <constraint firstItem="MoP-vU-7bQ" firstAttribute="leading" secondItem="9dm-8T-Gw7" secondAttribute="leading" constant="15" id="k5N-G1-ylP"/>
+                                                <constraint firstAttribute="trailing" secondItem="MoP-vU-7bQ" secondAttribute="trailing" constant="15" id="s65-SG-FG4"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -375,7 +375,7 @@ Kyle Stevens
                                 <rect key="frame" x="20" y="212" width="280" height="336"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <mutableString key="text">Acknowledgements
+                                <string key="text">Acknowledgements
 This application makes use of the following third party libraries:
 
 AFNetworking
@@ -423,7 +423,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 Generated by CocoaPods - http://cocoapods.org
-</mutableString>
+</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
