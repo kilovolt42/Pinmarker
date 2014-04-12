@@ -22,17 +22,11 @@
 		277AA7B21896DC200015A3EF /* PMInputAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 277AA7B11896DC200015A3EF /* PMInputAccessoryView.m */; };
 		277FFAC018918BE900DFD907 /* PMTagsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 277FFABF18918BE900DFD907 /* PMTagsDataSource.m */; };
 		2781196C186A0516006B93AB /* NSURL+Pinmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781196B186A0516006B93AB /* NSURL+Pinmark.m */; };
-		278EF427185B71E2003A27D3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF426185B71E2003A27D3 /* Foundation.framework */; };
-		278EF429185B71E2003A27D3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF428185B71E2003A27D3 /* CoreGraphics.framework */; };
-		278EF42B185B71E2003A27D3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF42A185B71E2003A27D3 /* UIKit.framework */; };
 		278EF431185B71E2003A27D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 278EF42F185B71E2003A27D3 /* InfoPlist.strings */; };
 		278EF433185B71E2003A27D3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF432185B71E2003A27D3 /* main.m */; };
 		278EF437185B71E2003A27D3 /* PMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF436185B71E2003A27D3 /* PMAppDelegate.m */; };
 		278EF43A185B71E2003A27D3 /* Pinmark.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 278EF438185B71E2003A27D3 /* Pinmark.storyboard */; };
 		278EF442185B71E2003A27D3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 278EF441185B71E2003A27D3 /* Images.xcassets */; };
-		278EF449185B71E2003A27D3 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF448185B71E2003A27D3 /* XCTest.framework */; };
-		278EF44A185B71E2003A27D3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF426185B71E2003A27D3 /* Foundation.framework */; };
-		278EF44B185B71E2003A27D3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278EF42A185B71E2003A27D3 /* UIKit.framework */; };
 		278EF453185B71E2003A27D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 278EF451185B71E2003A27D3 /* InfoPlist.strings */; };
 		278EF455185B71E2003A27D3 /* PinmarkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF454185B71E2003A27D3 /* PinmarkTests.m */; };
 		279719D2189960A400D58BC7 /* PMSettingsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 279719D1189960A400D58BC7 /* PMSettingsTVC.m */; };
@@ -80,9 +74,6 @@
 		2781196A186A0516006B93AB /* NSURL+Pinmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Pinmark.h"; sourceTree = "<group>"; };
 		2781196B186A0516006B93AB /* NSURL+Pinmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Pinmark.m"; sourceTree = "<group>"; };
 		278EF423185B71E2003A27D3 /* Pinmarker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pinmarker.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		278EF426185B71E2003A27D3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		278EF428185B71E2003A27D3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		278EF42A185B71E2003A27D3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		278EF42E185B71E2003A27D3 /* Pinmarker-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pinmarker-Info.plist"; sourceTree = "<group>"; };
 		278EF430185B71E2003A27D3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		278EF432185B71E2003A27D3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -92,7 +83,6 @@
 		278EF439185B71E2003A27D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Pinmark.storyboard; sourceTree = "<group>"; };
 		278EF441185B71E2003A27D3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		278EF447185B71E2003A27D3 /* PinmarkerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinmarkerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		278EF448185B71E2003A27D3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		278EF450185B71E2003A27D3 /* PinmarkerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PinmarkerTests-Info.plist"; sourceTree = "<group>"; };
 		278EF452185B71E2003A27D3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		278EF454185B71E2003A27D3 /* PinmarkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PinmarkTests.m; sourceTree = "<group>"; };
@@ -112,9 +102,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				278EF429185B71E2003A27D3 /* CoreGraphics.framework in Frameworks */,
-				278EF42B185B71E2003A27D3 /* UIKit.framework in Frameworks */,
-				278EF427185B71E2003A27D3 /* Foundation.framework in Frameworks */,
 				82960B3C2A964DE68159B981 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -123,9 +110,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				278EF449185B71E2003A27D3 /* XCTest.framework in Frameworks */,
-				278EF44B185B71E2003A27D3 /* UIKit.framework in Frameworks */,
-				278EF44A185B71E2003A27D3 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,10 +153,6 @@
 			isa = PBXGroup;
 			children = (
 				2794EA6618F394B6002753A6 /* libz.dylib */,
-				278EF426185B71E2003A27D3 /* Foundation.framework */,
-				278EF428185B71E2003A27D3 /* CoreGraphics.framework */,
-				278EF42A185B71E2003A27D3 /* UIKit.framework */,
-				278EF448185B71E2003A27D3 /* XCTest.framework */,
 				A6E13E9115194BF18C9C2D1A /* libPods.a */,
 			);
 			name = Frameworks;
