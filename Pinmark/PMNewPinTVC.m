@@ -16,13 +16,14 @@
 #import "PMInputAccessoryView.h"
 
 #import "PMBookmark.h"
+
 #import "PMBookmarkStore.h"
-
 #import "PMTagStore.h"
-
 #import "PMAccountStore.h"
 
-@interface PMNewPinTVC () <UITextFieldDelegate, UICollectionViewDelegate, UIActionSheetDelegate>
+#import "PMSettingsTVC.h"
+
+@interface PMNewPinTVC () <PMSettingsTVCDelegate, UITextFieldDelegate, UICollectionViewDelegate, UIActionSheetDelegate>
 @property (nonatomic, weak) IBOutlet UITextField *URLTextField;
 @property (weak, nonatomic) IBOutlet UILabel *datePostedLabel;
 @property (nonatomic, weak) IBOutlet UITextField *titleTextField;
@@ -152,9 +153,24 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	self.bookmark = [[PMBookmarkStore sharedStore] lastBookmark];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	UIButton *titleButton = (UIButton *)self.navigationItem.titleView;
+	[titleButton setTitle:self.bookmark.username forState:UIControlStateNormal];
+}
+
 - (void)dealloc {
 	[self removeBookmarkObservers];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"Settings"]) {
+		UINavigationController *nc = (UINavigationController *)segue.destinationViewController;
+		PMSettingsTVC *stvc = [nc.viewControllers firstObject];
+		stvc.delegate = self;
+	}
 }
 
 #pragma mark -
@@ -496,6 +512,12 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	return [super becomeFirstResponder];
 }
 
+#pragma mark - PMSettingsTVCDelegate
+
+- (void)didRequestToPostWithUsername:(NSString *)username {
+	self.bookmark.username = username;
+}
+
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -503,6 +525,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	
 	if (buttonIndex < [usernames count]) {
 		self.bookmark.username = usernames[buttonIndex];
+		[PMAccountStore sharedStore].defaultUsername = usernames[buttonIndex];
 	}
 }
 

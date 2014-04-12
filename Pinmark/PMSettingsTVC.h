@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol PMSettingsTVCDelegate
+
+- (void)didRequestToPostWithUsername:(NSString *)username;
+
+@end
+
 @interface PMSettingsTVC : UITableViewController
+
+@property (nonatomic, weak) id<PMSettingsTVCDelegate> delegate;
 
 @end
