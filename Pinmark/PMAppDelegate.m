@@ -13,10 +13,6 @@
 #import "PMTagStore.h"
 #import "PMBookmarkStore.h"
 
-#if defined(DEBUG) || defined(ADHOC)
-#import "BugshotKit.h"
-#endif
-
 @interface PMAppDelegate () <PMAddAccountVCDelegate>
 
 @end
@@ -37,10 +33,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	if (application.applicationState == UIApplicationStateInactive) {
-#if defined(DEBUG) || defined(ADHOC)
-		[BugshotKit enableWithNumberOfTouches:1 performingGestures:BSKInvocationGestureSwipeFromRightEdge feedbackEmailAddress:@"kyle@kilovolt42.com"];
-#endif
-		
 		NSString *username = [PMAccountStore sharedStore].defaultUsername;
 		if (!username || [username isEqualToString:@""]) {
 			PMAddAccountVC *addVC = [[PMAddAccountVC alloc] init];
