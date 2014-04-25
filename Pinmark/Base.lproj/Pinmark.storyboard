@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Q2S-zl-2nx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Q2S-zl-2nx">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -11,7 +11,7 @@
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="Z5c-9N-ie7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
                             <tableViewSection id="bBy-nq-7En">
                                 <cells>
@@ -102,7 +102,7 @@
                                                     </collectionViewFlowLayout>
                                                     <cells/>
                                                 </collectionView>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Tags" adjustsFontSizeToFit="NO" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KKd-Mm-SOm">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add Tags" adjustsFontSizeToFit="NO" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KKd-Mm-SOm">
                                                     <rect key="frame" x="15" y="44" width="290" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <constraints>
@@ -125,30 +125,31 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Extended Cell" id="HJE-9x-2VN">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Extended Cell" id="HJE-9x-2VN">
                                         <rect key="frame" x="0.0" y="298" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HJE-9x-2VN" id="9dm-8T-Gw7">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Description" adjustsFontSizeToFit="NO" minimumFontSize="18" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="MoP-vU-7bQ">
-                                                    <rect key="frame" x="15" y="0.0" width="290" height="43"/>
+                                                <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="257" translatesAutoresizingMaskIntoConstraints="NO" id="Zxs-bD-eX1">
+                                                    <rect key="frame" x="15" y="8" width="257" height="27"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="next"/>
-                                                    <connections>
-                                                        <action selector="extendedTextFieldEditingChanged:" destination="FsJ-qN-eCd" eventType="editingChanged" id="gjc-c4-L38"/>
-                                                    </connections>
-                                                </textField>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="MoP-vU-7bQ" firstAttribute="top" secondItem="9dm-8T-Gw7" secondAttribute="top" id="Jrx-A7-Zda"/>
-                                                <constraint firstAttribute="bottom" secondItem="MoP-vU-7bQ" secondAttribute="bottom" id="VIP-cF-6ag"/>
-                                                <constraint firstItem="MoP-vU-7bQ" firstAttribute="leading" secondItem="9dm-8T-Gw7" secondAttribute="leading" constant="15" id="k5N-G1-ylP"/>
-                                                <constraint firstAttribute="trailing" secondItem="MoP-vU-7bQ" secondAttribute="trailing" constant="15" id="s65-SG-FG4"/>
+                                                <constraint firstItem="Zxs-bD-eX1" firstAttribute="leading" secondItem="9dm-8T-Gw7" secondAttribute="leading" constant="15" id="2Pt-CM-cWE"/>
+                                                <constraint firstAttribute="trailing" secondItem="Zxs-bD-eX1" secondAttribute="trailing" constant="15" id="t4Q-Nx-rbW"/>
+                                                <constraint firstAttribute="bottom" secondItem="Zxs-bD-eX1" secondAttribute="bottom" constant="8" id="uXZ-9J-omo"/>
+                                                <constraint firstItem="Zxs-bD-eX1" firstAttribute="top" secondItem="9dm-8T-Gw7" secondAttribute="top" constant="8" id="vOv-9r-oSG"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="hUR-06-3IQ" kind="push" identifier="Description" id="Wc5-zt-rdW"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="To Read Cell" id="rsj-Dw-eBk">
                                         <rect key="frame" x="0.0" y="342" width="320" height="44"/>
@@ -244,7 +245,7 @@
                     <connections>
                         <outlet property="URLTextField" destination="WYr-1Q-haB" id="Lo5-sv-JmT"/>
                         <outlet property="datePostedLabel" destination="J6f-bL-vpc" id="cnw-dA-7n5"/>
-                        <outlet property="extendedTextField" destination="MoP-vU-7bQ" id="prl-Ei-wJc"/>
+                        <outlet property="extendedLabel" destination="Zxs-bD-eX1" id="sGR-ww-zRr"/>
                         <outlet property="postButton" destination="K3p-4H-lk9" id="RUc-ve-9q0"/>
                         <outlet property="sharedSwitch" destination="W9p-Du-tUZ" id="h9Y-tI-srW"/>
                         <outlet property="tagsCVHeightConstraint" destination="1GY-RB-FhD" id="3Rz-Mr-xo4"/>
@@ -337,7 +338,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pxB-6O-1P9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1908" y="76"/>
+            <point key="canvasLocation" x="1956" y="-625"/>
         </scene>
         <!--View Controller - About-->
         <scene sceneID="0zB-m2-GLe">
@@ -375,7 +376,7 @@ Kyle Stevens
                                 <rect key="frame" x="20" y="212" width="280" height="336"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <string key="text">Acknowledgements
+                                <mutableString key="text">Acknowledgements
 This application makes use of the following third party libraries:
 
 AFNetworking
@@ -422,8 +423,28 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Generated by CocoaPods - http://cocoapods.org
-</string>
+PSPDFTextView
+
+Copyright (c) 2014 Peter Steinberger, PSPDFKit GmbH.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Generated by CocoaPods - http://cocoapods.org</mutableString>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
@@ -453,7 +474,7 @@ Generated by CocoaPods - http://cocoapods.org
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IkZ-pD-cdj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2439" y="76"/>
+            <point key="canvasLocation" x="2441" y="-625"/>
         </scene>
         <!--NavigationVC-->
         <scene sceneID="0Gv-dD-Qg8">
@@ -494,7 +515,45 @@ Generated by CocoaPods - http://cocoapods.org
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8HA-xG-MoP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1382" y="76"/>
+            <point key="canvasLocation" x="1430" y="-625"/>
+        </scene>
+        <!--DescriptionVC - Description-->
+        <scene sceneID="be8-Uw-AwA">
+            <objects>
+                <viewController id="hUR-06-3IQ" customClass="PMDescriptionVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="SFk-yF-ur4"/>
+                        <viewControllerLayoutGuide type="bottom" id="V6H-6f-voC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="S4c-wl-oZA">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bys-cI-Fn4" customClass="PSPDFTextView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Bys-cI-Fn4" firstAttribute="top" secondItem="S4c-wl-oZA" secondAttribute="top" id="0WA-T7-2II"/>
+                            <constraint firstItem="V6H-6f-voC" firstAttribute="top" secondItem="Bys-cI-Fn4" secondAttribute="bottom" id="adz-w0-OXr"/>
+                            <constraint firstItem="Bys-cI-Fn4" firstAttribute="leading" secondItem="S4c-wl-oZA" secondAttribute="leading" id="lpC-3f-DSv"/>
+                            <constraint firstAttribute="trailing" secondItem="Bys-cI-Fn4" secondAttribute="trailing" id="pTA-aq-fnW"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Description" id="ifY-ec-flX"/>
+                    <connections>
+                        <outlet property="textView" destination="Bys-cI-Fn4" id="G4a-9b-TMI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Tnq-Cr-9LF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1430" y="76"/>
         </scene>
     </scenes>
     <resources>

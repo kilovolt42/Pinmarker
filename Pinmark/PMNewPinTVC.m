@@ -22,12 +22,13 @@
 #import "PMAccountStore.h"
 
 #import "PMSettingsTVC.h"
+#import "PMDescriptionVC.h"
 
-@interface PMNewPinTVC () <PMSettingsTVCDelegate, UITextFieldDelegate, UICollectionViewDelegate, UIActionSheetDelegate>
+@interface PMNewPinTVC () <UINavigationControllerDelegate, PMSettingsTVCDelegate, UITextFieldDelegate, UICollectionViewDelegate, UIActionSheetDelegate>
 @property (nonatomic, weak) IBOutlet UITextField *URLTextField;
 @property (weak, nonatomic) IBOutlet UILabel *datePostedLabel;
 @property (nonatomic, weak) IBOutlet UITextField *titleTextField;
-@property (nonatomic, weak) IBOutlet UITextField *extendedTextField;
+@property (nonatomic, weak) IBOutlet UILabel *extendedLabel;
 @property (nonatomic, weak) IBOutlet UITextField *tagsTextField;
 @property (nonatomic, weak) IBOutlet UICollectionView *tagsCollectionView;
 @property (nonatomic, weak) UICollectionView *suggestedTagsCollectionView;
@@ -53,6 +54,8 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 #define TITLE_CELL_INDEX 1
 #define TAGS_CELL_INDEX 2
 #define DESCRIPTION_CELL_INDEX 3
+#define READLATER_CELL_INDEX 4
+#define PRIVATE_CELL_INDEX 5
 
 @implementation PMNewPinTVC
 
@@ -110,7 +113,6 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	self.suggestedTagsCollectionView = _keyboardAccessory.suggestedTagsCollectionView;
 	self.URLTextField.inputAccessoryView = _keyboardAccessory;
 	self.titleTextField.inputAccessoryView = _keyboardAccessory;
-	self.extendedTextField.inputAccessoryView = _keyboardAccessory;
 	self.tagsTextField.inputAccessoryView = _keyboardAccessory;
 }
 
@@ -148,7 +150,6 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	self.URLTextField.delegate = self;
 	self.titleTextField.delegate = self;
 	self.tagsTextField.delegate = self;
-	self.extendedTextField.delegate = self;
 	self.keyboardAccessory = [[[NSBundle mainBundle] loadNibNamed:@"PMInputAccessoryView" owner:self options:nil] firstObject];
 	
 	UIMenuController *menuController = [UIMenuController sharedMenuController];
@@ -156,6 +157,18 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	[menuController setMenuItems:@[deleteTagMenuItem]];
 	
 	self.bookmark = [[PMBookmarkStore sharedStore] lastBookmark];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	NSIndexPath *selected = [self.tableView indexPathForSelectedRow];
+	if (selected) {
+		[self.tableView deselectRowAtIndexPath:selected animated:YES];
+	}
+	
+	[self.tableView reloadData];
+	[self updateFields];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -171,11 +184,20 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	[self dismissKeyboard];
 	if ([segue.identifier isEqualToString:@"Settings"]) {
 		UINavigationController *nc = (UINavigationController *)segue.destinationViewController;
 		PMSettingsTVC *stvc = [nc.viewControllers firstObject];
 		stvc.delegate = self;
 	}
+	else if ([segue.identifier isEqualToString:@"Description"]) {
+		PMDescriptionVC *dvc = (PMDescriptionVC *)segue.destinationViewController;
+		dvc.bookmark = self.bookmark;
+	}
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+	[self updateFields];
 }
 
 #pragma mark -
@@ -349,11 +371,19 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 - (void)updateFields {
 	self.URLTextField.text = self.bookmark.url;
 	self.titleTextField.text = self.bookmark.title;
-	self.extendedTextField.text = self.bookmark.extended;
 	self.tagsDataSource.tags = self.bookmark.tags;
 	[self.tagsCollectionView reloadData];
 	self.toReadSwitch.on = self.bookmark.toread;
 	self.sharedSwitch.on = !self.bookmark.shared;
+	
+	if (self.bookmark.extended && [self.bookmark.extended length]) {
+		self.extendedLabel.text = self.bookmark.extended;
+		self.extendedLabel.font = [UIFont fontWithName:self.extendedLabel.font.fontName size:14.0];
+	} else {
+		self.extendedLabel.text = @"Description";
+		self.extendedLabel.font = [UIFont fontWithName:self.extendedLabel.font.fontName size:18.0];
+	}
+	
 	[self updateTagsRowHeight];
 }
 
@@ -394,13 +424,12 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 }
 
 - (void)updateTagsRowHeight {
-	[self.tableView beginUpdates];
-	[self.tableView endUpdates];
+	[self updateRowHeights];
 	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:TAGS_CELL_INDEX inSection:0]];
 	[self.tableView scrollRectToVisible:cell.frame animated:YES];
 }
 
-- (void)updateURLRowHeight {
+- (void)updateRowHeights {
 	[self.tableView beginUpdates];
 	[self.tableView endUpdates];
 }
@@ -448,7 +477,6 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 - (void)disableFields {
 	self.URLTextField.enabled = NO;
 	self.titleTextField.enabled = NO;
-	self.extendedTextField.enabled = NO;
 	self.tagsCollectionView.allowsSelection = NO;
 	self.tagsTextField.enabled = NO;
 	self.toReadSwitch.enabled = NO;
@@ -462,7 +490,6 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 - (void)enableFields {
 	self.URLTextField.enabled = YES;
 	self.titleTextField.enabled = YES;
-	self.extendedTextField.enabled = YES;
 	self.tagsCollectionView.allowsSelection = YES;
 	self.tagsTextField.enabled = YES;
 	self.toReadSwitch.enabled = YES;
@@ -491,10 +518,10 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 		else if ([keyPath isEqualToString:@"lastPosted"]) {
 			if (self.bookmark.lastPosted) {
 				self.datePostedLabel.text = [NSString stringWithFormat:@"Last posted %@", [self.dateFormatter stringFromDate:self.bookmark.lastPosted]];
-				[self updateURLRowHeight];
+				[self updateRowHeights];
 			} else {
 				self.datePostedLabel.text = @"";
-				[self updateURLRowHeight];
+				[self updateRowHeights];
 			}
 		}
 	} else {
@@ -576,11 +603,39 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 #pragma mark - UITableViewDelegate
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.row == DESCRIPTION_CELL_INDEX) {
+		[self performSegueWithIdentifier:@"Description" sender:self];
+		return YES;
+	}
 	return NO;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 	return 0.1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.row == URL_CELL_INDEX) {
+		if (self.bookmark.lastPosted) {
+			return 67.0;
+		}
+		return 44.0;
+	}
+	else if (indexPath.row == TAGS_CELL_INDEX) {
+		if ([self.tagsDataSource.tags count]) {
+			self.tagsCVHeightConstraint.constant = 44.0;
+		} else {
+			self.tagsCVHeightConstraint.constant = 0.0;
+		}
+		return self.tagsTextField.frame.size.height + self.tagsCVHeightConstraint.constant;
+	}
+	else if (indexPath.row == DESCRIPTION_CELL_INDEX) {
+		if (self.bookmark.extended && [self.bookmark.extended length]) {
+			CGSize labelSize = [self.extendedLabel sizeThatFits:CGSizeMake(self.extendedLabel.frame.size.width, 96.0)];
+			return MAX(44.0, labelSize.height + 18.0);
+		}
+	}
+	return 44.0;
 }
 
 #pragma mark - UITextFieldDelegate
@@ -605,31 +660,12 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	else if (textField == self.titleTextField) [self.tagsTextField becomeFirstResponder];
 	else if (textField == self.tagsTextField) {
 		if ([textField.text isEqualToString:@""]) {
-			[self.extendedTextField becomeFirstResponder];
+			[self.tagsTextField resignFirstResponder];
 		} else {
 			[self addTags:textField.text];
 		}
 	}
-	else if (textField == self.extendedTextField) [self.extendedTextField resignFirstResponder];
 	return NO;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == URL_CELL_INDEX) {
-		if (self.bookmark.lastPosted) {
-			return 67.0;
-		}
-		return 44.0;
-	}
-	if (indexPath.row == TAGS_CELL_INDEX) {
-		if ([self.tagsDataSource.tags count]) {
-			self.tagsCVHeightConstraint.constant = 44.0;
-		} else {
-			self.tagsCVHeightConstraint.constant = 0.0;
-		}
-		return self.tagsTextField.frame.size.height + self.tagsCVHeightConstraint.constant;
-	}
-	return 44.0;
 }
 
 @end

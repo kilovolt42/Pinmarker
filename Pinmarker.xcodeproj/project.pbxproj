@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		27019F25189FFD6100CDAE55 /* Inconsolata.otf in Resources */ = {isa = PBXBuildFile; fileRef = 27019F24189FFCF800CDAE55 /* Inconsolata.otf */; };
 		2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2703C540185F7E6500570F0C /* PMNewPinTVC.m */; };
+		2704BE72190ABC9C004EDCED /* PSPDFTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2704BE71190ABC9C004EDCED /* PSPDFTextView.m */; };
 		270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 270C4A4918628D6A000FC061 /* PMNavigationVC.m */; };
 		270F437818C7BE9200757DCB /* PMBookmarkStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 270F437718C7BE9200757DCB /* PMBookmarkStore.m */; };
 		271D051118D766BD006B5A4E /* PMAddAccountVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 271D051018D766BD006B5A4E /* PMAddAccountVC.xib */; };
@@ -32,6 +33,7 @@
 		279719D2189960A400D58BC7 /* PMSettingsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 279719D1189960A400D58BC7 /* PMSettingsTVC.m */; };
 		27D2DC3418777A9B0054D187 /* PMBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D2DC3318777A9B0054D187 /* PMBookmark.m */; };
 		27DA5B501885BB0500AEE0F5 /* PMAddAccountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DA5B4F1885BB0500AEE0F5 /* PMAddAccountVC.m */; };
+		27E5BB591905A35100289B14 /* PMDescriptionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E5BB581905A35100289B14 /* PMDescriptionVC.m */; };
 		82960B3C2A964DE68159B981 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6E13E9115194BF18C9C2D1A /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +52,8 @@
 		2703C53F185F7E6500570F0C /* PMNewPinTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMNewPinTVC.h; sourceTree = "<group>"; };
 		2703C540185F7E6500570F0C /* PMNewPinTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMNewPinTVC.m; sourceTree = "<group>"; };
 		2703C542185FD16100570F0C /* Bookmarklet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Bookmarklet.js; sourceTree = "<group>"; };
+		2704BE70190ABC9C004EDCED /* PSPDFTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PSPDFTextView.h; path = ../PSPDFTextView/PSPDFTextView.h; sourceTree = "<group>"; };
+		2704BE71190ABC9C004EDCED /* PSPDFTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PSPDFTextView.m; path = ../PSPDFTextView/PSPDFTextView.m; sourceTree = "<group>"; };
 		270C4A4718628CD3000FC061 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		270C4A4818628D6A000FC061 /* PMNavigationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMNavigationVC.h; sourceTree = "<group>"; };
 		270C4A4918628D6A000FC061 /* PMNavigationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMNavigationVC.m; sourceTree = "<group>"; };
@@ -93,6 +97,8 @@
 		27D2DC3318777A9B0054D187 /* PMBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBookmark.m; sourceTree = "<group>"; };
 		27DA5B4E1885BB0500AEE0F5 /* PMAddAccountVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMAddAccountVC.h; sourceTree = "<group>"; };
 		27DA5B4F1885BB0500AEE0F5 /* PMAddAccountVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMAddAccountVC.m; sourceTree = "<group>"; };
+		27E5BB571905A35100289B14 /* PMDescriptionVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMDescriptionVC.h; sourceTree = "<group>"; };
+		27E5BB581905A35100289B14 /* PMDescriptionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMDescriptionVC.m; sourceTree = "<group>"; };
 		A6E13E9115194BF18C9C2D1A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE2FE771354E43FD945BDE89 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -116,6 +122,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2704BE73190AD331004EDCED /* PSPDFTextView */ = {
+			isa = PBXGroup;
+			children = (
+				2704BE70190ABC9C004EDCED /* PSPDFTextView.h */,
+				2704BE71190ABC9C004EDCED /* PSPDFTextView.m */,
+			);
+			name = PSPDFTextView;
+			path = Pinmark;
+			sourceTree = "<group>";
+		};
 		272C5CDC1871028A0079B95E /* Tags */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +168,7 @@
 		278EF425185B71E2003A27D3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2704BE73190AD331004EDCED /* PSPDFTextView */,
 				2794EA6618F394B6002753A6 /* libz.dylib */,
 				A6E13E9115194BF18C9C2D1A /* libPods.a */,
 			);
@@ -168,6 +185,8 @@
 				270C4A4918628D6A000FC061 /* PMNavigationVC.m */,
 				2703C53F185F7E6500570F0C /* PMNewPinTVC.h */,
 				2703C540185F7E6500570F0C /* PMNewPinTVC.m */,
+				27E5BB571905A35100289B14 /* PMDescriptionVC.h */,
+				27E5BB581905A35100289B14 /* PMDescriptionVC.m */,
 				27C701BE18B17300005228E4 /* Settings */,
 				27DA5B511885BB0900AEE0F5 /* Accounts */,
 				272C5CDC1871028A0079B95E /* Tags */,
@@ -409,10 +428,12 @@
 			files = (
 				278EF433185B71E2003A27D3 /* main.m in Sources */,
 				279719D2189960A400D58BC7 /* PMSettingsTVC.m in Sources */,
+				2704BE72190ABC9C004EDCED /* PSPDFTextView.m in Sources */,
 				27409CAB18CBDAAE006C97BB /* PMAccountStore.m in Sources */,
 				270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */,
 				27DA5B501885BB0500AEE0F5 /* PMAddAccountVC.m in Sources */,
 				272C5CD3186DFF3E0079B95E /* PMTagCVCell.m in Sources */,
+				27E5BB591905A35100289B14 /* PMDescriptionVC.m in Sources */,
 				277AA7B21896DC200015A3EF /* PMInputAccessoryView.m in Sources */,
 				2781196C186A0516006B93AB /* NSURL+Pinmark.m in Sources */,
 				278EF437185B71E2003A27D3 /* PMAppDelegate.m in Sources */,
@@ -574,7 +595,7 @@
 					SystemConfiguration,
 				);
 				PRODUCT_NAME = Pinmarker;
-				PROVISIONING_PROFILE = "EBA6CAB7-133F-4D2C-954E-AA2A91EFD46F";
+				PROVISIONING_PROFILE = "E81B0F2E-F743-4CD1-9F72-763A68634A37";
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
@@ -612,7 +633,7 @@
 					UIKit,
 				);
 				PRODUCT_NAME = Pinmarker;
-				PROVISIONING_PROFILE = "EBA6CAB7-133F-4D2C-954E-AA2A91EFD46F";
+				PROVISIONING_PROFILE = "E81B0F2E-F743-4CD1-9F72-763A68634A37";
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
