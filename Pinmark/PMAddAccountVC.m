@@ -18,7 +18,6 @@
 @property (nonatomic, weak) IBOutlet UIButton *deleteButton;
 @property (nonatomic, weak) IBOutlet UIButton *search1PasswordButton;
 @property (nonatomic, weak) IBOutlet UIButton *informationButton;
-@property (nonatomic, weak) IBOutlet UIButton *noPinboardAccountButton;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, weak) IBOutlet UILabel *welcomeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *instructionsLabel;
@@ -41,19 +40,12 @@
 		self.usernameTextField.enabled = NO;
 		[self.submitButton setTitle:@"Update Account" forState:UIControlStateNormal];
 		self.deleteButton.hidden = NO;
-		self.noPinboardAccountButton.hidden = YES;
 	} else {
 		self.title = @"Add";
 		self.instructionsLabel.text = @"Add a Pinboard account:";
 		self.usernameTextField.enabled = YES;
 		[self.submitButton setTitle:@"Add Account" forState:UIControlStateNormal];
 		self.deleteButton.hidden = YES;
-		
-		if ([[PMAccountStore sharedStore].associatedUsernames count] == 0) {
-			self.noPinboardAccountButton.hidden = NO;
-		} else {
-			self.noPinboardAccountButton.hidden = YES;
-		}
 	}
 }
 
@@ -342,14 +334,6 @@
 							   delegate:nil
 					  cancelButtonTitle:@"OK"
 					  otherButtonTitles:nil] show];
-}
-
-- (IBAction)noPinboardAccountButtonPressed:(id)sender {
-	[[[UIAlertView alloc] initWithTitle:@"No Pinboard Account?"
-								message:@"You must have a Pinboard account to use Pinmarker. Sign up at pinboard.in/signup"
-							   delegate:self
-					  cancelButtonTitle:@"Cancel"
-					  otherButtonTitles:@"Sign Up", nil] show];
 }
 
 #pragma mark - UIActionSheetDelegate
