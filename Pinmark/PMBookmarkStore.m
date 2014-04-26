@@ -257,6 +257,7 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 					NSArray *elements = [doc searchWithXPathQuery:@"/html/head/title"];
 					TFHppleElement *titleElement = [elements firstObject];
 					NSString *title = [titleElement text];
+					title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 					
 					dispatch_async(dispatch_get_main_queue(), ^{
 						if (!bookmark.title || [bookmark.title isEqualToString:@""] || [bookmark.title isEqualToString:previousTitle]) {
