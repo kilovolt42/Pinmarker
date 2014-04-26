@@ -106,15 +106,15 @@
 	NSInteger row = indexPath.row;
 	
 	if (section == 0) {
-		if (!self.isEditing) {
-			PMAccountStore *store = [PMAccountStore sharedStore];
-			store.defaultUsername = self.accounts[row];
-			[tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
-		} else {
+		if (self.isEditing || [self.accounts count] == 1) {
 			PMAddAccountVC *addAccountVC = [[PMAddAccountVC alloc] init];
 			addAccountVC.delegate = self;
 			addAccountVC.username = self.accounts[row];
 			[self.navigationController pushViewController:addAccountVC animated:YES];
+		} else {
+			PMAccountStore *store = [PMAccountStore sharedStore];
+			store.defaultUsername = self.accounts[row];
+			[tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
 		}
 	} else if (section == 1) {
 		[self addNewAccount];
@@ -145,10 +145,14 @@
 		cell.textLabel.text = self.accounts[indexPath.row];
 		cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		
-		if ([self.accounts[indexPath.row] isEqualToString:[PMAccountStore sharedStore].defaultUsername]) {
-			cell.accessoryType = UITableViewCellAccessoryCheckmark;
+		if ([self.accounts count] > 1) {
+			if ([self.accounts[indexPath.row] isEqualToString:[PMAccountStore sharedStore].defaultUsername]) {
+				cell.accessoryType = UITableViewCellAccessoryCheckmark;
+			} else {
+				cell.accessoryType = UITableViewCellAccessoryNone;
+			}
 		} else {
-			cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		}
 	}
 	else if (indexPath.section == 1) {
@@ -172,7 +176,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-	if (section == 0 && [[PMAccountStore sharedStore].associatedUsernames count]) {
+	if (section == 0 && [[PMAccountStore sharedStore].associatedUsernames count] > 1) {
 		return @"Select which account to bookmark with. To update an account, tap Edit and select an account to update.";
 	}
 	return @"";
@@ -187,16 +191,17 @@
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		[[PMAccountStore sharedStore] removeAccountForUsername:self.accounts[indexPath.row]];
 		[self loadAccounts];
-		[self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+		[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 		
 		if ([self.accounts count] == 0) {
 			[self setEditing:NO animated:YES];
 			[tableView reloadData];
+		} else if ([self.accounts count] == 1) {
+			[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]].accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		} else {
 			NSUInteger defaultUserIndex = [self.accounts indexOfObject:[PMAccountStore sharedStore].defaultUsername];
 			if (defaultUserIndex != NSNotFound) {
-				UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:defaultUserIndex inSection:0]];
-				cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
+				[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:defaultUserIndex inSection:0]].editingAccessoryType = UITableViewCellAccessoryCheckmark;
 			}
 		}
 	}

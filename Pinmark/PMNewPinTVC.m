@@ -173,9 +173,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	
-	UIButton *titleButton = (UIButton *)self.navigationItem.titleView;
-	[titleButton setTitle:self.bookmark.username forState:UIControlStateNormal];
+	[self updateTitleButton];
 }
 
 - (void)dealloc {
@@ -389,6 +387,28 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	[self updateTagsRowHeight];
 }
 
+- (void)updateTitleButton {
+	BOOL buttonEnabled;
+	NSString *buttonTitle;
+	NSArray *usernames = [PMAccountStore sharedStore].associatedUsernames;
+	if ([usernames count] > 1) {
+		buttonEnabled = YES;
+		buttonTitle = [self.bookmark.username stringByAppendingString:@" ▾"];
+	} else {
+		buttonEnabled = NO;
+		buttonTitle = self.bookmark.username;
+	}
+	
+	UIButton *titleButton = (UIButton *)self.navigationItem.titleView;
+	[titleButton addTarget:self action:@selector(showUsernameSheet:) forControlEvents:UIControlEventTouchUpInside];
+	titleButton.enabled = buttonEnabled;
+	[titleButton setTitle:buttonTitle forState:UIControlStateNormal];
+	
+	if (self.activeField == self.tagsTextField) {
+		[self updateSuggestedTagsForTag:self.tagsTextField.text];
+	}
+}
+
 - (void)reportSuccess {
 	self.navigationItem.prompt = @"Success";
 	[self performSelector:@selector(resetNavigationBar) withObject:self afterDelay:2.0];
@@ -510,12 +530,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 			self.postButton.enabled = self.bookmark.postable;
 		}
 		else if ([keyPath isEqualToString:@"username"]) {
-			UIButton *titleButton = (UIButton *)self.navigationItem.titleView;
-			[titleButton setTitle:self.bookmark.username forState:UIControlStateNormal];
-			[titleButton addTarget:self action:@selector(showUsernameSheet:) forControlEvents:UIControlEventTouchUpInside];
-			if (self.activeField == self.tagsTextField) {
-				[self updateSuggestedTagsForTag:self.tagsTextField.text];
-			}
+			[self updateTitleButton];
 		}
 		else if ([keyPath isEqualToString:@"lastPosted"]) {
 			if (self.bookmark.lastPosted) {
