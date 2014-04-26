@@ -31,6 +31,7 @@
 		278EF453185B71E2003A27D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 278EF451185B71E2003A27D3 /* InfoPlist.strings */; };
 		278EF455185B71E2003A27D3 /* PinmarkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF454185B71E2003A27D3 /* PinmarkTests.m */; };
 		279719D2189960A400D58BC7 /* PMSettingsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 279719D1189960A400D58BC7 /* PMSettingsTVC.m */; };
+		27C92A8B190C1841006B098B /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C92A8A190C1841006B098B /* libxml2.2.dylib */; };
 		27D2DC3418777A9B0054D187 /* PMBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D2DC3318777A9B0054D187 /* PMBookmark.m */; };
 		27DA5B501885BB0500AEE0F5 /* PMAddAccountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DA5B4F1885BB0500AEE0F5 /* PMAddAccountVC.m */; };
 		27E5BB591905A35100289B14 /* PMDescriptionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E5BB581905A35100289B14 /* PMDescriptionVC.m */; };
@@ -93,6 +94,8 @@
 		2794EA6618F394B6002753A6 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		279719D0189960A400D58BC7 /* PMSettingsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMSettingsTVC.h; sourceTree = "<group>"; };
 		279719D1189960A400D58BC7 /* PMSettingsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMSettingsTVC.m; sourceTree = "<group>"; };
+		27C92A88190C180F006B098B /* libPods-hpple.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-hpple.a"; path = "Pods/build/Debug-iphoneos/libPods-hpple.a"; sourceTree = "<group>"; };
+		27C92A8A190C1841006B098B /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		27D2DC3218777A9B0054D187 /* PMBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMBookmark.h; sourceTree = "<group>"; };
 		27D2DC3318777A9B0054D187 /* PMBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBookmark.m; sourceTree = "<group>"; };
 		27DA5B4E1885BB0500AEE0F5 /* PMAddAccountVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMAddAccountVC.h; sourceTree = "<group>"; };
@@ -108,6 +111,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27C92A8B190C1841006B098B /* libxml2.2.dylib in Frameworks */,
 				82960B3C2A964DE68159B981 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -168,6 +172,8 @@
 		278EF425185B71E2003A27D3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				27C92A8A190C1841006B098B /* libxml2.2.dylib */,
+				27C92A88190C180F006B098B /* libPods-hpple.a */,
 				2704BE73190AD331004EDCED /* PSPDFTextView */,
 				2794EA6618F394B6002753A6 /* libz.dylib */,
 				A6E13E9115194BF18C9C2D1A /* libPods.a */,
@@ -582,6 +588,7 @@
 				);
 				INFOPLIST_FILE = "Pinmark/Pinmarker-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -619,6 +626,7 @@
 				);
 				INFOPLIST_FILE = "Pinmark/Pinmarker-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-framework",

@@ -18,14 +18,17 @@ PODS:
   - AFNetworking/UIKit (2.2.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - hpple (0.2.0)
   - Lockbox (1.4.8)
 
 DEPENDENCIES:
   - AFNetworking
+  - hpple
   - Lockbox
 
 SPEC CHECKSUMS:
   AFNetworking: 0121f4b69be3fa58d1ab317866e036e12ac9651d
-  Lockbox: 351802bd73ea63f9cdcb250957e2b41d616aebe6
+  hpple: dde62f905f482bbec50186280d1a1be2c881241b
+  Lockbox: 33fad03fc7dd73e53f7108d9abff6fa0cfa1058b
 
-COCOAPODS: 0.29.0
+COCOAPODS: 0.32.1

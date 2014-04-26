@@ -217,12 +217,14 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	[_bookmark addObserver:self forKeyPath:@"postable" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
 	[_bookmark addObserver:self forKeyPath:@"username" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
 	[_bookmark addObserver:self forKeyPath:@"lastPosted" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
+	[_bookmark addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
 }
 
 - (void)removeBookmarkObservers {
 	[self.bookmark removeObserver:self forKeyPath:@"postable" context:&PMNewPinTVCContext];
 	[self.bookmark removeObserver:self forKeyPath:@"username" context:&PMNewPinTVCContext];
 	[self.bookmark removeObserver:self forKeyPath:@"lastPosted" context:&PMNewPinTVCContext];
+	[self.bookmark removeObserver:self forKeyPath:@"title" context:&PMNewPinTVCContext];
 }
 
 #pragma mark - Actions
@@ -523,6 +525,9 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 				self.datePostedLabel.text = @"";
 				[self updateRowHeights];
 			}
+		}
+		else if ([keyPath isEqualToString:@"title"]) {
+			self.titleTextField.text = self.bookmark.title;
 		}
 	} else {
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
