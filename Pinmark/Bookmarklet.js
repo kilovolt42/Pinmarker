@@ -1,1 +1,1 @@
-javascript:q=location.href;p=document.title;window.location='pinmarker://bookmarklet/add?url='+encodeURIComponent(q)+'&description='+encodeURIComponent(p);
+javascript:q=location.href;p=document.title;if(window.getSelection)%7Bd=window.getSelection();%7Delse%7Bd=document.getSelection();%7Dwindow.location='pinmarker://bookmarklet/add?url='+encodeURIComponent(q)+'&description='+encodeURIComponent(p)+'&extended='+encodeURIComponent(d);
