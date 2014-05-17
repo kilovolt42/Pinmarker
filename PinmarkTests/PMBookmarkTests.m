@@ -1,5 +1,5 @@
 //
-//  PinmarkBookmarksTests.m
+//  PMBookmarkTests.m
 //  Pinmarker
 //
 //  Created by Kyle Stevens on 2/25/14.
@@ -9,11 +9,11 @@
 #import <XCTest/XCTest.h>
 #import "PMBookmark.h"
 
-@interface PinmarkBookmarksTests : XCTestCase
+@interface PMBookmarkTests : XCTestCase
 
 @end
 
-@implementation PinmarkBookmarksTests
+@implementation PMBookmarkTests
 
 - (void)setUp {
     [super setUp];
