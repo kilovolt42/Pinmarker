@@ -7,12 +7,21 @@
 //
 
 #import "PMSettingsTVC.h"
+#import "PMAppDelegate.h"
 #import "PMAddAccountVC.h"
 #import "PMAccountStore.h"
 #import "NSString+Pinmark.h"
+#import <TextExpander/SMTEDelegateController.h>
+
+NSString * const PMAccountsSectionLabel = @"Accounts";
+NSString * const PMAddAccountSectionLabel = @"Add Account";
+NSString * const PMTextExpanderSectionLabel = @"TextExpander";
+NSString * const PMInformationSectionLabel = @"Information";
 
 @interface PMSettingsTVC () <PMAddAccountVCDelegate>
 @property (nonatomic, copy) NSArray *accounts;
+@property (nonatomic, copy) NSDictionary *tableSections;
+@property (nonatomic) NSDateFormatter *dateFormatter;
 @end
 
 @implementation PMSettingsTVC
@@ -34,11 +43,30 @@
 	}
 }
 
+- (NSDateFormatter *)dateFormatter {
+	if (!_dateFormatter) {
+		_dateFormatter = [NSDateFormatter new];
+		_dateFormatter.dateStyle = NSDateFormatterLongStyle;
+	}
+	return _dateFormatter;
+}
+
 #pragma mark - Life Cycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = @"Settings";
+	
+	if ([SMTEDelegateController isTextExpanderTouchInstalled]) {
+		self.tableSections = @{ @0 : PMAccountsSectionLabel,
+								@1 : PMAddAccountSectionLabel,
+								@2 : PMTextExpanderSectionLabel,
+								@3 : PMInformationSectionLabel };
+	} else {
+		self.tableSections = @{ @0 : PMAccountsSectionLabel,
+								@1 : PMAddAccountSectionLabel,
+								@2 : PMInformationSectionLabel };
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -61,6 +89,36 @@
 	PMAddAccountVC *addAccountVC = [[PMAddAccountVC alloc] init];
 	addAccountVC.delegate = self;
 	[self.navigationController pushViewController:addAccountVC animated:YES];
+}
+
+- (void)enableTextExpander {
+	PMAppDelegate *app = [UIApplication sharedApplication].delegate;
+	[app.textExpander getSnippets];
+}
+
+- (void)disableTextExpander {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[SMTEDelegateController setExpansionEnabled:NO];
+	[defaults setBool:NO forKey:PMTextExpanderEnabled];
+	[defaults synchronize];
+	
+	[SMTEDelegateController clearSharedSnippets];
+	
+	[self.tableView reloadData];
+}
+
+- (NSString *)snippetStatusText {
+	NSString *statusText = @"No snippet data found";
+	NSUInteger snippetCount = 0;
+	NSDate *loadDate = nil;
+	
+	BOOL enabled = [SMTEDelegateController expansionStatusForceLoad:NO snippetCount:&snippetCount loadDate:&loadDate error:nil];
+	
+	if (enabled) {
+		statusText = [NSString stringWithFormat:@"Updated %@ with %lu snippets", [self.dateFormatter stringFromDate:loadDate], (unsigned long)snippetCount];
+	}
+	
+	return statusText;
 }
 
 #pragma mark - Actions
@@ -102,10 +160,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	NSInteger section = indexPath.section;
+	NSString *sectionLabel = self.tableSections[@(indexPath.section)];
 	NSInteger row = indexPath.row;
 	
-	if (section == 0) {
+	if ([sectionLabel isEqualToString:PMAccountsSectionLabel]) {
 		if (self.isEditing || [self.accounts count] == 1) {
 			PMAddAccountVC *addAccountVC = [[PMAddAccountVC alloc] init];
 			addAccountVC.delegate = self;
@@ -116,21 +174,54 @@
 			store.defaultUsername = self.accounts[row];
 			[tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
 		}
-	} else if (section == 1) {
+	}
+	else if ([sectionLabel isEqualToString:PMAddAccountSectionLabel]) {
 		[self addNewAccount];
+	}
+	else if ([sectionLabel isEqualToString:PMTextExpanderSectionLabel]) {
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		BOOL textExpanderEnabled = [defaults boolForKey:PMTextExpanderEnabled];
+		if (textExpanderEnabled) {
+			if (indexPath.row == 0) {
+				[self enableTextExpander];
+			} else {
+				[self disableTextExpander];
+			}
+		} else {
+			[self enableTextExpander];
+		}
+		[tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
 	}
 }
 
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 3;
+	return [self.tableSections count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if (section == 0) return [self.accounts count];
-	if (section == 1) return 1;
-	if (section == 2) return 1;
+	NSString *sectionLabel = self.tableSections[@(section)];
+	
+	if ([sectionLabel isEqualToString:PMAccountsSectionLabel]) {
+		return [self.accounts count];
+	}
+	else if ([sectionLabel isEqualToString:PMAddAccountSectionLabel]) {
+		return 1;
+	}
+	else if ([sectionLabel isEqualToString:PMTextExpanderSectionLabel]) {
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		BOOL textExpanderEnabled = [defaults boolForKey:PMTextExpanderEnabled];
+		if (textExpanderEnabled) {
+			return 2;
+		} else {
+			return 1;
+		}
+	}
+	else if ([sectionLabel isEqualToString:PMInformationSectionLabel]) {
+		return 1;
+	}
+	
 	return 0;
 }
 
@@ -138,9 +229,13 @@
 	static NSString *accountCellID = @"Account Cell";
 	static NSString *addAccountCellID = @"Add Account Cell";
 	static NSString *aboutCellID = @"About Cell";
+	static NSString *enableTECellID = @"Enable TextExpander Cell";
+	static NSString *disableTECellID = @"Disable TextExpander Cell";
+	
+	NSString *sectionLabel = self.tableSections[@(indexPath.section)];
 	
 	UITableViewCell *cell;
-	if (indexPath.section == 0) {
+	if ([sectionLabel isEqualToString:PMAccountsSectionLabel]) {
 		cell = [tableView dequeueReusableCellWithIdentifier:accountCellID forIndexPath:indexPath];
 		cell.textLabel.text = self.accounts[indexPath.row];
 		cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -155,10 +250,27 @@
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		}
 	}
-	else if (indexPath.section == 1) {
+	else if ([sectionLabel isEqualToString:PMAddAccountSectionLabel]) {
 		cell = [tableView dequeueReusableCellWithIdentifier:addAccountCellID forIndexPath:indexPath];
 	}
-	else if (indexPath.section == 2) {
+	else if ([sectionLabel isEqualToString:PMTextExpanderSectionLabel]) {
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		BOOL textExpanderEnabled = [defaults boolForKey:PMTextExpanderEnabled];
+		if (textExpanderEnabled) {
+			if (indexPath.row == 0) {
+				cell = [tableView dequeueReusableCellWithIdentifier:enableTECellID];
+				cell.textLabel.text = @"Reload Snippets";
+				cell.detailTextLabel.text = [self snippetStatusText];
+			} else {
+				cell = [tableView dequeueReusableCellWithIdentifier:disableTECellID];
+			}
+		} else {
+			cell = [tableView dequeueReusableCellWithIdentifier:enableTECellID];
+			cell.textLabel.text = @"Enable TextExpander";
+			cell.detailTextLabel.text = nil;
+		}
+	}
+	else if ([sectionLabel isEqualToString:PMInformationSectionLabel]) {
 		cell = [tableView dequeueReusableCellWithIdentifier:aboutCellID];
 	}
 	
@@ -166,42 +278,48 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (section == 0) {
-		return @"Accounts";
+	NSString *sectionLabel = self.tableSections[@(section)];
+	if ([sectionLabel isEqualToString:PMAddAccountSectionLabel]) {
+		return nil;
 	}
-	else if (section == 2) {
-		return @"Information";
-	}
-	return @"";
+	return sectionLabel;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-	if (section == 0 && [[PMAccountStore sharedStore].associatedUsernames count] > 1) {
+	NSString *sectionLabel = self.tableSections[@(section)];
+	if ([sectionLabel isEqualToString:PMAccountsSectionLabel] && [[PMAccountStore sharedStore].associatedUsernames count] > 1) {
 		return @"Select which account to bookmark with. To update an account, tap Edit and select an account to update.";
 	}
 	return @"";
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0) return YES;
+	NSString *sectionLabel = self.tableSections[@(indexPath.section)];
+	if ([sectionLabel isEqualToString:PMAccountsSectionLabel]) {
+		return YES;
+	}
 	return NO;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		NSArray *accountsKeys = [self.tableSections allKeysForObject:PMAccountsSectionLabel];
+		NSNumber *accountsKey = self.tableSections[[accountsKeys firstObject]];
+		NSInteger accountsSection = [accountsKey integerValue];
+		
 		[[PMAccountStore sharedStore] removeAccountForUsername:self.accounts[indexPath.row]];
 		[self loadAccounts];
-		[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+		[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:accountsSection] withRowAnimation:UITableViewRowAnimationAutomatic];
 		
 		if ([self.accounts count] == 0) {
 			[self setEditing:NO animated:YES];
 			[tableView reloadData];
 		} else if ([self.accounts count] == 1) {
-			[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]].accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:accountsSection inSection:0]].accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		} else {
 			NSUInteger defaultUserIndex = [self.accounts indexOfObject:[PMAccountStore sharedStore].defaultUsername];
 			if (defaultUserIndex != NSNotFound) {
-				[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:defaultUserIndex inSection:0]].editingAccessoryType = UITableViewCellAccessoryCheckmark;
+				[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:defaultUserIndex inSection:accountsSection]].editingAccessoryType = UITableViewCellAccessoryCheckmark;
 			}
 		}
 	}

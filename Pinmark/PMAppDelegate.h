@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class SMTEDelegateController;
+
+extern NSString * const PMTextExpanderEnabled;
+
 @interface PMAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (nonatomic) UIWindow *window;
+@property (nonatomic, readonly) SMTEDelegateController *textExpander;
 
 @end

@@ -31,10 +31,14 @@
 		278EF453185B71E2003A27D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 278EF451185B71E2003A27D3 /* InfoPlist.strings */; };
 		278EF455185B71E2003A27D3 /* PinmarkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF454185B71E2003A27D3 /* PinmarkTests.m */; };
 		279719D2189960A400D58BC7 /* PMSettingsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 279719D1189960A400D58BC7 /* PMSettingsTVC.m */; };
+		27975BC8190ECBE700B7692A /* PMDescriptionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E5BB581905A35100289B14 /* PMDescriptionVC.m */; };
+		27975BD6190ED66200B7692A /* TextExpander.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27975BD5190ED66200B7692A /* TextExpander.framework */; };
+		27975BD8190ED6AA00B7692A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27975BD7190ED6AA00B7692A /* AudioToolbox.framework */; };
+		27975BDA190ED6AF00B7692A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27975BD9190ED6AF00B7692A /* CoreGraphics.framework */; };
+		27975BDC190ED6B700B7692A /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27975BDB190ED6B700B7692A /* CoreText.framework */; };
 		27C92A8B190C1841006B098B /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C92A8A190C1841006B098B /* libxml2.2.dylib */; };
 		27D2DC3418777A9B0054D187 /* PMBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D2DC3318777A9B0054D187 /* PMBookmark.m */; };
 		27DA5B501885BB0500AEE0F5 /* PMAddAccountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DA5B4F1885BB0500AEE0F5 /* PMAddAccountVC.m */; };
-		27E5BB591905A35100289B14 /* PMDescriptionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E5BB581905A35100289B14 /* PMDescriptionVC.m */; };
 		82960B3C2A964DE68159B981 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6E13E9115194BF18C9C2D1A /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -91,10 +95,12 @@
 		278EF450185B71E2003A27D3 /* PinmarkerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PinmarkerTests-Info.plist"; sourceTree = "<group>"; };
 		278EF452185B71E2003A27D3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		278EF454185B71E2003A27D3 /* PinmarkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PinmarkTests.m; sourceTree = "<group>"; };
-		2794EA6618F394B6002753A6 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		279719D0189960A400D58BC7 /* PMSettingsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMSettingsTVC.h; sourceTree = "<group>"; };
 		279719D1189960A400D58BC7 /* PMSettingsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMSettingsTVC.m; sourceTree = "<group>"; };
-		27C92A88190C180F006B098B /* libPods-hpple.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-hpple.a"; path = "Pods/build/Debug-iphoneos/libPods-hpple.a"; sourceTree = "<group>"; };
+		27975BD5190ED66200B7692A /* TextExpander.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TextExpander.framework; sourceTree = "<group>"; };
+		27975BD7190ED6AA00B7692A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		27975BD9190ED6AF00B7692A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		27975BDB190ED6B700B7692A /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		27C92A8A190C1841006B098B /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		27D2DC3218777A9B0054D187 /* PMBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMBookmark.h; sourceTree = "<group>"; };
 		27D2DC3318777A9B0054D187 /* PMBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBookmark.m; sourceTree = "<group>"; };
@@ -111,6 +117,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27975BDC190ED6B700B7692A /* CoreText.framework in Frameworks */,
+				27975BDA190ED6AF00B7692A /* CoreGraphics.framework in Frameworks */,
+				27975BD8190ED6AA00B7692A /* AudioToolbox.framework in Frameworks */,
+				27975BD6190ED66200B7692A /* TextExpander.framework in Frameworks */,
 				27C92A8B190C1841006B098B /* libxml2.2.dylib in Frameworks */,
 				82960B3C2A964DE68159B981 /* libPods.a in Frameworks */,
 			);
@@ -172,10 +182,12 @@
 		278EF425185B71E2003A27D3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				27C92A8A190C1841006B098B /* libxml2.2.dylib */,
-				27C92A88190C180F006B098B /* libPods-hpple.a */,
 				2704BE73190AD331004EDCED /* PSPDFTextView */,
-				2794EA6618F394B6002753A6 /* libz.dylib */,
+				27975BDB190ED6B700B7692A /* CoreText.framework */,
+				27975BD9190ED6AF00B7692A /* CoreGraphics.framework */,
+				27975BD7190ED6AA00B7692A /* AudioToolbox.framework */,
+				27975BD5190ED66200B7692A /* TextExpander.framework */,
+				27C92A8A190C1841006B098B /* libxml2.2.dylib */,
 				A6E13E9115194BF18C9C2D1A /* libPods.a */,
 			);
 			name = Frameworks;
@@ -439,7 +451,7 @@
 				270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */,
 				27DA5B501885BB0500AEE0F5 /* PMAddAccountVC.m in Sources */,
 				272C5CD3186DFF3E0079B95E /* PMTagCVCell.m in Sources */,
-				27E5BB591905A35100289B14 /* PMDescriptionVC.m in Sources */,
+				27975BC8190ECBE700B7692A /* PMDescriptionVC.m in Sources */,
 				277AA7B21896DC200015A3EF /* PMInputAccessoryView.m in Sources */,
 				2781196C186A0516006B93AB /* NSURL+Pinmark.m in Sources */,
 				278EF437185B71E2003A27D3 /* PMAppDelegate.m in Sources */,
@@ -532,7 +544,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -565,6 +577,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -579,6 +592,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Kyle Stevens (R2BVKX85E2)";
 				CURRENT_PROJECT_VERSION = 6;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Pinmark/Pinmarker-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -617,6 +634,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Kyle Stevens (793AL65W3G)";
 				CURRENT_PROJECT_VERSION = 6;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Pinmark/Pinmarker-Prefix.pch";
 				HEADER_SEARCH_PATHS = (

@@ -24,7 +24,10 @@
 #import "PMSettingsTVC.h"
 #import "PMDescriptionVC.h"
 
-@interface PMNewPinTVC () <UINavigationControllerDelegate, PMSettingsTVCDelegate, UITextFieldDelegate, UICollectionViewDelegate, UIActionSheetDelegate>
+#import "PMAppDelegate.h"
+#import <TextExpander/SMTEDelegateController.h>
+
+@interface PMNewPinTVC () <UINavigationControllerDelegate, PMSettingsTVCDelegate, UITextFieldDelegate, UICollectionViewDelegate, UIActionSheetDelegate, SMTEFillDelegate>
 @property (nonatomic, weak) IBOutlet UITextField *URLTextField;
 @property (weak, nonatomic) IBOutlet UILabel *datePostedLabel;
 @property (nonatomic, weak) IBOutlet UITextField *titleTextField;
@@ -45,6 +48,7 @@
 @property (nonatomic) PMTagCVCell *sizingCell;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *postButton;
 @property (nonatomic) NSDateFormatter *dateFormatter;
+@property (nonatomic, readonly) SMTEDelegateController *textExpander;
 @end
 
 static NSString *tagCellIdentifier = @"Tag Cell";
@@ -124,6 +128,16 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	return _dateFormatter;
 }
 
+@synthesize textExpander = _textExpander;
+
+- (SMTEDelegateController *)textExpander {
+	if (!_textExpander) {
+		PMAppDelegate *app = [UIApplication sharedApplication].delegate;
+		_textExpander = app.textExpander;
+	}
+	return _textExpander;
+}
+
 #pragma mark - Life Cycle
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
@@ -147,9 +161,10 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	[notificationCenter addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 	[notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 	
-	self.URLTextField.delegate = self;
-	self.titleTextField.delegate = self;
-	self.tagsTextField.delegate = self;
+	self.textExpander.nextDelegate = self;
+	self.URLTextField.delegate = self.textExpander;
+	self.titleTextField.delegate = self.textExpander;
+	self.tagsTextField.delegate = self.textExpander;
 	self.keyboardAccessory = [[[NSBundle mainBundle] loadNibNamed:@"PMInputAccessoryView" owner:self options:nil] firstObject];
 	
 	UIMenuController *menuController = [UIMenuController sharedMenuController];
@@ -169,6 +184,9 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	
 	[self.tableView reloadData];
 	[self updateFields];
+	
+	self.textExpander.nextDelegate = self;
+	self.textExpander.fillDelegate = self;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -686,6 +704,42 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 		}
 	}
 	return NO;
+}
+
+#pragma mark - SMTEFillDelegate
+
+- (NSString *)identifierForTextArea:(id)textArea {
+	NSString *identifier = nil;
+	if (textArea == self.URLTextField) {
+		identifier = @"URLTextField";
+	} else if (textArea == self.titleTextField) {
+		identifier = @"titleTextField";
+	} else if (textArea == self.tagsTextField) {
+		identifier = @"tagsTextField";
+	}
+	return identifier;
+}
+
+- (id)makeIdentifiedTextObjectFirstResponder:(NSString *)textIdentifier fillWasCanceled:(BOOL)userCanceled cursorPosition:(NSInteger *)insertionLocation {
+	UITextField *textField = nil;
+	if ([textIdentifier isEqualToString:@"URLTextField"]) {
+		textField = self.URLTextField;
+	} else if ([textIdentifier isEqualToString:@"titleTextField"]) {
+		textField = self.titleTextField;
+	} else if ([textIdentifier isEqualToString:@"tagsTextField"]) {
+		textField = self.tagsTextField;
+	}
+	
+	[textField becomeFirstResponder];
+	
+	UITextPosition *location = [textField positionFromPosition:textField.beginningOfDocument offset:*insertionLocation];
+	if (location) {
+		textField.selectedTextRange = [textField textRangeFromPosition:location toPosition:location];
+	} else {
+		return nil;
+	}
+	
+	return textField;
 }
 
 @end

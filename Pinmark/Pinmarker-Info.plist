@@ -29,8 +29,9 @@
 			<string>com.kilovolt42.pinmarker.schemes</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.kilovolt42.pinmarker</string>
 				<string>pinmarker</string>
+				<string>pinmarker-te-get-snippets</string>
+				<string>pinmarker-te-fill</string>
 			</array>
 		</dict>
 	</array>
