@@ -134,18 +134,20 @@
 	
 	PMBookmark *other = (PMBookmark *)object;
 	
-	return (self.url == other.url || [self.url isEqual:other.url]) &&
-		   (self.title == other.title || [self.title isEqual:other.title]) &&
-		   (self.extended == other.extended || [self.extended isEqual:other.extended]) &&
-		   (self.dt == other.dt || [self.dt isEqualToDate:other.dt]) &&
-		   (self.replace == other.replace) &&
-		   (self.shared == other.shared) &&
-		   (self.toread == other.toread) &&
-		   (self.tags == other.tags || [self.tags isEqualToArray:other.tags]);
+	return (self.username == other.username || [self.username isEqual:other.username]) &&
+	(self.url == other.url || [self.url isEqual:other.url]) &&
+	(self.title == other.title || [self.title isEqual:other.title]) &&
+	(self.extended == other.extended || [self.extended isEqual:other.extended]) &&
+	(self.dt == other.dt || [self.dt isEqualToDate:other.dt]) &&
+	(self.replace == other.replace) &&
+	(self.shared == other.shared) &&
+	(self.toread == other.toread) &&
+	(self.tags == other.tags || [self.tags isEqualToArray:other.tags]) &&
+	(self.lastPosted == other.lastPosted || [self.lastPosted isEqual:other.lastPosted]);
 }
 
 - (NSUInteger)hash {
-	return self.url.hash ^ self.title.hash ^ self.extended.hash ^ self.dt.hash ^ self.replace * 13 ^ self.shared * 17 ^ self.toread * 19 ^ self.tags.hash;
+	return self.username.hash ^ self.url.hash ^ self.title.hash ^ self.extended.hash ^ self.dt.hash ^ self.replace * 13 ^ self.shared * 17 ^ self.toread * 19 ^ self.tags.hash ^ self.dt.hash;
 }
 
 #pragma mark - NSCopying
