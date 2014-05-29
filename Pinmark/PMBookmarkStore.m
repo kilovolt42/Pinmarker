@@ -11,7 +11,6 @@
 #import "PMBookmark.h"
 #import "PMAccountStore.h"
 #import "NSString+Pinmark.h"
-#import "TFHpple.h"
 
 @interface PMBookmarkStore ()
 @property (nonatomic) NSMutableArray *bookmarks;
@@ -228,8 +227,6 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 		if ([keyPath isEqualToString:@"url"]) {
 			PMBookmark *bookmark = (PMBookmark *)object;
 			if (bookmark.url && [bookmark.url isPinboardPermittedURL]) {
-				NSString *previousTitle = bookmark.title;
-				
 				[self requestPostForBookmark:bookmark
 									 success:^(NSDictionary *responseDictionary) {
 										 NSArray *posts = responseDictionary[@"posts"];
@@ -237,11 +234,6 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 											 NSString *dateString = responseDictionary[@"date"];
 											 NSDate *date = [self.dateFormatter dateFromString:dateString];
 											 bookmark.lastPosted = date;
-											 
-											 if (!bookmark.title || [bookmark.title isEqualToString:@""] || [bookmark.title isEqualToString:previousTitle]) {
-												 NSDictionary *post = [posts firstObject];
-												 bookmark.title = post[@"description"];
-											 }
 										 } else {
 											 bookmark.lastPosted = nil;
 										 }
@@ -249,22 +241,6 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 									 failure:^(NSError *error) {
 										 bookmark.lastPosted = nil;
 									 }];
-				
-				dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-					NSURL *url = [NSURL URLWithString:bookmark.url];
-					NSData *data = [NSData dataWithContentsOfURL:url];
-					TFHpple *doc = [[TFHpple alloc] initWithHTMLData:data];
-					NSArray *elements = [doc searchWithXPathQuery:@"/html/head/title"];
-					TFHppleElement *titleElement = [elements firstObject];
-					NSString *title = [titleElement text];
-					title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-					
-					dispatch_async(dispatch_get_main_queue(), ^{
-						if (!bookmark.title || [bookmark.title isEqualToString:@""] || [bookmark.title isEqualToString:previousTitle]) {
-							bookmark.title = title;
-						}
-					});
-				});
 			} else {
 				bookmark.lastPosted = nil;
 			}
