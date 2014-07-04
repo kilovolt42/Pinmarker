@@ -47,8 +47,12 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	self.textExpander.nextDelegate = self;
-	self.textView.delegate = self.textExpander;
+	if (self.textExpander) {
+		self.textExpander.nextDelegate = self;
+		self.textView.delegate = self.textExpander;
+	} else {
+		self.textView.delegate = self;
+	}
 	
 	self.textView.text = self.bookmark.extended;
 	self.keyboardAccessory = [[[NSBundle mainBundle] loadNibNamed:@"PMInputAccessoryView" owner:self options:nil] firstObject];

@@ -161,10 +161,17 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	[notificationCenter addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 	[notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 	
-	self.textExpander.nextDelegate = self;
-	self.URLTextField.delegate = self.textExpander;
-	self.titleTextField.delegate = self.textExpander;
-	self.tagsTextField.delegate = self.textExpander;
+	if (self.textExpander) {
+		self.textExpander.nextDelegate = self;
+		self.URLTextField.delegate = self.textExpander;
+		self.titleTextField.delegate = self.textExpander;
+		self.tagsTextField.delegate = self.textExpander;
+	} else {
+		self.URLTextField.delegate = self;
+		self.titleTextField.delegate = self;
+		self.tagsTextField.delegate = self;
+	}
+	
 	self.keyboardAccessory = [[[NSBundle mainBundle] loadNibNamed:@"PMInputAccessoryView" owner:self options:nil] firstObject];
 	
 	UIMenuController *menuController = [UIMenuController sharedMenuController];
