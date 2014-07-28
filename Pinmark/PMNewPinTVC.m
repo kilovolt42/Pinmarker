@@ -22,7 +22,6 @@
 #import "PMAccountStore.h"
 
 #import "PMSettingsTVC.h"
-#import "PMDescriptionVC.h"
 
 #import "PMAppDelegate.h"
 #import <TextExpander/SMTEDelegateController.h>
@@ -31,7 +30,7 @@
 @property (nonatomic, weak) IBOutlet UITextField *URLTextField;
 @property (weak, nonatomic) IBOutlet UILabel *datePostedLabel;
 @property (nonatomic, weak) IBOutlet UITextField *titleTextField;
-@property (nonatomic, weak) IBOutlet UILabel *extendedLabel;
+@property (nonatomic, weak) IBOutlet UITextField *extendedTextField;
 @property (nonatomic, weak) IBOutlet UITextField *tagsTextField;
 @property (nonatomic, weak) IBOutlet UICollectionView *tagsCollectionView;
 @property (nonatomic, weak) UICollectionView *suggestedTagsCollectionView;
@@ -166,10 +165,12 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 		self.URLTextField.delegate = self.textExpander;
 		self.titleTextField.delegate = self.textExpander;
 		self.tagsTextField.delegate = self.textExpander;
+        self.extendedTextField.delegate = self.textExpander;
 	} else {
 		self.URLTextField.delegate = self;
 		self.titleTextField.delegate = self;
 		self.tagsTextField.delegate = self;
+        self.extendedTextField.delegate = self;
 	}
 	
 	self.keyboardAccessory = [[[NSBundle mainBundle] loadNibNamed:@"PMInputAccessoryView" owner:self options:nil] firstObject];
@@ -212,10 +213,6 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 		UINavigationController *nc = (UINavigationController *)segue.destinationViewController;
 		PMSettingsTVC *stvc = [nc.viewControllers firstObject];
 		stvc.delegate = self;
-	}
-	else if ([segue.identifier isEqualToString:@"Description"]) {
-		PMDescriptionVC *dvc = (PMDescriptionVC *)segue.destinationViewController;
-		dvc.bookmark = self.bookmark;
 	}
 }
 
@@ -398,16 +395,9 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	self.titleTextField.text = self.bookmark.title;
 	self.tagsDataSource.tags = self.bookmark.tags;
 	[self.tagsCollectionView reloadData];
+    self.extendedTextField.text = self.bookmark.extended;
 	self.toReadSwitch.on = self.bookmark.toread;
 	self.sharedSwitch.on = !self.bookmark.shared;
-	
-	if (self.bookmark.extended && [self.bookmark.extended length]) {
-		self.extendedLabel.text = self.bookmark.extended;
-		self.extendedLabel.font = [UIFont fontWithName:self.extendedLabel.font.fontName size:14.0];
-	} else {
-		self.extendedLabel.text = @"Description";
-		self.extendedLabel.font = [UIFont fontWithName:self.extendedLabel.font.fontName size:18.0];
-	}
 	
 	[self updateTagsRowHeight];
 }
@@ -526,6 +516,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	self.titleTextField.enabled = NO;
 	self.tagsCollectionView.allowsSelection = NO;
 	self.tagsTextField.enabled = NO;
+    self.extendedTextField.enabled = NO;
 	self.toReadSwitch.enabled = NO;
 	self.sharedSwitch.enabled = NO;
 	self.navigationItem.leftBarButtonItem.enabled = NO;
@@ -539,6 +530,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	self.titleTextField.enabled = YES;
 	self.tagsCollectionView.allowsSelection = YES;
 	self.tagsTextField.enabled = YES;
+    self.extendedTextField.enabled = YES;
 	self.toReadSwitch.enabled = YES;
 	self.sharedSwitch.enabled = YES;
 	self.navigationItem.leftBarButtonItem.enabled = YES;
@@ -648,10 +640,6 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 #pragma mark - UITableViewDelegate
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == DESCRIPTION_CELL_INDEX) {
-		[self performSegueWithIdentifier:@"Description" sender:self];
-		return YES;
-	}
 	return NO;
 }
 
@@ -674,12 +662,6 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 		}
 		return self.tagsTextField.frame.size.height + self.tagsCVHeightConstraint.constant;
 	}
-	else if (indexPath.row == DESCRIPTION_CELL_INDEX) {
-		if (self.bookmark.extended && [self.bookmark.extended length]) {
-			CGSize labelSize = [self.extendedLabel sizeThatFits:CGSizeMake(self.extendedLabel.frame.size.width, 96.0)];
-			return MAX(44.0, labelSize.height + 18.0);
-		}
-	}
 	return 44.0;
 }
 
@@ -701,15 +683,19 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	if (textField == self.URLTextField) [self.titleTextField becomeFirstResponder];
-	else if (textField == self.titleTextField) [self.tagsTextField becomeFirstResponder];
-	else if (textField == self.tagsTextField) {
+	if (textField == self.URLTextField) {
+        [self.titleTextField becomeFirstResponder];
+    } else if (textField == self.titleTextField) {
+        [self.tagsTextField becomeFirstResponder];
+    } else if (textField == self.tagsTextField) {
 		if ([textField.text isEqualToString:@""]) {
-			[self.tagsTextField resignFirstResponder];
+			[self.extendedTextField becomeFirstResponder];
 		} else {
 			[self addTags:textField.text];
 		}
-	}
+	} else {
+        [textField resignFirstResponder];
+    }
 	return NO;
 }
 
@@ -723,7 +709,9 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 		identifier = @"titleTextField";
 	} else if (textArea == self.tagsTextField) {
 		identifier = @"tagsTextField";
-	}
+	} else if (textArea == self.extendedTextField) {
+        identifier = @"extendedTextField";
+    }
 	return identifier;
 }
 
@@ -735,7 +723,9 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 		textField = self.titleTextField;
 	} else if ([textIdentifier isEqualToString:@"tagsTextField"]) {
 		textField = self.tagsTextField;
-	}
+	} else if ([textIdentifier isEqualToString:@"extendedTextField"]) {
+        textField = self.extendedTextField;
+    }
 	
 	[textField becomeFirstResponder];
 	

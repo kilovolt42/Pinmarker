@@ -94,8 +94,6 @@
 		278EF450185B71E2003A27D3 /* PinmarkerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PinmarkerTests-Info.plist"; sourceTree = "<group>"; };
 		278EF452185B71E2003A27D3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		279251AC1927FEFA0010E257 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		279251AE1927FEFA0010E257 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		279251B01927FEFA0010E257 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		279719D0189960A400D58BC7 /* PMSettingsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMSettingsTVC.h; sourceTree = "<group>"; };
 		279719D1189960A400D58BC7 /* PMSettingsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMSettingsTVC.m; sourceTree = "<group>"; };
 		27975BD5190ED66200B7692A /* TextExpander.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TextExpander.framework; sourceTree = "<group>"; };
@@ -191,8 +189,6 @@
 				27C92A8A190C1841006B098B /* libxml2.2.dylib */,
 				A6E13E9115194BF18C9C2D1A /* libPods.a */,
 				279251AC1927FEFA0010E257 /* XCTest.framework */,
-				279251AE1927FEFA0010E257 /* Foundation.framework */,
-				279251B01927FEFA0010E257 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
