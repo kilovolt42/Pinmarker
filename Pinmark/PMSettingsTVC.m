@@ -67,6 +67,9 @@ NSString * const PMInformationSectionLabel = @"Information";
 								@1 : PMAddAccountSectionLabel,
 								@2 : PMInformationSectionLabel };
 	}
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -75,8 +78,14 @@ NSString * const PMInformationSectionLabel = @"Information";
 	[self.tableView reloadData];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark -
+
+- (void)applicationDidBecomeActive:(NSNotification *)notification {
+    [self.tableView reloadData];
 }
 
 #pragma mark - Methods
@@ -108,14 +117,18 @@ NSString * const PMInformationSectionLabel = @"Information";
 }
 
 - (NSString *)snippetStatusText {
-	NSString *statusText = @"No snippet data found";
-	NSUInteger snippetCount = 0;
-	NSDate *loadDate = nil;
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *statusText = @"No snippet data found";
 	
-	BOOL enabled = [SMTEDelegateController expansionStatusForceLoad:NO snippetCount:&snippetCount loadDate:&loadDate error:nil];
+    BOOL enabled = [defaults boolForKey:PMTextExpanderEnabled];
 	
 	if (enabled) {
-		statusText = [NSString stringWithFormat:@"Updated %@ with %lu snippets", [self.dateFormatter stringFromDate:loadDate], (unsigned long)snippetCount];
+        NSInteger snippetCount = [defaults integerForKey:PMTextExpanderRefreshCount];
+        NSDate *loadDate = [defaults objectForKey:PMTextExpanderRefreshDate];
+        
+        if (loadDate) {
+            statusText = [NSString stringWithFormat:@"Updated %@ with %ld snippets", [self.dateFormatter stringFromDate:loadDate], (long)snippetCount];
+        }
 	}
 	
 	return statusText;

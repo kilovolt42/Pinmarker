@@ -11,6 +11,8 @@
 @class SMTEDelegateController;
 
 extern NSString * const PMTextExpanderEnabled;
+extern NSString * const PMTextExpanderRefreshDate;
+extern NSString * const PMTextExpanderRefreshCount;
 
 @interface PMAppDelegate : UIResponder <UIApplicationDelegate>
 
