@@ -117,6 +117,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	self.URLTextField.inputAccessoryView = _keyboardAccessory;
 	self.titleTextField.inputAccessoryView = _keyboardAccessory;
 	self.tagsTextField.inputAccessoryView = _keyboardAccessory;
+    self.extendedTextField.inputAccessoryView = _keyboardAccessory;
 }
 
 - (NSDateFormatter *)dateFormatter {
