@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		27019F25189FFD6100CDAE55 /* Inconsolata.otf in Resources */ = {isa = PBXBuildFile; fileRef = 27019F24189FFCF800CDAE55 /* Inconsolata.otf */; };
 		2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2703C540185F7E6500570F0C /* PMNewPinTVC.m */; };
-		2704BE72190ABC9C004EDCED /* PSPDFTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2704BE71190ABC9C004EDCED /* PSPDFTextView.m */; };
 		270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 270C4A4918628D6A000FC061 /* PMNavigationVC.m */; };
 		270F437818C7BE9200757DCB /* PMBookmarkStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 270F437718C7BE9200757DCB /* PMBookmarkStore.m */; };
 		271D051118D766BD006B5A4E /* PMAddAccountVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 271D051018D766BD006B5A4E /* PMAddAccountVC.xib */; };
@@ -55,8 +54,6 @@
 		2703C53F185F7E6500570F0C /* PMNewPinTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMNewPinTVC.h; sourceTree = "<group>"; };
 		2703C540185F7E6500570F0C /* PMNewPinTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMNewPinTVC.m; sourceTree = "<group>"; };
 		2703C542185FD16100570F0C /* Bookmarklet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Bookmarklet.js; sourceTree = "<group>"; };
-		2704BE70190ABC9C004EDCED /* PSPDFTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PSPDFTextView.h; path = ../PSPDFTextView/PSPDFTextView.h; sourceTree = "<group>"; };
-		2704BE71190ABC9C004EDCED /* PSPDFTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PSPDFTextView.m; path = ../PSPDFTextView/PSPDFTextView.m; sourceTree = "<group>"; };
 		270C4A4718628CD3000FC061 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		270C4A4818628D6A000FC061 /* PMNavigationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMNavigationVC.h; sourceTree = "<group>"; };
 		270C4A4918628D6A000FC061 /* PMNavigationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMNavigationVC.m; sourceTree = "<group>"; };
@@ -132,16 +129,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2704BE73190AD331004EDCED /* PSPDFTextView */ = {
-			isa = PBXGroup;
-			children = (
-				2704BE70190ABC9C004EDCED /* PSPDFTextView.h */,
-				2704BE71190ABC9C004EDCED /* PSPDFTextView.m */,
-			);
-			name = PSPDFTextView;
-			path = Pinmark;
-			sourceTree = "<group>";
-		};
 		272C5CDC1871028A0079B95E /* Tags */ = {
 			isa = PBXGroup;
 			children = (
@@ -178,7 +165,6 @@
 		278EF425185B71E2003A27D3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2704BE73190AD331004EDCED /* PSPDFTextView */,
 				27975BDB190ED6B700B7692A /* CoreText.framework */,
 				27975BD9190ED6AF00B7692A /* CoreGraphics.framework */,
 				27975BD7190ED6AA00B7692A /* AudioToolbox.framework */,
@@ -437,7 +423,6 @@
 			files = (
 				278EF433185B71E2003A27D3 /* main.m in Sources */,
 				279719D2189960A400D58BC7 /* PMSettingsTVC.m in Sources */,
-				2704BE72190ABC9C004EDCED /* PSPDFTextView.m in Sources */,
 				27409CAB18CBDAAE006C97BB /* PMAccountStore.m in Sources */,
 				270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */,
 				27DA5B501885BB0500AEE0F5 /* PMAddAccountVC.m in Sources */,
