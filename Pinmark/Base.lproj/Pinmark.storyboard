@@ -383,10 +383,10 @@
             </objects>
             <point key="canvasLocation" x="1965" y="76"/>
         </scene>
-        <!--AboutVC - About-->
+        <!--View Controller - About-->
         <scene sceneID="0zB-m2-GLe">
             <objects>
-                <viewController id="Svs-dh-TVx" customClass="PMAboutVC" sceneMemberID="viewController">
+                <viewController id="Svs-dh-TVx" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rpf-84-FQ4"/>
                         <viewControllerLayoutGuide type="bottom" id="bSR-Mm-NZ5"/>
@@ -497,9 +497,6 @@ SOFTWARE.</string>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="About" id="2hJ-NF-6DS"/>
-                    <connections>
-                        <outlet property="textView" destination="RpL-hV-6vP" id="IFW-8t-liG"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IkZ-pD-cdj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
