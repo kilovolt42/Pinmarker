@@ -24,11 +24,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
 static const NSUInteger PMURLCellIndex = 0;
-static const NSUInteger PMTitleCellIndex = 1;
 static const NSUInteger PMTagsCellIndex = 2;
-static const NSUInteger PMDescriptionCellIndex = 3;
-static const NSUInteger PMReadLaterCellIndex = 4;
-static const NSUInteger PMPrivateCellIndex = 5;
 
 @interface PMNewPinTVC () <UINavigationControllerDelegate, PMSettingsTVCDelegate, UITextFieldDelegate, UICollectionViewDelegate, UIActionSheetDelegate, SMTEFillDelegate>
 
