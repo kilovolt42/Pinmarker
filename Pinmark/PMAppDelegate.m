@@ -87,9 +87,9 @@ NSString * const PMTextExpanderFillScheme = @"pinmarker-te-fill";
 			BOOL enabled = [SMTEDelegateController expansionStatusForceLoad:NO snippetCount:&snippetCount loadDate:&loadDate error:nil];
 			
 			if (enabled) {
-				if (snippetCount > 0 && loadDate) {
+				[defaults setObject:loadDate forKey:PMTextExpanderRefreshDate];
+				if (snippetCount > 0) {
 					[defaults setInteger:snippetCount forKey:PMTextExpanderRefreshCount];
-					[defaults setObject:loadDate forKey:PMTextExpanderRefreshDate];
 				}
 			}
 			

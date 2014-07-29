@@ -129,7 +129,7 @@ NSString * const PMInformationSectionLabel = @"Information";
 		NSDate *loadDate = [defaults objectForKey:PMTextExpanderRefreshDate];
 		
 		if (loadDate) {
-			statusText = [NSString stringWithFormat:@"Updated %@ with %ld snippets", [self.dateFormatter stringFromDate:loadDate], (long)snippetCount];
+			statusText = [NSString stringWithFormat:@"Updated %@, %ld snippets total", [self.dateFormatter stringFromDate:loadDate], (long)snippetCount];
 		}
 	}
 	
@@ -197,7 +197,7 @@ NSString * const PMInformationSectionLabel = @"Information";
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		BOOL textExpanderEnabled = [defaults boolForKey:PMTextExpanderEnabled];
 		if (textExpanderEnabled) {
-			if (indexPath.row == 0) {
+			if (row == 0) {
 				[self enableTextExpander];
 			} else {
 				[self disableTextExpander];
@@ -207,6 +207,24 @@ NSString * const PMInformationSectionLabel = @"Information";
 		}
 		[tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
 	}
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	CGFloat rowHeight = [super tableView:tableView heightForRowAtIndexPath:indexPath];
+	
+	NSString *sectionLabel = self.tableSections[@(indexPath.section)];
+	NSInteger row = indexPath.row;
+	
+	if ([sectionLabel isEqualToString:PMTextExpanderSectionLabel]) {
+		BOOL textExpanderEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:PMTextExpanderEnabled];
+		if (textExpanderEnabled) {
+			if (row == 0) {
+				rowHeight += 16.0;
+			}
+		}
+	}
+	
+	return rowHeight;
 }
 
 #pragma mark - UITableViewDataSource
