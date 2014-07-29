@@ -21,8 +21,6 @@
  * To be notified about changes to the default username, use KVO to observe the defaultUsername property.
  */
 
-#import <Foundation/Foundation.h>
-
 extern NSString * const PMAccountStoreDidAddUsernameNotification;
 extern NSString * const PMAccountStoreDidUpdateUsernameNotification;
 extern NSString * const PMAccountStoreDidRemoveUsernameNotification;

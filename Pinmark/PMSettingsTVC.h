@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 kilovolt42. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @protocol PMSettingsTVCDelegate
 
 - (void)didRequestToPostWithUsername:(NSString *)username;

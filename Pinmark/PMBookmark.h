@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 kilovolt42. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface PMBookmark : NSObject <NSCopying, NSCoding, NSSecureCoding>
 
 @property (nonatomic, copy) NSString *username;

@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 kilovolt42. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @interface PMInputAccessoryView : UIInputView
 
 @property (nonatomic, weak) IBOutlet UIButton *hideKeyboardButton;

@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 kilovolt42. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @interface PMNewPinTVC : UITableViewController <UIViewControllerRestoration>
 
 - (void)openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation;

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 kilovolt42. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
+@import XCTest;
 #import "PMBookmark.h"
 
 @interface PMBookmarkTests : XCTestCase
