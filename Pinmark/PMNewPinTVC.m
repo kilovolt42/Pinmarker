@@ -117,7 +117,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	self.URLTextField.inputAccessoryView = _keyboardAccessory;
 	self.titleTextField.inputAccessoryView = _keyboardAccessory;
 	self.tagsTextField.inputAccessoryView = _keyboardAccessory;
-    self.extendedTextField.inputAccessoryView = _keyboardAccessory;
+	self.extendedTextField.inputAccessoryView = _keyboardAccessory;
 }
 
 - (NSDateFormatter *)dateFormatter {
@@ -166,12 +166,12 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 		self.URLTextField.delegate = self.textExpander;
 		self.titleTextField.delegate = self.textExpander;
 		self.tagsTextField.delegate = self.textExpander;
-        self.extendedTextField.delegate = self.textExpander;
+		self.extendedTextField.delegate = self.textExpander;
 	} else {
 		self.URLTextField.delegate = self;
 		self.titleTextField.delegate = self;
 		self.tagsTextField.delegate = self;
-        self.extendedTextField.delegate = self;
+		self.extendedTextField.delegate = self;
 	}
 	
 	self.keyboardAccessory = [[[NSBundle mainBundle] loadNibNamed:@"PMInputAccessoryView" owner:self options:nil] firstObject];
@@ -396,7 +396,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	self.titleTextField.text = self.bookmark.title;
 	self.tagsDataSource.tags = self.bookmark.tags;
 	[self.tagsCollectionView reloadData];
-    self.extendedTextField.text = self.bookmark.extended;
+	self.extendedTextField.text = self.bookmark.extended;
 	self.toReadSwitch.on = self.bookmark.toread;
 	self.sharedSwitch.on = !self.bookmark.shared;
 	
@@ -517,7 +517,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	self.titleTextField.enabled = NO;
 	self.tagsCollectionView.allowsSelection = NO;
 	self.tagsTextField.enabled = NO;
-    self.extendedTextField.enabled = NO;
+	self.extendedTextField.enabled = NO;
 	self.toReadSwitch.enabled = NO;
 	self.sharedSwitch.enabled = NO;
 	self.navigationItem.leftBarButtonItem.enabled = NO;
@@ -531,7 +531,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	self.titleTextField.enabled = YES;
 	self.tagsCollectionView.allowsSelection = YES;
 	self.tagsTextField.enabled = YES;
-    self.extendedTextField.enabled = YES;
+	self.extendedTextField.enabled = YES;
 	self.toReadSwitch.enabled = YES;
 	self.sharedSwitch.enabled = YES;
 	self.navigationItem.leftBarButtonItem.enabled = YES;
@@ -685,18 +685,18 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	if (textField == self.URLTextField) {
-        [self.titleTextField becomeFirstResponder];
-    } else if (textField == self.titleTextField) {
-        [self.tagsTextField becomeFirstResponder];
-    } else if (textField == self.tagsTextField) {
+		[self.titleTextField becomeFirstResponder];
+	} else if (textField == self.titleTextField) {
+		[self.tagsTextField becomeFirstResponder];
+	} else if (textField == self.tagsTextField) {
 		if ([textField.text isEqualToString:@""]) {
 			[self.extendedTextField becomeFirstResponder];
 		} else {
 			[self addTags:textField.text];
 		}
 	} else {
-        [textField resignFirstResponder];
-    }
+		[textField resignFirstResponder];
+	}
 	return NO;
 }
 
@@ -711,8 +711,8 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	} else if (textArea == self.tagsTextField) {
 		identifier = @"tagsTextField";
 	} else if (textArea == self.extendedTextField) {
-        identifier = @"extendedTextField";
-    }
+		identifier = @"extendedTextField";
+	}
 	return identifier;
 }
 
@@ -725,8 +725,8 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 	} else if ([textIdentifier isEqualToString:@"tagsTextField"]) {
 		textField = self.tagsTextField;
 	} else if ([textIdentifier isEqualToString:@"extendedTextField"]) {
-        textField = self.extendedTextField;
-    }
+		textField = self.extendedTextField;
+	}
 	
 	[textField becomeFirstResponder];
 	

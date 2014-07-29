@@ -64,7 +64,7 @@ NSString * const PMTextExpanderFillScheme = @"pinmarker-te-fill";
 		}
 	}
 	
-    return YES;
+	return YES;
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
@@ -78,21 +78,21 @@ NSString * const PMTextExpanderFillScheme = @"pinmarker-te-fill";
 		result = [self.textExpander handleGetSnippetsURL:url error:&error cancelFlag:&cancelFlag];
 		
 		if (!error && !cancelFlag) {
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setBool:YES forKey:PMTextExpanderEnabled];
-            
-            NSUInteger snippetCount = 0;
-            NSDate *loadDate = nil;
-            
-            BOOL enabled = [SMTEDelegateController expansionStatusForceLoad:NO snippetCount:&snippetCount loadDate:&loadDate error:nil];
-            
-            if (enabled) {
-                if (snippetCount > 0 && loadDate) {
-                    [defaults setInteger:snippetCount forKey:PMTextExpanderRefreshCount];
-                    [defaults setObject:loadDate forKey:PMTextExpanderRefreshDate];
-                }
-            }
-            
+			NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+			[defaults setBool:YES forKey:PMTextExpanderEnabled];
+			
+			NSUInteger snippetCount = 0;
+			NSDate *loadDate = nil;
+			
+			BOOL enabled = [SMTEDelegateController expansionStatusForceLoad:NO snippetCount:&snippetCount loadDate:&loadDate error:nil];
+			
+			if (enabled) {
+				if (snippetCount > 0 && loadDate) {
+					[defaults setInteger:snippetCount forKey:PMTextExpanderRefreshCount];
+					[defaults setObject:loadDate forKey:PMTextExpanderRefreshDate];
+				}
+			}
+			
 			[defaults synchronize];
 			[SMTEDelegateController setExpansionEnabled:YES];
 		}

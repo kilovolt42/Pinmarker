@@ -54,7 +54,7 @@ NSString * const PMInformationSectionLabel = @"Information";
 #pragma mark - Life Cycle
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
+	[super viewDidLoad];
 	self.title = @"Settings";
 	
 	if ([SMTEDelegateController isTextExpanderTouchInstalled]) {
@@ -67,9 +67,9 @@ NSString * const PMInformationSectionLabel = @"Information";
 								@1 : PMAddAccountSectionLabel,
 								@2 : PMInformationSectionLabel };
 	}
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+	
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -85,7 +85,7 @@ NSString * const PMInformationSectionLabel = @"Information";
 #pragma mark -
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
-    [self.tableView reloadData];
+	[self.tableView reloadData];
 }
 
 #pragma mark - Methods
@@ -118,17 +118,17 @@ NSString * const PMInformationSectionLabel = @"Information";
 
 - (NSString *)snippetStatusText {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *statusText = @"No snippet data found";
+	NSString *statusText = @"No snippet data found";
 	
-    BOOL enabled = [defaults boolForKey:PMTextExpanderEnabled];
+	BOOL enabled = [defaults boolForKey:PMTextExpanderEnabled];
 	
 	if (enabled) {
-        NSInteger snippetCount = [defaults integerForKey:PMTextExpanderRefreshCount];
-        NSDate *loadDate = [defaults objectForKey:PMTextExpanderRefreshDate];
-        
-        if (loadDate) {
-            statusText = [NSString stringWithFormat:@"Updated %@ with %ld snippets", [self.dateFormatter stringFromDate:loadDate], (long)snippetCount];
-        }
+		NSInteger snippetCount = [defaults integerForKey:PMTextExpanderRefreshCount];
+		NSDate *loadDate = [defaults objectForKey:PMTextExpanderRefreshDate];
+		
+		if (loadDate) {
+			statusText = [NSString stringWithFormat:@"Updated %@ with %ld snippets", [self.dateFormatter stringFromDate:loadDate], (long)snippetCount];
+		}
 	}
 	
 	return statusText;
