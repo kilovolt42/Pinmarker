@@ -53,12 +53,12 @@
 static NSString *tagCellIdentifier = @"Tag Cell";
 static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
-#define URL_CELL_INDEX 0
-#define TITLE_CELL_INDEX 1
-#define TAGS_CELL_INDEX 2
-#define DESCRIPTION_CELL_INDEX 3
-#define READLATER_CELL_INDEX 4
-#define PRIVATE_CELL_INDEX 5
+static const NSUInteger PMURLCellIndex = 0;
+static const NSUInteger PMTitleCellIndex = 1;
+static const NSUInteger PMTagsCellIndex = 2;
+static const NSUInteger PMDescriptionCellIndex = 3;
+static const NSUInteger PMReadLaterCellIndex = 4;
+static const NSUInteger PMPrivateCellIndex = 5;
 
 @implementation PMNewPinTVC
 
@@ -463,7 +463,7 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
 - (void)updateTagsRowHeight {
 	[self updateRowHeights];
-	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:TAGS_CELL_INDEX inSection:0]];
+	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:PMTagsCellIndex inSection:0]];
 	[self.tableView scrollRectToVisible:cell.frame animated:YES];
 }
 
@@ -649,13 +649,13 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == URL_CELL_INDEX) {
+	if (indexPath.row == PMURLCellIndex) {
 		if (self.bookmark.lastPosted) {
 			return 67.0;
 		}
 		return 44.0;
 	}
-	else if (indexPath.row == TAGS_CELL_INDEX) {
+	else if (indexPath.row == PMTagsCellIndex) {
 		if ([self.tagsDataSource.tags count]) {
 			self.tagsCVHeightConstraint.constant = 44.0;
 		} else {
