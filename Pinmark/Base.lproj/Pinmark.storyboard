@@ -383,10 +383,10 @@
             </objects>
             <point key="canvasLocation" x="1965" y="76"/>
         </scene>
-        <!--View Controller - About-->
+        <!--AboutVC - About-->
         <scene sceneID="0zB-m2-GLe">
             <objects>
-                <viewController id="Svs-dh-TVx" sceneMemberID="viewController">
+                <viewController id="Svs-dh-TVx" customClass="PMAboutVC" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rpf-84-FQ4"/>
                         <viewControllerLayoutGuide type="bottom" id="bSR-Mm-NZ5"/>
@@ -395,32 +395,40 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pinmarker" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HsG-or-xjj">
-                                <rect key="frame" x="120" y="83" width="81" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="B8d-Bc-ckm">
-                                <rect key="frame" x="20" y="135" width="280" height="57"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RpL-hV-6vP">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="57" id="gIV-AZ-otC"/>
-                                </constraints>
-                                <string key="text">Pinmarker was created by
-Kyle Stevens
-© 2014</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RpL-hV-6vP">
-                                <rect key="frame" x="20" y="212" width="280" height="336"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <string key="text">Acknowledgements
-This application makes use of the following third party libraries:
+                                <attributedString key="attributedText">
+                                    <fragment content="Pinmarker">
+                                        <attributes>
+                                            <font key="NSFont" size="18" name="Helvetica-Bold"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <string key="content" base64-UTF8="YES">
+Cg
+</string>
+                                        <attributes>
+                                            <font key="NSFont" metaFont="toolTip"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <string key="content">1.0.1
+
+Created by Kyle Stevens
+© 2014
+
+</string>
+                                        <attributes>
+                                            <font key="NSFont" size="12" name="Helvetica"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <string key="content">This application makes use of the following third party libraries:
 
 AFNetworking
 
@@ -464,58 +472,38 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-PSPDFTextView
-
-Copyright (c) 2014 Peter Steinberger, PSPDFKit GmbH.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+SOFTWARE.</string>
+                                        <attributes>
+                                            <font key="NSFont" size="12" name="Helvetica"/>
+                                            <integer key="NSLigature" value="0"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" defaultTabInterval="28">
+                                                <tabStops>
+                                                    <textTab alignment="left" location="28"/>
+                                                </tabStops>
+                                            </paragraphStyle>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
                             </textView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version 1.0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ALa-EI-CnD">
-                                <rect key="frame" x="129" y="112" width="62" height="15"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="ALa-EI-CnD" firstAttribute="top" secondItem="HsG-or-xjj" secondAttribute="bottom" constant="8" id="1ya-Jd-YI8"/>
-                            <constraint firstItem="B8d-Bc-ckm" firstAttribute="top" secondItem="ALa-EI-CnD" secondAttribute="bottom" constant="8" id="8wn-Lh-RPv"/>
-                            <constraint firstItem="B8d-Bc-ckm" firstAttribute="leading" secondItem="ZJ0-dY-q4c" secondAttribute="leading" constant="20" id="9PM-Hk-7ja"/>
-                            <constraint firstItem="RpL-hV-6vP" firstAttribute="top" secondItem="B8d-Bc-ckm" secondAttribute="bottom" constant="20" id="FFP-gv-tp5"/>
-                            <constraint firstAttribute="centerX" secondItem="ALa-EI-CnD" secondAttribute="centerX" id="Fzq-6F-MkV"/>
-                            <constraint firstItem="RpL-hV-6vP" firstAttribute="leading" secondItem="ZJ0-dY-q4c" secondAttribute="leading" constant="20" id="RlN-JX-EXJ"/>
-                            <constraint firstItem="bSR-Mm-NZ5" firstAttribute="top" secondItem="RpL-hV-6vP" secondAttribute="bottom" constant="20" id="exP-Oo-fay"/>
-                            <constraint firstItem="HsG-or-xjj" firstAttribute="top" secondItem="rpf-84-FQ4" secondAttribute="bottom" constant="19" id="iFL-Dj-Huk"/>
-                            <constraint firstAttribute="trailing" secondItem="RpL-hV-6vP" secondAttribute="trailing" constant="20" id="jn1-qh-mSk"/>
-                            <constraint firstAttribute="trailing" secondItem="B8d-Bc-ckm" secondAttribute="trailing" constant="20" id="vAp-MF-7ai"/>
-                            <constraint firstAttribute="centerX" secondItem="HsG-or-xjj" secondAttribute="centerX" id="wdJ-a2-OD6"/>
+                            <constraint firstItem="RpL-hV-6vP" firstAttribute="leading" secondItem="ZJ0-dY-q4c" secondAttribute="leading" id="RlN-JX-EXJ"/>
+                            <constraint firstItem="bSR-Mm-NZ5" firstAttribute="top" secondItem="RpL-hV-6vP" secondAttribute="bottom" id="exP-Oo-fay"/>
+                            <constraint firstAttribute="trailing" secondItem="RpL-hV-6vP" secondAttribute="trailing" id="jn1-qh-mSk"/>
+                            <constraint firstItem="RpL-hV-6vP" firstAttribute="top" secondItem="rpf-84-FQ4" secondAttribute="top" id="sNR-Ul-fKH"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="About" id="2hJ-NF-6DS"/>
+                    <connections>
+                        <outlet property="textView" destination="RpL-hV-6vP" id="IFW-8t-liG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IkZ-pD-cdj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2441" y="-625"/>
+            <point key="canvasLocation" x="2484" y="76"/>
         </scene>
         <!--NavigationVC-->
         <scene sceneID="0Gv-dD-Qg8">
