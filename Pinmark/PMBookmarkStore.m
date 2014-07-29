@@ -134,6 +134,10 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
 	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
 	
+	if (!bookmark.dt) {
+		bookmark.dt = [NSDate date];
+	}
+	
 	NSMutableDictionary *mutableParameters = [[bookmark parameters] mutableCopy];
 	mutableParameters[@"format"] = @"json";
 	mutableParameters[@"auth_token"] = [[PMAccountStore sharedStore] authTokenForUsername:bookmark.username];
