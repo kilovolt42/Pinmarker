@@ -12,12 +12,14 @@
 #import "PMAccountStore.h"
 #import "NSString+Pinmark.h"
 
+static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
+
 @interface PMBookmarkStore ()
+
 @property (nonatomic) NSMutableArray *bookmarks;
 @property (nonatomic) NSDateFormatter *dateFormatter;
-@end
 
-static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
+@end
 
 @implementation PMBookmarkStore
 

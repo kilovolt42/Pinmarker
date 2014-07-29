@@ -9,10 +9,6 @@
 #import "PMNavigationVC.h"
 #import "PMNewPinTVC.h"
 
-@interface PMNavigationVC ()
-
-@end
-
 @implementation PMNavigationVC
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {

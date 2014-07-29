@@ -10,6 +10,7 @@
 #import "PMAccountStore.h"
 
 @interface PMAddAccountVC () <UIActionSheetDelegate, UIAlertViewDelegate, UITextFieldDelegate>
+
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
 @property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
 @property (nonatomic, weak) IBOutlet UITextField *tokenTextField;
@@ -26,6 +27,7 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *instructionsLabelTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *formViewTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *deleteButtonTopConstraint;
+
 @end
 
 @implementation PMAddAccountVC

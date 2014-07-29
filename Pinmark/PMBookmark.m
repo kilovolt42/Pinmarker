@@ -10,7 +10,9 @@
 #import "NSString+Pinmark.h"
 
 @interface PMBookmark ()
+
 @property (nonatomic) NSDateFormatter *dateFormatter;
+
 @end
 
 @implementation PMBookmark

@@ -7,26 +7,31 @@
 //
 
 #import "PMNewPinTVC.h"
-
 #import "NSURL+Pinmark.h"
 #import "NSString+Pinmark.h"
-
 #import "PMTagCVCell.h"
 #import "PMTagsDataSource.h"
 #import "PMInputAccessoryView.h"
-
 #import "PMBookmark.h"
-
 #import "PMBookmarkStore.h"
 #import "PMTagStore.h"
 #import "PMAccountStore.h"
-
 #import "PMSettingsTVC.h"
-
 #import "PMAppDelegate.h"
 #import <TextExpander/SMTEDelegateController.h>
 
+static NSString *tagCellIdentifier = @"Tag Cell";
+static void * PMNewPinTVCContext = &PMNewPinTVCContext;
+
+static const NSUInteger PMURLCellIndex = 0;
+static const NSUInteger PMTitleCellIndex = 1;
+static const NSUInteger PMTagsCellIndex = 2;
+static const NSUInteger PMDescriptionCellIndex = 3;
+static const NSUInteger PMReadLaterCellIndex = 4;
+static const NSUInteger PMPrivateCellIndex = 5;
+
 @interface PMNewPinTVC () <UINavigationControllerDelegate, PMSettingsTVCDelegate, UITextFieldDelegate, UICollectionViewDelegate, UIActionSheetDelegate, SMTEFillDelegate>
+
 @property (nonatomic, weak) IBOutlet UITextField *URLTextField;
 @property (weak, nonatomic) IBOutlet UILabel *datePostedLabel;
 @property (nonatomic, weak) IBOutlet UITextField *titleTextField;
@@ -48,17 +53,8 @@
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *postButton;
 @property (nonatomic) NSDateFormatter *dateFormatter;
 @property (nonatomic, readonly) SMTEDelegateController *textExpander;
+
 @end
-
-static NSString *tagCellIdentifier = @"Tag Cell";
-static void * PMNewPinTVCContext = &PMNewPinTVCContext;
-
-static const NSUInteger PMURLCellIndex = 0;
-static const NSUInteger PMTitleCellIndex = 1;
-static const NSUInteger PMTagsCellIndex = 2;
-static const NSUInteger PMDescriptionCellIndex = 3;
-static const NSUInteger PMReadLaterCellIndex = 4;
-static const NSUInteger PMPrivateCellIndex = 5;
 
 @implementation PMNewPinTVC
 

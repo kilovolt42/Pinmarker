@@ -11,16 +11,18 @@
 #import "PMAccountStore.h"
 #import "NSString+Pinmark.h"
 
-@interface PMTagStore ()
-@property (nonatomic) NSMutableDictionary *tags;
-@property (nonatomic) NSMutableArray *tagsLoadingQueue;
-@property (nonatomic) NSMutableDictionary *tagsCoherence;
-@end
-
 typedef NS_ENUM(NSUInteger, PMTagStoreCoherence) {
 	PMTagStoreCoherenceValid,
 	PMTagStoreCoherenceDirty
 };
+
+@interface PMTagStore ()
+
+@property (nonatomic) NSMutableDictionary *tags;
+@property (nonatomic) NSMutableArray *tagsLoadingQueue;
+@property (nonatomic) NSMutableDictionary *tagsCoherence;
+
+@end
 
 @implementation PMTagStore
 

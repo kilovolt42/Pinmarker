@@ -1,5 +1,5 @@
 //
-//  PMTagCell.h
+//  PMTagCVCell.h
 //  Pinmarker
 //
 //  Created by Kyle Stevens on 12/27/13.

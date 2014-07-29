@@ -23,7 +23,9 @@ NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";
 NSString * const PMDefaultUsernameKey = @"PMDefaultUsernameKey";
 
 @interface PMAccountStore ()
+
 @property (nonatomic) NSArray *associatedTokens;
+
 @end
 
 @implementation PMAccountStore

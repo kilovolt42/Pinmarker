@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		27019F25189FFD6100CDAE55 /* Inconsolata.otf in Resources */ = {isa = PBXBuildFile; fileRef = 27019F24189FFCF800CDAE55 /* Inconsolata.otf */; };
 		2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2703C540185F7E6500570F0C /* PMNewPinTVC.m */; };
 		270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 270C4A4918628D6A000FC061 /* PMNavigationVC.m */; };
 		270F437818C7BE9200757DCB /* PMBookmarkStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 270F437718C7BE9200757DCB /* PMBookmarkStore.m */; };
@@ -48,7 +47,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		27019F24189FFCF800CDAE55 /* Inconsolata.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Inconsolata.otf; sourceTree = "<group>"; };
 		2703C53F185F7E6500570F0C /* PMNewPinTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMNewPinTVC.h; sourceTree = "<group>"; };
 		2703C540185F7E6500570F0C /* PMNewPinTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMNewPinTVC.m; sourceTree = "<group>"; };
 		2703C542185FD16100570F0C /* Bookmarklet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Bookmarklet.js; sourceTree = "<group>"; };
@@ -204,7 +202,6 @@
 				2703C542185FD16100570F0C /* Bookmarklet.js */,
 				270C4A4718628CD3000FC061 /* Podfile */,
 				AE2FE771354E43FD945BDE89 /* Pods.xcconfig */,
-				27019F24189FFCF800CDAE55 /* Inconsolata.otf */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -345,7 +342,6 @@
 				278EF442185B71E2003A27D3 /* Images.xcassets in Resources */,
 				278EF43A185B71E2003A27D3 /* Pinmark.storyboard in Resources */,
 				272C5CD5186F626D0079B95E /* PMTagCVCell.xib in Resources */,
-				27019F25189FFD6100CDAE55 /* Inconsolata.otf in Resources */,
 				278EF431185B71E2003A27D3 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

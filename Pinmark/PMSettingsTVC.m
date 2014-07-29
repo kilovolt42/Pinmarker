@@ -19,9 +19,11 @@ NSString * const PMTextExpanderSectionLabel = @"TextExpander";
 NSString * const PMInformationSectionLabel = @"Information";
 
 @interface PMSettingsTVC () <PMAddAccountVCDelegate>
+
 @property (nonatomic, copy) NSArray *accounts;
 @property (nonatomic, copy) NSDictionary *tableSections;
 @property (nonatomic) NSDateFormatter *dateFormatter;
+
 @end
 
 @implementation PMSettingsTVC
