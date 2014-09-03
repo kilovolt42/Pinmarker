@@ -18,7 +18,7 @@
 		27409CB118CC1048006C97BB /* PMTagStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 27409CB018CC1048006C97BB /* PMTagStore.m */; };
 		277AA7AF1896DC080015A3EF /* PMInputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 277AA7AE1896DC080015A3EF /* PMInputAccessoryView.xib */; };
 		277AA7B21896DC200015A3EF /* PMInputAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 277AA7B11896DC200015A3EF /* PMInputAccessoryView.m */; };
-		277FFAC018918BE900DFD907 /* PMTagsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 277FFABF18918BE900DFD907 /* PMTagsDataSource.m */; };
+		277CDA0019B7C8A500A04082 /* PMTagsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 277CD9FF19B7C8A500A04082 /* PMTagsController.m */; };
 		2781196C186A0516006B93AB /* NSURL+Pinmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781196B186A0516006B93AB /* NSURL+Pinmark.m */; };
 		278EF431185B71E2003A27D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 278EF42F185B71E2003A27D3 /* InfoPlist.strings */; };
 		278EF433185B71E2003A27D3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF432185B71E2003A27D3 /* main.m */; };
@@ -69,8 +69,8 @@
 		277AA7AE1896DC080015A3EF /* PMInputAccessoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMInputAccessoryView.xib; sourceTree = "<group>"; };
 		277AA7B01896DC200015A3EF /* PMInputAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMInputAccessoryView.h; sourceTree = "<group>"; };
 		277AA7B11896DC200015A3EF /* PMInputAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMInputAccessoryView.m; sourceTree = "<group>"; };
-		277FFABE18918BE900DFD907 /* PMTagsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMTagsDataSource.h; sourceTree = "<group>"; };
-		277FFABF18918BE900DFD907 /* PMTagsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMTagsDataSource.m; sourceTree = "<group>"; };
+		277CD9FE19B7C8A500A04082 /* PMTagsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMTagsController.h; sourceTree = "<group>"; };
+		277CD9FF19B7C8A500A04082 /* PMTagsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMTagsController.m; sourceTree = "<group>"; };
 		2781196A186A0516006B93AB /* NSURL+Pinmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Pinmark.h"; sourceTree = "<group>"; };
 		2781196B186A0516006B93AB /* NSURL+Pinmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Pinmark.m"; sourceTree = "<group>"; };
 		278EF423185B71E2003A27D3 /* Pinmarker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pinmarker.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -123,8 +123,8 @@
 		272C5CDC1871028A0079B95E /* Tags */ = {
 			isa = PBXGroup;
 			children = (
-				277FFABE18918BE900DFD907 /* PMTagsDataSource.h */,
-				277FFABF18918BE900DFD907 /* PMTagsDataSource.m */,
+				277CD9FE19B7C8A500A04082 /* PMTagsController.h */,
+				277CD9FF19B7C8A500A04082 /* PMTagsController.m */,
 				272C5CD4186F626D0079B95E /* PMTagCVCell.xib */,
 				272C5CD1186DFF3E0079B95E /* PMTagCVCell.h */,
 				272C5CD2186DFF3E0079B95E /* PMTagCVCell.m */,
@@ -420,8 +420,8 @@
 				270F437818C7BE9200757DCB /* PMBookmarkStore.m in Sources */,
 				2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */,
 				27409CB118CC1048006C97BB /* PMTagStore.m in Sources */,
+				277CDA0019B7C8A500A04082 /* PMTagsController.m in Sources */,
 				27D2DC3418777A9B0054D187 /* PMBookmark.m in Sources */,
-				277FFAC018918BE900DFD907 /* PMTagsDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

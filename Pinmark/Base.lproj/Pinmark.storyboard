@@ -101,6 +101,10 @@
                                                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                     </collectionViewFlowLayout>
                                                     <cells/>
+                                                    <connections>
+                                                        <outlet property="dataSource" destination="qcK-HP-c8D" id="Yee-TG-tWa"/>
+                                                        <outlet property="delegate" destination="qcK-HP-c8D" id="kDn-sG-Mij"/>
+                                                    </connections>
                                                 </collectionView>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add Tags" adjustsFontSizeToFit="NO" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KKd-Mm-SOm">
                                                     <rect key="frame" x="15" y="44" width="290" height="43"/>
@@ -111,7 +115,8 @@
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
                                                     <connections>
-                                                        <action selector="tagsTextFieldEditingChanged:" destination="FsJ-qN-eCd" eventType="editingChanged" id="4Ed-QO-bKg"/>
+                                                        <action selector="tagsTextFieldEditingChanged:" destination="qcK-HP-c8D" eventType="editingChanged" id="jOu-m9-5ip"/>
+                                                        <outlet property="delegate" destination="qcK-HP-c8D" id="y06-66-K3W"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -248,13 +253,19 @@
                         <outlet property="postButton" destination="K3p-4H-lk9" id="RUc-ve-9q0"/>
                         <outlet property="sharedSwitch" destination="W9p-Du-tUZ" id="h9Y-tI-srW"/>
                         <outlet property="tagsCVHeightConstraint" destination="1GY-RB-FhD" id="3Rz-Mr-xo4"/>
-                        <outlet property="tagsCollectionView" destination="fjA-FE-hIj" id="Z2p-0N-biW"/>
-                        <outlet property="tagsTextField" destination="KKd-Mm-SOm" id="QLV-oK-sE3"/>
+                        <outlet property="tagsController" destination="qcK-HP-c8D" id="aFv-eV-mcY"/>
                         <outlet property="titleTextField" destination="XKO-Sk-Xpd" id="biX-G4-egF"/>
                         <outlet property="toReadSwitch" destination="uI2-u2-kLw" id="Hvg-5K-ypP"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oUT-Ph-lRS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="qcK-HP-c8D" customClass="PMTagsController">
+                    <connections>
+                        <outlet property="aggregatedTagsCollectionView" destination="fjA-FE-hIj" id="AK6-G3-L7f"/>
+                        <outlet property="suggestedTagsCollectionView" destination="fjA-FE-hIj" id="LhU-5U-o3u"/>
+                        <outlet property="tagsTextField" destination="KKd-Mm-SOm" id="WH8-li-5UC"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="878" y="76"/>
         </scene>

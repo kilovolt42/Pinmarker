@@ -9,8 +9,7 @@
 #import "PMNewPinTVC.h"
 #import "NSURL+Pinmark.h"
 #import "NSString+Pinmark.h"
-#import "PMTagCVCell.h"
-#import "PMTagsDataSource.h"
+#import "PMTagsController.h"
 #import "PMInputAccessoryView.h"
 #import "PMBookmark.h"
 #import "PMBookmarkStore.h"
@@ -20,21 +19,18 @@
 #import "PMAppDelegate.h"
 #import <TextExpander/SMTEDelegateController.h>
 
-static NSString *tagCellIdentifier = @"Tag Cell";
 static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
 static const NSUInteger PMURLCellIndex = 0;
 static const NSUInteger PMTagsCellIndex = 2;
 
-@interface PMNewPinTVC () <UINavigationControllerDelegate, PMSettingsTVCDelegate, UITextFieldDelegate, UICollectionViewDelegate, UIActionSheetDelegate, SMTEFillDelegate>
+@interface PMNewPinTVC () <UINavigationControllerDelegate, PMSettingsTVCDelegate, UITextFieldDelegate, UIActionSheetDelegate, SMTEFillDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField *URLTextField;
 @property (weak, nonatomic) IBOutlet UILabel *datePostedLabel;
 @property (nonatomic, weak) IBOutlet UITextField *titleTextField;
 @property (nonatomic, weak) IBOutlet UITextField *extendedTextField;
-@property (nonatomic, weak) IBOutlet UITextField *tagsTextField;
-@property (nonatomic, weak) IBOutlet UICollectionView *tagsCollectionView;
-@property (nonatomic, weak) UICollectionView *suggestedTagsCollectionView;
+@property (nonatomic) IBOutlet PMTagsController *tagsController;
 @property (nonatomic, weak) IBOutlet UISwitch *toReadSwitch;
 @property (nonatomic, weak) IBOutlet UISwitch *sharedSwitch;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *tagsCVHeightConstraint;
@@ -43,9 +39,6 @@ static const NSUInteger PMTagsCellIndex = 2;
 @property (nonatomic, copy) void (^xSuccess)(id);
 @property (nonatomic, copy) void (^xFailure)(NSError *, id);
 @property (nonatomic) PMBookmark *bookmark;
-@property (nonatomic) PMTagsDataSource *tagsDataSource;
-@property (nonatomic) PMTagsDataSource *suggestedTagsDataSource;
-@property (nonatomic) PMTagCVCell *sizingCell;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *postButton;
 @property (nonatomic) NSDateFormatter *dateFormatter;
 @property (nonatomic, readonly) SMTEDelegateController *textExpander;
@@ -62,6 +55,7 @@ static const NSUInteger PMTagsCellIndex = 2;
 	}
 	
 	_bookmark = bookmark;
+	self.tagsController.bookmark = _bookmark;
 	
 	if (_bookmark) {
 		[self addBookmarkObservers];
@@ -71,44 +65,13 @@ static const NSUInteger PMTagsCellIndex = 2;
 	[[PMTagStore sharedStore] markTagsDirtyForUsername:_bookmark.username];
 }
 
-- (PMTagsDataSource *)tagsDataSource {
-	if (!_tagsDataSource) _tagsDataSource = [PMTagsDataSource new];
-	return _tagsDataSource;
-}
-
-- (PMTagsDataSource *)suggestedTagsDataSource {
-	if (!_suggestedTagsDataSource) _suggestedTagsDataSource = [PMTagsDataSource new];
-	return _suggestedTagsDataSource;
-}
-
-- (void)setTagsCollectionView:(UICollectionView *)collectionView {
-	_tagsCollectionView = collectionView;
-	_tagsCollectionView.dataSource = self.tagsDataSource;
-	_tagsCollectionView.delegate = self;
-	_tagsCollectionView.allowsMultipleSelection = NO;
-	
-	UINib *cellNib = [UINib nibWithNibName:@"PMTagCVCell" bundle:nil];
-	[_tagsCollectionView registerNib:cellNib forCellWithReuseIdentifier:tagCellIdentifier];
-	self.sizingCell = [[cellNib instantiateWithOwner:nil options:nil] objectAtIndex:0];
-}
-
-- (void)setSuggestedTagsCollectionView:(UICollectionView *)suggestedTagsCollectionView {
-	_suggestedTagsCollectionView = suggestedTagsCollectionView;
-	_suggestedTagsCollectionView.dataSource = self.suggestedTagsDataSource;
-	_suggestedTagsCollectionView.delegate = self;
-	_suggestedTagsCollectionView.allowsMultipleSelection = NO;
-	
-	UINib *cellNib = [UINib nibWithNibName:@"PMTagCVCell" bundle:nil];
-	[_suggestedTagsCollectionView registerNib:cellNib forCellWithReuseIdentifier:tagCellIdentifier];
-}
-
 - (void)setKeyboardAccessory:(PMInputAccessoryView *)keyboardAccessory {
 	_keyboardAccessory = keyboardAccessory;
 	[_keyboardAccessory.hideButton addTarget:self action:@selector(dismissKeyboard) forControlEvents:UIControlEventTouchUpInside];
-	self.suggestedTagsCollectionView = _keyboardAccessory.collectionView;
+	self.tagsController.suggestedTagsCollectionView = _keyboardAccessory.collectionView;
 	self.URLTextField.inputAccessoryView = _keyboardAccessory;
 	self.titleTextField.inputAccessoryView = _keyboardAccessory;
-	self.tagsTextField.inputAccessoryView = _keyboardAccessory;
+	self.tagsController.tagsTextField.inputAccessoryView = _keyboardAccessory;
 	self.extendedTextField.inputAccessoryView = _keyboardAccessory;
 }
 
@@ -150,27 +113,20 @@ static const NSUInteger PMTagsCellIndex = 2;
 	self.restorationClass = [self class];
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-	[notificationCenter addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 	[notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 	
 	if (self.textExpander) {
 		self.textExpander.nextDelegate = self;
 		self.URLTextField.delegate = self.textExpander;
 		self.titleTextField.delegate = self.textExpander;
-		self.tagsTextField.delegate = self.textExpander;
 		self.extendedTextField.delegate = self.textExpander;
 	} else {
 		self.URLTextField.delegate = self;
 		self.titleTextField.delegate = self;
-		self.tagsTextField.delegate = self;
 		self.extendedTextField.delegate = self;
 	}
 	
 	self.keyboardAccessory = [[[NSBundle mainBundle] loadNibNamed:@"PMInputAccessoryView" owner:self options:nil] firstObject];
-	
-	UIMenuController *menuController = [UIMenuController sharedMenuController];
-	UIMenuItem *deleteTagMenuItem = [[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(deleteTag:)];
-	[menuController setMenuItems:@[deleteTagMenuItem]];
 	
 	self.bookmark = [[PMBookmarkStore sharedStore] lastBookmark];
 }
@@ -216,14 +172,7 @@ static const NSUInteger PMTagsCellIndex = 2;
 #pragma mark -
 
 - (void)applicationWillResignActive:(NSNotification *)notification {
-	if (self.activeField == self.tagsTextField) {
-		NSString *tagsText = self.tagsTextField.text;
-		self.tagsTextField.text = @"";
-		[self dismissKeyboard];
-		self.tagsTextField.text = tagsText;
-	} else {
-		[self dismissKeyboard];
-	}
+	[self dismissKeyboard];
 }
 
 - (void)addBookmarkObservers {
@@ -231,6 +180,7 @@ static const NSUInteger PMTagsCellIndex = 2;
 	[_bookmark addObserver:self forKeyPath:@"username" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
 	[_bookmark addObserver:self forKeyPath:@"lastPosted" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
 	[_bookmark addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
+	[_bookmark addObserver:self forKeyPath:@"tags" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
 }
 
 - (void)removeBookmarkObservers {
@@ -238,6 +188,7 @@ static const NSUInteger PMTagsCellIndex = 2;
 	[self.bookmark removeObserver:self forKeyPath:@"username" context:&PMNewPinTVCContext];
 	[self.bookmark removeObserver:self forKeyPath:@"lastPosted" context:&PMNewPinTVCContext];
 	[self.bookmark removeObserver:self forKeyPath:@"title" context:&PMNewPinTVCContext];
+	[self.bookmark removeObserver:self forKeyPath:@"tags"];
 }
 
 #pragma mark - Actions
@@ -245,7 +196,7 @@ static const NSUInteger PMTagsCellIndex = 2;
 - (IBAction)pin:(UIBarButtonItem *)sender {
 	[self dismissKeyboard]; // makes sure text field ends editing and saves text to bookmark
 	
-	[self disableFields];
+	[self fieldsEnabled:NO];
 	UIActivityIndicatorView *indicatorButton = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
 	[indicatorButton startAnimating];
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicatorButton];
@@ -258,7 +209,7 @@ static const NSUInteger PMTagsCellIndex = 2;
 	[store postBookmark:self.bookmark
 				success:^(id responseObject) {
 					self.navigationItem.rightBarButtonItem = sender;
-					[self enableFields];
+					[self fieldsEnabled:YES];
 					[self reportSuccess];
 					self.bookmark = [store lastBookmark];
 					if (self.xSuccess) {
@@ -267,7 +218,7 @@ static const NSUInteger PMTagsCellIndex = 2;
 				}
 				failure:^(NSError *error, id responseObject) {
 					self.navigationItem.rightBarButtonItem = sender;
-					[self enableFields];
+					[self fieldsEnabled:YES];
 					if (responseObject) {
 						NSString *resultCode = responseObject[@"result_code"];
 						[self reportErrorWithMessage:responseDictionary[resultCode]];
@@ -292,28 +243,12 @@ static const NSUInteger PMTagsCellIndex = 2;
 	self.bookmark.extended = textField.text;
 }
 
-- (IBAction)tagsTextFieldEditingChanged:(UITextField *)textField {
-	[self updateSuggestedTagsForTag:textField.text];
-}
-
 - (IBAction)toggledToReadSwitch:(UISwitch *)sender {
 	self.bookmark.toread = sender.on;
 }
 
 - (IBAction)toggledSharedSwitch:(UISwitch *)sender {
 	self.bookmark.shared = !sender.on;
-}
-
-- (void)deleteTag:(id)sender {
-	NSArray *selectedItems = [self.tagsCollectionView indexPathsForSelectedItems];
-	if ([selectedItems count]) {
-		NSIndexPath *selectedIndexPath = [selectedItems firstObject];
-		PMTagCVCell *cell = (PMTagCVCell *)[self.tagsCollectionView cellForItemAtIndexPath:selectedIndexPath];
-		[self.bookmark removeTag:cell.label.text];
-		self.tagsDataSource.tags = self.bookmark.tags;
-		[self.tagsCollectionView reloadData];
-		[self updateTagsRowHeight];
-	}
 }
 
 - (void)showUsernameSheet:(id)sender {
@@ -386,12 +321,11 @@ static const NSUInteger PMTagsCellIndex = 2;
 - (void)updateFields {
 	self.URLTextField.text = self.bookmark.url;
 	self.titleTextField.text = self.bookmark.title;
-	self.tagsDataSource.tags = self.bookmark.tags;
-	[self.tagsCollectionView reloadData];
 	self.extendedTextField.text = self.bookmark.extended;
 	self.toReadSwitch.on = self.bookmark.toread;
 	self.sharedSwitch.on = !self.bookmark.shared;
 	
+	[self.tagsController updateFields];
 	[self updateTagsRowHeight];
 }
 
@@ -412,9 +346,7 @@ static const NSUInteger PMTagsCellIndex = 2;
 	titleButton.enabled = buttonEnabled;
 	[titleButton setTitle:buttonTitle forState:UIControlStateNormal];
 	
-	if (self.activeField == self.tagsTextField) {
-		[self updateSuggestedTagsForTag:self.tagsTextField.text];
-	}
+	[self.tagsController updateFields];
 }
 
 - (void)reportSuccess {
@@ -432,25 +364,10 @@ static const NSUInteger PMTagsCellIndex = 2;
 }
 
 - (void)dismissKeyboard {
+	[self.tagsController.tagsTextField resignFirstResponder];
 	[self.activeField resignFirstResponder];
 	self.activeField = nil;
 	[self.tableView scrollsToTop];
-}
-
-- (void)addTags:(NSString *)tags {
-	[self.bookmark addTags:tags];
-	
-	self.tagsDataSource.tags = self.bookmark.tags;
-	[self.tagsCollectionView reloadData];
-	
-	self.suggestedTagsDataSource.tags = nil;
-	[self.suggestedTagsCollectionView reloadData];
-	
-	self.tagsTextField.text = @"";
-	NSIndexPath *lastTagIndexPath = [NSIndexPath indexPathForItem:[self.bookmark.tags count]-1 inSection:0];
-	[self.tagsCollectionView scrollToItemAtIndexPath:lastTagIndexPath atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
-	[self updateTagsRowHeight];
-	self.suggestedTagsCollectionView.hidden = YES;
 }
 
 - (void)updateTagsRowHeight {
@@ -464,72 +381,18 @@ static const NSUInteger PMTagsCellIndex = 2;
 	[self.tableView endUpdates];
 }
 
-- (void)keyboardDidHide:(NSNotification *)notification {
-	NSArray *selectedItems = [self.tagsCollectionView indexPathsForSelectedItems];
-	if ([selectedItems count]) {
-		[self showMenuForTagAtIndexPath:[selectedItems firstObject]];
-	}
-}
-
-- (void)updateSuggestedTagsForTag:(NSString *)tag {
-	NSArray *tags = [[PMTagStore sharedStore] tagsForUsername:self.bookmark.username];
-	if (tags) {
-		NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", tag];
-		NSMutableArray *results = [NSMutableArray arrayWithArray:[tags filteredArrayUsingPredicate:searchPredicate]];
-		[results removeObjectsInArray:self.bookmark.tags];
-		self.suggestedTagsDataSource.tags = [results copy];
-		[self.suggestedTagsCollectionView reloadData];
-		if ([results count]) {
-			self.suggestedTagsCollectionView.hidden = NO;
-		} else {
-			self.suggestedTagsCollectionView.hidden = YES;
-		}
-	} else {
-		self.suggestedTagsCollectionView.hidden = YES;
-	}
-}
-
-- (void)deselectAllTagCells {
-	NSArray *selectedCells = [self.tagsCollectionView indexPathsForSelectedItems];
-	for (NSIndexPath *indexPath in selectedCells) {
-		[self.tagsCollectionView deselectItemAtIndexPath:indexPath animated:NO];
-	}
-}
-
-- (void)showMenuForTagAtIndexPath:(NSIndexPath *)indexPath {
-	[self becomeFirstResponder];
-	UICollectionViewCell *cell = [self.tagsCollectionView cellForItemAtIndexPath:indexPath];
-	UIMenuController *menuController = [UIMenuController sharedMenuController];
-	[menuController setTargetRect:cell.frame inView:self.tagsCollectionView];
-	[menuController setMenuVisible:YES animated:YES];
-}
-
-- (void)disableFields {
-	self.URLTextField.enabled = NO;
-	self.titleTextField.enabled = NO;
-	self.tagsCollectionView.allowsSelection = NO;
-	self.tagsTextField.enabled = NO;
-	self.extendedTextField.enabled = NO;
-	self.toReadSwitch.enabled = NO;
-	self.sharedSwitch.enabled = NO;
-	self.navigationItem.leftBarButtonItem.enabled = NO;
+- (void)fieldsEnabled:(BOOL)enabled {
+	self.URLTextField.enabled = enabled;
+	self.titleTextField.enabled = enabled;
+	self.extendedTextField.enabled = enabled;
+	self.toReadSwitch.enabled = enabled;
+	self.sharedSwitch.enabled = enabled;
+	self.navigationItem.leftBarButtonItem.enabled = enabled;
 	
 	UIButton *titleButton = (UIButton *)self.navigationItem.titleView;
-	titleButton.enabled = NO;
-}
-
-- (void)enableFields {
-	self.URLTextField.enabled = YES;
-	self.titleTextField.enabled = YES;
-	self.tagsCollectionView.allowsSelection = YES;
-	self.tagsTextField.enabled = YES;
-	self.extendedTextField.enabled = YES;
-	self.toReadSwitch.enabled = YES;
-	self.sharedSwitch.enabled = YES;
-	self.navigationItem.leftBarButtonItem.enabled = YES;
+	titleButton.enabled = enabled;
 	
-	UIButton *titleButton = (UIButton *)self.navigationItem.titleView;
-	titleButton.enabled = YES;
+	[self.tagsController fieldsEnabled:enabled];
 }
 
 #pragma mark - KVO
@@ -554,24 +417,12 @@ static const NSUInteger PMTagsCellIndex = 2;
 		else if ([keyPath isEqualToString:@"title"]) {
 			self.titleTextField.text = self.bookmark.title;
 		}
+		else if ([keyPath isEqualToString:@"tags"]) {
+			[self updateTagsRowHeight];
+		}
 	} else {
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	}
-}
-
-#pragma mark - UIResponder
-
-- (BOOL)canBecomeFirstResponder {
-	return YES;
-}
-
-- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
-	return self.isFirstResponder && action == @selector(deleteTag:);
-}
-
-- (BOOL)becomeFirstResponder {
-	self.activeField = nil;
-	return [super becomeFirstResponder];
 }
 
 #pragma mark - PMSettingsTVCDelegate
@@ -591,45 +442,6 @@ static const NSUInteger PMTagsCellIndex = 2;
 	}
 }
 
-#pragma mark - UICollectionViewDelegate
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-	if (collectionView == self.tagsCollectionView) {
-		if (self.activeField == nil) {
-			[self showMenuForTagAtIndexPath:indexPath];
-		} else {
-			[self dismissKeyboard];
-		}
-	} else if (collectionView == self.suggestedTagsCollectionView) {
-		[self addTags:self.suggestedTagsDataSource.tags[indexPath.item]];
-		self.suggestedTagsDataSource.tags = nil;
-		[self.suggestedTagsCollectionView reloadData];
-		self.tagsTextField.text = @"";
-		[self updateTagsRowHeight];
-	}
-}
-
-#pragma mark - UICollectionViewDelegateFlowLayout
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-	if (collectionView == self.tagsCollectionView) {
-		self.sizingCell.label.text = self.tagsDataSource.tags[indexPath.item];
-	} else {
-		self.sizingCell.label.text = self.suggestedTagsDataSource.tags[indexPath.item];
-	}
-	return [self.sizingCell suggestedSizeForCell];
-}
-
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-	return UIEdgeInsetsMake(0, 15, 0, 15);
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-	return 1.0;
-}
-
-#pragma mark - UITableViewDataSource
-
 #pragma mark - UITableViewDelegate
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -648,12 +460,12 @@ static const NSUInteger PMTagsCellIndex = 2;
 		return 44.0;
 	}
 	else if (indexPath.row == PMTagsCellIndex) {
-		if ([self.tagsDataSource.tags count]) {
+		if ([self.bookmark.tags count]) {
 			self.tagsCVHeightConstraint.constant = 44.0;
 		} else {
 			self.tagsCVHeightConstraint.constant = 0.0;
 		}
-		return self.tagsTextField.frame.size.height + self.tagsCVHeightConstraint.constant;
+		return 44.0 + self.tagsCVHeightConstraint.constant;
 	}
 	return 44.0;
 }
@@ -661,31 +473,18 @@ static const NSUInteger PMTagsCellIndex = 2;
 #pragma mark - UITextFieldDelegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-	[self deselectAllTagCells];
 	self.activeField = textField;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	if (textField == self.URLTextField) {
 		self.bookmark.url = textField.text;
-	} else if (textField == self.tagsTextField) {
-		if (![textField.text isEqualToString:@""]) {
-			[self addTags:textField.text];
-		}
 	}
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	if (textField == self.URLTextField) {
 		[self.titleTextField becomeFirstResponder];
-	} else if (textField == self.titleTextField) {
-		[self.tagsTextField becomeFirstResponder];
-	} else if (textField == self.tagsTextField) {
-		if ([textField.text isEqualToString:@""]) {
-			[self.extendedTextField becomeFirstResponder];
-		} else {
-			[self addTags:textField.text];
-		}
 	} else {
 		[textField resignFirstResponder];
 	}
@@ -700,8 +499,6 @@ static const NSUInteger PMTagsCellIndex = 2;
 		identifier = @"URLTextField";
 	} else if (textArea == self.titleTextField) {
 		identifier = @"titleTextField";
-	} else if (textArea == self.tagsTextField) {
-		identifier = @"tagsTextField";
 	} else if (textArea == self.extendedTextField) {
 		identifier = @"extendedTextField";
 	}
@@ -714,8 +511,6 @@ static const NSUInteger PMTagsCellIndex = 2;
 		textField = self.URLTextField;
 	} else if ([textIdentifier isEqualToString:@"titleTextField"]) {
 		textField = self.titleTextField;
-	} else if ([textIdentifier isEqualToString:@"tagsTextField"]) {
-		textField = self.tagsTextField;
 	} else if ([textIdentifier isEqualToString:@"extendedTextField"]) {
 		textField = self.extendedTextField;
 	}
