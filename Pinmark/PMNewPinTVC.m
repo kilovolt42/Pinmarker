@@ -104,8 +104,8 @@ static const NSUInteger PMTagsCellIndex = 2;
 
 - (void)setKeyboardAccessory:(PMInputAccessoryView *)keyboardAccessory {
 	_keyboardAccessory = keyboardAccessory;
-	[_keyboardAccessory.hideKeyboardButton addTarget:self action:@selector(dismissKeyboard) forControlEvents:UIControlEventTouchUpInside];
-	self.suggestedTagsCollectionView = _keyboardAccessory.suggestedTagsCollectionView;
+	[_keyboardAccessory.hideButton addTarget:self action:@selector(dismissKeyboard) forControlEvents:UIControlEventTouchUpInside];
+	self.suggestedTagsCollectionView = _keyboardAccessory.collectionView;
 	self.URLTextField.inputAccessoryView = _keyboardAccessory;
 	self.titleTextField.inputAccessoryView = _keyboardAccessory;
 	self.tagsTextField.inputAccessoryView = _keyboardAccessory;
@@ -450,7 +450,7 @@ static const NSUInteger PMTagsCellIndex = 2;
 	NSIndexPath *lastTagIndexPath = [NSIndexPath indexPathForItem:[self.bookmark.tags count]-1 inSection:0];
 	[self.tagsCollectionView scrollToItemAtIndexPath:lastTagIndexPath atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
 	[self updateTagsRowHeight];
-	[self.keyboardAccessory hideSuggestedTags];
+	self.suggestedTagsCollectionView.hidden = YES;
 }
 
 - (void)updateTagsRowHeight {
@@ -480,12 +480,12 @@ static const NSUInteger PMTagsCellIndex = 2;
 		self.suggestedTagsDataSource.tags = [results copy];
 		[self.suggestedTagsCollectionView reloadData];
 		if ([results count]) {
-			[self.keyboardAccessory showSuggestedTags];
+			self.suggestedTagsCollectionView.hidden = NO;
 		} else {
-			[self.keyboardAccessory hideSuggestedTags];
+			self.suggestedTagsCollectionView.hidden = YES;
 		}
 	} else {
-		[self.keyboardAccessory hideSuggestedTags];
+		self.suggestedTagsCollectionView.hidden = YES;
 	}
 }
 
