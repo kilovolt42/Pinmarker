@@ -13,7 +13,7 @@
 
 static NSString *tagCellIdentifier = @"Tag Cell";
 
-@interface PMTagsController () <UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface PMTagsController () <UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, PMTagCVCellDelegate>
 
 @property (nonatomic, copy) NSArray *aggregatedTags;
 @property (nonatomic, copy) NSArray *suggestedTags;
@@ -62,6 +62,17 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 		[self.suggestedTagsCollectionView reloadData];
 		self.suggestedTagsCollectionView.hidden = NO;
 	}
+}
+
+#pragma mark - Life Cycle
+
+- (instancetype)init {
+	self = [super init];
+	if (self) {
+		UIMenuItem *menuItem = [[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(deleteTag)];
+		[[UIMenuController sharedMenuController] setMenuItems:@[menuItem]];
+	}
+	return self;
 }
 
 #pragma mark - Actions
@@ -146,6 +157,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	
 	if (collectionView == self.aggregatedTagsCollectionView) {
 		tagCell.label.text = self.aggregatedTags[indexPath.item];
+		tagCell.delegate = self;
 	} else if (collectionView == self.suggestedTagsCollectionView) {
 		tagCell.label.text = self.suggestedTags[indexPath.item];
 	}
@@ -161,6 +173,24 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 		self.suggestedTags = nil;
 		self.tagsTextField.text = @"";
 	}
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
+	if (collectionView == self.aggregatedTagsCollectionView) {
+		return YES;
+	}
+	return NO;
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
+	if (collectionView == self.aggregatedTagsCollectionView && action == @selector(deleteTag)) {
+		return YES;
+	}
+	return NO;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
+	// This method is here to make the menu controller work
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -181,6 +211,18 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
 	return 1.0;
+}
+
+#pragma mark - PMTagCVCellDelegate
+
+- (void)deleteTagForCell:(PMTagCVCell *)cell {
+	NSIndexPath *indexPath = [self.aggregatedTagsCollectionView indexPathForCell:cell];
+	if (indexPath) {
+		NSString *tag = self.aggregatedTags[indexPath.item];
+		[self.bookmark removeTag:tag];
+		self.aggregatedTags = self.bookmark.tags;
+		[self updateSuggestedTags];
+	}
 }
 
 @end

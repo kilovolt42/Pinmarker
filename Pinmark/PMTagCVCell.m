@@ -30,4 +30,8 @@
 	return size;
 }
 
+- (void)deleteTag {
+	[self.delegate deleteTagForCell:self];
+}
+
 @end

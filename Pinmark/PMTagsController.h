@@ -8,7 +8,7 @@
 
 @class PMBookmark;
 
-@interface PMTagsController : NSObject
+@interface PMTagsController : UIResponder
 
 @property (nonatomic, weak) PMBookmark *bookmark;
 
