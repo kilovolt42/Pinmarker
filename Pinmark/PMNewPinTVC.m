@@ -33,7 +33,7 @@ static const NSUInteger PMTagsCellIndex = 2;
 @property (nonatomic) IBOutlet PMTagsController *tagsController;
 @property (nonatomic, weak) IBOutlet UISwitch *toReadSwitch;
 @property (nonatomic, weak) IBOutlet UISwitch *sharedSwitch;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *tagsCVHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *tagsVerticalConstraint;
 @property (nonatomic, weak) PMInputAccessoryView *keyboardAccessory;
 @property (nonatomic, weak) id activeField;
 @property (nonatomic, copy) void (^xSuccess)(id);
@@ -378,6 +378,13 @@ static const NSUInteger PMTagsCellIndex = 2;
 
 - (void)updateRowHeights {
 	[self.tableView beginUpdates];
+	
+	if ([self.bookmark.tags count]) {
+		self.tagsVerticalConstraint.constant = 0.0;
+	} else {
+		self.tagsVerticalConstraint.constant = -44.0;
+	}
+	
 	[self.tableView endUpdates];
 }
 
@@ -461,11 +468,10 @@ static const NSUInteger PMTagsCellIndex = 2;
 	}
 	else if (indexPath.row == PMTagsCellIndex) {
 		if ([self.bookmark.tags count]) {
-			self.tagsCVHeightConstraint.constant = 44.0;
+			return 88.0;
 		} else {
-			self.tagsCVHeightConstraint.constant = 0.0;
+			return 44.0;
 		}
-		return 44.0 + self.tagsCVHeightConstraint.constant;
 	}
 	return 44.0;
 }

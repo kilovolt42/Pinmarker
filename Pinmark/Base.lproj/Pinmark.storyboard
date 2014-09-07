@@ -252,8 +252,8 @@
                         <outlet property="extendedTextField" destination="b1h-mU-fBg" id="3Oq-kC-aHd"/>
                         <outlet property="postButton" destination="K3p-4H-lk9" id="RUc-ve-9q0"/>
                         <outlet property="sharedSwitch" destination="W9p-Du-tUZ" id="h9Y-tI-srW"/>
-                        <outlet property="tagsCVHeightConstraint" destination="1GY-RB-FhD" id="3Rz-Mr-xo4"/>
                         <outlet property="tagsController" destination="qcK-HP-c8D" id="aFv-eV-mcY"/>
+                        <outlet property="tagsVerticalConstraint" destination="aJW-wZ-022" id="4pF-W3-bGZ"/>
                         <outlet property="titleTextField" destination="XKO-Sk-Xpd" id="biX-G4-egF"/>
                         <outlet property="toReadSwitch" destination="uI2-u2-kLw" id="Hvg-5K-ypP"/>
                     </connections>
