@@ -21,6 +21,8 @@ static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
 static const NSUInteger PMURLCellIndex = 0;
 static const NSUInteger PMTagsCellIndex = 2;
+static const NSUInteger PMToReadCellIndex = 4;
+static const NSUInteger PMSharedCellIndex = 5;
 
 @interface PMNewPinTVC () <UINavigationControllerDelegate, PMSettingsTVCDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 
@@ -433,6 +435,9 @@ static const NSUInteger PMTagsCellIndex = 2;
 			return 44.0;
 		}
 	}
+	else if (indexPath.row == PMToReadCellIndex || indexPath.row == PMSharedCellIndex) {
+		return 48.0;
+	}
 	return 44.0;
 }
 
@@ -451,7 +456,11 @@ static const NSUInteger PMTagsCellIndex = 2;
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	if (textField == self.URLTextField) {
 		[self.titleTextField becomeFirstResponder];
-	} else {
+	}
+	else if (textField == self.titleTextField) {
+		[self.tagsController.tagsTextField becomeFirstResponder];
+	}
+	else {
 		[textField resignFirstResponder];
 	}
 	return NO;
