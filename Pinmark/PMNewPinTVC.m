@@ -16,14 +16,13 @@
 #import "PMAccountStore.h"
 #import "PMSettingsTVC.h"
 #import "PMAppDelegate.h"
-#import <TextExpander/SMTEDelegateController.h>
 
 static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
 static const NSUInteger PMURLCellIndex = 0;
 static const NSUInteger PMTagsCellIndex = 2;
 
-@interface PMNewPinTVC () <UINavigationControllerDelegate, PMSettingsTVCDelegate, UITextFieldDelegate, UIActionSheetDelegate, SMTEFillDelegate>
+@interface PMNewPinTVC () <UINavigationControllerDelegate, PMSettingsTVCDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField *URLTextField;
 @property (weak, nonatomic) IBOutlet UILabel *datePostedLabel;
@@ -39,7 +38,6 @@ static const NSUInteger PMTagsCellIndex = 2;
 @property (nonatomic) PMBookmark *bookmark;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *postButton;
 @property (nonatomic) NSDateFormatter *dateFormatter;
-@property (nonatomic, readonly) SMTEDelegateController *textExpander;
 
 @end
 
@@ -71,16 +69,6 @@ static const NSUInteger PMTagsCellIndex = 2;
 	return _dateFormatter;
 }
 
-@synthesize textExpander = _textExpander;
-
-- (SMTEDelegateController *)textExpander {
-	if (!_textExpander) {
-		PMAppDelegate *app = [UIApplication sharedApplication].delegate;
-		_textExpander = app.textExpander;
-	}
-	return _textExpander;
-}
-
 #pragma mark - Life Cycle
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
@@ -103,16 +91,9 @@ static const NSUInteger PMTagsCellIndex = 2;
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 	
-	if (self.textExpander) {
-		self.textExpander.nextDelegate = self;
-		self.URLTextField.delegate = self.textExpander;
-		self.titleTextField.delegate = self.textExpander;
-		self.extendedTextField.delegate = self.textExpander;
-	} else {
-		self.URLTextField.delegate = self;
-		self.titleTextField.delegate = self;
-		self.extendedTextField.delegate = self;
-	}
+	self.URLTextField.delegate = self;
+	self.titleTextField.delegate = self;
+	self.extendedTextField.delegate = self;
 	
 	self.bookmark = [[PMBookmarkStore sharedStore] lastBookmark];
 }
@@ -127,9 +108,6 @@ static const NSUInteger PMTagsCellIndex = 2;
 	
 	[self.tableView reloadData];
 	[self updateFields];
-	
-	self.textExpander.nextDelegate = self;
-	self.textExpander.fillDelegate = self;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -481,42 +459,6 @@ static const NSUInteger PMTagsCellIndex = 2;
 		[textField resignFirstResponder];
 	}
 	return NO;
-}
-
-#pragma mark - SMTEFillDelegate
-
-- (NSString *)identifierForTextArea:(id)textArea {
-	NSString *identifier = nil;
-	if (textArea == self.URLTextField) {
-		identifier = @"URLTextField";
-	} else if (textArea == self.titleTextField) {
-		identifier = @"titleTextField";
-	} else if (textArea == self.extendedTextField) {
-		identifier = @"extendedTextField";
-	}
-	return identifier;
-}
-
-- (id)makeIdentifiedTextObjectFirstResponder:(NSString *)textIdentifier fillWasCanceled:(BOOL)userCanceled cursorPosition:(NSInteger *)insertionLocation {
-	UITextField *textField = nil;
-	if ([textIdentifier isEqualToString:@"URLTextField"]) {
-		textField = self.URLTextField;
-	} else if ([textIdentifier isEqualToString:@"titleTextField"]) {
-		textField = self.titleTextField;
-	} else if ([textIdentifier isEqualToString:@"extendedTextField"]) {
-		textField = self.extendedTextField;
-	}
-	
-	[textField becomeFirstResponder];
-	
-	UITextPosition *location = [textField positionFromPosition:textField.beginningOfDocument offset:*insertionLocation];
-	if (location) {
-		textField.selectedTextRange = [textField textRangeFromPosition:location toPosition:location];
-	} else {
-		return nil;
-	}
-	
-	return textField;
 }
 
 @end

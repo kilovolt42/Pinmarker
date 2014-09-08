@@ -11,11 +11,9 @@
 #import "PMAddAccountVC.h"
 #import "PMAccountStore.h"
 #import "NSString+Pinmark.h"
-#import <TextExpander/SMTEDelegateController.h>
 
 NSString * const PMAccountsSectionLabel = @"Accounts";
 NSString * const PMAddAccountSectionLabel = @"Add Account";
-NSString * const PMTextExpanderSectionLabel = @"TextExpander";
 NSString * const PMInformationSectionLabel = @"Information";
 
 @interface PMSettingsTVC () <PMAddAccountVCDelegate>
@@ -59,34 +57,14 @@ NSString * const PMInformationSectionLabel = @"Information";
 	[super viewDidLoad];
 	self.title = @"Settings";
 	
-	if ([SMTEDelegateController isTextExpanderTouchInstalled]) {
-		self.tableSections = @{ @0 : PMAccountsSectionLabel,
-								@1 : PMAddAccountSectionLabel,
-								@2 : PMTextExpanderSectionLabel,
-								@3 : PMInformationSectionLabel };
-	} else {
-		self.tableSections = @{ @0 : PMAccountsSectionLabel,
-								@1 : PMAddAccountSectionLabel,
-								@2 : PMInformationSectionLabel };
-	}
-	
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+	self.tableSections = @{ @0 : PMAccountsSectionLabel,
+							@1 : PMAddAccountSectionLabel,
+							@2 : PMInformationSectionLabel };
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[self loadAccounts];
-	[self.tableView reloadData];
-}
-
-- (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-#pragma mark -
-
-- (void)applicationDidBecomeActive:(NSNotification *)notification {
 	[self.tableView reloadData];
 }
 
@@ -100,40 +78,6 @@ NSString * const PMInformationSectionLabel = @"Information";
 	PMAddAccountVC *addAccountVC = [[PMAddAccountVC alloc] init];
 	addAccountVC.delegate = self;
 	[self.navigationController pushViewController:addAccountVC animated:YES];
-}
-
-- (void)enableTextExpander {
-	PMAppDelegate *app = [UIApplication sharedApplication].delegate;
-	[app.textExpander getSnippets];
-}
-
-- (void)disableTextExpander {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[SMTEDelegateController setExpansionEnabled:NO];
-	[defaults setBool:NO forKey:PMTextExpanderEnabled];
-	[defaults synchronize];
-	
-	[SMTEDelegateController clearSharedSnippets];
-	
-	[self.tableView reloadData];
-}
-
-- (NSString *)snippetStatusText {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSString *statusText = @"No snippet data found";
-	
-	BOOL enabled = [defaults boolForKey:PMTextExpanderEnabled];
-	
-	if (enabled) {
-		NSInteger snippetCount = [defaults integerForKey:PMTextExpanderRefreshCount];
-		NSDate *loadDate = [defaults objectForKey:PMTextExpanderRefreshDate];
-		
-		if (loadDate) {
-			statusText = [NSString stringWithFormat:@"Updated %@, %ld snippets total", [self.dateFormatter stringFromDate:loadDate], (long)snippetCount];
-		}
-	}
-	
-	return statusText;
 }
 
 #pragma mark - Actions
@@ -193,38 +137,6 @@ NSString * const PMInformationSectionLabel = @"Information";
 	else if ([sectionLabel isEqualToString:PMAddAccountSectionLabel]) {
 		[self addNewAccount];
 	}
-	else if ([sectionLabel isEqualToString:PMTextExpanderSectionLabel]) {
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		BOOL textExpanderEnabled = [defaults boolForKey:PMTextExpanderEnabled];
-		if (textExpanderEnabled) {
-			if (row == 0) {
-				[self enableTextExpander];
-			} else {
-				[self disableTextExpander];
-			}
-		} else {
-			[self enableTextExpander];
-		}
-		[tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
-	}
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	CGFloat rowHeight = [super tableView:tableView heightForRowAtIndexPath:indexPath];
-	
-	NSString *sectionLabel = self.tableSections[@(indexPath.section)];
-	NSInteger row = indexPath.row;
-	
-	if ([sectionLabel isEqualToString:PMTextExpanderSectionLabel]) {
-		BOOL textExpanderEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:PMTextExpanderEnabled];
-		if (textExpanderEnabled) {
-			if (row == 0) {
-				rowHeight += 16.0;
-			}
-		}
-	}
-	
-	return rowHeight;
 }
 
 #pragma mark - UITableViewDataSource
@@ -242,15 +154,6 @@ NSString * const PMInformationSectionLabel = @"Information";
 	else if ([sectionLabel isEqualToString:PMAddAccountSectionLabel]) {
 		return 1;
 	}
-	else if ([sectionLabel isEqualToString:PMTextExpanderSectionLabel]) {
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		BOOL textExpanderEnabled = [defaults boolForKey:PMTextExpanderEnabled];
-		if (textExpanderEnabled) {
-			return 2;
-		} else {
-			return 1;
-		}
-	}
 	else if ([sectionLabel isEqualToString:PMInformationSectionLabel]) {
 		return 1;
 	}
@@ -262,8 +165,6 @@ NSString * const PMInformationSectionLabel = @"Information";
 	static NSString *accountCellID = @"Account Cell";
 	static NSString *addAccountCellID = @"Add Account Cell";
 	static NSString *aboutCellID = @"About Cell";
-	static NSString *enableTECellID = @"Enable TextExpander Cell";
-	static NSString *disableTECellID = @"Disable TextExpander Cell";
 	
 	NSString *sectionLabel = self.tableSections[@(indexPath.section)];
 	
@@ -285,23 +186,6 @@ NSString * const PMInformationSectionLabel = @"Information";
 	}
 	else if ([sectionLabel isEqualToString:PMAddAccountSectionLabel]) {
 		cell = [tableView dequeueReusableCellWithIdentifier:addAccountCellID forIndexPath:indexPath];
-	}
-	else if ([sectionLabel isEqualToString:PMTextExpanderSectionLabel]) {
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		BOOL textExpanderEnabled = [defaults boolForKey:PMTextExpanderEnabled];
-		if (textExpanderEnabled) {
-			if (indexPath.row == 0) {
-				cell = [tableView dequeueReusableCellWithIdentifier:enableTECellID];
-				cell.textLabel.text = @"Reload Snippets";
-				cell.detailTextLabel.text = [self snippetStatusText];
-			} else {
-				cell = [tableView dequeueReusableCellWithIdentifier:disableTECellID];
-			}
-		} else {
-			cell = [tableView dequeueReusableCellWithIdentifier:enableTECellID];
-			cell.textLabel.text = @"Enable TextExpander";
-			cell.detailTextLabel.text = nil;
-		}
 	}
 	else if ([sectionLabel isEqualToString:PMInformationSectionLabel]) {
 		cell = [tableView dequeueReusableCellWithIdentifier:aboutCellID];
