@@ -10,7 +10,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <collectionView hidden="YES" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="redraw" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Sea-mt-S6s">
+                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="redraw" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Sea-mt-S6s">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -23,28 +23,16 @@
                     </collectionViewFlowLayout>
                     <cells/>
                 </collectionView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FiO-n7-QXv">
-                    <rect key="frame" x="262" y="5" width="38" height="34"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                    <state key="normal" title="Hide">
-                        <color key="titleColor" red="0.100145833" green="0.57324931570000004" blue="0.50025661499999996" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
             </subviews>
             <color key="tintColor" red="0.100145833" green="0.50943091789999995" blue="0.56008848850000004" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="centerY" secondItem="FiO-n7-QXv" secondAttribute="centerY" id="L0u-PY-3Y6"/>
                 <constraint firstAttribute="trailing" secondItem="Sea-mt-S6s" secondAttribute="trailing" id="SxO-CG-hok"/>
                 <constraint firstAttribute="bottom" secondItem="Sea-mt-S6s" secondAttribute="bottom" id="dVg-ep-aS2"/>
-                <constraint firstAttribute="trailing" secondItem="FiO-n7-QXv" secondAttribute="trailing" constant="20" id="ihF-dY-z25"/>
                 <constraint firstItem="Sea-mt-S6s" firstAttribute="top" secondItem="1" secondAttribute="top" id="m8A-ul-pt5"/>
                 <constraint firstItem="Sea-mt-S6s" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="nxv-EM-uAf"/>
             </constraints>
             <connections>
                 <outlet property="collectionView" destination="Sea-mt-S6s" id="LGy-Kf-QaD"/>
-                <outlet property="hideButton" destination="FiO-n7-QXv" id="3al-aG-ULB"/>
             </connections>
         </view>
     </objects>

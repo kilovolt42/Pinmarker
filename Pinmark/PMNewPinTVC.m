@@ -10,7 +10,6 @@
 #import "NSURL+Pinmark.h"
 #import "NSString+Pinmark.h"
 #import "PMTagsController.h"
-#import "PMInputAccessoryView.h"
 #import "PMBookmark.h"
 #import "PMBookmarkStore.h"
 #import "PMTagStore.h"
@@ -34,7 +33,6 @@ static const NSUInteger PMTagsCellIndex = 2;
 @property (nonatomic, weak) IBOutlet UISwitch *toReadSwitch;
 @property (nonatomic, weak) IBOutlet UISwitch *sharedSwitch;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *tagsVerticalConstraint;
-@property (nonatomic, weak) PMInputAccessoryView *keyboardAccessory;
 @property (nonatomic, weak) id activeField;
 @property (nonatomic, copy) void (^xSuccess)(id);
 @property (nonatomic, copy) void (^xFailure)(NSError *, id);
@@ -63,16 +61,6 @@ static const NSUInteger PMTagsCellIndex = 2;
 	}
 	
 	[[PMTagStore sharedStore] markTagsDirtyForUsername:_bookmark.username];
-}
-
-- (void)setKeyboardAccessory:(PMInputAccessoryView *)keyboardAccessory {
-	_keyboardAccessory = keyboardAccessory;
-	[_keyboardAccessory.hideButton addTarget:self action:@selector(dismissKeyboard) forControlEvents:UIControlEventTouchUpInside];
-	self.tagsController.suggestedTagsCollectionView = _keyboardAccessory.collectionView;
-	self.URLTextField.inputAccessoryView = _keyboardAccessory;
-	self.titleTextField.inputAccessoryView = _keyboardAccessory;
-	self.tagsController.tagsTextField.inputAccessoryView = _keyboardAccessory;
-	self.extendedTextField.inputAccessoryView = _keyboardAccessory;
 }
 
 - (NSDateFormatter *)dateFormatter {
@@ -125,8 +113,6 @@ static const NSUInteger PMTagsCellIndex = 2;
 		self.titleTextField.delegate = self;
 		self.extendedTextField.delegate = self;
 	}
-	
-	self.keyboardAccessory = [[[NSBundle mainBundle] loadNibNamed:@"PMInputAccessoryView" owner:self options:nil] firstObject];
 	
 	self.bookmark = [[PMBookmarkStore sharedStore] lastBookmark];
 }

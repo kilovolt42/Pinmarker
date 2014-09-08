@@ -10,6 +10,7 @@
 #import "PMBookmark.h"
 #import "PMTagCVCell.h"
 #import "PMTagStore.h"
+#import "PMInputAccessoryView.h"
 
 static NSString *tagCellIdentifier = @"Tag Cell";
 
@@ -17,8 +18,8 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 @property (nonatomic, copy) NSArray *aggregatedTags;
 @property (nonatomic, copy) NSArray *suggestedTags;
-
 @property (nonatomic) PMTagCVCell *sizingCell;
+@property (nonatomic) PMInputAccessoryView *keyboardAccessory;
 
 @end
 
@@ -56,12 +57,22 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 - (void)setSuggestedTags:(NSArray *)suggestedTags {
 	_suggestedTags = [suggestedTags copy];
 	
-	if (!_suggestedTags || [_suggestedTags count] == 0) {
-		self.suggestedTagsCollectionView.hidden = YES;
-	} else {
+	if ([_suggestedTags count]) {
 		[self.suggestedTagsCollectionView reloadData];
-		self.suggestedTagsCollectionView.hidden = NO;
+		self.tagsTextField.inputAccessoryView = self.keyboardAccessory;
+		[self.tagsTextField reloadInputViews];
+	} else {
+		self.tagsTextField.inputAccessoryView = nil;
+		[self.tagsTextField reloadInputViews];
 	}
+}
+
+- (PMInputAccessoryView *)keyboardAccessory {
+	if (!_keyboardAccessory) {
+		_keyboardAccessory = [[[NSBundle mainBundle] loadNibNamed:@"PMInputAccessoryView" owner:self options:nil] firstObject];
+		self.suggestedTagsCollectionView = _keyboardAccessory.collectionView;
+	}
+	return _keyboardAccessory;
 }
 
 #pragma mark - Life Cycle
@@ -104,7 +115,6 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	
 	NSIndexPath *lastTagIndexPath = [NSIndexPath indexPathForItem:[self.bookmark.tags count] - 1 inSection:0];
 	[self.aggregatedTagsCollectionView scrollToItemAtIndexPath:lastTagIndexPath atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
-	self.suggestedTagsCollectionView.hidden = YES;
 }
 
 - (void)updateSuggestedTags {
