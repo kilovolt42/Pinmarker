@@ -57,9 +57,6 @@
 	[super viewDidLoad];
 	
 	[self deactiveActivityIndicator];
-	self.usernameTextField.delegate = self;
-	self.passwordTextField.delegate = self;
-	self.tokenTextField.delegate = self;
 	
 	if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"onepassword://search"]]) {
 		self.search1PasswordButton.hidden = NO;

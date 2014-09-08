@@ -91,10 +91,6 @@ static const NSUInteger PMTagsCellIndex = 2;
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 	
-	self.URLTextField.delegate = self;
-	self.titleTextField.delegate = self;
-	self.extendedTextField.delegate = self;
-	
 	self.bookmark = [[PMBookmarkStore sharedStore] lastBookmark];
 }
 

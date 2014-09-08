@@ -32,6 +32,7 @@
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="URL" returnKeyType="next"/>
                                                     <connections>
                                                         <action selector="URLTextFieldEditingChanged:" destination="FsJ-qN-eCd" eventType="editingChanged" id="6Pb-2m-EIs"/>
+                                                        <outlet property="delegate" destination="FsJ-qN-eCd" id="tpn-FE-flT"/>
                                                     </connections>
                                                 </textField>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J6f-bL-vpc">
@@ -69,6 +70,7 @@
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="next"/>
                                                     <connections>
                                                         <action selector="titleTextFieldEditingChanged:" destination="FsJ-qN-eCd" eventType="editingChanged" id="evZ-1F-cuM"/>
+                                                        <outlet property="delegate" destination="FsJ-qN-eCd" id="Rmc-2J-Vfw"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -144,6 +146,7 @@
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                                                     <connections>
                                                         <action selector="extendedTextFieldEditingChanged:" destination="FsJ-qN-eCd" eventType="editingChanged" id="QNE-xH-dzx"/>
+                                                        <outlet property="delegate" destination="FsJ-qN-eCd" id="MvP-lX-F6o"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
