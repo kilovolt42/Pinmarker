@@ -34,7 +34,6 @@ static const NSUInteger PMSharedCellIndex = 5;
 @property (nonatomic, weak) IBOutlet UISwitch *toReadSwitch;
 @property (nonatomic, weak) IBOutlet UISwitch *sharedSwitch;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *tagsVerticalConstraint;
-@property (nonatomic, weak) id activeField;
 @property (nonatomic, copy) void (^xSuccess)(id);
 @property (nonatomic, copy) void (^xFailure)(NSError *, id);
 @property (nonatomic) PMBookmark *bookmark;
@@ -321,8 +320,9 @@ static const NSUInteger PMSharedCellIndex = 5;
 
 - (void)dismissKeyboard {
 	[self.tagsController.tagsTextField resignFirstResponder];
-	[self.activeField resignFirstResponder];
-	self.activeField = nil;
+	[self.URLTextField resignFirstResponder];
+	[self.titleTextField resignFirstResponder];
+	[self.extendedTextField resignFirstResponder];
 	[self.tableView scrollsToTop];
 }
 
@@ -436,10 +436,6 @@ static const NSUInteger PMSharedCellIndex = 5;
 }
 
 #pragma mark - UITextFieldDelegate
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-	self.activeField = textField;
-}
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	if (textField == self.URLTextField) {
