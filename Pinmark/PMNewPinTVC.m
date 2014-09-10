@@ -98,12 +98,6 @@ static const NSUInteger PMSharedCellIndex = 5;
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	
-	NSIndexPath *selected = [self.tableView indexPathForSelectedRow];
-	if (selected) {
-		[self.tableView deselectRowAtIndexPath:selected animated:YES];
-	}
-	
 	[self.tableView reloadData];
 	[self updateFields];
 }
