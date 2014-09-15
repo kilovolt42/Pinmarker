@@ -143,7 +143,7 @@ static const NSUInteger PMSharedCellIndex = 5;
 	[self.bookmark removeObserver:self forKeyPath:@"username" context:&PMNewPinTVCContext];
 	[self.bookmark removeObserver:self forKeyPath:@"lastPosted" context:&PMNewPinTVCContext];
 	[self.bookmark removeObserver:self forKeyPath:@"title" context:&PMNewPinTVCContext];
-	[self.bookmark removeObserver:self forKeyPath:@"tags"];
+	[self.bookmark removeObserver:self forKeyPath:@"tags" context:&PMNewPinTVCContext];
 }
 
 #pragma mark - Actions
