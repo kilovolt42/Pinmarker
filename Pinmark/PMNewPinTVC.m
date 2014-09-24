@@ -24,7 +24,7 @@ static const NSUInteger PMTagsCellIndex = 2;
 static const NSUInteger PMToReadCellIndex = 4;
 static const NSUInteger PMSharedCellIndex = 5;
 
-@interface PMNewPinTVC () <UINavigationControllerDelegate, PMSettingsTVCDelegate, UITextFieldDelegate, UIActionSheetDelegate>
+@interface PMNewPinTVC () <UINavigationControllerDelegate, PMSettingsTVCDelegate, UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField *URLTextField;
 @property (weak, nonatomic) IBOutlet UILabel *datePostedLabel;
@@ -207,22 +207,19 @@ static const NSUInteger PMSharedCellIndex = 5;
 }
 
 - (void)showUsernameSheet:(id)sender {
-	UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil
-													   delegate:self
-											  cancelButtonTitle:nil
-										 destructiveButtonTitle:nil
-											  otherButtonTitles:nil];
+	UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	[actionSheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
 	
 	NSArray *usernames = [PMAccountStore sharedStore].associatedUsernames;
 	
 	for (NSString *username in usernames) {
-		[sheet addButtonWithTitle:username];
+		[actionSheet addAction:[UIAlertAction actionWithTitle:username style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+			[PMAccountStore sharedStore].defaultUsername = username;
+			self.bookmark.username = username;
+		}]];
 	}
 	
-	[sheet addButtonWithTitle:@"Cancel"];
-	sheet.cancelButtonIndex = [usernames count];
-	
-	[sheet showInView:self.view.window];
+	[self presentViewController:actionSheet animated:YES completion:nil];
 }
 
 #pragma mark - Methods
@@ -392,17 +389,6 @@ static const NSUInteger PMSharedCellIndex = 5;
 
 - (void)didRequestToPostWithUsername:(NSString *)username {
 	self.bookmark.username = username;
-}
-
-#pragma mark - UIActionSheetDelegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	NSArray *usernames = [PMAccountStore sharedStore].associatedUsernames;
-	
-	if (buttonIndex < [usernames count]) {
-		self.bookmark.username = usernames[buttonIndex];
-		[PMAccountStore sharedStore].defaultUsername = usernames[buttonIndex];
-	}
 }
 
 #pragma mark - UITableViewDelegate

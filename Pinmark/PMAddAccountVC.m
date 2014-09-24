@@ -9,7 +9,7 @@
 #import "PMAddAccountVC.h"
 #import "PMAccountStore.h"
 
-@interface PMAddAccountVC () <UIActionSheetDelegate, UIAlertViewDelegate, UITextFieldDelegate>
+@interface PMAddAccountVC () <UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
 @property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
@@ -315,12 +315,14 @@
 }
 
 - (IBAction)deleteButtonPressed {
-	UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:@"Are you sure you want to delete %@?", self.username]
-													   delegate:self
-											  cancelButtonTitle:@"Cancel"
-										 destructiveButtonTitle:@"Delete Account"
-											  otherButtonTitles:nil];
-	[sheet showInView:self.view.window];
+	NSString *title = [NSString stringWithFormat:@"Are you sure you want to delete %@?", self.username];
+	UIAlertController *sheet = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	[sheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+	[sheet addAction:[UIAlertAction actionWithTitle:@"Delete Account" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+		[self.delegate didRequestToRemoveAccountForUsername:self.username];
+	}]];
+	
+	[self presentViewController:sheet animated:YES completion:nil];
 }
 
 - (IBAction)search1PasswordButtonPressed {
@@ -328,27 +330,12 @@
 }
 
 - (IBAction)informationButtonPressed {
-	[[[UIAlertView alloc] initWithTitle:@"About Your Account"
-								message:@"Pinmarker securely stores your Pinboard API Token. Your password is not stored by Pinmarker and is only used to obtain a copy of your API Token. If your Pinboard API Token changes in the future you will need to update Pinmarker to continue bookmarking."
-							   delegate:nil
-					  cancelButtonTitle:@"OK"
-					  otherButtonTitles:nil] show];
-}
-
-#pragma mark - UIActionSheetDelegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-		[self.delegate didRequestToRemoveAccountForUsername:self.username];
-	}
-}
-
-#pragma mark - UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Sign Up"]) {
-		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://pinboard.in/signup/"]];
-	}
+	NSString *message = @"Pinmarker securely stores your Pinboard API Token. Your password is not stored by Pinmarker and is only used to obtain a copy of your API Token. If your Pinboard API Token changes in the future you will need to update Pinmarker to continue bookmarking.";
+	
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"About Your Account" message:message preferredStyle:UIAlertControllerStyleAlert];
+	[alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil]];
+	
+	[self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - UITextFieldDelegate
