@@ -131,6 +131,13 @@ typedef NS_ENUM(NSUInteger, PMTagStoreCoherence) {
 	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
 	
 	NSString *authToken = [[PMAccountStore sharedStore] authTokenForUsername:username];
+	if (!authToken) {
+		if (failureCallback) {
+			failureCallback(nil);
+		}
+		return;
+	}
+	
 	NSDictionary *parameters = @{ @"format": @"json", @"auth_token": authToken };
 	
 	[manager GET:@"https://api.pinboard.in/v1/tags/get"

@@ -138,9 +138,17 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 		bookmark.dt = [NSDate date];
 	}
 	
+	NSString *authToken = [[PMAccountStore sharedStore] authTokenForUsername:bookmark.username];
+	if (!authToken) {
+		if (failureCallback) {
+			failureCallback(nil, nil);
+		}
+		return;
+	}
+	
 	NSMutableDictionary *mutableParameters = [[bookmark parameters] mutableCopy];
 	mutableParameters[@"format"] = @"json";
-	mutableParameters[@"auth_token"] = [[PMAccountStore sharedStore] authTokenForUsername:bookmark.username];
+	mutableParameters[@"auth_token"] = authToken;
 	
 	[manager GET:@"https://api.pinboard.in/v1/posts/add"
 	  parameters:mutableParameters
@@ -174,6 +182,13 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
 	
 	NSString *authToken = [[PMAccountStore sharedStore] authTokenForUsername:bookmark.username];
+	if (!authToken) {
+		if (failureCallback) {
+			failureCallback(nil);
+		}
+		return;
+	}
+	
 	NSDictionary *parameters = @{@"url": bookmark.url, @"format": @"json", @"auth_token": authToken };
 	
 	[manager GET:@"https://api.pinboard.in/v1/posts/get"
