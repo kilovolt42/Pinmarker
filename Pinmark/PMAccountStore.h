@@ -7,11 +7,6 @@
 //
 
 /**
- * Methods of this class that access Pinboard's API never use defaultUser. An API token parameter
- * must always be provided either as a method argument or as a key-value pair in a parameter dictionary,
- * otherwise the API request (not the method!) will fail. These request methods are just conveniences;
- * relevent parameters must always be passed in.
- *
  * The store sends out notifications when tokens are added, updated, or removed. Each notification
  * sends the affected username in the userInfo dictionary with the key PMAccountStoreUsernameKey. For
  * example, the PMAccountStoreDidRemoveUsernameNotification passes along the deleted username with that
@@ -35,14 +30,30 @@ extern NSString * const PMAccountStoreOldUsernameKey;
 
 + (instancetype)sharedStore;
 
-- (void)addAccountForAPIToken:(NSString *)token asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler;
-- (void)addAccountForUsername:(NSString *)username password:(NSString *)password asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler;
+/**
+ * Adds or updates the given API token. This will update the default username if
+ * asDefault is set to true, or if there is no default username.
+ *
+ * @param token The API token to add or update.
+ * @param asDefault Sets the default username to the username of the provided API token.
+ */
+- (void)updateAccountForAPIToken:(NSString *)token asDefault:(BOOL)asDefault;
 
-- (void)updateAccountForAPIToken:(NSString *)token asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler;
-- (void)updateAccountForUsername:(NSString *)username password:(NSString *)password asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler;
-
+/**
+ * Removes the API token associated with the given username. If the username
+ * corresponds to the default username, a new username is assigned.
+ *
+ * @param username The username of the API token to remove.
+ */
 - (void)removeAccountForUsername:(NSString *)username;
 
+/**
+ * Returns the full API token associated with the given username.
+ *
+ * @param username The username of the requested API token.
+ *
+ * @return An API token string, or nil if the username is unfamiliar.
+ */
 - (NSString *)authTokenForUsername:(NSString *)username;
 
 @end

@@ -1,0 +1,14 @@
+//
+//  PMPinboardService.h
+//  Pinmarker
+//
+//  Created by Kyle Stevens on 9/24/14.
+//  Copyright (c) 2014 kilovolt42. All rights reserved.
+//
+
+@interface PMPinboardService : NSObject
+
++ (void)requestAPITokenForAPIToken:(NSString *)token success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure;
++ (void)requestAPITokenForUsername:(NSString *)username password:(NSString *)password success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure;
+
+@end

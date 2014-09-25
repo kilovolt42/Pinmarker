@@ -8,13 +8,13 @@
 
 #import "PMAddAccountVC.h"
 #import "PMAccountStore.h"
+#import "PMPinboardService.h"
 
 @interface PMAddAccountVC () <UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
 @property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
 @property (nonatomic, weak) IBOutlet UITextField *tokenTextField;
-@property (nonatomic, weak) UIView *activeField;
 @property (nonatomic, weak) IBOutlet UIButton *submitButton;
 @property (nonatomic, weak) IBOutlet UIButton *deleteButton;
 @property (nonatomic, weak) IBOutlet UIButton *search1PasswordButton;
@@ -103,16 +103,9 @@
 }
 
 - (void)dismissKeyboard {
-	[self.activeField resignFirstResponder];
-	self.activeField = nil;
-}
-
-- (void)finish {
-	if (self.updatingExistingAccount) {
-		[self.delegate didFinishUpdatingAccount];
-	} else {
-		[self.delegate didFinishAddingAccount];
-	}
+	[self.usernameTextField resignFirstResponder];
+	[self.passwordTextField resignFirstResponder];
+	[self.tokenTextField resignFirstResponder];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification {
@@ -169,146 +162,67 @@
 
 #pragma mark - Actions
 
-/*
- *  It is possible for the user to input multiple usernames, one in the username text field and one
- *  as part of the API Token text field with the format username:key. For the provided user input,
- *  this method attempts to login in the following order:
- *
- *  1) Using only the API Token text
- *  2) Using the username text concatenated with the API Token text
- *  3) Using the username and password text
- *
- *  If none of these attempts are successful the user is notified to try again.
- */
 - (IBAction)submitButtonPressed {
 	PMAccountStore *store = [PMAccountStore sharedStore];
 	
 	self.instructionsLabel.hidden = YES;
 	self.instructionsLabel.text = @" ";
-	[self.activeField resignFirstResponder];
+	[self dismissKeyboard];
 	[self disableFields];
 	[self activateActivityIndicator];
 	
 	NSString *username = self.usernameTextField.text;
 	NSString *password = self.passwordTextField.text;
 	NSString *token = self.tokenTextField.text;
-	BOOL didProvideTwoUsernames = NO;
-	
-	if ([username isEqualToString:@""]) username = nil;
-	if ([password isEqualToString:@""]) password = nil;
-	if ([token isEqualToString:@""]) token = nil;
-	
-	NSArray *tokenComponents = [token componentsSeparatedByString:@":"];
-	if ([tokenComponents count] > 2) {
-		token = nil;
-	} else if ([tokenComponents count] == 2) {
-		didProvideTwoUsernames = YES;
-	} else if (token) {
-		token = [username stringByAppendingFormat:@":%@", token];
-	}
 	
 	BOOL asDefault = [self.delegate shouldAddAccountAsDefault];
 	
-	void (^usernamePasswordCompletionHandler)(NSError *) = ^(NSError *error) {
+	void (^success)(NSString *) = ^(NSString *apiToken) {
 		[self deactiveActivityIndicator];
-		if (error) {
-			if (error.code == -1001) {
-				self.instructionsLabel.text = @"The connection timed out, please try again later.";
-			} else {
-				self.instructionsLabel.text = @"Please try again.";
-			}
-			self.instructionsLabel.hidden = NO;
-			[self enableFields];
-		} else {
-			[self enableFields];
-			[self finish];
-		}
-	};
-	
-	void (^usernameTokenCompletionHandler)(NSError *) = ^(NSError *error) {
-		[self deactiveActivityIndicator];
-		if (error) {
-			if (password) {
-				[self activateActivityIndicator];
-				if (self.updatingExistingAccount) {
-					[store updateAccountForUsername:username password:password asDefault:asDefault completionHandler:usernamePasswordCompletionHandler];
-				} else {
-					[store addAccountForUsername:username password:password asDefault:asDefault completionHandler:usernamePasswordCompletionHandler];
-				}
-			} else {
-				if (error.code == -1001) {
-					self.instructionsLabel.text = @"The connection timed out, please try again later.";
-				} else {
-					self.instructionsLabel.text = @"Please try again.";
-				}
-				self.instructionsLabel.hidden = NO;
-				[self enableFields];
-			}
-		} else {
-			[self enableFields];
-			[self finish];
-		}
-	};
-	
-	void (^tokenCompletionHandler)(NSError *) = ^(NSError *error) {
-		[self deactiveActivityIndicator];
-		if (error) {
-			if (username) {
-				[self activateActivityIndicator];
-				NSString *usernameToken = [username stringByAppendingFormat:@":%@", tokenComponents[1]];
-				if (self.updatingExistingAccount) {
-					[store updateAccountForAPIToken:usernameToken asDefault:asDefault completionHandler:usernameTokenCompletionHandler];
-				} else {
-					[store addAccountForAPIToken:usernameToken asDefault:asDefault completionHandler:usernameTokenCompletionHandler];
-				}
-			} else {
-				if (error.code == -1001) {
-					self.instructionsLabel.text = @"The connection timed out, please try again later.";
-				} else {
-					self.instructionsLabel.text = @"Please try again.";
-				}
-				self.instructionsLabel.hidden = NO;
-				[self enableFields];
-			}
-		} else {
-			[self enableFields];
-			[self finish];
-		}
-	};
-	
-	if (didProvideTwoUsernames) {
+		[store updateAccountForAPIToken:apiToken asDefault:asDefault];
+		
 		if (self.updatingExistingAccount) {
-			[store updateAccountForAPIToken:token asDefault:asDefault completionHandler:tokenCompletionHandler];
+			[self.delegate didFinishUpdatingAccount];
 		} else {
-			[store addAccountForAPIToken:token asDefault:asDefault completionHandler:tokenCompletionHandler];
+			[self.delegate didFinishAddingAccount];
 		}
-	} else if (username) {
-		if (token) {
-			NSString *usernameToken = [username stringByAppendingFormat:@":%@", tokenComponents[0]];
-			if (self.updatingExistingAccount) {
-				[store updateAccountForAPIToken:username asDefault:asDefault completionHandler:usernameTokenCompletionHandler];
-			} else {
-				[store addAccountForAPIToken:usernameToken asDefault:asDefault completionHandler:usernameTokenCompletionHandler];
-			}
-		} else if (password) {
-			if (self.updatingExistingAccount) {
-				[store updateAccountForUsername:username password:password asDefault:asDefault completionHandler:usernamePasswordCompletionHandler];
-			} else {
-				[store addAccountForUsername:username password:password asDefault:asDefault completionHandler:usernamePasswordCompletionHandler];
-			}
+	};
+	
+	void (^failure)(NSError *) = ^(NSError *error) {
+		PMLog(@"%@", error);
+		[self deactiveActivityIndicator];
+		
+		switch (error.code) {
+			case -1001:
+				self.instructionsLabel.text = @"The connection timed out. Please try again later.";
+				break;
+			case -1005:
+				self.instructionsLabel.text = @"The network connection was lost. Please try again later.";
+				break;
+			default:
+				self.instructionsLabel.text = @"Please try again.";
+				break;
+		}
+		
+		self.instructionsLabel.hidden = NO;
+		[self enableFields];
+	};
+	
+	void (^usernamePasswordFailure)(NSError *) = ^(NSError *error) {
+		if (token && ![token isEqualToString:@""]) {
+			[PMPinboardService requestAPITokenForAPIToken:token success:success failure:failure];
 		} else {
-			[self deactiveActivityIndicator];
-			if (self.updatingExistingAccount) {
-				self.instructionsLabel.text = [NSString stringWithFormat:@"An API token or a password is required to update %@:", username];
-			} else {
-				self.instructionsLabel.text = [NSString stringWithFormat:@"An API token or a password is required to add %@:", username];
-			}
-			self.instructionsLabel.hidden = NO;
-			[self enableFields];
+			failure(error);
 		}
+	};
+	
+	if (username && password && ![username isEqualToString:@""] && ![password isEqualToString:@""]) {
+		[PMPinboardService requestAPITokenForUsername:username password:password success:success failure:usernamePasswordFailure];
+	} else if (token && ![token isEqualToString:@""]) {
+		[PMPinboardService requestAPITokenForAPIToken:token success:success failure:failure];
 	} else {
 		[self deactiveActivityIndicator];
-		self.instructionsLabel.text = @"An API token or a username/password pair is required to add an account:";
+		self.instructionsLabel.text = @"An API token or a username/password pair is required.";
 		self.instructionsLabel.hidden = NO;
 		[self enableFields];
 	}
@@ -339,10 +253,6 @@
 }
 
 #pragma mark - UITextFieldDelegate
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-	self.activeField = textField;
-}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	if (textField == self.usernameTextField) {

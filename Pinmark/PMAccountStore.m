@@ -7,9 +7,7 @@
 //
 
 #import "PMAccountStore.h"
-#import <AFNetworking/AFNetworking.h>
 #import "NSString+Pinmark.h"
-#import "PMAppDelegate.h"
 #import "Lockbox.h"
 
 NSString * const PMAccountStoreDidAddUsernameNotification = @"PMAccountStoreDidAddUsernameNotification";
@@ -21,6 +19,7 @@ NSString * const PMAccountStoreOldUsernameKey = @"PMAccountStoreOldUsernameKey";
 
 NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";
 NSString * const PMDefaultUsernameKey = @"PMDefaultUsernameKey";
+NSString * const PMAssociatedUsernamesKey = @"PMAssociatedUsernamesKey";
 
 @interface PMAccountStore ()
 
@@ -32,28 +31,11 @@ NSString * const PMDefaultUsernameKey = @"PMDefaultUsernameKey";
 
 #pragma mark - Properties
 
-@synthesize defaultUsername = _defaultUsername;
-
-- (NSString *)defaultUsername {
-	if (!_defaultUsername) {
-		_defaultUsername = [self.associatedUsernames firstObject];
-	}
-	return _defaultUsername;
-}
-
 - (void)setDefaultUsername:(NSString *)defaultUsername {
-	BOOL isAssociatedToken = [self.associatedUsernames containsObject:defaultUsername];
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-	
-	if (isAssociatedToken) {
+	if ([self.associatedUsernames containsObject:defaultUsername]) {
 		_defaultUsername = defaultUsername;
+		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 		[userDefaults setObject:defaultUsername forKey:PMDefaultUsernameKey];
-		[userDefaults synchronize];
-	}
-	
-	else if (!defaultUsername) {
-		_defaultUsername = nil;
-		[userDefaults removeObjectForKey:PMDefaultUsernameKey];
 		[userDefaults synchronize];
 	}
 }
@@ -97,182 +79,84 @@ NSString * const PMDefaultUsernameKey = @"PMDefaultUsernameKey";
 	return sharedStore;
 }
 
-- (void)addAccountForAPIToken:(NSString *)token asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler {
-	[self requestAPITokenForAPIToken:token
-							 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-								 PMLog(@"Response Object: %@", responseObject);
-								 [self associateToken:token asDefault:(BOOL)asDefault];
-								 completionHandler(nil);
-							 }
-							 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-								 PMLog(@"Error: %@", error);
-								 completionHandler(error);
-							 }];
-}
-
-- (void)addAccountForUsername:(NSString *)username password:(NSString *)password asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler {
-	[self requestAPITokenForUsername:username
-							password:password
-							 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-								 PMLog(@"Response Object: %@", responseObject);
-								 [self associateToken:[NSString stringWithFormat:@"%@:%@", username, responseObject[@"result"]] asDefault:(BOOL)asDefault];
-								 completionHandler(nil);
-							 }
-							 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-								 PMLog(@"Error: %@", error);
-								 completionHandler(error);
-							 }];
-}
-
-- (void)updateAccountForAPIToken:(NSString *)token asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler {
-	[self requestAPITokenForAPIToken:token
-							 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-								 PMLog(@"Response Object: %@", responseObject);
-								 [self updateToken:token asDefault:(BOOL)asDefault];
-								 completionHandler(nil);
-							 }
-							 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-								 PMLog(@"Error: %@", error);
-								 completionHandler(error);
-							 }];
-}
-
-- (void)updateAccountForUsername:(NSString *)username password:(NSString *)password asDefault:(BOOL)asDefault completionHandler:(void (^)(NSError *))completionHandler {
-	[self requestAPITokenForUsername:username
-							password:password
-							 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-								 PMLog(@"Response Object: %@", responseObject);
-								 [self updateToken:[NSString stringWithFormat:@"%@:%@", username, responseObject[@"result"]] asDefault:(BOOL)asDefault];
-								 completionHandler(nil);
-							 }
-							 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-								 PMLog(@"Error: %@", error);
-								 completionHandler(error);
-							 }];
-}
-
-- (void)removeAccountForUsername:(NSString *)username {
-	NSString *token = [username stringByAppendingFormat:@":%@", [self tokenNumberForUsername:username]];
-	[self dissociateToken:token];
-}
-
-- (NSString *)authTokenForUsername:(NSString *)username {
-	return [username stringByAppendingFormat:@":%@", [self tokenNumberForUsername:username]];
-}
-
-#pragma mark -
-
-- (void)requestAPITokenForAPIToken:(NSString *)token success:(void (^)(AFHTTPRequestOperation *, id))success failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure {
-	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
-	
-	NSDictionary *parameters = @{ @"format": @"json", @"auth_token": token };
-	
-	[manager GET:[NSString stringWithFormat:@"https://api.pinboard.in/v1/user/api_token"]
-	  parameters:parameters
-		 success:success
-		 failure:failure];
-}
-
-- (void)requestAPITokenForUsername:(NSString *)username password:(NSString *)password success:(void (^)(AFHTTPRequestOperation *, id))success failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure {
-	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
-	
-	username = [username urlEncodeUsingEncoding:NSUTF8StringEncoding];
-	password = [password urlEncodeUsingEncoding:NSUTF8StringEncoding];
-	
-	[manager GET:[NSString stringWithFormat:@"https://%@:%@@api.pinboard.in/v1/user/api_token", username, password]
-	  parameters:@{ @"format": @"json" }
-		 success:success
-		 failure:failure];
-}
-
-- (NSString *)tokenNumberForUsername:(NSString *)username {
-	for (NSString *token in self.associatedTokens) {
-		if ([[token tokenUsername] isEqualToString:username]) {
-			return [token tokenNumber];
-		}
-	}
-	return nil;
-}
-
-- (void)associateToken:(NSString *)token asDefault:(BOOL)asDefault {
+- (void)updateAccountForAPIToken:(NSString *)token asDefault:(BOOL)asDefault {
 	if (self.associatedTokens) {
-		if (![self.associatedTokens containsObject:token]) {
-			NSMutableArray *newTokens = [NSMutableArray arrayWithArray:self.associatedTokens];
-			[newTokens addObject:token];
-			self.associatedTokens = [newTokens copy];
+		if ([self.associatedUsernames containsObject:[token tokenUsername]]) { // replace existing token
+			NSUInteger tokenIndex = [self.associatedUsernames indexOfObject:[token tokenUsername]];
+			
+			NSMutableArray *mutableTokens = [self.associatedTokens mutableCopy];
+			[mutableTokens replaceObjectAtIndex:tokenIndex withObject:token];
+			self.associatedTokens = [mutableTokens copy];
+			
 			[Lockbox setArray:self.associatedTokens forKey:PMAssociatedTokensKey];
+			[self postDidUpdateNotificationWithUsername:[token tokenUsername]];
+		} else { // add to existing tokens
+			self.associatedTokens = [self.associatedTokens arrayByAddingObject:token];
+			[Lockbox setArray:self.associatedTokens forKey:PMAssociatedTokensKey];
+			[self postDidAddNotificationWithUsername:[token tokenUsername]];
 		}
-	} else {
+	} else { // add as only token
 		self.associatedTokens = @[token];
 		[Lockbox setArray:self.associatedTokens forKey:PMAssociatedTokensKey];
+		[self postDidAddNotificationWithUsername:[token tokenUsername]];
 	}
 	
 	if (asDefault || !self.defaultUsername) {
 		self.defaultUsername = [token tokenUsername];
 	}
-	
-	[[NSNotificationCenter defaultCenter] postNotificationName:PMAccountStoreDidAddUsernameNotification
-														object:self
-													  userInfo:@{ PMAccountStoreUsernameKey : [token tokenUsername] }];
 }
 
-- (void)updateToken:(NSString *)token asDefault:(BOOL)asDefault {
-	NSString *usernameToUpdate = [token tokenUsername];
-	NSString *oldToken;
-	NSUInteger oldTokenIndex;
+- (void)removeAccountForUsername:(NSString *)username {
+	NSString *token = [self authTokenForUsername:username];
 	
-	for (NSString *associatedToken in self.associatedTokens) {
-		NSString *associatedUsername = [associatedToken tokenUsername];
-		if ([associatedUsername isEqualToString:usernameToUpdate]) {
-			oldToken = associatedToken;
-			oldTokenIndex = [self.associatedTokens indexOfObject:oldToken];
-			break;
-		}
-	}
-	
-	if (oldTokenIndex != NSNotFound) {
-		NSMutableArray *newTokens = [NSMutableArray arrayWithArray:self.associatedTokens];
-		[newTokens replaceObjectAtIndex:oldTokenIndex withObject:token];
+	if (token && [self.associatedTokens containsObject:token]) {
+		NSMutableArray *mutableTokens = [NSMutableArray arrayWithArray:self.associatedTokens];
+		[mutableTokens removeObject:token];
 		
-		self.associatedTokens = [newTokens copy];
-		[Lockbox setArray:self.associatedTokens forKey:PMAssociatedTokensKey];
-		
-		if (asDefault || !self.defaultUsername) {
-			self.defaultUsername = usernameToUpdate;
-		}
-		
-		[[NSNotificationCenter defaultCenter] postNotificationName:PMAccountStoreDidUpdateUsernameNotification
-															object:self
-														  userInfo:@{ PMAccountStoreUsernameKey : [token tokenUsername],
-																	  PMAccountStoreOldUsernameKey : [oldToken tokenUsername] }];
-	}
-}
-
-- (void)dissociateToken:(NSString *)token {
-	if ([self.associatedTokens containsObject:token]) {
-		NSMutableArray *newTokens = [NSMutableArray arrayWithArray:self.associatedTokens];
-		[newTokens removeObject:token];
-		
-		if ([newTokens count]) {
-			self.associatedTokens = [newTokens copy];
+		if ([mutableTokens count]) {
+			self.associatedTokens = [mutableTokens copy];
 			[Lockbox setArray:self.associatedTokens forKey:PMAssociatedTokensKey];
 		} else {
 			self.associatedTokens = nil;
 			[Lockbox setArray:nil forKey:PMAssociatedTokensKey];
 		}
 		
-		if ([[token tokenUsername] isEqualToString:self.defaultUsername]) {
+		if ([self.defaultUsername isEqualToString:username]) {
 			self.defaultUsername = [[self.associatedTokens firstObject] tokenUsername];
 		}
 		
-		[[NSNotificationCenter defaultCenter] postNotificationName:PMAccountStoreDidRemoveUsernameNotification
-															object:self
-														  userInfo:@{ PMAccountStoreUsernameKey : [token tokenUsername] }];
+		[self postDidRemoveNotificationWithUsername:[token tokenUsername]];
 	}
+}
+
+- (NSString *)authTokenForUsername:(NSString *)username {
+	for (NSString *token in self.associatedTokens) {
+		if ([[token tokenUsername] isEqualToString:username]) {
+			return token;
+		}
+	}
+	return nil;
+}
+
+#pragma mark -
+
+- (void)postDidAddNotificationWithUsername:(NSString *)username {
+	[[NSNotificationCenter defaultCenter] postNotificationName:PMAccountStoreDidAddUsernameNotification
+														object:self
+													  userInfo:@{ PMAccountStoreUsernameKey : username }];
+}
+
+- (void)postDidUpdateNotificationWithUsername:(NSString *)username {
+	[[NSNotificationCenter defaultCenter] postNotificationName:PMAccountStoreDidUpdateUsernameNotification
+														object:self
+													  userInfo:@{ PMAccountStoreUsernameKey : username,
+																  PMAccountStoreOldUsernameKey : username }];
+}
+
+- (void)postDidRemoveNotificationWithUsername:(NSString *)username {
+	[[NSNotificationCenter defaultCenter] postNotificationName:PMAccountStoreDidRemoveUsernameNotification
+														object:self
+													  userInfo:@{ PMAccountStoreUsernameKey : username }];
 }
 
 @end
