@@ -53,6 +53,25 @@
 				}];
 }
 
++ (void)requestTagsForAPIToken:(NSString *)token success:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
+	NSDictionary *parameters = @{ @"format": @"json", @"auth_token": token };
+	
+	[[self manager] GET:@"https://api.pinboard.in/v1/tags/get"
+			 parameters:parameters
+				success:^(AFHTTPRequestOperation *operation, id responseObject) {
+					PMLog(@"Response Object: %@", responseObject);
+					if (success) {
+						success(responseObject);
+					}
+				}
+				failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+					PMLog(@"Error: %@", error);
+					if (failure) {
+						failure(error);
+					}
+				}];
+}
+
 #pragma mark -
 
 + (AFHTTPRequestOperationManager *)manager {
