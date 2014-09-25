@@ -18,10 +18,16 @@
 	[[self manager] GET:[NSString stringWithFormat:@"https://api.pinboard.in/v1/user/api_token"]
 			 parameters:parameters
 				success:^(AFHTTPRequestOperation *operation, id responseObject) {
-					success(token);
+					PMLog(@"Response Object: %@", responseObject);
+					if (success) {
+						success(token);
+					}
 				}
 				failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-					failure(error);
+					PMLog(@"Error: %@", error);
+					if (failure) {
+						failure(error);
+					}
 				}];
 }
 
@@ -32,12 +38,18 @@
 	[[self manager] GET:[NSString stringWithFormat:@"https://%@:%@@api.pinboard.in/v1/user/api_token", username, password]
 			 parameters:@{ @"format": @"json" }
 				success:^(AFHTTPRequestOperation *operation, id responseObject) {
-					NSDictionary *response = (NSDictionary *)responseObject;
-					NSString *token = [username stringByAppendingFormat:@":%@", response[@"result"]];
-					success(token);
+					PMLog(@"Response Object: %@", responseObject);
+					if (success) {
+						NSDictionary *response = (NSDictionary *)responseObject;
+						NSString *token = [username stringByAppendingFormat:@":%@", response[@"result"]];
+						success(token);
+					}
 				}
 				failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-					failure(error);
+					PMLog(@"Error: %@", error);
+					if (failure) {
+						failure(error);
+					}
 				}];
 }
 
