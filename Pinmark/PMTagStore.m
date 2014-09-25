@@ -176,10 +176,9 @@ typedef NS_ENUM(NSUInteger, PMTagStoreCoherence) {
 }
 
 - (void)usernameUpdated:(NSNotification *)notification {
-	NSString *oldUsername = notification.userInfo[PMAccountStoreOldUsernameKey];
-	NSString *newUsername = notification.userInfo[PMAccountStoreUsernameKey];
-	[self.tags removeObjectForKey:oldUsername];
-	[self loadTagsForUsername:newUsername];
+	NSString *username = notification.userInfo[PMAccountStoreUsernameKey];
+	[self.tags removeObjectForKey:username];
+	[self loadTagsForUsername:username];
 }
 
 - (void)usernameRemoved:(NSNotification *)notification {

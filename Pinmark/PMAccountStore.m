@@ -13,13 +13,10 @@
 NSString * const PMAccountStoreDidAddUsernameNotification = @"PMAccountStoreDidAddUsernameNotification";
 NSString * const PMAccountStoreDidUpdateUsernameNotification = @"PMAccountStoreDidUpdateUsernameNotification";
 NSString * const PMAccountStoreDidRemoveUsernameNotification = @"PMAccountStoreDidRemoveUsernameNotification";
-
 NSString * const PMAccountStoreUsernameKey = @"PMAccountStoreUsernameKey";
-NSString * const PMAccountStoreOldUsernameKey = @"PMAccountStoreOldUsernameKey";
 
 NSString * const PMAssociatedTokensKey = @"PMAssociatedTokensKey";
 NSString * const PMDefaultUsernameKey = @"PMDefaultUsernameKey";
-NSString * const PMAssociatedUsernamesKey = @"PMAssociatedUsernamesKey";
 
 @interface PMAccountStore ()
 
@@ -149,8 +146,7 @@ NSString * const PMAssociatedUsernamesKey = @"PMAssociatedUsernamesKey";
 - (void)postDidUpdateNotificationWithUsername:(NSString *)username {
 	[[NSNotificationCenter defaultCenter] postNotificationName:PMAccountStoreDidUpdateUsernameNotification
 														object:self
-													  userInfo:@{ PMAccountStoreUsernameKey : username,
-																  PMAccountStoreOldUsernameKey : username }];
+													  userInfo:@{ PMAccountStoreUsernameKey : username }];
 }
 
 - (void)postDidRemoveNotificationWithUsername:(NSString *)username {

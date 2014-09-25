@@ -7,11 +7,12 @@
 //
 
 /**
+ * To add an account, use the -updateAccountForAPIToken:asDefault method.
+ *
  * The store sends out notifications when tokens are added, updated, or removed. Each notification
  * sends the affected username in the userInfo dictionary with the key PMAccountStoreUsernameKey. For
  * example, the PMAccountStoreDidRemoveUsernameNotification passes along the deleted username with that
- * key. The PMAccountStoreOldUsernameKey is only used with PMAccountStoreDidUpdateUsernameNotification to
- * pass along the username being replaced.
+ * key.
  *
  * To be notified about changes to the default username, use KVO to observe the defaultUsername property.
  */
@@ -19,9 +20,7 @@
 extern NSString * const PMAccountStoreDidAddUsernameNotification;
 extern NSString * const PMAccountStoreDidUpdateUsernameNotification;
 extern NSString * const PMAccountStoreDidRemoveUsernameNotification;
-
 extern NSString * const PMAccountStoreUsernameKey;
-extern NSString * const PMAccountStoreOldUsernameKey;
 
 @interface PMAccountStore : NSObject
 
