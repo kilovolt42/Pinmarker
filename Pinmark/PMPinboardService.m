@@ -72,6 +72,52 @@
 				}];
 }
 
++ (void)requestPostForURL:(NSString *)url APIToken:(NSString *)token success:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
+	NSDictionary *parameters = @{@"url": url, @"format": @"json", @"auth_token": token };
+	
+	[[self manager] GET:@"https://api.pinboard.in/v1/posts/get"
+			 parameters:parameters
+				success:^(AFHTTPRequestOperation *operation, id responseObject) {
+					PMLog(@"Response Object: %@", responseObject);
+					if (success) {
+						success(responseObject);
+					}
+				}
+				failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+					PMLog(@"Error: %@", error);
+					if (failure) {
+						failure(error);
+					}
+				}];
+}
+
++ (void)postBookmarkParameters:(NSDictionary *)parameters APIToken:(NSString *)token success:(void (^)(id))success failure:(void (^)(NSError *, id))failure {
+	NSMutableDictionary *mutableParameters = [parameters mutableCopy];
+	mutableParameters[@"format"] = @"json";
+	mutableParameters[@"auth_token"] = token;
+	
+	[[self manager] GET:@"https://api.pinboard.in/v1/posts/add"
+			 parameters:mutableParameters
+				success:^(AFHTTPRequestOperation *operation, id responseObject) {
+					PMLog(@"Response Object: %@", responseObject);
+					if ([responseObject[@"result_code"] isEqualToString:@"done"]) {
+						if (success) {
+							success(responseObject);
+						}
+					} else {
+						if (failure) {
+							failure(nil, responseObject);
+						}
+					}
+				}
+				failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+					PMLog(@"Error: %@", error);
+					if (failure) {
+						failure(error, nil);
+					}
+				}];
+}
+
 #pragma mark -
 
 + (AFHTTPRequestOperationManager *)manager {

@@ -16,6 +16,7 @@
 #import "PMAccountStore.h"
 #import "PMSettingsTVC.h"
 #import "PMAppDelegate.h"
+#import "PMPinboardService.h"
 
 static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 
@@ -147,6 +148,11 @@ static const NSUInteger PMSharedCellIndex = 5;
 #pragma mark - Actions
 
 - (IBAction)pin:(UIBarButtonItem *)sender {
+	NSString *token = [[PMAccountStore sharedStore] authTokenForUsername:self.bookmark.username];
+	if (!token) {
+		return;
+	}
+	
 	[self dismissKeyboard]; // makes sure text field ends editing and saves text to bookmark
 	
 	[self fieldsEnabled:NO];
@@ -158,28 +164,37 @@ static const NSUInteger PMSharedCellIndex = 5;
 										  @"must provide title" : @"Missing Title",
 										  @"item already exists" : @"Already Bookmarked" };
 	
-	PMBookmarkStore *store = [PMBookmarkStore sharedStore];
-	[store postBookmark:self.bookmark
-				success:^(id responseObject) {
-					self.navigationItem.rightBarButtonItem = sender;
-					[self fieldsEnabled:YES];
-					[self reportSuccess];
-					self.bookmark = [store lastBookmark];
-					if (self.xSuccess) {
-						self.xSuccess(responseObject);
-					}
-				}
-				failure:^(NSError *error, id responseObject) {
-					self.navigationItem.rightBarButtonItem = sender;
-					[self fieldsEnabled:YES];
-					if (responseObject) {
-						NSString *resultCode = responseObject[@"result_code"];
-						[self reportErrorWithMessage:responseDictionary[resultCode]];
-					} else {
-						[self reportErrorWithMessage:nil];
-					}
-					if (self.xFailure) self.xFailure(error, responseObject);
-				}];
+	void (^success)(id) = ^(id responseObject) {
+		self.navigationItem.rightBarButtonItem = sender;
+		[self fieldsEnabled:YES];
+		[self reportSuccess];
+		
+		PMBookmark *oldBookmark = self.bookmark;
+		self.bookmark = [[PMBookmarkStore sharedStore] lastBookmark]; // setter method removes old bookmark observers
+		[[PMBookmarkStore sharedStore] discardBookmark:oldBookmark];
+		
+		if (self.xSuccess) {
+			self.xSuccess(responseObject);
+		}
+	};
+	
+	void (^failure)(NSError *, id) = ^(NSError *error, id responseObject) {
+		self.navigationItem.rightBarButtonItem = sender;
+		[self fieldsEnabled:YES];
+		
+		if (responseObject) {
+			NSString *resultCode = responseObject[@"result_code"];
+			[self reportErrorWithMessage:responseDictionary[resultCode]];
+		} else {
+			[self reportErrorWithMessage:nil];
+		}
+		
+		if (self.xFailure) {
+			self.xFailure(error, responseObject);
+		}
+	};
+	
+	[PMPinboardService postBookmarkParameters:[self.bookmark parameters] APIToken:token success:success failure:failure];
 }
 
 - (IBAction)URLTextFieldEditingChanged:(UITextField *)textField {
@@ -262,7 +277,10 @@ static const NSUInteger PMSharedCellIndex = 5;
 	self.bookmark = [[PMBookmarkStore sharedStore] createBookmarkWithParameters:parameters];
 	
 	if (parameters[@"wait"] && [parameters[@"wait"] isEqualToString:@"no"]) {
-		[[PMBookmarkStore sharedStore] postBookmark:self.bookmark success:self.xSuccess failure:self.xFailure];
+		NSString *token = [[PMAccountStore sharedStore] authTokenForUsername:self.bookmark.username];
+		if (token) {
+			[PMPinboardService postBookmarkParameters:[self.bookmark parameters] APIToken:token success:self.xSuccess failure:self.xFailure];
+		}
 	}
 }
 
