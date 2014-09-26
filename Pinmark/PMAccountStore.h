@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 kilovolt42. All rights reserved.
 //
 
+extern NSString * const PMAccountStoreDidAddUsernameNotification;
+extern NSString * const PMAccountStoreDidUpdateUsernameNotification;
+extern NSString * const PMAccountStoreDidRemoveUsernameNotification;
+extern NSString * const PMAccountStoreUsernameKey;
+
 /**
  * To add an account, use the -updateAccountForAPIToken:asDefault method.
  *
@@ -16,12 +21,6 @@
  *
  * To be notified about changes to the default username, use KVO to observe the defaultUsername property.
  */
-
-extern NSString * const PMAccountStoreDidAddUsernameNotification;
-extern NSString * const PMAccountStoreDidUpdateUsernameNotification;
-extern NSString * const PMAccountStoreDidRemoveUsernameNotification;
-extern NSString * const PMAccountStoreUsernameKey;
-
 @interface PMAccountStore : NSObject
 
 @property (nonatomic, copy) NSString *defaultUsername;
