@@ -58,8 +58,6 @@ static const NSUInteger PMSharedCellIndex = 5;
 		[self addBookmarkObservers];
 		[self updateFields];
 	}
-	
-	[[PMTagStore sharedStore] markTagsDirtyForUsername:_bookmark.username];
 }
 
 - (NSDateFormatter *)dateFormatter {

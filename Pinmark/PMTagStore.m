@@ -7,20 +7,15 @@
 //
 
 #import "PMTagStore.h"
-#import <AFNetworking/AFNetworking.h>
 #import "PMAccountStore.h"
 #import "NSString+Pinmark.h"
 
-typedef NS_ENUM(NSUInteger, PMTagStoreCoherence) {
-	PMTagStoreCoherenceValid,
-	PMTagStoreCoherenceDirty
-};
+NSString * const PMTagStoreDidUpdateUserTagsNotification = @"PMTagStoreDidUpdateUserTagsNotification";
+NSString * const PMTagStoreUsernameKey = @"PMTagStoreUsernameKey";
 
 @interface PMTagStore ()
 
 @property (nonatomic) NSMutableDictionary *tags;
-@property (nonatomic) NSMutableArray *tagsLoadingQueue;
-@property (nonatomic) NSMutableDictionary *tagsCoherence;
 
 @end
 
@@ -31,21 +26,6 @@ typedef NS_ENUM(NSUInteger, PMTagStoreCoherence) {
 - (NSMutableDictionary *)tags {
 	if (!_tags) _tags = [NSMutableDictionary new];
 	return _tags;
-}
-
-- (NSMutableArray *)tagsLoadingQueue {
-	if (!_tagsLoadingQueue) _tagsLoadingQueue = [NSMutableArray new];
-	return _tagsLoadingQueue;
-}
-
-- (NSMutableDictionary *)tagCoherence {
-	if (!_tagsCoherence) {
-		_tagsCoherence = [NSMutableDictionary new];
-		for (NSString *username in [self.tags allKeys]) {
-			_tagsCoherence[username] = @(PMTagStoreCoherenceDirty);
-		}
-	}
-	return _tagsCoherence;
 }
 
 #pragma mark - Initializers
@@ -68,8 +48,6 @@ typedef NS_ENUM(NSUInteger, PMTagStoreCoherence) {
 		}
 		
 		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-		[center addObserver:self selector:@selector(usernameAdded:) name:PMAccountStoreDidAddUsernameNotification object:nil];
-		[center addObserver:self selector:@selector(usernameUpdated:) name:PMAccountStoreDidUpdateUsernameNotification object:nil];
 		[center addObserver:self selector:@selector(usernameRemoved:) name:PMAccountStoreDidRemoveUsernameNotification object:nil];
 	}
 	return self;
@@ -93,64 +71,16 @@ typedef NS_ENUM(NSUInteger, PMTagStoreCoherence) {
 }
 
 - (NSArray *)tagsForUsername:(NSString *)username {
-	NSNumber *coherence = self.tagCoherence[username];
-	
-	if (!coherence || [coherence unsignedIntegerValue] == PMTagStoreCoherenceDirty) {
-		[self loadTagsForUsername:username];
-	}
-	
 	return self.tags[username];
 }
 
-- (void)markTagsDirtyForUsername:(NSString *)username {
-	self.tagsCoherence[username] = @(PMTagStoreCoherenceDirty);
+- (void)updateTags:(NSArray *)tags username:(NSString *)username {
+	self.tags[username] = tags;
+	[self saveTags];
+	[self postDidUpdateNotificationWithUsername:username];
 }
 
 #pragma mark -
-
-- (void)loadTagsForUsername:(NSString *)username {
-	if (!username) return;
-	if (![self.tagsLoadingQueue containsObject:username]) {
-		[self.tagsLoadingQueue addObject:username];
-		[self requestTagsWithUsername:username
-							   success:^(NSDictionary *tags) {
-								   if ([tags isKindOfClass:[NSDictionary class]]) {
-									   self.tags[username] = [[[tags keysSortedByValueUsingSelector:@selector(compare:)] reverseObjectEnumerator] allObjects];
-									   [self.tagsLoadingQueue removeObject:username];
-									   self.tagsCoherence[username] = @(PMTagStoreCoherenceValid);
-									   [self saveTags];
-								   }
-							   }
-							   failure:nil];
-	}
-}
-
-- (void)requestTagsWithUsername:(NSString *)username success:(void (^)(NSDictionary *))successCallback failure:(void (^)(NSError *))failureCallback {
-	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
-	
-	NSString *authToken = [[PMAccountStore sharedStore] authTokenForUsername:username];
-	if (!authToken) {
-		if (failureCallback) {
-			failureCallback(nil);
-		}
-		return;
-	}
-	
-	NSDictionary *parameters = @{ @"format": @"json", @"auth_token": authToken };
-	
-	[manager GET:@"https://api.pinboard.in/v1/tags/get"
-	  parameters:parameters
-		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-			 PMLog(@"Response Object: %@", responseObject);
-			 if (successCallback) successCallback((NSDictionary *)responseObject);
-		 }
-		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-			 PMLog(@"Error: %@", error);
-			 if (failureCallback) failureCallback(error);
-		 }];
-}
 
 - (NSString *)tagsArchivePath {
 	NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -170,22 +100,16 @@ typedef NS_ENUM(NSUInteger, PMTagStoreCoherence) {
 	return [NSKeyedArchiver archiveRootObject:tagsToSave toFile:path];
 }
 
-- (void)usernameAdded:(NSNotification *)notification {
-	NSString *username = notification.userInfo[PMAccountStoreUsernameKey];
-	[self loadTagsForUsername:username];
-}
-
-- (void)usernameUpdated:(NSNotification *)notification {
-	NSString *username = notification.userInfo[PMAccountStoreUsernameKey];
-	[self.tags removeObjectForKey:username];
-	[self loadTagsForUsername:username];
-}
-
 - (void)usernameRemoved:(NSNotification *)notification {
 	NSString *username = notification.userInfo[PMAccountStoreUsernameKey];
 	[self.tags removeObjectForKey:username];
-	[self.tagCoherence removeObjectForKey:username];
 	[self saveTags];
+}
+
+- (void)postDidUpdateNotificationWithUsername:(NSString *)username {
+	[[NSNotificationCenter defaultCenter] postNotificationName:PMTagStoreDidUpdateUserTagsNotification
+														object:self
+													  userInfo:@{ PMTagStoreUsernameKey : username }];
 }
 
 @end

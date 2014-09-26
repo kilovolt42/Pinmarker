@@ -12,6 +12,7 @@
 #import "PMAddAccountVC.h"
 #import "PMTagStore.h"
 #import "PMBookmarkStore.h"
+#import "PMPinboardService.h"
 
 @interface PMAppDelegate () <PMAddAccountVCDelegate>
 
@@ -42,6 +43,21 @@
 	}
 	
 	return YES;
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+	NSArray *usernames = [PMAccountStore sharedStore].associatedUsernames;
+	for (NSString *username in usernames) {
+		NSString *token = [[PMAccountStore sharedStore] authTokenForUsername:username];
+		if (token) {
+			void (^success)(NSDictionary *) = ^(NSDictionary *tags) {
+				NSArray *sortedTags = [[[tags keysSortedByValueUsingSelector:@selector(compare:)] reverseObjectEnumerator] allObjects];
+				[[PMTagStore sharedStore] updateTags:sortedTags username:username];
+			};
+			
+			[PMPinboardService requestTagsForAPIToken:token success:success failure:nil];
+		}
+	}
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
