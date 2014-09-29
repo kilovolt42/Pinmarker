@@ -7,31 +7,17 @@
 //
 
 #import "PMBookmarkStore.h"
-#import "PMPinboardService.h"
 #import "PMBookmark.h"
 #import "PMAccountStore.h"
 #import "NSString+Pinmark.h"
 
-static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
-
 @interface PMBookmarkStore ()
 
 @property (nonatomic) NSMutableArray *bookmarks;
-@property (nonatomic) NSDateFormatter *dateFormatter;
 
 @end
 
 @implementation PMBookmarkStore
-
-#pragma mark - Properties
-
-- (NSDateFormatter *)dateFormatter {
-	if (!_dateFormatter) {
-		_dateFormatter = [NSDateFormatter new];
-		_dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
-	}
-	return _dateFormatter;
-}
 
 #pragma mark - Initializers
 
@@ -50,10 +36,6 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 		
 		if (!_bookmarks) {
 			_bookmarks = [NSMutableArray new];
-		} else {
-			for (PMBookmark *bookmark in self.bookmarks) {
-				[bookmark addObserver:self forKeyPath:@"url" options:NSKeyValueObservingOptionInitial context:&PMBookmarkStoreContext];
-			}
 		}
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -64,10 +46,6 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 }
 
 - (void)dealloc {
-	for (PMBookmark *bookmark in self.bookmarks) {
-		[bookmark removeObserver:self forKeyPath:@"url" context:&PMBookmarkStoreContext];
-	}
-	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -87,7 +65,6 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 - (PMBookmark *)createBookmark {
 	PMBookmark *bookmark = [PMBookmark new];
 	bookmark.username = [PMAccountStore sharedStore].defaultUsername;
-	[bookmark addObserver:self forKeyPath:@"url" options:NSKeyValueObservingOptionInitial context:&PMBookmarkStoreContext];
 	
 	[self.bookmarks insertObject:bookmark atIndex:0];
 	[self saveBookmarks];
@@ -101,8 +78,6 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	if (!bookmark.username || [bookmark.username isEqualToString:@""]) {
 		bookmark.username = [PMAccountStore sharedStore].defaultUsername;
 	}
-	
-	[bookmark addObserver:self forKeyPath:@"url" options:NSKeyValueObservingOptionInitial context:&PMBookmarkStoreContext];
 	
 	[self.bookmarks insertObject:bookmark atIndex:0];
 	[self saveBookmarks];
@@ -159,39 +134,6 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 				bookmark.username = defaultUsername;
 			} else {
 				bookmark.username = @"";
-			}
-		}
-	}
-}
-
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-	if (context == &PMBookmarkStoreContext) {
-		if ([keyPath isEqualToString:@"url"]) {
-			PMBookmark *bookmark = (PMBookmark *)object;
-			if (bookmark.url && [bookmark.url isPinboardPermittedURL]) {
-				NSString *token = [[PMAccountStore sharedStore] authTokenForUsername:bookmark.username];
-				if (token) {
-					void (^success)(NSDictionary *) = ^(NSDictionary *responseDictionary) {
-						NSArray *posts = responseDictionary[@"posts"];
-						if ([posts count]) {
-							NSString *dateString = responseDictionary[@"date"];
-							NSDate *date = [self.dateFormatter dateFromString:dateString];
-							bookmark.lastPosted = date;
-						} else {
-							bookmark.lastPosted = nil;
-						}
-					};
-					
-					void (^failure)(NSError *) = ^(NSError *error) {
-						bookmark.lastPosted = nil;
-					};
-					
-					[PMPinboardService requestPostForURL:bookmark.url APIToken:token success:success failure:failure];
-				}
-			} else {
-				bookmark.lastPosted = nil;
 			}
 		}
 	}

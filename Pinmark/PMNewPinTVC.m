@@ -39,7 +39,6 @@ static const NSUInteger PMSharedCellIndex = 5;
 @property (nonatomic, copy) void (^xFailure)(NSError *, id);
 @property (nonatomic) PMBookmark *bookmark;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *postButton;
-@property (nonatomic) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -59,14 +58,6 @@ static const NSUInteger PMSharedCellIndex = 5;
 		[self addBookmarkObservers];
 		[self updateFields];
 	}
-}
-
-- (NSDateFormatter *)dateFormatter {
-	if (!_dateFormatter) {
-		_dateFormatter = [NSDateFormatter new];
-		_dateFormatter.dateStyle = NSDateFormatterLongStyle;
-	}
-	return _dateFormatter;
 }
 
 #pragma mark - Life Cycle
@@ -130,6 +121,7 @@ static const NSUInteger PMSharedCellIndex = 5;
 }
 
 - (void)addBookmarkObservers {
+	[_bookmark addObserver:self forKeyPath:@"url" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
 	[_bookmark addObserver:self forKeyPath:@"postable" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
 	[_bookmark addObserver:self forKeyPath:@"username" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
 	[_bookmark addObserver:self forKeyPath:@"lastPosted" options:NSKeyValueObservingOptionInitial context:&PMNewPinTVCContext];
@@ -138,6 +130,7 @@ static const NSUInteger PMSharedCellIndex = 5;
 }
 
 - (void)removeBookmarkObservers {
+	[self.bookmark removeObserver:self forKeyPath:@"url"];
 	[self.bookmark removeObserver:self forKeyPath:@"postable" context:&PMNewPinTVCContext];
 	[self.bookmark removeObserver:self forKeyPath:@"username" context:&PMNewPinTVCContext];
 	[self.bookmark removeObserver:self forKeyPath:@"lastPosted" context:&PMNewPinTVCContext];
@@ -371,11 +364,41 @@ static const NSUInteger PMSharedCellIndex = 5;
 	[self.tagsController fieldsEnabled:enabled];
 }
 
+- (void)loadPostsForBookmarkURL {
+	if (self.bookmark.url && [self.bookmark.url isPinboardPermittedURL]) {
+		NSString *token = [[PMAccountStore sharedStore] authTokenForUsername:self.bookmark.username];
+		if (token) {
+			void (^success)(NSDictionary *) = ^(NSDictionary *responseDictionary) {
+				NSArray *posts = responseDictionary[@"posts"];
+				if ([posts count]) {
+					NSString *dateString = responseDictionary[@"date"];
+					NSDateFormatter *dateFormatter = [NSDateFormatter new];
+					dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
+					self.bookmark.lastPosted = [dateFormatter dateFromString:dateString];
+				} else {
+					self.bookmark.lastPosted = nil;
+				}
+			};
+			
+			void (^failure)(NSError *) = ^(NSError *error) {
+				self.bookmark.lastPosted = nil;
+			};
+			
+			[PMPinboardService requestPostForURL:self.bookmark.url APIToken:token success:success failure:failure];
+		}
+	} else {
+		self.bookmark.lastPosted = nil;
+	}
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 	if (context == &PMNewPinTVCContext) {
-		if ([keyPath isEqualToString:@"postable"]) {
+		if ([keyPath isEqualToString:@"url"]) {
+			[self loadPostsForBookmarkURL];
+		}
+		else if ([keyPath isEqualToString:@"postable"]) {
 			self.postButton.enabled = self.bookmark.postable;
 		}
 		else if ([keyPath isEqualToString:@"username"]) {
@@ -383,7 +406,9 @@ static const NSUInteger PMSharedCellIndex = 5;
 		}
 		else if ([keyPath isEqualToString:@"lastPosted"]) {
 			if (self.bookmark.lastPosted) {
-				self.datePostedLabel.text = [NSString stringWithFormat:@"Last posted %@", [self.dateFormatter stringFromDate:self.bookmark.lastPosted]];
+				NSDateFormatter *dateFormatter = [NSDateFormatter new];
+				dateFormatter.dateStyle = NSDateFormatterLongStyle;
+				self.datePostedLabel.text = [NSString stringWithFormat:@"Last posted %@", [dateFormatter stringFromDate:self.bookmark.lastPosted]];
 				[self updateRowHeights];
 			} else {
 				self.datePostedLabel.text = @"";
