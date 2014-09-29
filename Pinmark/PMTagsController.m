@@ -11,6 +11,9 @@
 #import "PMTagCVCell.h"
 #import "PMTagStore.h"
 #import "PMInputAccessoryView.h"
+#import "PMPinboardService.h"
+
+static void * PMTagControllerContext = &PMTagControllerContext;
 
 static NSString *tagCellIdentifier = @"Tag Cell";
 
@@ -18,6 +21,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 @property (nonatomic, copy) NSArray *aggregatedTags;
 @property (nonatomic, copy) NSArray *suggestedTags;
+@property (nonatomic, copy) NSArray *userTags;
 @property (nonatomic) PMTagCVCell *sizingCell;
 @property (nonatomic) PMInputAccessoryView *keyboardAccessory;
 
@@ -75,6 +79,18 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	return _keyboardAccessory;
 }
 
+- (void)setBookmark:(PMBookmark *)bookmark {
+	if (_bookmark) {
+		[self removeBookmarkObservers];
+	}
+	
+	_bookmark = bookmark;
+	
+	if (_bookmark) {
+		[self addBookmarkObservers];
+	}
+}
+
 #pragma mark - Life Cycle
 
 - (instancetype)init {
@@ -82,8 +98,15 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 	if (self) {
 		UIMenuItem *menuItem = [[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(deleteTag)];
 		[[UIMenuController sharedMenuController] setMenuItems:@[menuItem]];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadUserTags) name:PMTagStoreDidUpdateUserTagsNotification object:nil];
 	}
 	return self;
+}
+
+- (void)dealloc {
+	[self removeBookmarkObservers];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Actions
@@ -118,13 +141,34 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 }
 
 - (void)updateSuggestedTags {
-	NSString *tag = self.tagsTextField.text;
-	NSArray *tags = [[PMTagStore sharedStore] tagsForUsername:self.bookmark.username];
-	if (tags) {
-		NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", tag];
-		NSMutableArray *results = [NSMutableArray arrayWithArray:[tags filteredArrayUsingPredicate:searchPredicate]];
+	if (self.userTags) {
+		NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", self.tagsTextField.text];
+		NSMutableArray *results = [NSMutableArray arrayWithArray:[self.userTags filteredArrayUsingPredicate:searchPredicate]];
 		[results removeObjectsInArray:self.bookmark.tags];
 		self.suggestedTags = results;
+	}
+}
+
+- (void)addBookmarkObservers {
+	[_bookmark addObserver:self forKeyPath:@"username" options:NSKeyValueObservingOptionInitial context:&PMTagControllerContext];
+}
+
+- (void)removeBookmarkObservers {
+	[self.bookmark removeObserver:self forKeyPath:@"username" context:&PMTagControllerContext];
+}
+
+- (void)loadUserTags {
+	self.userTags = [[PMTagStore sharedStore] tagsForUsername:self.bookmark.username];
+	[self updateFields];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	if (context == &PMTagControllerContext) {
+		if ([keyPath isEqualToString:@"username"]) {
+			[self loadUserTags];
+		}
 	}
 }
 

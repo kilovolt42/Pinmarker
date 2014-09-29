@@ -42,15 +42,6 @@
 - (PMBookmark *)lastBookmark;
 
 /**
- * Posts a bookmark to Pinboard and pops the bookmark off the bookmark stack.
- *
- * @param bookmark        Bookmark to post to Pinboard.
- * @param successCallback Callback block called when posting was successful.
- * @param failureCallback Callback block called when posting was unsuccessful.
- */
-- (void)postBookmark:(PMBookmark *)bookmark success:(void (^)(id))successCallback failure:(void (^)(NSError *, id))failureCallback;
-
-/**
  * Remove a bookmark.
  *
  * @param bookmark Bookmark to remove.

@@ -7,31 +7,17 @@
 //
 
 #import "PMBookmarkStore.h"
-#import <AFNetworking/AFNetworking.h>
 #import "PMBookmark.h"
 #import "PMAccountStore.h"
 #import "NSString+Pinmark.h"
 
-static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
-
 @interface PMBookmarkStore ()
 
 @property (nonatomic) NSMutableArray *bookmarks;
-@property (nonatomic) NSDateFormatter *dateFormatter;
 
 @end
 
 @implementation PMBookmarkStore
-
-#pragma mark - Properties
-
-- (NSDateFormatter *)dateFormatter {
-	if (!_dateFormatter) {
-		_dateFormatter = [NSDateFormatter new];
-		_dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
-	}
-	return _dateFormatter;
-}
 
 #pragma mark - Initializers
 
@@ -50,10 +36,6 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 		
 		if (!_bookmarks) {
 			_bookmarks = [NSMutableArray new];
-		} else {
-			for (PMBookmark *bookmark in self.bookmarks) {
-				[bookmark addObserver:self forKeyPath:@"url" options:NSKeyValueObservingOptionInitial context:&PMBookmarkStoreContext];
-			}
 		}
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -64,10 +46,6 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 }
 
 - (void)dealloc {
-	for (PMBookmark *bookmark in self.bookmarks) {
-		[bookmark removeObserver:self forKeyPath:@"url" context:&PMBookmarkStoreContext];
-	}
-	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -88,14 +66,7 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	PMBookmark *bookmark = [PMBookmark new];
 	bookmark.username = [PMAccountStore sharedStore].defaultUsername;
 	
-	PMBookmark *previousBookmark = [self.bookmarks firstObject];
-	if (previousBookmark) {
-		[previousBookmark removeObserver:self forKeyPath:@"url" context:&PMBookmarkStoreContext];
-	}
-	
-	self.bookmarks[0] = bookmark;
-	[bookmark addObserver:self forKeyPath:@"url" options:NSKeyValueObservingOptionInitial context:&PMBookmarkStoreContext];
-	
+	[self.bookmarks insertObject:bookmark atIndex:0];
 	[self saveBookmarks];
 	
 	return bookmark;
@@ -108,14 +79,7 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 		bookmark.username = [PMAccountStore sharedStore].defaultUsername;
 	}
 	
-	PMBookmark *previousBookmark = [self.bookmarks firstObject];
-	if (previousBookmark) {
-		[previousBookmark removeObserver:self forKeyPath:@"url" context:&PMBookmarkStoreContext];
-	}
-	
-	self.bookmarks[0] = bookmark;
-	[bookmark addObserver:self forKeyPath:@"url" options:NSKeyValueObservingOptionInitial context:&PMBookmarkStoreContext];
-	
+	[self.bookmarks insertObject:bookmark atIndex:0];
 	[self saveBookmarks];
 	
 	return bookmark;
@@ -129,79 +93,13 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 	return bookmark;
 }
 
-- (void)postBookmark:(PMBookmark *)bookmark success:(void (^)(id))successCallback failure:(void (^)(NSError *, id))failureCallback {
-	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
-	
-	if (!bookmark.dt) {
-		bookmark.dt = [NSDate date];
-	}
-	
-	NSString *authToken = [[PMAccountStore sharedStore] authTokenForUsername:bookmark.username];
-	if (!authToken) {
-		if (failureCallback) {
-			failureCallback(nil, nil);
-		}
-		return;
-	}
-	
-	NSMutableDictionary *mutableParameters = [[bookmark parameters] mutableCopy];
-	mutableParameters[@"format"] = @"json";
-	mutableParameters[@"auth_token"] = authToken;
-	
-	[manager GET:@"https://api.pinboard.in/v1/posts/add"
-	  parameters:mutableParameters
-		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-			 PMLog(@"Response Object: %@", responseObject);
-			 if ([responseObject[@"result_code"] isEqualToString:@"done"]) {
-				 [bookmark removeObserver:self forKeyPath:@"url" context:&PMBookmarkStoreContext];
-				 [self.bookmarks removeObject:bookmark];
-				 [self saveBookmarks];
-				 if (successCallback) successCallback(responseObject);
-			 } else {
-				 if (failureCallback) failureCallback(nil, responseObject);
-			 }
-		 }
-		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-			 PMLog(@"Error: %@", error);
-			 if (failureCallback) failureCallback(error, nil);
-		 }];
-}
-
 - (void)discardBookmark:(PMBookmark *)bookmark {
+	[bookmark removeObserver:self forKeyPath:@"url"];
 	[self.bookmarks removeObject:bookmark];
 	[self saveBookmarks];
 }
 
 #pragma mark -
-
-- (void)requestPostForBookmark:(PMBookmark *)bookmark success:(void (^)(NSDictionary *))successCallback failure:(void (^)(NSError *))failureCallback {
-	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-	manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-	manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/plain"];
-	
-	NSString *authToken = [[PMAccountStore sharedStore] authTokenForUsername:bookmark.username];
-	if (!authToken) {
-		if (failureCallback) {
-			failureCallback(nil);
-		}
-		return;
-	}
-	
-	NSDictionary *parameters = @{@"url": bookmark.url, @"format": @"json", @"auth_token": authToken };
-	
-	[manager GET:@"https://api.pinboard.in/v1/posts/get"
-	  parameters:parameters
-		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-			 PMLog(@"Response Object: %@", responseObject);
-			 if (successCallback) successCallback((NSDictionary *)responseObject);
-		 }
-		 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-			 PMLog(@"Error: %@", error);
-			 if (failureCallback) failureCallback(error);
-		 }];
-}
 
 - (NSString *)bookmarksArchivePath {
 	NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -236,34 +134,6 @@ static void * PMBookmarkStoreContext = &PMBookmarkStoreContext;
 				bookmark.username = defaultUsername;
 			} else {
 				bookmark.username = @"";
-			}
-		}
-	}
-}
-
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-	if (context == &PMBookmarkStoreContext) {
-		if ([keyPath isEqualToString:@"url"]) {
-			PMBookmark *bookmark = (PMBookmark *)object;
-			if (bookmark.url && [bookmark.url isPinboardPermittedURL]) {
-				[self requestPostForBookmark:bookmark
-									 success:^(NSDictionary *responseDictionary) {
-										 NSArray *posts = responseDictionary[@"posts"];
-										 if ([posts count]) {
-											 NSString *dateString = responseDictionary[@"date"];
-											 NSDate *date = [self.dateFormatter dateFromString:dateString];
-											 bookmark.lastPosted = date;
-										 } else {
-											 bookmark.lastPosted = nil;
-										 }
-									 }
-									 failure:^(NSError *error) {
-										 bookmark.lastPosted = nil;
-									 }];
-			} else {
-				bookmark.lastPosted = nil;
 			}
 		}
 	}
