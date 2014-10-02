@@ -129,12 +129,15 @@ static const NSUInteger PMSharedCellIndex = 5;
 }
 
 - (void)removeBookmarkObservers {
-	[self.bookmark removeObserver:self forKeyPath:@"url"];
-	[self.bookmark removeObserver:self forKeyPath:@"postable" context:&PMNewPinTVCContext];
-	[self.bookmark removeObserver:self forKeyPath:@"username" context:&PMNewPinTVCContext];
-	[self.bookmark removeObserver:self forKeyPath:@"lastPosted" context:&PMNewPinTVCContext];
-	[self.bookmark removeObserver:self forKeyPath:@"title" context:&PMNewPinTVCContext];
-	[self.bookmark removeObserver:self forKeyPath:@"tags" context:&PMNewPinTVCContext];
+	@try {
+		[self.bookmark removeObserver:self forKeyPath:@"url"];
+		[self.bookmark removeObserver:self forKeyPath:@"postable" context:&PMNewPinTVCContext];
+		[self.bookmark removeObserver:self forKeyPath:@"username" context:&PMNewPinTVCContext];
+		[self.bookmark removeObserver:self forKeyPath:@"lastPosted" context:&PMNewPinTVCContext];
+		[self.bookmark removeObserver:self forKeyPath:@"title" context:&PMNewPinTVCContext];
+		[self.bookmark removeObserver:self forKeyPath:@"tags" context:&PMNewPinTVCContext];
+	}
+	@catch (NSException *exception) {}
 }
 
 #pragma mark - Actions
