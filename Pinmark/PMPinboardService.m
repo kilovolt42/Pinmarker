@@ -8,7 +8,6 @@
 
 #import "PMPinboardService.h"
 #import <AFNetworking.h>
-#import "NSString+Pinmark.h"
 
 @implementation PMPinboardService
 

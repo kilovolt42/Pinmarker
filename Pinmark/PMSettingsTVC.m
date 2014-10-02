@@ -10,7 +10,6 @@
 #import "PMAppDelegate.h"
 #import "PMAddAccountVC.h"
 #import "PMAccountStore.h"
-#import "NSString+Pinmark.h"
 
 NSString * const PMAccountsSectionLabel = @"Accounts";
 NSString * const PMAddAccountSectionLabel = @"Add Account";

@@ -8,7 +8,6 @@
 
 #import "PMNewPinTVC.h"
 #import "NSURL+Pinmark.h"
-#import "NSString+Pinmark.h"
 #import "PMTagsController.h"
 #import "PMBookmark.h"
 #import "PMBookmarkStore.h"

@@ -7,7 +7,6 @@
 //
 
 #import "PMBookmark.h"
-#import "NSString+Pinmark.h"
 
 @interface PMBookmark ()
 

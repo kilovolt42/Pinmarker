@@ -7,7 +7,6 @@
 //
 
 #import "PMAccountStore.h"
-#import "NSString+Pinmark.h"
 #import "Lockbox.h"
 
 NSString * const PMAccountStoreDidAddUsernameNotification = @"PMAccountStoreDidAddUsernameNotification";

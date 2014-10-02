@@ -13,6 +13,7 @@
 #ifdef __OBJC__
 @import UIKit;
 @import Foundation;
+#import "NSString+Pinmark.h"
 #endif
 
 #ifdef DEBUG

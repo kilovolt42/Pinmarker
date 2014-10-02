@@ -8,7 +8,6 @@
 
 #import "PMTagStore.h"
 #import "PMAccountStore.h"
-#import "NSString+Pinmark.h"
 
 NSString * const PMTagStoreDidUpdateUserTagsNotification = @"PMTagStoreDidUpdateUserTagsNotification";
 NSString * const PMTagStoreUsernameKey = @"PMTagStoreUsernameKey";

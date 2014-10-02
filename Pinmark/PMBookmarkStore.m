@@ -9,7 +9,6 @@
 #import "PMBookmarkStore.h"
 #import "PMBookmark.h"
 #import "PMAccountStore.h"
-#import "NSString+Pinmark.h"
 
 @interface PMBookmarkStore ()
 
