@@ -51,8 +51,8 @@ static const NSUInteger PMSharedCellIndex = 5;
 		[self removeBookmarkObservers];
 	}
 	
+	self.tagsController.bookmark = bookmark; // must set before _bookmark becasue PMTagsController holds a weak ref its bookmark
 	_bookmark = bookmark;
-	self.tagsController.bookmark = _bookmark;
 	
 	if (_bookmark) {
 		[self addBookmarkObservers];
@@ -162,9 +162,8 @@ static const NSUInteger PMSharedCellIndex = 5;
 		[self fieldsEnabled:YES];
 		[self reportSuccess];
 		
-		PMBookmark *oldBookmark = self.bookmark;
-		self.bookmark = [[PMBookmarkStore sharedStore] lastBookmark]; // setter method removes old bookmark observers
-		[[PMBookmarkStore sharedStore] discardBookmark:oldBookmark];
+		[[PMBookmarkStore sharedStore] discardBookmark:self.bookmark];
+		self.bookmark = [[PMBookmarkStore sharedStore] lastBookmark];
 		
 		if (self.xSuccess) {
 			self.xSuccess(responseObject);
