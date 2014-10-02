@@ -81,7 +81,9 @@ static const NSUInteger PMSharedCellIndex = 5;
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 	
-	self.bookmark = [[PMBookmarkStore sharedStore] lastBookmark];
+	if (!self.bookmark) {
+		self.bookmark = [[PMBookmarkStore sharedStore] lastBookmark];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
