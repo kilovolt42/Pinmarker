@@ -94,7 +94,6 @@
 }
 
 - (void)discardBookmark:(PMBookmark *)bookmark {
-	[bookmark removeObserver:self forKeyPath:@"url"];
 	[self.bookmarks removeObject:bookmark];
 	[self saveBookmarks];
 }
