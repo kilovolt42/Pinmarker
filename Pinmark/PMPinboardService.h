@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 kilovolt42. All rights reserved.
 //
 
-@class PMBookmark;
-
 @interface PMPinboardService : NSObject
 
 + (void)requestAPITokenForAPIToken:(NSString *)token success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure;
