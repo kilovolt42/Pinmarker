@@ -179,7 +179,7 @@ static const NSUInteger PMSharedCellIndex = 5;
 		[self fieldsEnabled:YES];
 		
 		if (responseObject) {
-			NSString *resultCode = responseObject[@"result_code"];
+			NSString *resultCode = responseObject[PMPinboardAPIResultCodeKey];
 			[self reportErrorWithMessage:responseDictionary[resultCode]];
 		} else {
 			[self reportErrorWithMessage:nil];
@@ -376,7 +376,7 @@ static const NSUInteger PMSharedCellIndex = 5;
 				if ([posts count]) {
 					NSString *dateString = responseDictionary[@"date"];
 					NSDateFormatter *dateFormatter = [NSDateFormatter new];
-					dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
+					dateFormatter.dateFormat = PMPinboardAPIDateFormat;
 					self.bookmark.lastPosted = [dateFormatter dateFromString:dateString];
 				} else {
 					self.bookmark.lastPosted = nil;

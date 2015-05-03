@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2703C540185F7E6500570F0C /* PMNewPinTVC.m */; };
+		270BA16519E026C500BE9743 /* PinboardAPI.plist in Resources */ = {isa = PBXBuildFile; fileRef = 270BA16419E026C500BE9743 /* PinboardAPI.plist */; };
+		270BA16819E039B000BE9743 /* PMConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 270BA16719E039B000BE9743 /* PMConstants.m */; };
 		270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 270C4A4918628D6A000FC061 /* PMNavigationVC.m */; };
 		270F437818C7BE9200757DCB /* PMBookmarkStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 270F437718C7BE9200757DCB /* PMBookmarkStore.m */; };
 		271D051118D766BD006B5A4E /* PMAddAccountVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 271D051018D766BD006B5A4E /* PMAddAccountVC.xib */; };
@@ -48,6 +50,9 @@
 		2703C53F185F7E6500570F0C /* PMNewPinTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMNewPinTVC.h; sourceTree = "<group>"; };
 		2703C540185F7E6500570F0C /* PMNewPinTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMNewPinTVC.m; sourceTree = "<group>"; };
 		2703C542185FD16100570F0C /* Bookmarklet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Bookmarklet.js; sourceTree = "<group>"; };
+		270BA16419E026C500BE9743 /* PinboardAPI.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PinboardAPI.plist; sourceTree = "<group>"; };
+		270BA16619E039B000BE9743 /* PMConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMConstants.h; sourceTree = "<group>"; };
+		270BA16719E039B000BE9743 /* PMConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMConstants.m; sourceTree = "<group>"; };
 		270C4A4718628CD3000FC061 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		270C4A4818628D6A000FC061 /* PMNavigationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMNavigationVC.h; sourceTree = "<group>"; };
 		270C4A4918628D6A000FC061 /* PMNavigationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMNavigationVC.m; sourceTree = "<group>"; };
@@ -217,6 +222,9 @@
 		278EF42D185B71E2003A27D3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				270BA16419E026C500BE9743 /* PinboardAPI.plist */,
+				270BA16619E039B000BE9743 /* PMConstants.h */,
+				270BA16719E039B000BE9743 /* PMConstants.m */,
 				2781196A186A0516006B93AB /* NSURL+Pinmark.h */,
 				2781196B186A0516006B93AB /* NSURL+Pinmark.m */,
 				271FAF9718AA9F1E0011C41E /* NSString+Pinmark.h */,
@@ -340,6 +348,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				270BA16519E026C500BE9743 /* PinboardAPI.plist in Resources */,
 				271D051118D766BD006B5A4E /* PMAddAccountVC.xib in Resources */,
 				277AA7AF1896DC080015A3EF /* PMInputAccessoryView.xib in Resources */,
 				278EF442185B71E2003A27D3 /* Images.xcassets in Resources */,
@@ -425,6 +434,7 @@
 				2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */,
 				27409CB118CC1048006C97BB /* PMTagStore.m in Sources */,
 				277CDA0019B7C8A500A04082 /* PMTagsController.m in Sources */,
+				270BA16819E039B000BE9743 /* PMConstants.m in Sources */,
 				27D2DC3418777A9B0054D187 /* PMBookmark.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

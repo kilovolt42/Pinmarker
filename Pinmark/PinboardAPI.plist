@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>token_authentification</key>
+	<string>https://api.pinboard.in/v1/user/api_token</string>
+	<key>basic_authentification</key>
+	<string>https://%@:%@@api.pinboard.in/v1/user/api_token</string>
+	<key>get_tags</key>
+	<string>https://api.pinboard.in/v1/tags/get</string>
+	<key>get_posts</key>
+	<string>https://api.pinboard.in/v1/posts/get</string>
+	<key>add_post</key>
+	<string>https://api.pinboard.in/v1/posts/add</string>
+</dict>
+</plist>

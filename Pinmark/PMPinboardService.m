@@ -9,12 +9,16 @@
 #import "PMPinboardService.h"
 #import <AFNetworking.h>
 
+static NSDictionary *PMPinboardAPIMethods;
+
 @implementation PMPinboardService
 
 + (void)requestAPITokenForAPIToken:(NSString *)token success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure {
-	NSDictionary *parameters = @{ @"format": @"json", @"auth_token": token };
+	NSString *method = PMPinboardAPIMethods[PMPinboardAPIMethodTokenAuth];
+	NSDictionary *parameters = @{ PMPinboardAPIFormatKey: @"json",
+								  PMPinboardAPIAuthTokenKey: token };
 	
-	[[self manager] GET:[NSString stringWithFormat:@"https://api.pinboard.in/v1/user/api_token"]
+	[[self manager] GET:method
 			 parameters:parameters
 				success:^(AFHTTPRequestOperation *operation, id responseObject) {
 					PMLog(@"Response Object: %@", responseObject);
@@ -31,16 +35,20 @@
 }
 
 + (void)requestAPITokenForUsername:(NSString *)username password:(NSString *)password success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure {
+	NSString *methodFormat = PMPinboardAPIMethods[PMPinboardAPIMethodBasicAuth];
 	username = [username urlEncodeUsingEncoding:NSUTF8StringEncoding];
 	password = [password urlEncodeUsingEncoding:NSUTF8StringEncoding];
 	
-	[[self manager] GET:[NSString stringWithFormat:@"https://%@:%@@api.pinboard.in/v1/user/api_token", username, password]
-			 parameters:@{ @"format": @"json" }
+	NSString *method = [NSString stringWithFormat:methodFormat, username, password];
+	NSDictionary *parameters = @{ PMPinboardAPIFormatKey: @"json" };
+	
+	[[self manager] GET:method
+			 parameters:parameters
 				success:^(AFHTTPRequestOperation *operation, id responseObject) {
 					PMLog(@"Response Object: %@", responseObject);
 					if (success) {
 						NSDictionary *response = (NSDictionary *)responseObject;
-						NSString *token = [username stringByAppendingFormat:@":%@", response[@"result"]];
+						NSString *token = [username stringByAppendingFormat:@":%@", response[PMPinboardAPIResultKey]];
 						success(token);
 					}
 				}
@@ -53,9 +61,11 @@
 }
 
 + (void)requestTagsForAPIToken:(NSString *)token success:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
-	NSDictionary *parameters = @{ @"format": @"json", @"auth_token": token };
+	NSString *method = PMPinboardAPIMethods[PMPinboardAPIMethodGetTags];
+	NSDictionary *parameters = @{ PMPinboardAPIFormatKey: @"json",
+								  PMPinboardAPIAuthTokenKey: token };
 	
-	[[self manager] GET:@"https://api.pinboard.in/v1/tags/get"
+	[[self manager] GET:method
 			 parameters:parameters
 				success:^(AFHTTPRequestOperation *operation, id responseObject) {
 					PMLog(@"Response Object: %@", responseObject);
@@ -72,9 +82,12 @@
 }
 
 + (void)requestPostForURL:(NSString *)url APIToken:(NSString *)token success:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
-	NSDictionary *parameters = @{@"url": url, @"format": @"json", @"auth_token": token };
+	NSString *method = PMPinboardAPIMethods[PMPinboardAPIMethodGetPosts];
+	NSDictionary *parameters = @{PMPinboardAPIURLKey: url,
+								 PMPinboardAPIFormatKey: @"json",
+								 PMPinboardAPIAuthTokenKey: token };
 	
-	[[self manager] GET:@"https://api.pinboard.in/v1/posts/get"
+	[[self manager] GET:method
 			 parameters:parameters
 				success:^(AFHTTPRequestOperation *operation, id responseObject) {
 					PMLog(@"Response Object: %@", responseObject);
@@ -91,15 +104,16 @@
 }
 
 + (void)postBookmarkParameters:(NSDictionary *)parameters APIToken:(NSString *)token success:(void (^)(id))success failure:(void (^)(NSError *, id))failure {
+	NSString *method = PMPinboardAPIMethods[PMPinboardAPIMethodAddPost];
 	NSMutableDictionary *mutableParameters = [parameters mutableCopy];
-	mutableParameters[@"format"] = @"json";
-	mutableParameters[@"auth_token"] = token;
+	mutableParameters[PMPinboardAPIFormatKey] = @"json";
+	mutableParameters[PMPinboardAPIAuthTokenKey] = token;
 	
-	[[self manager] GET:@"https://api.pinboard.in/v1/posts/add"
+	[[self manager] GET:method
 			 parameters:mutableParameters
 				success:^(AFHTTPRequestOperation *operation, id responseObject) {
 					PMLog(@"Response Object: %@", responseObject);
-					if ([responseObject[@"result_code"] isEqualToString:@"done"]) {
+					if ([responseObject[PMPinboardAPIResultCodeKey] isEqualToString:@"done"]) {
 						if (success) {
 							success(responseObject);
 						}
@@ -118,6 +132,11 @@
 }
 
 #pragma mark -
+
++ (void)initialize {
+	NSString *path = [[NSBundle mainBundle] pathForResource:PMPinboardAPIPlistFilename ofType:@"plist"];
+	PMPinboardAPIMethods = [NSDictionary dictionaryWithContentsOfFile:path];
+}
 
 + (AFHTTPRequestOperationManager *)manager {
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

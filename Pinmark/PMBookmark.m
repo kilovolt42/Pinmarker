@@ -29,7 +29,7 @@
 - (NSDateFormatter *)dateFormatter {
 	if (!_dateFormatter) {
 		_dateFormatter = [NSDateFormatter new];
-		_dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
+		_dateFormatter.dateFormat = PMPinboardAPIDateFormat;
 	}
 	return _dateFormatter;
 }
@@ -58,31 +58,31 @@
 			if (![parameter isKindOfClass:[NSString class]]) return self;
 		}
 		
-		NSString *username = parameters[@"username"];
+		NSString *username = parameters[PMPinboardAPIUsernameKey];
 		if (username) _username = [username copy];
 		
-		NSString *url = parameters[@"url"];
+		NSString *url = parameters[PMPinboardAPIURLKey];
 		if (url) _url = [url copy];
 		
-		NSString *title = parameters[@"description"];
+		NSString *title = parameters[PMPinboardAPITitleKey];
 		if (title) _title = [title copy];
 		
-		NSString *extended = parameters[@"extended"];
+		NSString *extended = parameters[PMPinboardAPIExtendedKey];
 		if (extended) _extended = [extended copy];
 		
-		NSString *dt = parameters[@"dt"];
+		NSString *dt = parameters[PMPinboardAPIDateTimeKey];
 		if (dt) _dt = [self.dateFormatter dateFromString:dt];
 		
-		NSString *replace = parameters[@"replace"];
+		NSString *replace = parameters[PMPinboardAPIReplaceKey];
 		if (replace) _replace = [[replace lowercaseString] isEqualToString:@"yes"];
 		
-		NSString *shared = parameters[@"shared"];
+		NSString *shared = parameters[PMPinboardAPISharedKey];
 		if (shared) _shared = [[shared lowercaseString] isEqualToString:@"yes"];
 		
-		NSString *toread = parameters[@"toread"];
+		NSString *toread = parameters[PMPinboardAPIToReadKey];
 		if (toread) _toread = [[toread lowercaseString] isEqualToString:@"yes"];
 		
-		NSString *tags = parameters[@"tags"];
+		NSString *tags = parameters[PMPinboardAPITagsKey];
 		if (tags) {
 			NSCharacterSet *commaSpaceSet = [NSCharacterSet characterSetWithCharactersInString:@", "];
 			NSMutableArray *tagsArray = [NSMutableArray arrayWithArray:[tags componentsSeparatedByCharactersInSet:commaSpaceSet]];
@@ -100,14 +100,14 @@
 #pragma mark - Methods
 
 - (NSDictionary *)parameters {
-	return @{ @"url"		 : self.url,
-			  @"description" : self.title,
-			  @"extended"	 : self.extended,
-			  @"tags"		 : [self.tags componentsJoinedByString:@" "],
-			  @"dt"			 : self.dt ? [self.dateFormatter stringFromDate:self.dt] : @"",
-			  @"replace"	 : self.replace ? @"yes" : @"no",
-			  @"shared"		 : self.shared ? @"yes" : @"no",
-			  @"toread"		 : self.toread ? @"yes" : @"no" };
+	return @{ PMPinboardAPIURLKey: self.url,
+			  PMPinboardAPITitleKey: self.title,
+			  PMPinboardAPIExtendedKey: self.extended,
+			  PMPinboardAPITagsKey: [self.tags componentsJoinedByString:@" "],
+			  PMPinboardAPIDateTimeKey: self.dt ? [self.dateFormatter stringFromDate:self.dt] : @"",
+			  PMPinboardAPIReplaceKey: self.replace ? @"yes" : @"no",
+			  PMPinboardAPISharedKey: self.shared ? @"yes" : @"no",
+			  PMPinboardAPIToReadKey: self.toread ? @"yes" : @"no" };
 }
 
 - (void)addTags:(NSString *)tags {
@@ -161,31 +161,31 @@
 
 - (id)initWithCoder:(NSCoder *)decoder {
 	if (self = [self init]) {
-		_username = [decoder decodeObjectOfClass:[NSString class] forKey:@"username"];
-		_url = [decoder decodeObjectOfClass:[NSString class] forKey:@"url"];
-		_title = [decoder decodeObjectOfClass:[NSString class] forKey:@"title"];
-		_extended = [decoder decodeObjectOfClass:[NSString class] forKey:@"extended"];
-		_dt = [decoder decodeObjectOfClass:[NSDate class] forKey:@"dt"];
-		_replace = [decoder decodeBoolForKey:@"replace"];
-		_shared = [decoder decodeBoolForKey:@"shared"];
-		_toread = [decoder decodeBoolForKey:@"toread"];
-		_tags = [decoder decodeObjectOfClass:[NSArray class] forKey:@"tags"];
-		_lastPosted = [decoder decodeObjectOfClass:[NSDate class] forKey:@"lastPosted"];
+		_username = [decoder decodeObjectOfClass:[NSString class] forKey:PMPinboardAPIUsernameKey];
+		_url = [decoder decodeObjectOfClass:[NSString class] forKey:PMPinboardAPIURLKey];
+		_title = [decoder decodeObjectOfClass:[NSString class] forKey:PMPinboardAPITitleKey];
+		_extended = [decoder decodeObjectOfClass:[NSString class] forKey:PMPinboardAPIExtendedKey];
+		_dt = [decoder decodeObjectOfClass:[NSDate class] forKey:PMPinboardAPIDateTimeKey];
+		_replace = [decoder decodeBoolForKey:PMPinboardAPIReplaceKey];
+		_shared = [decoder decodeBoolForKey:PMPinboardAPISharedKey];
+		_toread = [decoder decodeBoolForKey:PMPinboardAPIToReadKey];
+		_tags = [decoder decodeObjectOfClass:[NSArray class] forKey:PMPinboardAPITagsKey];
+		_lastPosted = [decoder decodeObjectOfClass:[NSDate class] forKey:PMPinboardAPILastPostedKey];
 	}
 	return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
-	[encoder encodeObject:self.username forKey:@"username"];
-	[encoder encodeObject:self.url forKey:@"url"];
-	[encoder encodeObject:self.title forKey:@"title"];
-	[encoder encodeObject:self.extended forKey:@"extended"];
-	if (self.dt) [encoder encodeObject:self.dt forKey:@"dt"];
-	[encoder encodeBool:self.replace forKey:@"replace"];
-	[encoder encodeBool:self.shared forKey:@"shared"];
-	[encoder encodeBool:self.toread forKey:@"toread"];
-	[encoder encodeObject:self.tags forKey:@"tags"];
-	[encoder encodeObject:self.lastPosted forKey:@"lastPosted"];
+	[encoder encodeObject:self.username forKey:PMPinboardAPIUsernameKey];
+	[encoder encodeObject:self.url forKey:PMPinboardAPIURLKey];
+	[encoder encodeObject:self.title forKey:PMPinboardAPITitleKey];
+	[encoder encodeObject:self.extended forKey:PMPinboardAPIExtendedKey];
+	if (self.dt) [encoder encodeObject:self.dt forKey:PMPinboardAPIDateTimeKey];
+	[encoder encodeBool:self.replace forKey:PMPinboardAPIReplaceKey];
+	[encoder encodeBool:self.shared forKey:PMPinboardAPISharedKey];
+	[encoder encodeBool:self.toread forKey:PMPinboardAPIToReadKey];
+	[encoder encodeObject:self.tags forKey:PMPinboardAPITagsKey];
+	[encoder encodeObject:self.lastPosted forKey:PMPinboardAPILastPostedKey];
 }
 
 + (BOOL)supportsSecureCoding {
@@ -195,7 +195,7 @@
 #pragma mark - KVC / KVO
 
 + (NSSet *)keyPathsForValuesAffectingPostable {
-	return [NSSet setWithArray:@[@"username", @"url", @"title"]];
+	return [NSSet setWithArray:@[PMPinboardAPIUsernameKey, PMPinboardAPIURLKey, PMPinboardAPITitleKey]];
 }
 
 @end
