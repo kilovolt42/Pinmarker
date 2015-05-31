@@ -30,6 +30,7 @@
 		278EF442185B71E2003A27D3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 278EF441185B71E2003A27D3 /* Images.xcassets */; };
 		278EF453185B71E2003A27D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 278EF451185B71E2003A27D3 /* InfoPlist.strings */; };
 		279251C1192800400010E257 /* PMBookmarkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 272338B618BCFB6800F80497 /* PMBookmarkTests.m */; };
+		27925F141B1BA389007F4927 /* UIView+Inspectables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27925F131B1BA389007F4927 /* UIView+Inspectables.swift */; };
 		279719D2189960A400D58BC7 /* PMSettingsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 279719D1189960A400D58BC7 /* PMSettingsTVC.m */; };
 		27B2041B19D363AF009FEAA1 /* PMPinboardService.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B2041A19D363AF009FEAA1 /* PMPinboardService.m */; };
 		27D2DC3418777A9B0054D187 /* PMBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D2DC3318777A9B0054D187 /* PMBookmark.m */; };
@@ -90,6 +91,8 @@
 		278EF447185B71E2003A27D3 /* PinmarkerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinmarkerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		278EF450185B71E2003A27D3 /* PinmarkerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PinmarkerTests-Info.plist"; sourceTree = "<group>"; };
 		278EF452185B71E2003A27D3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		27925F121B1BA388007F4927 /* Pinmarker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pinmarker-Bridging-Header.h"; sourceTree = "<group>"; };
+		27925F131B1BA389007F4927 /* UIView+Inspectables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Inspectables.swift"; sourceTree = "<group>"; };
 		279719D0189960A400D58BC7 /* PMSettingsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMSettingsTVC.h; sourceTree = "<group>"; };
 		279719D1189960A400D58BC7 /* PMSettingsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMSettingsTVC.m; sourceTree = "<group>"; };
 		27B2041919D363AF009FEAA1 /* PMPinboardService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMPinboardService.h; sourceTree = "<group>"; };
@@ -232,10 +235,12 @@
 				2781196B186A0516006B93AB /* NSURL+Pinmark.m */,
 				271FAF9718AA9F1E0011C41E /* NSString+Pinmark.h */,
 				271FAF9818AA9F1E0011C41E /* NSString+Pinmark.m */,
+				27925F131B1BA389007F4927 /* UIView+Inspectables.swift */,
 				278EF42E185B71E2003A27D3 /* Pinmarker-Info.plist */,
 				278EF42F185B71E2003A27D3 /* InfoPlist.strings */,
 				278EF432185B71E2003A27D3 /* main.m */,
 				278EF434185B71E2003A27D3 /* Pinmarker-Prefix.pch */,
+				27925F121B1BA388007F4927 /* Pinmarker-Bridging-Header.h */,
 				2703C542185FD16100570F0C /* Bookmarklet.js */,
 				270C4A4718628CD3000FC061 /* Podfile */,
 				AE2FE771354E43FD945BDE89 /* Pods.xcconfig */,
@@ -431,6 +436,7 @@
 				27409CAB18CBDAAE006C97BB /* PMAccountStore.m in Sources */,
 				270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */,
 				27DA5B501885BB0500AEE0F5 /* PMAddAccountVC.m in Sources */,
+				27925F141B1BA389007F4927 /* UIView+Inspectables.swift in Sources */,
 				272C5CD3186DFF3E0079B95E /* PMTagCVCell.m in Sources */,
 				277AA7B21896DC200015A3EF /* PMInputAccessoryView.m in Sources */,
 				2781196C186A0516006B93AB /* NSURL+Pinmark.m in Sources */,
@@ -570,6 +576,7 @@
 			baseConfigurationReference = AE2FE771354E43FD945BDE89 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 6;
@@ -586,6 +593,7 @@
 				);
 				INFOPLIST_FILE = "Pinmark/Pinmarker-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
@@ -601,6 +609,8 @@
 				);
 				PRODUCT_NAME = Pinmarker;
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Pinmark/Pinmarker-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
@@ -612,6 +622,7 @@
 			baseConfigurationReference = AE2FE771354E43FD945BDE89 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 6;
@@ -628,6 +639,7 @@
 				);
 				INFOPLIST_FILE = "Pinmark/Pinmarker-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -644,6 +656,7 @@
 				);
 				PRODUCT_NAME = Pinmarker;
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Pinmark/Pinmarker-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
