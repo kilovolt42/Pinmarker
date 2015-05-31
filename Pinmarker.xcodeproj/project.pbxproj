@@ -18,6 +18,7 @@
 		272C5CD5186F626D0079B95E /* PMTagCVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 272C5CD4186F626D0079B95E /* PMTagCVCell.xib */; };
 		27409CAB18CBDAAE006C97BB /* PMAccountStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 27409CAA18CBDAAE006C97BB /* PMAccountStore.m */; };
 		27409CB118CC1048006C97BB /* PMTagStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 27409CB018CC1048006C97BB /* PMTagStore.m */; };
+		274FE8D61AF5D28C00497A6C /* PinmarkerLaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 274FE8D51AF5D28C00497A6C /* PinmarkerLaunchScreen.xib */; };
 		277AA7AF1896DC080015A3EF /* PMInputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 277AA7AE1896DC080015A3EF /* PMInputAccessoryView.xib */; };
 		277AA7B21896DC200015A3EF /* PMInputAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 277AA7B11896DC200015A3EF /* PMInputAccessoryView.m */; };
 		277CDA0019B7C8A500A04082 /* PMTagsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 277CD9FF19B7C8A500A04082 /* PMTagsController.m */; };
@@ -69,6 +70,7 @@
 		27409CAA18CBDAAE006C97BB /* PMAccountStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMAccountStore.m; sourceTree = "<group>"; };
 		27409CAF18CC1048006C97BB /* PMTagStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMTagStore.h; sourceTree = "<group>"; };
 		27409CB018CC1048006C97BB /* PMTagStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMTagStore.m; sourceTree = "<group>"; };
+		274FE8D51AF5D28C00497A6C /* PinmarkerLaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PinmarkerLaunchScreen.xib; sourceTree = "<group>"; };
 		277AA7AE1896DC080015A3EF /* PMInputAccessoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMInputAccessoryView.xib; sourceTree = "<group>"; };
 		277AA7B01896DC200015A3EF /* PMInputAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMInputAccessoryView.h; sourceTree = "<group>"; };
 		277AA7B11896DC200015A3EF /* PMInputAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMInputAccessoryView.m; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 		278EF42D185B71E2003A27D3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				274FE8D51AF5D28C00497A6C /* PinmarkerLaunchScreen.xib */,
 				270BA16419E026C500BE9743 /* PinboardAPI.plist */,
 				270BA16619E039B000BE9743 /* PMConstants.h */,
 				270BA16719E039B000BE9743 /* PMConstants.m */,
@@ -319,6 +322,9 @@
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = kilovolt42;
 				TargetAttributes = {
+					278EF422185B71E2003A27D3 = {
+						DevelopmentTeam = 793AL65W3G;
+					};
 					278EF446185B71E2003A27D3 = {
 						TestTargetID = 278EF422185B71E2003A27D3;
 					};
@@ -354,6 +360,7 @@
 				278EF442185B71E2003A27D3 /* Images.xcassets in Resources */,
 				278EF43A185B71E2003A27D3 /* Pinmark.storyboard in Resources */,
 				272C5CD5186F626D0079B95E /* PMTagCVCell.xib in Resources */,
+				274FE8D61AF5D28C00497A6C /* PinmarkerLaunchScreen.xib in Resources */,
 				278EF431185B71E2003A27D3 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -563,7 +570,6 @@
 			baseConfigurationReference = AE2FE771354E43FD945BDE89 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 6;
@@ -606,7 +612,6 @@
 			baseConfigurationReference = AE2FE771354E43FD945BDE89 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 6;
