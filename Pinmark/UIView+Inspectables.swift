@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 kilovolt42. All rights reserved.
 //
 
+import UIKit
+
 extension UIView {
 	@IBInspectable var accessibilityID: String {
 		get { return accessibilityIdentifier }
