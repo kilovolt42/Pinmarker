@@ -18,6 +18,9 @@
                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="Label"/>
+                        </userDefinedRuntimeAttributes>
                     </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -28,6 +31,9 @@
                 <constraint firstAttribute="trailing" secondItem="kBT-fu-Awx" secondAttribute="trailing" id="eAX-4s-tbP" userLabel="LabelRight"/>
                 <constraint firstItem="kBT-fu-Awx" firstAttribute="leading" secondItem="Njm-Fa-eCg" secondAttribute="leading" id="ud0-TQ-oyY" userLabel="LabelLeft"/>
             </constraints>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="TagCVCell"/>
+            </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="label" destination="kBT-fu-Awx" id="RQq-IY-cfE"/>
             </connections>

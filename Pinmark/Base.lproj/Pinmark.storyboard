@@ -29,6 +29,9 @@
                                                     </constraints>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="URL" returnKeyType="next"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="URLTextField"/>
+                                                    </userDefinedRuntimeAttributes>
                                                     <connections>
                                                         <action selector="URLTextFieldEditingChanged:" destination="FsJ-qN-eCd" eventType="editingChanged" id="6Pb-2m-EIs"/>
                                                         <outlet property="delegate" destination="FsJ-qN-eCd" id="tpn-FE-flT"/>
@@ -42,6 +45,9 @@
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="Label"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                             <constraints>
@@ -52,7 +58,13 @@
                                                 <constraint firstItem="J6f-bL-vpc" firstAttribute="leading" secondItem="mS5-Zy-AXs" secondAttribute="leading" constant="15" id="sXM-Cd-d9l" userLabel="LabelLeft"/>
                                                 <constraint firstAttribute="trailing" secondItem="WYr-1Q-haB" secondAttribute="trailing" constant="15" id="tA9-z4-btF" userLabel="URLTextFieldRight"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
+                                            </userDefinedRuntimeAttributes>
                                         </tableViewCellContentView>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="URLCell"/>
+                                        </userDefinedRuntimeAttributes>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Description Cell" id="Dt8-U4-mVg" userLabel="DescriptionCell">
                                         <rect key="frame" x="0.0" y="166" width="320" height="44"/>
@@ -65,6 +77,9 @@
                                                     <rect key="frame" x="15" y="0.0" width="570" height="43"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="next"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="TitleTextField"/>
+                                                    </userDefinedRuntimeAttributes>
                                                     <connections>
                                                         <action selector="titleTextFieldEditingChanged:" destination="FsJ-qN-eCd" eventType="editingChanged" id="evZ-1F-cuM"/>
                                                         <outlet property="delegate" destination="FsJ-qN-eCd" id="Rmc-2J-Vfw"/>
@@ -77,7 +92,13 @@
                                                 <constraint firstAttribute="bottom" secondItem="XKO-Sk-Xpd" secondAttribute="bottom" id="sN8-jr-vCg" userLabel="TitleTextFieldBottom"/>
                                                 <constraint firstAttribute="trailing" secondItem="XKO-Sk-Xpd" secondAttribute="trailing" constant="15" id="uqo-BW-sDR" userLabel="TitleTextFieldRight"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
+                                            </userDefinedRuntimeAttributes>
                                         </tableViewCellContentView>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="DescriptionCell"/>
+                                        </userDefinedRuntimeAttributes>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tags Cell" rowHeight="88" id="Nya-DV-bfQ" userLabel="TagsCell">
                                         <rect key="frame" x="0.0" y="210" width="320" height="88"/>
@@ -99,6 +120,9 @@
                                                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                     </collectionViewFlowLayout>
                                                     <cells/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="CollectionView"/>
+                                                    </userDefinedRuntimeAttributes>
                                                     <connections>
                                                         <outlet property="dataSource" destination="qcK-HP-c8D" id="Yee-TG-tWa"/>
                                                         <outlet property="delegate" destination="qcK-HP-c8D" id="kDn-sG-Mij"/>
@@ -111,6 +135,9 @@
                                                     </constraints>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="TagsTextField"/>
+                                                    </userDefinedRuntimeAttributes>
                                                     <connections>
                                                         <action selector="tagsTextFieldEditingChanged:" destination="qcK-HP-c8D" eventType="editingChanged" id="jOu-m9-5ip"/>
                                                         <outlet property="delegate" destination="qcK-HP-c8D" id="y06-66-K3W"/>
@@ -125,7 +152,13 @@
                                                 <constraint firstAttribute="trailing" secondItem="KKd-Mm-SOm" secondAttribute="trailing" constant="15" id="bqb-LL-HPg" userLabel="TagsTextFieldRight"/>
                                                 <constraint firstItem="fjA-FE-hIj" firstAttribute="leading" secondItem="42E-Nl-Oru" secondAttribute="leading" id="e4b-Tc-6ND" userLabel="CollectionViewLeft"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
+                                            </userDefinedRuntimeAttributes>
                                         </tableViewCellContentView>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="TagsCell"/>
+                                        </userDefinedRuntimeAttributes>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Extended Cell" id="HJE-9x-2VN" userLabel="ExtendedCell">
                                         <rect key="frame" x="0.0" y="298" width="320" height="44"/>
@@ -138,6 +171,9 @@
                                                     <rect key="frame" x="15" y="0.0" width="570" height="43"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="DescriptionTextField"/>
+                                                    </userDefinedRuntimeAttributes>
                                                     <connections>
                                                         <action selector="extendedTextFieldEditingChanged:" destination="FsJ-qN-eCd" eventType="editingChanged" id="QNE-xH-dzx"/>
                                                         <outlet property="delegate" destination="FsJ-qN-eCd" id="MvP-lX-F6o"/>
@@ -150,7 +186,13 @@
                                                 <constraint firstItem="b1h-mU-fBg" firstAttribute="top" secondItem="9dm-8T-Gw7" secondAttribute="top" id="CL0-Xv-dxR" userLabel="DescriptionTextFieldTop"/>
                                                 <constraint firstItem="b1h-mU-fBg" firstAttribute="leading" secondItem="9dm-8T-Gw7" secondAttribute="leading" constant="15" id="cBA-YO-FH6" userLabel="DescriptionTextFieldLeft"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
+                                            </userDefinedRuntimeAttributes>
                                         </tableViewCellContentView>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ExtendedCell"/>
+                                        </userDefinedRuntimeAttributes>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="To Read Cell" rowHeight="48" id="rsj-Dw-eBk" userLabel="ToReadCell">
                                         <rect key="frame" x="0.0" y="342" width="320" height="48"/>
@@ -162,6 +204,9 @@
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="uI2-u2-kLw">
                                                     <rect key="frame" x="536" y="8" width="51" height="31"/>
                                                     <color key="onTintColor" red="0.100145833" green="0.57324931570000004" blue="0.50025661499999996" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="Switch"/>
+                                                    </userDefinedRuntimeAttributes>
                                                     <connections>
                                                         <action selector="toggledToReadSwitch:" destination="FsJ-qN-eCd" eventType="valueChanged" id="irx-qt-MgB"/>
                                                     </connections>
@@ -171,6 +216,9 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ReadLaterLabel"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                             <constraints>
@@ -180,7 +228,13 @@
                                                 <constraint firstItem="uI2-u2-kLw" firstAttribute="top" secondItem="aur-1S-hku" secondAttribute="top" constant="8" id="Gx8-fy-kPX" userLabel="SwitchTop"/>
                                                 <constraint firstItem="pwU-Cq-HVs" firstAttribute="leading" secondItem="aur-1S-hku" secondAttribute="leading" constant="15" id="qB8-Ho-dV9" userLabel="ReadLaterLabelLeft"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
+                                            </userDefinedRuntimeAttributes>
                                         </tableViewCellContentView>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ToReadCell"/>
+                                        </userDefinedRuntimeAttributes>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Shared Cell" rowHeight="48" id="jWV-Zc-s2d" userLabel="SharedCell">
                                         <rect key="frame" x="0.0" y="390" width="320" height="48"/>
@@ -192,6 +246,9 @@
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="W9p-Du-tUZ">
                                                     <rect key="frame" x="536" y="8" width="51" height="31"/>
                                                     <color key="onTintColor" red="0.100145833" green="0.57324931570000004" blue="0.50025661499999996" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="Switch"/>
+                                                    </userDefinedRuntimeAttributes>
                                                     <connections>
                                                         <action selector="toggledSharedSwitch:" destination="FsJ-qN-eCd" eventType="valueChanged" id="KSc-8M-nBx"/>
                                                     </connections>
@@ -200,6 +257,9 @@
                                                     <rect key="frame" x="15" y="13" width="56" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="PrivateLabel"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                             <constraints>
@@ -209,11 +269,20 @@
                                                 <constraint firstAttribute="trailing" secondItem="W9p-Du-tUZ" secondAttribute="trailing" constant="15" id="TGU-Je-4sz" userLabel="SwitchRight"/>
                                                 <constraint firstAttribute="bottom" secondItem="W9p-Du-tUZ" secondAttribute="bottom" constant="8" id="zvA-hV-Hya" userLabel="SwitchBottom"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
+                                            </userDefinedRuntimeAttributes>
                                         </tableViewCellContentView>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="SharedCell"/>
+                                        </userDefinedRuntimeAttributes>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="TableView"/>
+                        </userDefinedRuntimeAttributes>
                         <connections>
                             <outlet property="dataSource" destination="FsJ-qN-eCd" id="S0N-gG-td4"/>
                             <outlet property="delegate" destination="FsJ-qN-eCd" id="OOl-Im-AWk"/>
@@ -234,6 +303,9 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="TitleButton"/>
+                            </userDefinedRuntimeAttributes>
                         </button>
                         <barButtonItem key="rightBarButtonItem" enabled="NO" title="Post" style="done" id="K3p-4H-lk9" userLabel="PostButton">
                             <connections>
@@ -287,9 +359,18 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="TitleLabel"/>
+                                            </userDefinedRuntimeAttributes>
                                         </label>
                                     </subviews>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
+                                    </userDefinedRuntimeAttributes>
                                 </tableViewCellContentView>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="AccountCell"/>
+                                </userDefinedRuntimeAttributes>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Add Account Cell" textLabel="IMK-qh-8Mj" style="IBUITableViewCellStyleDefault" id="FrC-Vf-Ts4" userLabel="AddAccountCell">
                                 <rect key="frame" x="0.0" y="163" width="320" height="44"/>
@@ -304,9 +385,18 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="AddPinboardAccountLabel"/>
+                                            </userDefinedRuntimeAttributes>
                                         </label>
                                     </subviews>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
+                                    </userDefinedRuntimeAttributes>
                                 </tableViewCellContentView>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="AddAccountCell"/>
+                                </userDefinedRuntimeAttributes>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="About Cell" textLabel="B3w-ub-881" style="IBUITableViewCellStyleDefault" id="ASE-MX-qlc" userLabel="AboutCell">
                                 <rect key="frame" x="0.0" y="207" width="320" height="44"/>
@@ -321,9 +411,18 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="AboutLabel"/>
+                                            </userDefinedRuntimeAttributes>
                                         </label>
                                     </subviews>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
+                                    </userDefinedRuntimeAttributes>
                                 </tableViewCellContentView>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="AboutCell"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="Svs-dh-TVx" kind="show" id="GNW-ah-I6v"/>
                                 </connections>
@@ -341,6 +440,9 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="TitleLabel"/>
+                                            </userDefinedRuntimeAttributes>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="67T-3u-m24" userLabel="SubtitleLabel">
                                             <rect key="frame" x="15" y="25" width="43" height="15"/>
@@ -348,9 +450,18 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="SubtitleLabel"/>
+                                            </userDefinedRuntimeAttributes>
                                         </label>
                                     </subviews>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
+                                    </userDefinedRuntimeAttributes>
                                 </tableViewCellContentView>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="EnableTextExpanderCell"/>
+                                </userDefinedRuntimeAttributes>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Disable TextExpander Cell" id="0TN-4I-SIQ" userLabel="DisableTextExpanderCell">
                                 <rect key="frame" x="0.0" y="295" width="320" height="44"/>
@@ -363,15 +474,27 @@
                                             <rect key="frame" x="15" y="11" width="175" height="22"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <nil key="highlightedColor"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="DisableTextExpanderLabel"/>
+                                            </userDefinedRuntimeAttributes>
                                         </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="ZpE-7T-waX" firstAttribute="leading" secondItem="06w-i9-eUz" secondAttribute="leading" constant="15" id="OPW-z4-vyx" userLabel="DisableTextExpanderLabelLeft"/>
                                         <constraint firstAttribute="centerY" secondItem="ZpE-7T-waX" secondAttribute="centerY" id="cSg-vk-5aL" userLabel="DisableTextExpanderLabelCenterY"/>
                                     </constraints>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
+                                    </userDefinedRuntimeAttributes>
                                 </tableViewCellContentView>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="DisableTextExpanderCell"/>
+                                </userDefinedRuntimeAttributes>
                             </tableViewCell>
                         </prototypes>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="TableView"/>
+                        </userDefinedRuntimeAttributes>
                         <connections>
                             <outlet property="dataSource" destination="YhT-tQ-Dwe" id="Pbg-f9-NW1"/>
                             <outlet property="delegate" destination="YhT-tQ-Dwe" id="WBO-qf-kp0"/>
@@ -491,6 +614,9 @@ SOFTWARE.</string>
                                 </attributedString>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="TextView"/>
+                                </userDefinedRuntimeAttributes>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -500,6 +626,9 @@ SOFTWARE.</string>
                             <constraint firstAttribute="trailing" secondItem="RpL-hV-6vP" secondAttribute="trailing" id="jn1-qh-mSk" userLabel="TextViewRight"/>
                             <constraint firstItem="RpL-hV-6vP" firstAttribute="top" secondItem="rpf-84-FQ4" secondAttribute="top" id="sNR-Ul-fKH" userLabel="TextViewTop"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="View"/>
+                        </userDefinedRuntimeAttributes>
                     </view>
                     <navigationItem key="navigationItem" title="About" id="2hJ-NF-6DS"/>
                 </viewController>
@@ -520,6 +649,9 @@ SOFTWARE.</string>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </textAttributes>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="NavigationBar"/>
+                        </userDefinedRuntimeAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -538,6 +670,9 @@ SOFTWARE.</string>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="hhb-uc-MO2" userLabel="NavigationBar">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="NavigationBar"/>
+                        </userDefinedRuntimeAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

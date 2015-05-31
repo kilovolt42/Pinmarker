@@ -33,11 +33,17 @@
                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="WelcomeLabel"/>
+                    </userDefinedRuntimeAttributes>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To start using Pinmark add a Pinboard account:" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Xdt-k2-Y62" userLabel="InstructionsLabel">
                     <rect key="frame" x="20" y="78" width="560" height="41"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="InstructionsLabel"/>
+                    </userDefinedRuntimeAttributes>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pqz-QE-yHH" userLabel="CredentialsView">
                     <rect key="frame" x="0.0" y="139" width="600" height="187"/>
@@ -46,6 +52,9 @@
                             <rect key="frame" x="20" y="99" width="560" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="APITokenTextField"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="tbh-ZN-pfK"/>
                             </connections>
@@ -54,11 +63,17 @@
                             <rect key="frame" x="294" y="76" width="12" height="15"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                             <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="OrLabel"/>
+                            </userDefinedRuntimeAttributes>
                         </label>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="TfH-5i-efm" userLabel="UsernameTextField">
                             <rect key="frame" x="20" y="0.0" width="560" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="UsernameTextField"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="aX1-Wf-aeW"/>
                             </connections>
@@ -67,6 +82,9 @@
                             <rect key="frame" x="20" y="38" width="560" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" secureTextEntry="YES"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="PasswordTextField"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="SQF-ve-IMF"/>
                             </connections>
@@ -77,6 +95,9 @@
                             <state key="normal">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="InfoButton"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="informationButtonPressed" destination="-1" eventType="touchUpInside" id="0vy-qo-073"/>
                             </connections>
@@ -87,6 +108,9 @@
                                 <color key="titleColor" red="0.100145833" green="0.57324931570000004" blue="0.50025661499999996" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="AddAccountButton"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="submitButtonPressed" destination="-1" eventType="touchUpInside" id="n1B-E4-4nn"/>
                             </connections>
@@ -111,15 +135,24 @@
                         <constraint firstItem="XVb-Pe-knQ" firstAttribute="top" secondItem="TfH-5i-efm" secondAttribute="bottom" constant="8" id="okw-f0-Y09" userLabel="PasswordTextFieldTop"/>
                         <constraint firstItem="5pN-a2-F1Z" firstAttribute="top" secondItem="XVb-Pe-knQ" secondAttribute="bottom" constant="8" id="qS6-Fv-RKz" userLabel="OrLabelTop"/>
                     </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="CredentialsView"/>
+                    </userDefinedRuntimeAttributes>
                 </view>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="n3I-HU-F3M" userLabel="GrayActivityIndicator">
                     <rect key="frame" x="290" y="89" width="20" height="20"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="GrayActivityIndicator"/>
+                    </userDefinedRuntimeAttributes>
                 </activityIndicatorView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nzN-Vm-c45" userLabel="DeleteAccountButton">
                     <rect key="frame" x="248" y="334" width="105" height="30"/>
                     <state key="normal" title="Delete Account">
                         <color key="titleColor" red="1" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="DeleteAccountButton"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="deleteButtonPressed" destination="-1" eventType="touchUpInside" id="r9V-mR-gcu"/>
                     </connections>
@@ -132,6 +165,9 @@
                         <color key="titleColor" red="0.100145833" green="0.57324931570000004" blue="0.50025661499999996" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="Search1PasswordButton"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="search1PasswordButtonPressed" destination="-1" eventType="touchUpInside" id="Ryx-B0-ZhX"/>
                     </connections>
@@ -156,6 +192,9 @@
                 <constraint firstItem="Pqz-QE-yHH" firstAttribute="top" secondItem="Xdt-k2-Y62" secondAttribute="bottom" constant="20" id="zuV-aK-e5h" userLabel="CredentialsViewTop"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="View"/>
+            </userDefinedRuntimeAttributes>
             <point key="canvasLocation" x="532" y="432"/>
         </view>
     </objects>
