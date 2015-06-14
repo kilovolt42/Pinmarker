@@ -98,6 +98,7 @@
 		27B2041919D363AF009FEAA1 /* PMPinboardService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMPinboardService.h; sourceTree = "<group>"; };
 		27B2041A19D363AF009FEAA1 /* PMPinboardService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMPinboardService.m; sourceTree = "<group>"; };
 		27B2042119D476FD009FEAA1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		27B603C01B2E243B003CCB14 /* PinmarkerTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "PinmarkerTests-Bridging-Header.h"; path = "../Pinmark/PinmarkerTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		27D2DC3218777A9B0054D187 /* PMBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMBookmark.h; sourceTree = "<group>"; };
 		27D2DC3318777A9B0054D187 /* PMBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBookmark.m; sourceTree = "<group>"; };
 		27DA5B4E1885BB0500AEE0F5 /* PMAddAccountVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMAddAccountVC.h; sourceTree = "<group>"; };
@@ -263,6 +264,7 @@
 			children = (
 				278EF450185B71E2003A27D3 /* PinmarkerTests-Info.plist */,
 				278EF451185B71E2003A27D3 /* InfoPlist.strings */,
+				27B603C01B2E243B003CCB14 /* PinmarkerTests-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -668,6 +670,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Pinmarker.app/Pinmarker";
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -680,6 +683,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "PinmarkTests/PinmarkerTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -691,6 +695,8 @@
 					XCTest,
 				);
 				PRODUCT_NAME = PinmarkerTests;
+				SWIFT_OBJC_BRIDGING_HEADER = "Pinmark/PinmarkerTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -700,6 +706,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Pinmarker.app/Pinmarker";
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -708,6 +715,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Pinmark/Pinmarker-Prefix.pch";
 				INFOPLIST_FILE = "PinmarkTests/PinmarkerTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -718,6 +726,7 @@
 					XCTest,
 				);
 				PRODUCT_NAME = PinmarkerTests;
+				SWIFT_OBJC_BRIDGING_HEADER = "Pinmark/PinmarkerTests-Bridging-Header.h";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
