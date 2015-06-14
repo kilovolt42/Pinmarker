@@ -324,6 +324,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = PM;
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = kilovolt42;
 				TargetAttributes = {
