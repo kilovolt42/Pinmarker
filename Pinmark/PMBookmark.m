@@ -195,7 +195,7 @@
 #pragma mark - KVC / KVO
 
 + (NSSet *)keyPathsForValuesAffectingPostable {
-	return [NSSet setWithArray:@[PMPinboardAPIUsernameKey, PMPinboardAPIURLKey, PMPinboardAPITitleKey]];
+	return [NSSet setWithArray:@[@"username", @"url", @"title"]];
 }
 
 @end
