@@ -327,7 +327,7 @@
 			attributes = {
 				CLASSPREFIX = PM;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = kilovolt42;
 				TargetAttributes = {
 					278EF422185B71E2003A27D3 = {
@@ -519,6 +519,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -610,6 +611,7 @@
 					"-framework",
 					SystemConfiguration,
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kilovolt42.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Pinmarker;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Pinmark/Pinmarker-Bridging-Header.h";
@@ -657,6 +659,7 @@
 					"-framework",
 					UIKit,
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kilovolt42.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Pinmarker;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Pinmark/Pinmarker-Bridging-Header.h";
@@ -694,6 +697,7 @@
 					"-framework",
 					XCTest,
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kilovolt42.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = PinmarkerTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "Pinmark/PinmarkerTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -725,6 +729,7 @@
 					"-framework",
 					XCTest,
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kilovolt42.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = PinmarkerTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "Pinmark/PinmarkerTests-Bridging-Header.h";
 				TEST_HOST = "$(BUNDLE_LOADER)";
