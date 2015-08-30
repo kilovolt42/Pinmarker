@@ -170,12 +170,35 @@
 	NSString *username = self.usernameTextField.text;
 	NSString *password = self.passwordTextField.text;
 	NSString *token = self.tokenTextField.text;
+
+	BOOL hasUsernamePassword = username && password && ![username isEqualToString:@""] && ![password isEqualToString:@""];
+	BOOL hasAPIToken = token && ![token isEqualToString:@""];
+
+	/*
+	 * This value should be YES if the request was made using the API token, or
+	 * NO if the request was made using the username and password.
+	 */
+	__block BOOL requestWithAPIToken = NO;
 	
 	BOOL asDefault = [self.delegate shouldAddAccountAsDefault];
 	
-	void (^success)(NSString *) = ^(NSString *apiToken) {
+	void (^success)(NSDictionary *) = ^(NSDictionary *responseDictionary) {
 		[self deactiveActivityIndicator];
-		[store updateAccountForAPIToken:apiToken asDefault:asDefault];
+
+		/*
+		 * We need to store the full token in the format `username:number`.
+		 * However, the Pinboard API only returns the `number` part. In order
+		 * for this call to succeed we must either pass in a complete
+		 * `username:number` token or the username and password. Either way we
+		 * have enough information to store the full token.
+		 */
+		if (requestWithAPIToken) {
+			[store updateAccountForAPIToken:token asDefault:asDefault];
+		} else {
+			NSString *tokenNumber = responseDictionary[PMPinboardAPIResultKey];
+			NSString *fullToken = [username stringByAppendingString:[NSString stringWithFormat:@":%@", tokenNumber]];
+			[store updateAccountForAPIToken:fullToken asDefault:asDefault];
+		}
 		
 		if (self.updatingExistingAccount) {
 			[self.delegate didFinishUpdatingAccount];
@@ -206,15 +229,17 @@
 	
 	void (^usernamePasswordFailure)(NSError *) = ^(NSError *error) {
 		if (token && ![token isEqualToString:@""]) {
+			requestWithAPIToken = YES;
 			[PMPinboardService requestAPITokenForAPIToken:token success:success failure:failure];
 		} else {
 			failure(error);
 		}
 	};
 	
-	if (username && password && ![username isEqualToString:@""] && ![password isEqualToString:@""]) {
+	if (hasUsernamePassword) {
 		[PMPinboardService requestAPITokenForUsername:username password:password success:success failure:usernamePasswordFailure];
-	} else if (token && ![token isEqualToString:@""]) {
+	} else if (hasAPIToken) {
+		requestWithAPIToken = YES;
 		[PMPinboardService requestAPITokenForAPIToken:token success:success failure:failure];
 	} else {
 		[self deactiveActivityIndicator];

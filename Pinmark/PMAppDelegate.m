@@ -50,8 +50,8 @@
 	for (NSString *username in usernames) {
 		NSString *token = [[PMAccountStore sharedStore] authTokenForUsername:username];
 		if (token) {
-			void (^success)(NSDictionary *) = ^(NSDictionary *tags) {
-				NSArray *sortedTags = [[[tags keysSortedByValueUsingSelector:@selector(compare:)] reverseObjectEnumerator] allObjects];
+			void (^success)(NSDictionary *) = ^(NSDictionary *responseDictionary) {
+				NSArray *sortedTags = [[[responseDictionary keysSortedByValueUsingSelector:@selector(compare:)] reverseObjectEnumerator] allObjects];
 				[[PMTagStore sharedStore] updateTags:sortedTags username:username];
 			};
 			

@@ -34,8 +34,8 @@ static const NSUInteger PMSharedCellIndex = 5;
 @property (nonatomic, weak) IBOutlet UISwitch *toReadSwitch;
 @property (nonatomic, weak) IBOutlet UISwitch *sharedSwitch;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *tagsVerticalConstraint;
-@property (nonatomic, copy) void (^xSuccess)(id);
-@property (nonatomic, copy) void (^xFailure)(NSError *, id);
+@property (nonatomic, copy) void (^xSuccess)(NSDictionary *);
+@property (nonatomic, copy) void (^xFailure)(NSError *);
 @property (nonatomic) PMBookmark *bookmark;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *postButton;
 
@@ -157,36 +157,36 @@ static const NSUInteger PMSharedCellIndex = 5;
 	[indicatorButton startAnimating];
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicatorButton];
 	
-	NSDictionary *responseDictionary = @{ @"missing url" : @"Invalid URL",
-										  @"must provide title" : @"Missing Title",
-										  @"item already exists" : @"Already Bookmarked" };
+	NSDictionary *resultCodeMap = @{ @"missing url" : @"Invalid URL",
+									 @"must provide title" : @"Missing Title",
+									 @"item already exists" : @"Already Bookmarked" };
 	
-	void (^success)(id) = ^(id responseObject) {
+	void (^success)(NSDictionary *) = ^(NSDictionary *responseDictionary) {
 		self.navigationItem.rightBarButtonItem = sender;
 		[self fieldsEnabled:YES];
-		[self reportSuccess];
-		
-		[[PMBookmarkStore sharedStore] discardBookmark:self.bookmark];
-		self.bookmark = [[PMBookmarkStore sharedStore] lastBookmark];
-		
-		if (self.xSuccess) {
-			self.xSuccess(responseObject);
+
+		NSString *resultCode = responseDictionary[PMPinboardAPIResultCodeKey];
+		if ([resultCode isEqualToString:@"done"]) {
+			[self reportSuccess];
+			
+			[[PMBookmarkStore sharedStore] discardBookmark:self.bookmark];
+			self.bookmark = [[PMBookmarkStore sharedStore] lastBookmark];
+
+			if (self.xSuccess) {
+				self.xSuccess(responseDictionary);
+			}
+		} else {
+			[self reportErrorWithMessage:resultCodeMap[resultCode]];
 		}
 	};
 	
-	void (^failure)(NSError *, id) = ^(NSError *error, id responseObject) {
+	void (^failure)(NSError *) = ^(NSError *error) {
 		self.navigationItem.rightBarButtonItem = sender;
 		[self fieldsEnabled:YES];
-		
-		if (responseObject) {
-			NSString *resultCode = responseObject[PMPinboardAPIResultCodeKey];
-			[self reportErrorWithMessage:responseDictionary[resultCode]];
-		} else {
-			[self reportErrorWithMessage:nil];
-		}
+		[self reportErrorWithMessage:nil];
 		
 		if (self.xFailure) {
-			self.xFailure(error, responseObject);
+			self.xFailure(error);
 		}
 	};
 	
@@ -254,13 +254,13 @@ static const NSUInteger PMSharedCellIndex = 5;
 	
 	if ([host isEqualToString:@"x-callback-url"]) {
 		if (parameters[@"x-success"]) {
-			self.xSuccess = ^void(id responseObject) {
+			self.xSuccess = ^void(NSDictionary *responseDictionary) {
 				weakSelf.bookmark = [bookmarkStore lastBookmark];
 				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:parameters[@"x-success"]]];
 			};
 		}
 		if (parameters[@"x-error"]) {
-			self.xFailure = ^void(NSError *error, id responseObject) {
+			self.xFailure = ^void(NSError *error) {
 				NSString *xError = [NSString stringWithFormat:@"%@?errorCode=%ld&errorMessage=%@", parameters[@"x-error"], (long)[error code], [error domain]];
 				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:xError]];
 			};
