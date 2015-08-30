@@ -57,12 +57,8 @@
 	[super viewDidLoad];
 	
 	[self deactiveActivityIndicator];
-	
-	if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"onepassword://search"]]) {
-		self.search1PasswordButton.hidden = NO;
-	} else {
-		self.search1PasswordButton.hidden = YES;
-	}
+
+	self.search1PasswordButton.hidden = YES;
 	
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
 		UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
@@ -240,7 +236,6 @@
 }
 
 - (IBAction)search1PasswordButtonPressed {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"onepassword://search/pinboard"]];
 }
 
 - (IBAction)informationButtonPressed {
