@@ -15,13 +15,18 @@
 		return [NSURL URLWithString:URLString];
 	}
 
+	NSMutableDictionary *encodedParameters = [NSMutableDictionary new];
+	for (NSString *key in parameters.allKeys) {
+		encodedParameters[key] = [parameters[key] urlEncodeUsingEncoding:NSUTF8StringEncoding];
+	}
+
 	NSMutableString *queryString = [NSMutableString stringWithString:@"?"];
 	BOOL prependAmpersand = NO;
-	for (NSString *key in parameters.allKeys) {
+	for (NSString *key in encodedParameters.allKeys) {
 		if (prependAmpersand) {
 			[queryString appendString:@"&"];
 		}
-		[queryString appendString:[NSString stringWithFormat:@"%@=%@", key, parameters[key]]];
+		[queryString appendString:[NSString stringWithFormat:@"%@=%@", key, encodedParameters[key]]];
 		prependAmpersand = YES;
 	}
 
