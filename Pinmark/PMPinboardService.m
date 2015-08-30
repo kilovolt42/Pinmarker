@@ -24,8 +24,8 @@ static NSDictionary *PMPinboardAPIMethods;
 
 + (void)requestAPITokenForUsername:(NSString *)username password:(NSString *)password success:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
 	NSString *methodFormat = PMPinboardAPIMethods[PMPinboardAPIMethodBasicAuth];
-	username = [username urlEncodeUsingEncoding:NSUTF8StringEncoding];
-	password = [password urlEncodeUsingEncoding:NSUTF8StringEncoding];
+	username = [username stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLUserAllowedCharacterSet]];
+	password = [password stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPasswordAllowedCharacterSet]];
 	
 	NSString *method = [NSString stringWithFormat:methodFormat, username, password];
 	NSDictionary *parameters = @{ PMPinboardAPIFormatKey: @"json" };

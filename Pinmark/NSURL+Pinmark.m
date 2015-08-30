@@ -15,18 +15,16 @@
 		return [NSURL URLWithString:URLString];
 	}
 
-	NSMutableDictionary *encodedParameters = [NSMutableDictionary new];
-	for (NSString *key in parameters.allKeys) {
-		encodedParameters[key] = [parameters[key] urlEncodeUsingEncoding:NSUTF8StringEncoding];
-	}
+	NSCharacterSet *queryCharacters = [NSCharacterSet URLQueryAllowedCharacterSet];
 
 	NSMutableString *queryString = [NSMutableString stringWithString:@"?"];
 	BOOL prependAmpersand = NO;
-	for (NSString *key in encodedParameters.allKeys) {
+	for (NSString *key in parameters.allKeys) {
 		if (prependAmpersand) {
 			[queryString appendString:@"&"];
 		}
-		[queryString appendString:[NSString stringWithFormat:@"%@=%@", key, encodedParameters[key]]];
+		NSString *parameter = [parameters[key] stringByAddingPercentEncodingWithAllowedCharacters:queryCharacters];
+		[queryString appendString:[NSString stringWithFormat:@"%@=%@", key, parameter]];
 		prependAmpersand = YES;
 	}
 
@@ -37,8 +35,8 @@
 	NSMutableDictionary *parameters = [NSMutableDictionary new];
 	for (NSString *parameter in [[self query] componentsSeparatedByString:@"&"]) {
 		NSArray *fieldValuePair = [parameter componentsSeparatedByString:@"="];
-		NSString *field = [fieldValuePair[0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-		NSString *value = [fieldValuePair[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+		NSString *field = [fieldValuePair[0] stringByRemovingPercentEncoding];
+		NSString *value = [fieldValuePair[1] stringByRemovingPercentEncoding];
 		parameters[field] = value;
 	}
 	return [parameters copy];

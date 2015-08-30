@@ -9,14 +9,6 @@
 @interface NSString (Pinmark)
 
 /**
- * Encode a string for URLs. Apple's -stringByAddingPercentEscapesUsingEncoding: does not encode characters
- * such as ampersand or slash.
- *
- * @return URL encoded representation of the string.
- */
-- (NSString *)urlEncodeUsingEncoding:(NSStringEncoding)encoding;
-
-/**
  * Determines whether the string qualifies as a URL based on John Gruber's Liberal Regex Pattern
  * for all URLs: https://gist.github.com/gruber/249502
  *

@@ -12,14 +12,6 @@ NSString * const PMAnyURLRegex = @"(?i)\\b((?:[a-z][\\w-]+:(?:/{1,3}|[a-z0-9%])|
 
 @implementation NSString (Pinmark)
 
--(NSString *)urlEncodeUsingEncoding:(NSStringEncoding)encoding {
-	return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,
-																				 (CFStringRef)self,
-																				 NULL,
-																				 (CFStringRef)@"!*'\"();:@&=+$,/?%#[]% ",
-																				 CFStringConvertNSStringEncodingToEncoding(encoding)));
-}
-
 - (BOOL)isValidURL {
 	NSError *error = NULL;
 	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:PMAnyURLRegex options:NSRegularExpressionCaseInsensitive error:&error];
