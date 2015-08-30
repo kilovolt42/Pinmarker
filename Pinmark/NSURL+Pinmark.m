@@ -10,6 +10,24 @@
 
 @implementation NSURL (Pinmark)
 
++ (instancetype)URLWithString:(NSString *)URLString queryParameters:(NSDictionary *)parameters {
+	if (parameters == nil || parameters.allKeys.count == 0) {
+		return [NSURL URLWithString:URLString];
+	}
+
+	NSMutableString *queryString = [NSMutableString stringWithString:@"?"];
+	BOOL prependAmpersand = NO;
+	for (NSString *key in parameters.allKeys) {
+		if (prependAmpersand) {
+			[queryString appendString:@"&"];
+		}
+		[queryString appendString:[NSString stringWithFormat:@"%@=%@", key, parameters[key]]];
+		prependAmpersand = YES;
+	}
+
+	return [NSURL URLWithString:[URLString stringByAppendingString:queryString]];
+}
+
 - (NSDictionary *)queryParameters {
 	NSMutableDictionary *parameters = [NSMutableDictionary new];
 	for (NSString *parameter in [[self query] componentsSeparatedByString:@"&"]) {
