@@ -1,3 +1,2 @@
-platform :ios, '8.0'
-pod 'AFNetworking'
+platform :ios, '9.0'
 pod 'Lockbox'

@@ -35,7 +35,6 @@
 		27B2041B19D363AF009FEAA1 /* PMPinboardService.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B2041A19D363AF009FEAA1 /* PMPinboardService.m */; };
 		27D2DC3418777A9B0054D187 /* PMBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D2DC3318777A9B0054D187 /* PMBookmark.m */; };
 		27DA5B501885BB0500AEE0F5 /* PMAddAccountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DA5B4F1885BB0500AEE0F5 /* PMAddAccountVC.m */; };
-		82960B3C2A964DE68159B981 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6E13E9115194BF18C9C2D1A /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,8 +102,8 @@
 		27D2DC3318777A9B0054D187 /* PMBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBookmark.m; sourceTree = "<group>"; };
 		27DA5B4E1885BB0500AEE0F5 /* PMAddAccountVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMAddAccountVC.h; sourceTree = "<group>"; };
 		27DA5B4F1885BB0500AEE0F5 /* PMAddAccountVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMAddAccountVC.m; sourceTree = "<group>"; };
-		A6E13E9115194BF18C9C2D1A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		AE2FE771354E43FD945BDE89 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		303687D2FA75D7C18CFF92DA /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		8E7A297DAC74D939619D9FE3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,7 +111,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				82960B3C2A964DE68159B981 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,6 +187,7 @@
 				278EF44E185B71E2003A27D3 /* PinmarkerTests */,
 				278EF425185B71E2003A27D3 /* Frameworks */,
 				278EF424185B71E2003A27D3 /* Products */,
+				8783E14A5D8B3F8B770D9BA6 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -205,7 +204,6 @@
 			isa = PBXGroup;
 			children = (
 				27B2042119D476FD009FEAA1 /* SystemConfiguration.framework */,
-				A6E13E9115194BF18C9C2D1A /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -244,7 +242,6 @@
 				27925F121B1BA388007F4927 /* Pinmarker-Bridging-Header.h */,
 				2703C542185FD16100570F0C /* Bookmarklet.js */,
 				270C4A4718628CD3000FC061 /* Podfile */,
-				AE2FE771354E43FD945BDE89 /* Pods.xcconfig */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -276,6 +273,15 @@
 				27B2041A19D363AF009FEAA1 /* PMPinboardService.m */,
 			);
 			name = Network;
+			sourceTree = "<group>";
+		};
+		8783E14A5D8B3F8B770D9BA6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8E7A297DAC74D939619D9FE3 /* Pods.debug.xcconfig */,
+				303687D2FA75D7C18CFF92DA /* Pods.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -396,7 +402,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		27019F4618A1E54300CDAE55 /* ShellScript */ = {
@@ -577,7 +583,7 @@
 		};
 		278EF459185B71E2003A27D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AE2FE771354E43FD945BDE89 /* Pods.xcconfig */;
+			baseConfigurationReference = 8E7A297DAC74D939619D9FE3 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -590,27 +596,13 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Pinmark/Pinmarker-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"\"${PODS_ROOT}/Headers\"",
-					"\"${PODS_ROOT}/Headers/AFNetworking\"",
-					/Users/Kyle/Developer/Pinmarker,
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Pinmark/Pinmarker-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-framework",
-					CoreGraphics,
-					"-framework",
-					MobileCoreServices,
-					"-framework",
-					Security,
-					"-framework",
-					SystemConfiguration,
-				);
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kilovolt42.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Pinmarker;
 				PROVISIONING_PROFILE = "";
@@ -624,7 +616,7 @@
 		};
 		278EF45A185B71E2003A27D3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AE2FE771354E43FD945BDE89 /* Pods.xcconfig */;
+			baseConfigurationReference = 303687D2FA75D7C18CFF92DA /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -637,28 +629,12 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Pinmark/Pinmarker-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"\"${PODS_ROOT}/Headers\"",
-					"\"${PODS_ROOT}/Headers/AFNetworking\"",
-					/Users/Kyle/Developer/Pinmarker,
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Pinmark/Pinmarker-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-framework",
-					CoreGraphics,
-					"-framework",
-					MobileCoreServices,
-					"-framework",
-					Security,
-					"-framework",
-					SystemConfiguration,
-					"-framework",
-					UIKit,
-				);
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kilovolt42.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Pinmarker;
 				PROVISIONING_PROFILE = "";
