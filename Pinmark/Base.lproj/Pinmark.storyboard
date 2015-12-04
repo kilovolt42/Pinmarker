@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8187.4" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Q2S-zl-2nx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Q2S-zl-2nx">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8151.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <scenes>
         <!--NewPinTVC-->
@@ -11,7 +11,8 @@
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="static" style="grouped" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="Z5c-9N-ie7" userLabel="TableView">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <animations/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
                             <tableViewSection id="bBy-nq-7En" userLabel="TableViewSection">
                                 <cells>
@@ -24,6 +25,7 @@
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="URL" adjustsFontSizeToFit="NO" minimumFontSize="18" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="WYr-1Q-haB" userLabel="URLTextField">
                                                     <rect key="frame" x="15" y="0.0" width="570" height="43"/>
+                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="43" id="TQI-Sp-khF" userLabel="URL Height"/>
                                                     </constraints>
@@ -39,6 +41,7 @@
                                                 </textField>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J6f-bL-vpc">
                                                     <rect key="frame" x="15" y="43" width="570" height="15"/>
+                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="vc9-WK-MLw" userLabel="LabelHeight"/>
                                                     </constraints>
@@ -50,6 +53,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
+                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="J6f-bL-vpc" secondAttribute="bottom" constant="8" id="IEh-I3-fAl" userLabel="LabelBottom"/>
                                                 <constraint firstAttribute="trailing" secondItem="J6f-bL-vpc" secondAttribute="trailing" constant="15" id="c6v-v3-oDa" userLabel="LabelRight"/>
@@ -62,6 +66,7 @@
                                                 <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
                                             </userDefinedRuntimeAttributes>
                                         </tableViewCellContentView>
+                                        <animations/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="URLCell"/>
                                         </userDefinedRuntimeAttributes>
@@ -75,6 +80,7 @@
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Title" adjustsFontSizeToFit="NO" minimumFontSize="18" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="XKO-Sk-Xpd" userLabel="TitleTextField">
                                                     <rect key="frame" x="15" y="0.0" width="570" height="43"/>
+                                                    <animations/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="next"/>
                                                     <userDefinedRuntimeAttributes>
@@ -86,6 +92,7 @@
                                                     </connections>
                                                 </textField>
                                             </subviews>
+                                            <animations/>
                                             <constraints>
                                                 <constraint firstItem="XKO-Sk-Xpd" firstAttribute="leading" secondItem="JQ1-kq-xJt" secondAttribute="leading" constant="15" id="Vrf-YK-dgh" userLabel="TitleTextFieldLeft"/>
                                                 <constraint firstItem="XKO-Sk-Xpd" firstAttribute="top" secondItem="JQ1-kq-xJt" secondAttribute="top" id="kSB-8T-HBZ" userLabel="TitleTextFieldTop"/>
@@ -96,6 +103,7 @@
                                                 <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
                                             </userDefinedRuntimeAttributes>
                                         </tableViewCellContentView>
+                                        <animations/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="DescriptionCell"/>
                                         </userDefinedRuntimeAttributes>
@@ -109,6 +117,7 @@
                                             <subviews>
                                                 <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="redraw" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fjA-FE-hIj" userLabel="CollectionView">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                                    <animations/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="1GY-RB-FhD" userLabel="CollectionViewHeight"/>
@@ -130,6 +139,7 @@
                                                 </collectionView>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Tags" adjustsFontSizeToFit="NO" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KKd-Mm-SOm" userLabel="TagsTextField">
                                                     <rect key="frame" x="15" y="44" width="570" height="43"/>
+                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="43" id="bpe-QS-ODQ" userLabel="TagsTextFieldHeight"/>
                                                     </constraints>
@@ -144,6 +154,7 @@
                                                     </connections>
                                                 </textField>
                                             </subviews>
+                                            <animations/>
                                             <constraints>
                                                 <constraint firstItem="KKd-Mm-SOm" firstAttribute="leading" secondItem="42E-Nl-Oru" secondAttribute="leading" constant="15" id="4M9-zP-wMa" userLabel="TagsTextFieldLeft"/>
                                                 <constraint firstAttribute="trailing" secondItem="fjA-FE-hIj" secondAttribute="trailing" id="ADV-ZD-xtw" userLabel="CollectionViewRight"/>
@@ -156,6 +167,7 @@
                                                 <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
                                             </userDefinedRuntimeAttributes>
                                         </tableViewCellContentView>
+                                        <animations/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="TagsCell"/>
                                         </userDefinedRuntimeAttributes>
@@ -169,6 +181,7 @@
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Description" adjustsFontSizeToFit="NO" minimumFontSize="18" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="b1h-mU-fBg" userLabel="DescriptionTextField">
                                                     <rect key="frame" x="15" y="0.0" width="570" height="43"/>
+                                                    <animations/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                                                     <userDefinedRuntimeAttributes>
@@ -180,6 +193,7 @@
                                                     </connections>
                                                 </textField>
                                             </subviews>
+                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="b1h-mU-fBg" secondAttribute="bottom" id="3vd-43-Txz" userLabel="DescriptionTextFieldBottom"/>
                                                 <constraint firstAttribute="trailing" secondItem="b1h-mU-fBg" secondAttribute="trailing" constant="15" id="7Bb-Yh-Yj1" userLabel="DescriptionTextFieldRight"/>
@@ -190,6 +204,7 @@
                                                 <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
                                             </userDefinedRuntimeAttributes>
                                         </tableViewCellContentView>
+                                        <animations/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ExtendedCell"/>
                                         </userDefinedRuntimeAttributes>
@@ -203,6 +218,7 @@
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="uI2-u2-kLw">
                                                     <rect key="frame" x="536" y="8" width="51" height="31"/>
+                                                    <animations/>
                                                     <color key="onTintColor" red="0.100145833" green="0.57324931570000004" blue="0.50025661499999996" alpha="1" colorSpace="calibratedRGB"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="Switch"/>
@@ -213,6 +229,7 @@
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Read Later" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pwU-Cq-HVs" userLabel="ReadLaterLabel">
                                                     <rect key="frame" x="15" y="13" width="89" height="22"/>
+                                                    <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -221,6 +238,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
+                                            <animations/>
                                             <constraints>
                                                 <constraint firstItem="uI2-u2-kLw" firstAttribute="centerY" secondItem="pwU-Cq-HVs" secondAttribute="centerY" id="87j-o7-rGu" userLabel="ReadLaterLabelSwitchCenterY"/>
                                                 <constraint firstAttribute="bottom" secondItem="uI2-u2-kLw" secondAttribute="bottom" constant="8" id="8XD-rr-peq" userLabel="SwitchBottom"/>
@@ -232,6 +250,7 @@
                                                 <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
                                             </userDefinedRuntimeAttributes>
                                         </tableViewCellContentView>
+                                        <animations/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ToReadCell"/>
                                         </userDefinedRuntimeAttributes>
@@ -245,6 +264,7 @@
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="W9p-Du-tUZ">
                                                     <rect key="frame" x="536" y="8" width="51" height="31"/>
+                                                    <animations/>
                                                     <color key="onTintColor" red="0.100145833" green="0.57324931570000004" blue="0.50025661499999996" alpha="1" colorSpace="calibratedRGB"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="Switch"/>
@@ -255,6 +275,7 @@
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Private" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qgm-6w-Ir7" userLabel="PrivateLabel">
                                                     <rect key="frame" x="15" y="13" width="56" height="22"/>
+                                                    <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
@@ -262,6 +283,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
+                                            <animations/>
                                             <constraints>
                                                 <constraint firstItem="qgm-6w-Ir7" firstAttribute="centerY" secondItem="W9p-Du-tUZ" secondAttribute="centerY" id="3rk-CH-R6P" userLabel="PrivateLabelSwitchCenterY"/>
                                                 <constraint firstItem="W9p-Du-tUZ" firstAttribute="top" secondItem="smo-7Z-FMP" secondAttribute="top" constant="8" id="98b-r2-F7s" userLabel="SwitchTop"/>
@@ -273,6 +295,7 @@
                                                 <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
                                             </userDefinedRuntimeAttributes>
                                         </tableViewCellContentView>
+                                        <animations/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="SharedCell"/>
                                         </userDefinedRuntimeAttributes>
@@ -298,6 +321,7 @@
                         <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3Di-tP-UtR" userLabel="TitleButton">
                             <rect key="frame" x="236" y="6" width="128" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <animations/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                             <state key="normal">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -344,6 +368,7 @@
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="W7C-gx-AyA" userLabel="TableView">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Account Cell" textLabel="GwJ-gE-x8q" style="IBUITableViewCellStyleDefault" id="tFn-bZ-MJ7" userLabel="AccountCell">
@@ -356,6 +381,7 @@
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GwJ-gE-x8q" userLabel="TitleLabel">
                                             <rect key="frame" x="15" y="0.0" width="570" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -364,10 +390,12 @@
                                             </userDefinedRuntimeAttributes>
                                         </label>
                                     </subviews>
+                                    <animations/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
                                     </userDefinedRuntimeAttributes>
                                 </tableViewCellContentView>
+                                <animations/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="AccountCell"/>
                                 </userDefinedRuntimeAttributes>
@@ -382,6 +410,7 @@
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Add Pinboard Account" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IMK-qh-8Mj" userLabel="AddPinboardAccountLabel">
                                             <rect key="frame" x="15" y="0.0" width="550" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -390,10 +419,12 @@
                                             </userDefinedRuntimeAttributes>
                                         </label>
                                     </subviews>
+                                    <animations/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
                                     </userDefinedRuntimeAttributes>
                                 </tableViewCellContentView>
+                                <animations/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="AddAccountCell"/>
                                 </userDefinedRuntimeAttributes>
@@ -408,6 +439,7 @@
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="About" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="B3w-ub-881" userLabel="AboutLabel">
                                             <rect key="frame" x="15" y="0.0" width="550" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -416,10 +448,12 @@
                                             </userDefinedRuntimeAttributes>
                                         </label>
                                     </subviews>
+                                    <animations/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
                                     </userDefinedRuntimeAttributes>
                                 </tableViewCellContentView>
+                                <animations/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="AboutCell"/>
                                 </userDefinedRuntimeAttributes>
@@ -437,6 +471,7 @@
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="agT-Un-XC8" userLabel="TitleLabel">
                                             <rect key="frame" x="15" y="3" width="36" height="22"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -447,6 +482,7 @@
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="67T-3u-m24" userLabel="SubtitleLabel">
                                             <rect key="frame" x="15" y="25" width="44" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -455,10 +491,12 @@
                                             </userDefinedRuntimeAttributes>
                                         </label>
                                     </subviews>
+                                    <animations/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
                                     </userDefinedRuntimeAttributes>
                                 </tableViewCellContentView>
+                                <animations/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="EnableTextExpanderCell"/>
                                 </userDefinedRuntimeAttributes>
@@ -472,6 +510,7 @@
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Disable TextExpander" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZpE-7T-waX" userLabel="DisableTextExpanderLabel">
                                             <rect key="frame" x="15" y="11" width="175" height="22"/>
+                                            <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <nil key="highlightedColor"/>
                                             <userDefinedRuntimeAttributes>
@@ -479,6 +518,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </label>
                                     </subviews>
+                                    <animations/>
                                     <constraints>
                                         <constraint firstItem="ZpE-7T-waX" firstAttribute="leading" secondItem="06w-i9-eUz" secondAttribute="leading" constant="15" id="OPW-z4-vyx" userLabel="DisableTextExpanderLabelLeft"/>
                                         <constraint firstAttribute="centerY" secondItem="ZpE-7T-waX" secondAttribute="centerY" id="cSg-vk-5aL" userLabel="DisableTextExpanderLabelCenterY"/>
@@ -487,6 +527,7 @@
                                         <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="ContentView"/>
                                     </userDefinedRuntimeAttributes>
                                 </tableViewCellContentView>
+                                <animations/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="DisableTextExpanderCell"/>
                                 </userDefinedRuntimeAttributes>
@@ -526,6 +567,7 @@
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RpL-hV-6vP" userLabel="TextView">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <animations/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Pinmarker">
@@ -584,7 +626,9 @@ SOFTWARE.</string>
                                             <integer key="NSLigature" value="0"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" defaultTabInterval="28">
                                                 <tabStops>
-                                                    <textTab alignment="left" location="28"/>
+                                                    <textTab alignment="left" location="28">
+                                                        <options/>
+                                                    </textTab>
                                                 </tabStops>
                                             </paragraphStyle>
                                         </attributes>
@@ -597,6 +641,7 @@ SOFTWARE.</string>
                                 </userDefinedRuntimeAttributes>
                             </textView>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="RpL-hV-6vP" firstAttribute="leading" secondItem="ZJ0-dY-q4c" secondAttribute="leading" id="RlN-JX-EXJ" userLabel="TextViewLeft"/>
@@ -622,6 +667,7 @@ SOFTWARE.</string>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="wNX-Af-azj" userLabel="NavigationBar">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="barTintColor" red="0.100145833" green="0.57324931570000004" blue="0.50025661499999996" alpha="1" colorSpace="calibratedRGB"/>
                         <textAttributes key="titleTextAttributes">
@@ -648,6 +694,7 @@ SOFTWARE.</string>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="hhb-uc-MO2" userLabel="NavigationBar">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="NavigationBar"/>
                         </userDefinedRuntimeAttributes>
