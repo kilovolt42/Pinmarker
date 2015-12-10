@@ -9,14 +9,23 @@
 #import "PMBookmarkStore.h"
 #import "PMBookmark.h"
 #import "PMAccountStore.h"
+@import RNCryptor;
 
 @interface PMBookmarkStore ()
 
 @property (nonatomic) NSMutableArray *bookmarks;
+@property (nonatomic, readonly, copy) NSString *encryptionPassword;
 
 @end
 
 @implementation PMBookmarkStore
+
+#pragma mark - Properties
+
+- (NSString *)encryptionPassword {
+    NSString *username = [PMAccountStore sharedStore].defaultUsername;
+    return [[PMAccountStore sharedStore] authTokenForUsername:username];
+}
 
 #pragma mark - Initializers
 
@@ -31,10 +40,21 @@
 	self = [super init];
 	if (self) {
 		NSString *path = [self bookmarksArchivePath];
-		_bookmarks = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+        id encryptedData = [[NSData alloc] initWithContentsOfFile:path];
+
+        NSString *password = self.encryptionPassword;
+
+        if (encryptedData && password) {
+            NSError *error = nil;
+            NSData *decryptedData = [RNCryptor decryptData:encryptedData password:password error:&error];
+            if (!error) {
+                _bookmarks = [NSKeyedUnarchiver unarchiveObjectWithData:decryptedData];
+            }
+        }
 		
 		if (!_bookmarks) {
 			_bookmarks = [NSMutableArray new];
+            [self deleteItemForArchivePath:path];
 		}
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -106,8 +126,22 @@
 }
 
 - (BOOL)saveBookmarks {
-	NSString *path = [self bookmarksArchivePath];
-	return [NSKeyedArchiver archiveRootObject:self.bookmarks toFile:path];
+    NSString *password = self.encryptionPassword;
+
+    if (password) {
+        NSData *archivedData = [NSKeyedArchiver archivedDataWithRootObject:self.bookmarks];
+        NSData *encryptedData = [RNCryptor encryptData:archivedData password:password];
+
+        NSString *path = [self bookmarksArchivePath];
+        return [encryptedData writeToFile:path atomically:YES];
+    } else {
+        return NO;
+    }
+}
+
+- (BOOL)deleteItemForArchivePath:(NSString *)path {
+    NSError *error = nil;
+    return [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
 }
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification {

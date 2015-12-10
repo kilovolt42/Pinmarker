@@ -8,6 +8,7 @@
 
 #import "PMTagStore.h"
 #import "PMAccountStore.h"
+@import RNCryptor;
 
 NSString * const PMTagStoreDidUpdateUserTagsNotification = @"PMTagStoreDidUpdateUserTagsNotification";
 NSString * const PMTagStoreUsernameKey = @"PMTagStoreUsernameKey";
@@ -15,6 +16,7 @@ NSString * const PMTagStoreUsernameKey = @"PMTagStoreUsernameKey";
 @interface PMTagStore ()
 
 @property (nonatomic) NSMutableDictionary *tags;
+@property (nonatomic, readonly, copy) NSString *encryptionPassword;
 
 @end
 
@@ -25,6 +27,11 @@ NSString * const PMTagStoreUsernameKey = @"PMTagStoreUsernameKey";
 - (NSMutableDictionary *)tags {
 	if (!_tags) _tags = [NSMutableDictionary new];
 	return _tags;
+}
+
+- (NSString *)encryptionPassword {
+    NSString *username = [PMAccountStore sharedStore].defaultUsername;
+    return [[PMAccountStore sharedStore] authTokenForUsername:username];
 }
 
 #pragma mark - Initializers
@@ -40,10 +47,21 @@ NSString * const PMTagStoreUsernameKey = @"PMTagStoreUsernameKey";
 	self = [super init];
 	if (self) {
 		NSString *path = [self tagsArchivePath];
-		_tags = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+        id encryptedData = [[NSData alloc] initWithContentsOfFile:path];
+
+        NSString *password = self.encryptionPassword;
+
+        if (encryptedData && password) {
+            NSError *error = nil;
+            NSData *decryptedData = [RNCryptor decryptData:encryptedData password:password error:&error];
+            if (!error) {
+                _tags = [NSKeyedUnarchiver unarchiveObjectWithData:decryptedData];
+            }
+        }
 		
 		if (!_tags) {
 			_tags = [NSMutableDictionary new];
+            [self deleteItemForArchivePath:path];
 		}
 		
 		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -94,9 +112,23 @@ NSString * const PMTagStoreUsernameKey = @"PMTagStoreUsernameKey";
 		NSArray *tagsForUsername = self.tags[username];
 		tagsToSave[username] = tagsForUsername ? tagsForUsername : @[];
 	}
-	
-	NSString *path = [self tagsArchivePath];
-	return [NSKeyedArchiver archiveRootObject:tagsToSave toFile:path];
+
+    NSString *password = self.encryptionPassword;
+
+    if (password) {
+        NSData *archivedData = [NSKeyedArchiver archivedDataWithRootObject:self.tags];
+        NSData *encryptedData = [RNCryptor encryptData:archivedData password:password];
+
+        NSString *path = [self tagsArchivePath];
+        return [encryptedData writeToFile:path atomically:YES];
+    } else {
+        return NO;
+    }
+}
+
+- (BOOL)deleteItemForArchivePath:(NSString *)path {
+    NSError *error = nil;
+    return [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
 }
 
 - (void)usernameRemoved:(NSNotification *)notification {
