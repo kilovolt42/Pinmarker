@@ -6,6 +6,7 @@
 @import UIKit;
 @import Foundation;
 #import "Constants.h"
+#import "NSString+Pinmark.h"
 #endif
 
 #ifdef DEBUG
