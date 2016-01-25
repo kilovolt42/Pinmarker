@@ -15,7 +15,6 @@
 #import "PMAccountStore.h"
 #import "PMSettingsTVC.h"
 #import "PMAppDelegate.h"
-#import "PMPinboardService.h"
 
 static void * PMNewPinTVCContext = &PMNewPinTVCContext;
 

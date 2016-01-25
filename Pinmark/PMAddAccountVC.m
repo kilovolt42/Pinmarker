@@ -8,7 +8,6 @@
 
 #import "PMAddAccountVC.h"
 #import "PMAccountStore.h"
-#import "PMPinboardService.h"
 
 @interface PMAddAccountVC () <UITextFieldDelegate>
 

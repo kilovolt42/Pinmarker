@@ -62,6 +62,16 @@
                ReferencedContainer = "container:Pinmarker.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "27D6374B1C5483BD006D2C58"
+               BuildableName = "PinmarkerKitTests.xctest"
+               BlueprintName = "PinmarkerKitTests"
+               ReferencedContainer = "container:Pinmarker.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

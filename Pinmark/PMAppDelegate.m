@@ -12,7 +12,6 @@
 #import "PMAddAccountVC.h"
 #import "PMTagStore.h"
 #import "PMBookmarkStore.h"
-#import "PMPinboardService.h"
 
 @interface PMAppDelegate () <PMAddAccountVCDelegate>
 

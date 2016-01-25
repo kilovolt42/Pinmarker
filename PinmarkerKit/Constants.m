@@ -1,12 +1,12 @@
 //
-//  PMConstants.m
+//  Constants.m
 //  Pinmarker
 //
-//  Created by Kyle Stevens on 10/4/14.
-//  Copyright (c) 2014 kilovolt42. All rights reserved.
+//  Created by Kyle Stevens on 1/24/16.
+//  Copyright © 2016 kilovolt42. All rights reserved.
 //
 
-#import "PMConstants.h"
+#import "Constants.h"
 
 NSString * const PMPinboardAPIDateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
 

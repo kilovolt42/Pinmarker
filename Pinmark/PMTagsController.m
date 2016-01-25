@@ -11,7 +11,6 @@
 #import "PMTagCVCell.h"
 #import "PMTagStore.h"
 #import "PMInputAccessoryView.h"
-#import "PMPinboardService.h"
 
 static void * PMTagControllerContext = &PMTagControllerContext;
 

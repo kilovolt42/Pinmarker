@@ -1,9 +1,9 @@
 //
-//  PMConstants.h
+//  Constants.h
 //  Pinmarker
 //
-//  Created by Kyle Stevens on 10/4/14.
-//  Copyright (c) 2014 kilovolt42. All rights reserved.
+//  Created by Kyle Stevens on 1/24/16.
+//  Copyright © 2016 kilovolt42. All rights reserved.
 //
 
 extern NSString * const PMPinboardAPIDateFormat;
