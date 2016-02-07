@@ -26,8 +26,6 @@
 		278EF437185B71E2003A27D3 /* PMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF436185B71E2003A27D3 /* PMAppDelegate.m */; };
 		278EF43A185B71E2003A27D3 /* Pinmark.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 278EF438185B71E2003A27D3 /* Pinmark.storyboard */; };
 		278EF442185B71E2003A27D3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 278EF441185B71E2003A27D3 /* Images.xcassets */; };
-		278EF453185B71E2003A27D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 278EF451185B71E2003A27D3 /* InfoPlist.strings */; };
-		279251C1192800400010E257 /* PMBookmarkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 272338B618BCFB6800F80497 /* PMBookmarkTests.m */; };
 		27925F141B1BA389007F4927 /* UIView+Inspectables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27925F131B1BA389007F4927 /* UIView+Inspectables.swift */; };
 		279719D2189960A400D58BC7 /* PMSettingsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 279719D1189960A400D58BC7 /* PMSettingsTVC.m */; };
 		27D637461C5483BD006D2C58 /* PinmarkerKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 27D637451C5483BD006D2C58 /* PinmarkerKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -44,6 +42,7 @@
 		27D6DE5A1C55CA770069CBFF /* NSString+Pinmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 271FAF9818AA9F1E0011C41E /* NSString+Pinmark.m */; };
 		27D6DE5B1C55CA7A0069CBFF /* NSString+Pinmark.h in Headers */ = {isa = PBXBuildFile; fileRef = 271FAF9718AA9F1E0011C41E /* NSString+Pinmark.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27DA5B501885BB0500AEE0F5 /* PMAddAccountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DA5B4F1885BB0500AEE0F5 /* PMAddAccountVC.m */; };
+		27E6A6431C6809AE00D77737 /* PMBookmarkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 272338B618BCFB6800F80497 /* PMBookmarkTests.m */; };
 		3D89D08C1979A60DE3B62245 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E2DFA3009A9AFE57034C28F /* Pods.framework */; };
 /* End PBXBuildFile section */
 
@@ -131,8 +130,7 @@
 		278EF439185B71E2003A27D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Pinmark.storyboard; sourceTree = "<group>"; };
 		278EF441185B71E2003A27D3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		278EF447185B71E2003A27D3 /* PinmarkerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinmarkerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		278EF450185B71E2003A27D3 /* PinmarkerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PinmarkerTests-Info.plist"; sourceTree = "<group>"; };
-		278EF452185B71E2003A27D3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		278EF450185B71E2003A27D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		27925F121B1BA388007F4927 /* Pinmarker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pinmarker-Bridging-Header.h"; sourceTree = "<group>"; };
 		27925F131B1BA389007F4927 /* UIView+Inspectables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Inspectables.swift"; sourceTree = "<group>"; };
 		279719D0189960A400D58BC7 /* PMSettingsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMSettingsTVC.h; sourceTree = "<group>"; };
@@ -316,21 +314,10 @@
 		278EF44E185B71E2003A27D3 /* PinmarkerTests */ = {
 			isa = PBXGroup;
 			children = (
-				272338B618BCFB6800F80497 /* PMBookmarkTests.m */,
-				278EF44F185B71E2003A27D3 /* Supporting Files */,
+				27E6A6411C68099200D77737 /* Supporting Files */,
 			);
 			name = PinmarkerTests;
 			path = PinmarkTests;
-			sourceTree = "<group>";
-		};
-		278EF44F185B71E2003A27D3 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				278EF450185B71E2003A27D3 /* PinmarkerTests-Info.plist */,
-				278EF451185B71E2003A27D3 /* InfoPlist.strings */,
-				27B603C01B2E243B003CCB14 /* PinmarkerTests-Bridging-Header.h */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		27B2042319D47FFF009FEAA1 /* Network */ = {
@@ -356,7 +343,8 @@
 		27D637521C5483BD006D2C58 /* PinmarkerKitTests */ = {
 			isa = PBXGroup;
 			children = (
-				27D637551C5483BD006D2C58 /* Info.plist */,
+				272338B618BCFB6800F80497 /* PMBookmarkTests.m */,
+				27E6A6421C68099F00D77737 /* Supporting Files */,
 			);
 			path = PinmarkerKitTests;
 			sourceTree = "<group>";
@@ -373,6 +361,23 @@
 				2781196B186A0516006B93AB /* NSURL+Pinmark.m */,
 				27D637471C5483BD006D2C58 /* Info.plist */,
 				27D6DE551C55C3890069CBFF /* PinmarkerKit-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		27E6A6411C68099200D77737 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				278EF450185B71E2003A27D3 /* Info.plist */,
+				27B603C01B2E243B003CCB14 /* PinmarkerTests-Bridging-Header.h */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		27E6A6421C68099F00D77737 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				27D637551C5483BD006D2C58 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -551,7 +556,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				278EF453185B71E2003A27D3 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -657,7 +661,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				279251C1192800400010E257 /* PMBookmarkTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -677,6 +680,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27E6A6431C6809AE00D77737 /* PMBookmarkTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -720,14 +724,6 @@
 				278EF439185B71E2003A27D3 /* Base */,
 			);
 			name = Pinmark.storyboard;
-			sourceTree = "<group>";
-		};
-		278EF451185B71E2003A27D3 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				278EF452185B71E2003A27D3 /* en */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
