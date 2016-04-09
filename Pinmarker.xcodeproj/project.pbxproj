@@ -24,7 +24,7 @@
 		278EF431185B71E2003A27D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 278EF42F185B71E2003A27D3 /* InfoPlist.strings */; };
 		278EF433185B71E2003A27D3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF432185B71E2003A27D3 /* main.m */; };
 		278EF437185B71E2003A27D3 /* PMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EF436185B71E2003A27D3 /* PMAppDelegate.m */; };
-		278EF43A185B71E2003A27D3 /* Pinmark.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 278EF438185B71E2003A27D3 /* Pinmark.storyboard */; };
+		278EF43A185B71E2003A27D3 /* Pinmarker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 278EF438185B71E2003A27D3 /* Pinmarker.storyboard */; };
 		278EF442185B71E2003A27D3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 278EF441185B71E2003A27D3 /* Images.xcassets */; };
 		27925F141B1BA389007F4927 /* UIView+Inspectables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27925F131B1BA389007F4927 /* UIView+Inspectables.swift */; };
 		279719D2189960A400D58BC7 /* PMSettingsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 279719D1189960A400D58BC7 /* PMSettingsTVC.m */; };
@@ -127,7 +127,7 @@
 		278EF434185B71E2003A27D3 /* Pinmarker-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pinmarker-Prefix.pch"; sourceTree = "<group>"; };
 		278EF435185B71E2003A27D3 /* PMAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PMAppDelegate.h; sourceTree = "<group>"; };
 		278EF436185B71E2003A27D3 /* PMAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PMAppDelegate.m; sourceTree = "<group>"; };
-		278EF439185B71E2003A27D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Pinmark.storyboard; sourceTree = "<group>"; };
+		278EF439185B71E2003A27D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Pinmarker.storyboard; sourceTree = "<group>"; };
 		278EF441185B71E2003A27D3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		278EF447185B71E2003A27D3 /* PinmarkerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinmarkerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		278EF450185B71E2003A27D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -213,7 +213,7 @@
 		2718DE8119BE1F1D00D560F6 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				278EF438185B71E2003A27D3 /* Pinmark.storyboard */,
+				278EF438185B71E2003A27D3 /* Pinmarker.storyboard */,
 				271D051018D766BD006B5A4E /* PMAddAccountVC.xib */,
 				272C5CD4186F626D0079B95E /* PMTagCVCell.xib */,
 				272C5CD1186DFF3E0079B95E /* PMTagCVCell.h */,
@@ -545,7 +545,7 @@
 				271D051118D766BD006B5A4E /* PMAddAccountVC.xib in Resources */,
 				277AA7AF1896DC080015A3EF /* PMInputAccessoryView.xib in Resources */,
 				278EF442185B71E2003A27D3 /* Images.xcassets in Resources */,
-				278EF43A185B71E2003A27D3 /* Pinmark.storyboard in Resources */,
+				278EF43A185B71E2003A27D3 /* Pinmarker.storyboard in Resources */,
 				272C5CD5186F626D0079B95E /* PMTagCVCell.xib in Resources */,
 				274FE8D61AF5D28C00497A6C /* PinmarkerLaunchScreen.xib in Resources */,
 				278EF431185B71E2003A27D3 /* InfoPlist.strings in Resources */,
@@ -718,12 +718,12 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		278EF438185B71E2003A27D3 /* Pinmark.storyboard */ = {
+		278EF438185B71E2003A27D3 /* Pinmarker.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				278EF439185B71E2003A27D3 /* Base */,
 			);
-			name = Pinmark.storyboard;
+			name = Pinmarker.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

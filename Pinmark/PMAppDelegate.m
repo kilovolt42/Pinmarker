@@ -85,7 +85,7 @@
 #pragma mark - PMAddAccountVCDelegate
 
 - (void)didFinishAddingAccount {
-	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Pinmark" bundle:nil];
+	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Pinmarker" bundle:nil];
 	self.window.rootViewController = [storyboard instantiateInitialViewController];
 }
 

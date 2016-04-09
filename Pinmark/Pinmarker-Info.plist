@@ -55,7 +55,7 @@
 	<key>UILaunchStoryboardName</key>
 	<string>PinmarkerLaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
-	<string>Pinmark</string>
+	<string>Pinmarker</string>
 	<key>UIMainStoryboardFile~ipad</key>
 	<string></string>
 	<key>UIRequiredDeviceCapabilities</key>
