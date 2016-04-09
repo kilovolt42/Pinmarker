@@ -1,16 +1,16 @@
 //
-//  NSString+Pinmark.m
+//  NSString+Pinmarker.m
 //  Pinmarker
 //
 //  Created by Kyle Stevens on 2/11/14.
 //  Copyright (c) 2014 kilovolt42. All rights reserved.
 //
 
-#import "NSString+Pinmark.h"
+#import "NSString+Pinmarker.h"
 
 NSString * const PMAnyURLRegex = @"(?i)\\b((?:[a-z][\\w-]+:(?:/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?«»“”‘’]))";
 
-@implementation NSString (Pinmark)
+@implementation NSString (Pinmarker)
 
 - (BOOL)isValidURL {
 	NSError *error = NULL;

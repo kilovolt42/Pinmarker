@@ -1,12 +1,12 @@
 //
-//  NSString+Pinmark.h
+//  NSString+Pinmarker.h
 //  Pinmarker
 //
 //  Created by Kyle Stevens on 2/11/14.
 //  Copyright (c) 2014 kilovolt42. All rights reserved.
 //
 
-@interface NSString (Pinmark)
+@interface NSString (Pinmarker)
 
 /**
  * Determines whether the string qualifies as a URL based on John Gruber's Liberal Regex Pattern

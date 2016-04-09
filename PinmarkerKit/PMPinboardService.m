@@ -7,7 +7,7 @@
 //
 
 #import "PMPinboardService.h"
-#import "NSURL+Pinmark.h"
+#import "NSURL+Pinmarker.h"
 
 static NSDictionary *PMPinboardAPIMethods;
 

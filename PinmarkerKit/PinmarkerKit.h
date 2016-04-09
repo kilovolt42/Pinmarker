@@ -18,6 +18,6 @@ FOUNDATION_EXPORT const unsigned char PinmarkerKitVersionString[];
 
 #import <PinmarkerKit/Constants.h>
 #import <PinmarkerKit/PMPinboardService.h>
-#import <PinmarkerKit/NSURL+Pinmark.h>
-#import <PinmarkerKit/NSString+Pinmark.h>
+#import <PinmarkerKit/NSURL+Pinmarker.h>
+#import <PinmarkerKit/NSString+Pinmarker.h>
 #import <PinmarkerKit/PMBookmark.h>

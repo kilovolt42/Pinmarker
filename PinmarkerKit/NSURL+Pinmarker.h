@@ -1,12 +1,12 @@
 //
-//  NSURL+Pinmark.h
+//  NSURL+Pinmarker.h
 //  Pinmarker
 //
 //  Created by Kyle Stevens on 12/24/13.
 //  Copyright (c) 2013 kilovolt42. All rights reserved.
 //
 
-@interface NSURL (Pinmark)
+@interface NSURL (Pinmarker)
 
 /**
  * Creates and returns an NSURL object initialized with a provided URL string

@@ -1,14 +1,14 @@
 //
-//  NSURL+Pinmark.m
+//  NSURL+Pinmarker.m
 //  Pinmarker
 //
 //  Created by Kyle Stevens on 12/24/13.
 //  Copyright (c) 2013 kilovolt42. All rights reserved.
 //
 
-#import "NSURL+Pinmark.h"
+#import "NSURL+Pinmarker.h"
 
-@implementation NSURL (Pinmark)
+@implementation NSURL (Pinmarker)
 
 + (instancetype)URLWithString:(NSString *)URLString queryParameters:(NSDictionary *)parameters {
 	if (parameters == nil || parameters.allKeys.count == 0) {

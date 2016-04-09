@@ -7,7 +7,7 @@
 //
 
 #import "PMNewPinTVC.h"
-#import "NSURL+Pinmark.h"
+#import "NSURL+Pinmarker.h"
 #import "PMTagsController.h"
 #import "PMBookmark.h"
 #import "PMBookmarkStore.h"
