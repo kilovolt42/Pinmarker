@@ -55,19 +55,32 @@ NSString * const PMInformationSectionLabel = @"Information";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Settings";
-
-    self.tableSections = @{ @0 : PMAccountsSectionLabel,
-                            @1 : PMAddAccountSectionLabel,
-                            @2 : PMInformationSectionLabel };
+    [self configureTableSections];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self loadAccounts];
-    [self.tableView reloadData];
+    [self refreshTable];
 }
 
 #pragma mark - Methods
+
+- (void)refreshTable {
+    [self loadAccounts];
+    [self configureTableSections];
+    [self.tableView reloadData];
+}
+
+- (void)configureTableSections {
+    if (self.accounts.count == 0) {
+        self.tableSections = @{ @0 : PMAddAccountSectionLabel,
+                                @1 : PMInformationSectionLabel };
+    } else {
+        self.tableSections = @{ @0 : PMAccountsSectionLabel,
+                                @1 : PMAddAccountSectionLabel,
+                                @2 : PMInformationSectionLabel };
+    }
+}
 
 - (void)loadAccounts {
     self.accounts = [PMAccountStore sharedStore].associatedUsernames;
@@ -93,12 +106,12 @@ NSString * const PMInformationSectionLabel = @"Information";
 #pragma mark - PMAddAccountVCDelegate
 
 - (void)didFinishAddingAccount {
-    [self.tableView reloadData];
+    [self refreshTable];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didFinishUpdatingAccount {
-    [self.tableView reloadData];
+    [self refreshTable];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -108,8 +121,7 @@ NSString * const PMInformationSectionLabel = @"Information";
 
 - (void)didRequestToRemoveAccountForUsername:(NSString *)username {
     [[PMAccountStore sharedStore] removeAccountForUsername:username];
-    [self loadAccounts];
-    [self.tableView reloadData];
+    [self refreshTable];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -196,7 +208,12 @@ NSString * const PMInformationSectionLabel = @"Information";
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     NSString *sectionLabel = self.tableSections[@(section)];
     if ([sectionLabel isEqualToString:PMAddAccountSectionLabel]) {
-        return nil;
+        // Borrow the accounts section label if the accounts section won't be displayed
+        if (self.accounts.count == 0) {
+            return PMAccountsSectionLabel;
+        } else {
+            return nil;
+        }
     }
     return sectionLabel;
 }
@@ -224,12 +241,15 @@ NSString * const PMInformationSectionLabel = @"Information";
         NSInteger accountsSection = [accountsKey integerValue];
 
         [[PMAccountStore sharedStore] removeAccountForUsername:self.accounts[indexPath.row]];
+
         [self loadAccounts];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:accountsSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+        if (self.accounts.count > 0) {
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:accountsSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
 
         if ([self.accounts count] == 0) {
             [self setEditing:NO animated:YES];
-            [tableView reloadData];
+            [self refreshTable];
         } else if ([self.accounts count] == 1) {
             [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:accountsSection inSection:0]].accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } else {
