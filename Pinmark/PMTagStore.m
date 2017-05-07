@@ -66,6 +66,8 @@ NSString * const PMTagStoreUsernameKey = @"PMTagStoreUsernameKey";
         }
 
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center addObserver:self selector:@selector(usernameUpdated:) name:PMAccountStoreDidAddUsernameNotification object:nil];
+        [center addObserver:self selector:@selector(usernameUpdated:) name:PMAccountStoreDidUpdateUsernameNotification object:nil];
         [center addObserver:self selector:@selector(usernameRemoved:) name:PMAccountStoreDidRemoveUsernameNotification object:nil];
     }
     return self;
@@ -133,6 +135,20 @@ NSString * const PMTagStoreUsernameKey = @"PMTagStoreUsernameKey";
 - (BOOL)deleteItemForArchivePath:(NSString *)path {
     NSError *error = nil;
     return [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
+}
+
+- (void)usernameUpdated:(NSNotification *)notification {
+    NSString *username = notification.userInfo[PMAccountStoreUsernameKey];
+    NSString *token = [[PMAccountStore sharedStore] authTokenForUsername:username];
+
+    if (token && ![token isEqualToString:@""]) {
+        void (^success)(NSDictionary *) = ^(NSDictionary *responseDictionary) {
+            NSArray *sortedTags = [[[responseDictionary keysSortedByValueUsingSelector:@selector(compare:)] reverseObjectEnumerator] allObjects];
+            [self updateTags:sortedTags username:username];
+        };
+
+        [PMPinboardService requestTagsForAPIToken:token success:success failure:nil];
+    }
 }
 
 - (void)usernameRemoved:(NSNotification *)notification {
