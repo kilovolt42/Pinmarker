@@ -8,7 +8,8 @@
 
 #import "PMTagStore.h"
 #import "PMAccountStore.h"
-@import RNCryptor;
+#import "RNEncryptor.h"
+#import "RNDecryptor.h"
 
 NSString * const PMTagStoreDidUpdateUserTagsNotification = @"PMTagStoreDidUpdateUserTagsNotification";
 NSString * const PMTagStoreUsernameKey = @"PMTagStoreUsernameKey";
@@ -53,7 +54,7 @@ NSString * const PMTagStoreUsernameKey = @"PMTagStoreUsernameKey";
 
         if (encryptedData && password) {
             NSError *error = nil;
-            NSData *decryptedData = [RNCryptor decryptData:encryptedData password:password error:&error];
+            NSData *decryptedData = [RNDecryptor decryptData:encryptedData withPassword:password error:&error];
             if (!error) {
                 _tags = [NSKeyedUnarchiver unarchiveObjectWithData:decryptedData];
             }
@@ -117,13 +118,16 @@ NSString * const PMTagStoreUsernameKey = @"PMTagStoreUsernameKey";
 
     if (password) {
         NSData *archivedData = [NSKeyedArchiver archivedDataWithRootObject:self.tags];
-        NSData *encryptedData = [RNCryptor encryptData:archivedData password:password];
 
-        NSString *path = [self tagsArchivePath];
-        return [encryptedData writeToFile:path atomically:YES];
-    } else {
-        return NO;
+        NSError *error;
+        NSData *encryptedData = [RNEncryptor encryptData:archivedData withSettings:kRNCryptorAES256Settings password:password error:&error];
+        if (!error) {
+            NSString *path = [self tagsArchivePath];
+            return [encryptedData writeToFile:path atomically:YES];
+        }
     }
+
+    return NO;
 }
 
 - (BOOL)deleteItemForArchivePath:(NSString *)path {

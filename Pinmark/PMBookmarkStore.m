@@ -9,7 +9,8 @@
 #import "PMBookmarkStore.h"
 #import "PMBookmark.h"
 #import "PMAccountStore.h"
-@import RNCryptor;
+#import "RNEncryptor.h"
+#import "RNDecryptor.h"
 
 @interface PMBookmarkStore ()
 
@@ -46,7 +47,7 @@
 
         if (encryptedData && password) {
             NSError *error = nil;
-            NSData *decryptedData = [RNCryptor decryptData:encryptedData password:password error:&error];
+            NSData *decryptedData = [RNDecryptor decryptData:encryptedData withPassword:password error:&error];
             if (!error) {
                 _bookmarks = [NSKeyedUnarchiver unarchiveObjectWithData:decryptedData];
             }
@@ -130,13 +131,16 @@
 
     if (password) {
         NSData *archivedData = [NSKeyedArchiver archivedDataWithRootObject:self.bookmarks];
-        NSData *encryptedData = [RNCryptor encryptData:archivedData password:password];
 
-        NSString *path = [self bookmarksArchivePath];
-        return [encryptedData writeToFile:path atomically:YES];
-    } else {
-        return NO;
+        NSError *error = nil;
+        NSData *encryptedData = [RNEncryptor encryptData:archivedData withSettings:kRNCryptorAES256Settings password:password error:&error];
+        if (!error) {
+            NSString *path = [self bookmarksArchivePath];
+            return [encryptedData writeToFile:path atomically:YES];
+        }
     }
+
+    return NO;
 }
 
 - (BOOL)deleteItemForArchivePath:(NSString *)path {

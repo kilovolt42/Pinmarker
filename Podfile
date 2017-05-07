@@ -1,5 +1,7 @@
-platform :ios, '9.0'
-use_frameworks!
+platform :ios, '10.0'
 
-pod 'Lockbox'
-pod 'RNCryptor'
+target 'Pinmarker' do
+  use_frameworks!
+  pod 'Lockbox'
+  pod 'RNCryptor-objc'
+end
