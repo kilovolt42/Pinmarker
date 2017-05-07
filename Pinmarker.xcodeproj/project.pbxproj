@@ -131,7 +131,7 @@
 		278EF439185B71E2003A27D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Pinmarker.storyboard; sourceTree = "<group>"; };
 		278EF441185B71E2003A27D3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		278EF447185B71E2003A27D3 /* PinmarkerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinmarkerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		278EF450185B71E2003A27D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		278EF450185B71E2003A27D3 /* PinmarkerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PinmarkerTests-Info.plist"; sourceTree = "<group>"; };
 		27925F121B1BA388007F4927 /* Pinmarker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pinmarker-Bridging-Header.h"; sourceTree = "<group>"; };
 		27925F131B1BA389007F4927 /* UIView+Inspectables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Inspectables.swift"; sourceTree = "<group>"; };
 		279719D0189960A400D58BC7 /* PMSettingsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMSettingsTVC.h; sourceTree = "<group>"; };
@@ -370,7 +370,7 @@
 		27E6A6411C68099200D77737 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				278EF450185B71E2003A27D3 /* Info.plist */,
+				278EF450185B71E2003A27D3 /* PinmarkerTests-Info.plist */,
 				27B603C01B2E243B003CCB14 /* PinmarkerTests-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
