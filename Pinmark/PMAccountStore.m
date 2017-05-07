@@ -28,12 +28,16 @@ NSString * const PMDefaultUsernameKey = @"PMDefaultUsernameKey";
 #pragma mark - Properties
 
 - (void)setDefaultUsername:(NSString *)defaultUsername {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
     if ([self.associatedUsernames containsObject:defaultUsername]) {
         _defaultUsername = defaultUsername;
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:defaultUsername forKey:PMDefaultUsernameKey];
-        [userDefaults synchronize];
+    } else {
+        [userDefaults removeObjectForKey:PMDefaultUsernameKey];
     }
+
+    [userDefaults synchronize];
 }
 
 - (NSArray *)associatedUsernames {
