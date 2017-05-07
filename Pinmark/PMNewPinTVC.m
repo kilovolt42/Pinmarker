@@ -255,13 +255,13 @@ static const NSUInteger PMSharedCellIndex = 5;
         if (parameters[@"x-success"]) {
             self.xSuccess = ^void(NSDictionary *responseDictionary) {
                 weakSelf.bookmark = [bookmarkStore lastBookmark];
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:parameters[@"x-success"]]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:parameters[@"x-success"]] options:@{} completionHandler:nil];
             };
         }
         if (parameters[@"x-error"]) {
             self.xFailure = ^void(NSError *error) {
                 NSString *xError = [NSString stringWithFormat:@"%@?errorCode=%ld&errorMessage=%@", parameters[@"x-error"], (long)[error code], [error domain]];
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:xError]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:xError] options:@{} completionHandler:nil];
             };
         }
     } else {
