@@ -181,8 +181,8 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	if ([textField.text isEqualToString:@""]) {
-		if (self.nextResponder) {
-			[self.nextResponder becomeFirstResponder];
+		if (self.successiveResponder) {
+			[self.successiveResponder becomeFirstResponder];
 		} else {
 			[textField resignFirstResponder];
 		}

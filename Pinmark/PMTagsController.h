@@ -13,7 +13,7 @@
 @property (nonatomic, weak) PMBookmark *bookmark;
 
 @property (nonatomic, weak) IBOutlet UITextField *tagsTextField;
-@property (nonatomic, weak) IBOutlet UIResponder *nextResponder; // next element to become responder when tagsTextField returns
+@property (nonatomic, weak) IBOutlet UIResponder *successiveResponder; // next element to become responder when tagsTextField returns
 @property (nonatomic, weak) IBOutlet UICollectionView *aggregatedTagsCollectionView;
 @property (nonatomic, weak) UICollectionView *suggestedTagsCollectionView;
 
