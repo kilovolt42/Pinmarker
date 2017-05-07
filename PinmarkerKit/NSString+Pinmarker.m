@@ -13,24 +13,24 @@ NSString * const PMAnyURLRegex = @"(?i)\\b((?:[a-z][\\w-]+:(?:/{1,3}|[a-z0-9%])|
 @implementation NSString (Pinmarker)
 
 - (BOOL)isValidURL {
-	NSError *error = NULL;
-	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:PMAnyURLRegex options:NSRegularExpressionCaseInsensitive error:&error];
-	NSRange range = [regex rangeOfFirstMatchInString:self options:0 range:NSMakeRange(0, [self length])];
-	return range.length > 0;
+    NSError *error = NULL;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:PMAnyURLRegex options:NSRegularExpressionCaseInsensitive error:&error];
+    NSRange range = [regex rangeOfFirstMatchInString:self options:0 range:NSMakeRange(0, [self length])];
+    return range.length > 0;
 }
 
 - (BOOL)isPinboardPermittedURL {
-	NSArray *schemes = @[@"http", @"https", @"javascript", @"mailto", @"ftp", @"file", @"feed"];
-	NSURL *url = [NSURL URLWithString:self];
-	return [schemes containsObject:[url scheme]] && [self isValidURL];
+    NSArray *schemes = @[@"http", @"https", @"javascript", @"mailto", @"ftp", @"file", @"feed"];
+    NSURL *url = [NSURL URLWithString:self];
+    return [schemes containsObject:[url scheme]] && [self isValidURL];
 }
 
 - (NSString *)tokenUsername {
-	return [[self componentsSeparatedByString:@":"] firstObject];
+    return [[self componentsSeparatedByString:@":"] firstObject];
 }
 
 - (NSString *)tokenNumber {
-	return [[self componentsSeparatedByString:@":"] lastObject];
+    return [[self componentsSeparatedByString:@":"] lastObject];
 }
 
 @end

@@ -9,8 +9,8 @@
 import UIKit
 
 extension UIView {
-	@IBInspectable var accessibilityID: String? {
-		get { return accessibilityIdentifier }
-		set { accessibilityIdentifier = newValue }
-	}
+    @IBInspectable var accessibilityID: String? {
+        get { return accessibilityIdentifier }
+        set { accessibilityIdentifier = newValue }
+    }
 }
