@@ -56,7 +56,7 @@ NSString * const PMDefaultUsernameKey = @"PMDefaultUsernameKey";
 - (instancetype)initPrivate {
     self = [super init];
     if (self) {
-        _associatedTokens = [Lockbox arrayForKey:PMAssociatedTokensKey];
+        _associatedTokens = [Lockbox unarchiveObjectForKey:PMAssociatedTokensKey];
         _defaultUsername = [[NSUserDefaults standardUserDefaults] valueForKey:PMDefaultUsernameKey];
     }
     return self;
@@ -84,16 +84,16 @@ NSString * const PMDefaultUsernameKey = @"PMDefaultUsernameKey";
             [mutableTokens replaceObjectAtIndex:tokenIndex withObject:token];
             self.associatedTokens = [mutableTokens copy];
 
-            [Lockbox setArray:self.associatedTokens forKey:PMAssociatedTokensKey];
+            [Lockbox archiveObject:self.associatedTokens forKey:PMAssociatedTokensKey];
             [self postDidUpdateNotificationWithUsername:[token tokenUsername]];
         } else { // add to existing tokens
             self.associatedTokens = [self.associatedTokens arrayByAddingObject:token];
-            [Lockbox setArray:self.associatedTokens forKey:PMAssociatedTokensKey];
+            [Lockbox archiveObject:self.associatedTokens forKey:PMAssociatedTokensKey];
             [self postDidAddNotificationWithUsername:[token tokenUsername]];
         }
     } else { // add as only token
         self.associatedTokens = @[token];
-        [Lockbox setArray:self.associatedTokens forKey:PMAssociatedTokensKey];
+        [Lockbox archiveObject:self.associatedTokens forKey:PMAssociatedTokensKey];
         [self postDidAddNotificationWithUsername:[token tokenUsername]];
     }
 
@@ -111,10 +111,10 @@ NSString * const PMDefaultUsernameKey = @"PMDefaultUsernameKey";
 
         if ([mutableTokens count]) {
             self.associatedTokens = [mutableTokens copy];
-            [Lockbox setArray:self.associatedTokens forKey:PMAssociatedTokensKey];
+            [Lockbox archiveObject:self.associatedTokens forKey:PMAssociatedTokensKey];
         } else {
             self.associatedTokens = nil;
-            [Lockbox setArray:nil forKey:PMAssociatedTokensKey];
+            [Lockbox archiveObject:nil forKey:PMAssociatedTokensKey];
         }
 
         if ([self.defaultUsername isEqualToString:username]) {
