@@ -60,7 +60,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 - (void)setSuggestedTags:(NSArray *)suggestedTags {
     _suggestedTags = [suggestedTags copy];
 
-    if ([_suggestedTags count]) {
+    if (_suggestedTags.count) {
         [self.suggestedTagsCollectionView reloadData];
         self.tagsTextField.inputAccessoryView = self.keyboardAccessory;
         [self.tagsTextField reloadInputViews];
@@ -135,7 +135,7 @@ static NSString *tagCellIdentifier = @"Tag Cell";
     self.suggestedTags = nil;
     self.tagsTextField.text = @"";
 
-    NSIndexPath *lastTagIndexPath = [NSIndexPath indexPathForItem:[self.bookmark.tags count] - 1 inSection:0];
+    NSIndexPath *lastTagIndexPath = [NSIndexPath indexPathForItem:self.bookmark.tags.count - 1 inSection:0];
     [self.aggregatedTagsCollectionView scrollToItemAtIndexPath:lastTagIndexPath atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
 }
 
@@ -196,9 +196,9 @@ static NSString *tagCellIdentifier = @"Tag Cell";
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     if (collectionView == self.aggregatedTagsCollectionView) {
-        return [self.aggregatedTags count];
+        return self.aggregatedTags.count;
     } else if (collectionView == self.suggestedTagsCollectionView) {
-        return [self.suggestedTags count];
+        return self.suggestedTags.count;
     }
 
     return 0;

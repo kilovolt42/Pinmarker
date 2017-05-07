@@ -72,7 +72,7 @@
     XCTAssertFalse(bookmark.replace, @"replace was not NO");
     XCTAssertFalse(bookmark.shared, @"shared was not NO");
     XCTAssert(bookmark.toread, @"toread was not YES");
-    XCTAssert([bookmark.tags count] == 2, @"tag count was not 2");
+    XCTAssert(bookmark.tags.count == 2, @"tag count was not 2");
     XCTAssert([bookmark.tags containsObject:@"ios"], @"tags did not contain ios");
     XCTAssert([bookmark.tags containsObject:@"developer"], @"tags did not contain developer");
 }
@@ -150,7 +150,7 @@
     PMBookmark *bookmark = [[PMBookmark alloc] init];
     [bookmark addTags:@"   kyle, ios-developer,,,  , ,   coffee ,"];
 
-    XCTAssert([bookmark.tags count] == 3, @"tag count was not 3");
+    XCTAssert(bookmark.tags.count == 3, @"tag count was not 3");
     XCTAssertFalse([bookmark.tags containsObject:@""], @"tags contained empty words");
     XCTAssertFalse([bookmark.tags containsObject:@" "], @"tags contained a space character");
     XCTAssertFalse([bookmark.tags containsObject:@","], @"tags contained a comma");
@@ -164,13 +164,13 @@
     PMBookmark *bookmark = [[PMBookmark alloc] init];
     [bookmark addTags:@"kyle coffee"];
 
-    XCTAssert([bookmark.tags count] == 2, @"tag count was not 2");
+    XCTAssert(bookmark.tags.count == 2, @"tag count was not 2");
     XCTAssert([bookmark.tags containsObject:@"kyle"], @"tags did not initially contain kyle");
     XCTAssert([bookmark.tags containsObject:@"coffee"], @"tags did not initially contain coffee");
 
     [bookmark removeTag:@"coffee"];
 
-    XCTAssert([bookmark.tags count] == 1, @"tag count was not 1");
+    XCTAssert(bookmark.tags.count == 1, @"tag count was not 1");
     XCTAssertFalse([bookmark.tags containsObject:@"coffee"], @"tags still contained coffee");
 }
 

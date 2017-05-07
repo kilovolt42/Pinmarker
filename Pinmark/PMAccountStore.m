@@ -113,7 +113,7 @@ NSString * const PMDefaultUsernameKey = @"PMDefaultUsernameKey";
         NSMutableArray *mutableTokens = [NSMutableArray arrayWithArray:self.associatedTokens];
         [mutableTokens removeObject:token];
 
-        if ([mutableTokens count]) {
+        if (mutableTokens.count) {
             self.associatedTokens = [mutableTokens copy];
             [Lockbox archiveObject:self.associatedTokens forKey:PMAssociatedTokensKey];
         } else {

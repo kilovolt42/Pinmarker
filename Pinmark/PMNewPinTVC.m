@@ -296,7 +296,7 @@ static const NSUInteger PMSharedCellIndex = 5;
     BOOL buttonEnabled;
     NSString *buttonTitle;
     NSArray *usernames = [PMAccountStore sharedStore].associatedUsernames;
-    if ([usernames count] > 1) {
+    if (usernames.count > 1) {
         buttonEnabled = YES;
         buttonTitle = [self.bookmark.username stringByAppendingString:@" ▾"];
     } else {
@@ -343,7 +343,7 @@ static const NSUInteger PMSharedCellIndex = 5;
 - (void)updateRowHeights {
     [self.tableView beginUpdates];
 
-    if ([self.bookmark.tags count]) {
+    if (self.bookmark.tags.count) {
         self.tagsVerticalConstraint.constant = 0.0;
     } else {
         self.tagsVerticalConstraint.constant = -44.0;
@@ -372,7 +372,7 @@ static const NSUInteger PMSharedCellIndex = 5;
         if (token) {
             void (^success)(NSDictionary *) = ^(NSDictionary *responseDictionary) {
                 NSArray *posts = responseDictionary[@"posts"];
-                if ([posts count]) {
+                if (posts.count) {
                     NSString *dateString = responseDictionary[@"date"];
                     NSDateFormatter *dateFormatter = [NSDateFormatter new];
                     dateFormatter.dateFormat = PMPinboardAPIDateFormat;
@@ -452,7 +452,7 @@ static const NSUInteger PMSharedCellIndex = 5;
         return 44.0;
     }
     else if (indexPath.row == PMTagsCellIndex) {
-        if ([self.bookmark.tags count]) {
+        if (self.bookmark.tags.count) {
             return 88.0;
         } else {
             return 44.0;

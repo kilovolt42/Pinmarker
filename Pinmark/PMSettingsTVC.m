@@ -31,7 +31,7 @@ NSString * const PMInformationSectionLabel = @"Information";
     _accounts = accounts;
 
     UIBarButtonItem *closeButton = self.navigationItem.leftBarButtonItem;
-    if ([accounts count]) {
+    if (accounts.count) {
         closeButton.title = @"Close";
         closeButton.action = @selector(close:);
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -134,7 +134,7 @@ NSString * const PMInformationSectionLabel = @"Information";
     NSInteger row = indexPath.row;
 
     if ([sectionLabel isEqualToString:PMAccountsSectionLabel]) {
-        if (self.isEditing || [self.accounts count] == 1) {
+        if (self.isEditing || self.accounts.count == 1) {
             PMAddAccountVC *addAccountVC = [[PMAddAccountVC alloc] init];
             addAccountVC.delegate = self;
             addAccountVC.username = self.accounts[row];
@@ -153,14 +153,14 @@ NSString * const PMInformationSectionLabel = @"Information";
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self.tableSections count];
+    return self.tableSections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSString *sectionLabel = self.tableSections[@(section)];
 
     if ([sectionLabel isEqualToString:PMAccountsSectionLabel]) {
-        return [self.accounts count];
+        return self.accounts.count;
     }
     else if ([sectionLabel isEqualToString:PMAddAccountSectionLabel]) {
         return 1;
@@ -185,7 +185,7 @@ NSString * const PMInformationSectionLabel = @"Information";
         cell.textLabel.text = self.accounts[indexPath.row];
         cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-        if ([self.accounts count] > 1) {
+        if (self.accounts.count > 1) {
             if ([self.accounts[indexPath.row] isEqualToString:[PMAccountStore sharedStore].defaultUsername]) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             } else {
@@ -220,7 +220,7 @@ NSString * const PMInformationSectionLabel = @"Information";
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     NSString *sectionLabel = self.tableSections[@(section)];
-    if ([sectionLabel isEqualToString:PMAccountsSectionLabel] && [[PMAccountStore sharedStore].associatedUsernames count] > 1) {
+    if ([sectionLabel isEqualToString:PMAccountsSectionLabel] && [PMAccountStore sharedStore].associatedUsernames.count > 1) {
         return @"Select which account to bookmark with. To update an account, tap Edit and select an account to update.";
     }
     return @"";
@@ -247,10 +247,10 @@ NSString * const PMInformationSectionLabel = @"Information";
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:accountsSection] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
 
-        if ([self.accounts count] == 0) {
+        if (self.accounts.count == 0) {
             [self setEditing:NO animated:YES];
             [self refreshTable];
-        } else if ([self.accounts count] == 1) {
+        } else if (self.accounts.count == 1) {
             [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:accountsSection inSection:0]].accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } else {
             NSUInteger defaultUserIndex = [self.accounts indexOfObject:[PMAccountStore sharedStore].defaultUsername];
