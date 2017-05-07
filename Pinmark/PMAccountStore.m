@@ -34,6 +34,7 @@ NSString * const PMDefaultUsernameKey = @"PMDefaultUsernameKey";
         _defaultUsername = defaultUsername;
         [userDefaults setObject:defaultUsername forKey:PMDefaultUsernameKey];
     } else {
+        _defaultUsername = nil;
         [userDefaults removeObjectForKey:PMDefaultUsernameKey];
     }
 
