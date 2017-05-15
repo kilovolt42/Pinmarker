@@ -32,8 +32,7 @@ NSString * const PMPinboardAPILastPostedKey = @"lastPosted";
 
 // Pinboard API Methods
 NSString * const PMPinboardAPIPlistFilename = @"PinboardAPI";
-NSString * const PMPinboardAPIMethodTokenAuth = @"token_authentification";
-NSString * const PMPinboardAPIMethodBasicAuth = @"basic_authentification";
+NSString * const PMPinboardAPIMethodGetToken = @"get_token";
 NSString * const PMPinboardAPIMethodGetTags = @"get_tags";
 NSString * const PMPinboardAPIMethodGetPosts = @"get_posts";
 NSString * const PMPinboardAPIMethodAddPost = @"add_post";

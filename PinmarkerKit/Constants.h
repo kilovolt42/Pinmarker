@@ -30,8 +30,7 @@ extern NSString * const PMPinboardAPILastPostedKey;
 
 // Pinboard API Methods
 extern NSString * const PMPinboardAPIPlistFilename;
-extern NSString * const PMPinboardAPIMethodTokenAuth;
-extern NSString * const PMPinboardAPIMethodBasicAuth;
+extern NSString * const PMPinboardAPIMethodGetToken;
 extern NSString * const PMPinboardAPIMethodGetTags;
 extern NSString * const PMPinboardAPIMethodGetPosts;
 extern NSString * const PMPinboardAPIMethodAddPost;
