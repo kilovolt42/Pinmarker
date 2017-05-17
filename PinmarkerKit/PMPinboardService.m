@@ -102,7 +102,9 @@ static NSDictionary *PMPinboardAPIMethods;
         if (error) {
             PMLog(@"Error: %@", error);
             dispatch_async(dispatch_get_main_queue(), ^{
-                failure(error);
+                if (failure) {
+                    failure(error);
+                }
             });
         } else {
             NSError *jsonError;
@@ -110,12 +112,16 @@ static NSDictionary *PMPinboardAPIMethods;
             if (jsonError) {
                 PMLog(@"Error: %@", jsonError);
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    failure(jsonError);
+                    if (failure) {
+                        failure(jsonError);
+                    }
                 });
             } else {
                 PMLog(@"Response Object: %@", json);
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    success(json);
+                    if (success) {
+                        success(json);
+                    }
                 });
             }
         }
