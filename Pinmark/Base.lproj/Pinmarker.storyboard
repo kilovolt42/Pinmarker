@@ -218,7 +218,7 @@
                                                     </connections>
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Read Later" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pwU-Cq-HVs" userLabel="ReadLaterLabel">
-                                                    <rect key="frame" x="15" y="13" width="87.5" height="22"/>
+                                                    <rect key="frame" x="15" y="13" width="281" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -228,6 +228,7 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="uI2-u2-kLw" firstAttribute="leading" secondItem="pwU-Cq-HVs" secondAttribute="trailing" constant="15" id="6ca-57-MMG"/>
                                                 <constraint firstItem="uI2-u2-kLw" firstAttribute="centerY" secondItem="pwU-Cq-HVs" secondAttribute="centerY" id="87j-o7-rGu" userLabel="ReadLaterLabelSwitchCenterY"/>
                                                 <constraint firstAttribute="bottom" secondItem="uI2-u2-kLw" secondAttribute="bottom" constant="8" id="8XD-rr-peq" userLabel="SwitchBottom"/>
                                                 <constraint firstAttribute="trailing" secondItem="uI2-u2-kLw" secondAttribute="trailing" constant="15" id="Avx-pd-dHy" userLabel="SwitchRight"/>
@@ -260,7 +261,7 @@
                                                     </connections>
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Private" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qgm-6w-Ir7" userLabel="PrivateLabel">
-                                                    <rect key="frame" x="15" y="13" width="56" height="22"/>
+                                                    <rect key="frame" x="15" y="13" width="281" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
@@ -272,6 +273,7 @@
                                                 <constraint firstItem="qgm-6w-Ir7" firstAttribute="centerY" secondItem="W9p-Du-tUZ" secondAttribute="centerY" id="3rk-CH-R6P" userLabel="PrivateLabelSwitchCenterY"/>
                                                 <constraint firstItem="W9p-Du-tUZ" firstAttribute="top" secondItem="smo-7Z-FMP" secondAttribute="top" constant="8" id="98b-r2-F7s" userLabel="SwitchTop"/>
                                                 <constraint firstItem="qgm-6w-Ir7" firstAttribute="leading" secondItem="smo-7Z-FMP" secondAttribute="leading" constant="15" id="DpP-qF-L66" userLabel="PrivateLabelLeft"/>
+                                                <constraint firstItem="W9p-Du-tUZ" firstAttribute="leading" secondItem="qgm-6w-Ir7" secondAttribute="trailing" constant="15" id="FHT-qO-iLV"/>
                                                 <constraint firstAttribute="trailing" secondItem="W9p-Du-tUZ" secondAttribute="trailing" constant="15" id="TGU-Je-4sz" userLabel="SwitchRight"/>
                                                 <constraint firstAttribute="bottom" secondItem="W9p-Du-tUZ" secondAttribute="bottom" constant="8" id="zvA-hV-Hya" userLabel="SwitchBottom"/>
                                             </constraints>
