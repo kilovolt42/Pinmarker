@@ -94,6 +94,8 @@ static const NSUInteger PMSharedCellIndex = 5;
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self updateTitleButton];
+
+    [self reportErrorWithMessage:nil];
 }
 
 - (void)dealloc {
@@ -313,17 +315,21 @@ static const NSUInteger PMSharedCellIndex = 5;
 }
 
 - (void)reportSuccess {
-    self.navigationItem.prompt = @"Success";
-    [self performSelector:@selector(resetNavigationBar) withObject:self afterDelay:2.0];
+    [self reportMessage:@"Success"];
 }
 
 - (void)reportErrorWithMessage:(NSString *)message {
-    self.navigationItem.prompt = message ? message : @"Error";
-    [self performSelector:@selector(resetNavigationBar) withObject:self afterDelay:2.0];
+    NSString *resolvedMessage = message ? message : @"Error";
+    [self reportMessage:resolvedMessage];
 }
 
-- (void)resetNavigationBar {
-    self.navigationItem.prompt = nil;
+- (void)reportMessage:(NSString *)message {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    [self presentViewController:alert animated:YES completion:nil];
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [alert dismissViewControllerAnimated:true completion:nil];
+    });
 }
 
 - (void)dismissKeyboard {
