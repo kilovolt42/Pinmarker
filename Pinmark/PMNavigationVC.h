@@ -8,6 +8,6 @@
 
 @interface PMNavigationVC : UINavigationController <UIViewControllerRestoration>
 
-- (void)openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation;
+- (void)openURL:(NSURL *)url;
 
 @end

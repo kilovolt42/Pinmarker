@@ -27,11 +27,11 @@
     return UIStatusBarStyleLightContent;
 }
 
-- (void)openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+- (void)openURL:(NSURL *)url {
     UIViewController *viewController = self.viewControllers[0];
     if ([viewController isKindOfClass:[PMNewPinTVC class]]) {
         PMNewPinTVC *newPinTVC = (PMNewPinTVC *)viewController;
-        [newPinTVC openURL:url sourceApplication:sourceApplication annotation:annotation];
+        [newPinTVC openURL:url];
     }
 }
 

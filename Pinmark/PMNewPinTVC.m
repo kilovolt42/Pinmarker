@@ -232,7 +232,7 @@ static const NSUInteger PMSharedCellIndex = 5;
 
 #pragma mark - Methods
 
-- (void)openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+- (void)openURL:(NSURL *)url {
     NSString *host = [url host];
     NSString *command;
 

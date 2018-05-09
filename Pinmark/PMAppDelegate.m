@@ -59,12 +59,12 @@
     }
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
     BOOL result = YES;
     UIViewController *viewController = self.window.rootViewController;
     if ([viewController isKindOfClass:[PMNavigationVC class]]) {
         PMNavigationVC *navigationVC = (PMNavigationVC *)viewController;
-        [navigationVC openURL:url sourceApplication:sourceApplication annotation:annotation];
+        [navigationVC openURL:url];
     }
 
     return result;
