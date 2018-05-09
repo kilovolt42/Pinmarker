@@ -502,7 +502,7 @@
 				TargetAttributes = {
 					278EF422185B71E2003A27D3 = {
 						DevelopmentTeam = 793AL65W3G;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 0930;
 					};
 					278EF446185B71E2003A27D3 = {
 						LastSwiftMigration = 0830;
@@ -839,7 +839,8 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Pinmark/Pinmarker-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
@@ -871,7 +872,8 @@
 				PRODUCT_NAME = Pinmarker;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Pinmark/Pinmarker-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
