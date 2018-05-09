@@ -94,8 +94,6 @@ static const NSUInteger PMSharedCellIndex = 5;
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self updateTitleButton];
-
-    [self reportErrorWithMessage:nil];
 }
 
 - (void)dealloc {
