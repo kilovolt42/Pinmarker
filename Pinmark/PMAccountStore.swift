@@ -6,6 +6,14 @@
 //  Copyright © 2018 kilovolt42. All rights reserved.
 //
 
+import Foundation
+
+extension UserDefaults {
+    struct Keys {
+        static let defaultUsername = "PMDefaultUsernameKey"
+    }
+}
+
 /**
  Stores account usernames and tokens.
 
@@ -19,7 +27,22 @@
 class PMAccountStoreSwift {
     static let sharedStore = PMAccountStoreSwift()
 
-    var defaultUsername: String?
+    var defaultUsername: String? {
+        didSet {
+            defer {
+                UserDefaults.standard.synchronize()
+            }
+
+            guard let username = defaultUsername, associatedUsernames.contains(username) else {
+                defaultUsername = nil
+                UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.defaultUsername)
+                return
+            }
+
+            UserDefaults.standard.set(username, forKey: UserDefaults.Keys.defaultUsername)
+        }
+    }
+
     private(set) var associatedUsernames = [String]()
 
     /**
@@ -47,7 +70,7 @@ class PMAccountStoreSwift {
      Returns the full API token associated with the username.
 
      - parameter username: The username of the requested API token.
-     - returns: A full API token or `nil` if the username is unknown.
+     - returns: A full API token or `nil` if the username is unfamiliar.
      */
     func authToken(forUsername username: String) -> String? {
         return nil
