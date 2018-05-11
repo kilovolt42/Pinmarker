@@ -20,7 +20,7 @@ class PMAccountStoreSwift {
     static let sharedStore = PMAccountStoreSwift()
 
     var defaultUsername: String?
-    var associatedUsernames: [String]?
+    private(set) var associatedUsernames = [String]()
 
     /**
      Adds or updates the given API token. This will update the default username
