@@ -627,11 +627,13 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Pinmarker/Pods-Pinmarker-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Lockbox/Lockbox.framework",
 				"${BUILT_PRODUCTS_DIR}/RNCryptor-objc/RNCryptor_objc.framework",
+				"${BUILT_PRODUCTS_DIR}/TinyKeychain/TinyKeychain.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lockbox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNCryptor_objc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TinyKeychain.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

@@ -5,6 +5,7 @@ target 'Pinmarker' do
   use_frameworks!
   pod 'Lockbox'
   pod 'RNCryptor-objc'
+  pod 'TinyKeychain'
 end
 
 post_install do |installer|
