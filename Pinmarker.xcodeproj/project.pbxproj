@@ -46,6 +46,7 @@
 		27D6DE5B1C55CA7A0069CBFF /* NSString+Pinmarker.h in Headers */ = {isa = PBXBuildFile; fileRef = 271FAF9718AA9F1E0011C41E /* NSString+Pinmarker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27DA5B501885BB0500AEE0F5 /* PMAddAccountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DA5B4F1885BB0500AEE0F5 /* PMAddAccountVC.m */; };
 		27E6A6431C6809AE00D77737 /* PMBookmarkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 272338B618BCFB6800F80497 /* PMBookmarkTests.m */; };
+		38F3BB757580295E51A720D6 /* Pods_PinmarkerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95598D5A4350C5C92DB18D58 /* Pods_PinmarkerTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -158,7 +159,10 @@
 		27DA5B4F1885BB0500AEE0F5 /* PMAddAccountVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMAddAccountVC.m; sourceTree = "<group>"; };
 		3631A14A50BC35DF31065A67 /* Pods_Pinmarker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pinmarker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E2DFA3009A9AFE57034C28F /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C4DC01EF6EB24E6750629F1 /* Pods-PinmarkerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PinmarkerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PinmarkerTests/Pods-PinmarkerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		95598D5A4350C5C92DB18D58 /* Pods_PinmarkerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PinmarkerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2A13E7D0843829EA3AF30B1 /* Pods-Pinmarker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pinmarker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pinmarker/Pods-Pinmarker.debug.xcconfig"; sourceTree = "<group>"; };
+		D66DCC1FD610FA8E1CEA5B03 /* Pods-PinmarkerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PinmarkerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PinmarkerTests/Pods-PinmarkerTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +179,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38F3BB757580295E51A720D6 /* Pods_PinmarkerTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +289,7 @@
 				27B2042119D476FD009FEAA1 /* SystemConfiguration.framework */,
 				3E2DFA3009A9AFE57034C28F /* Pods.framework */,
 				3631A14A50BC35DF31065A67 /* Pods_Pinmarker.framework */,
+				95598D5A4350C5C92DB18D58 /* Pods_PinmarkerTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -395,6 +401,8 @@
 			children = (
 				B2A13E7D0843829EA3AF30B1 /* Pods-Pinmarker.debug.xcconfig */,
 				16D8966AD9DBF113EC293157 /* Pods-Pinmarker.release.xcconfig */,
+				8C4DC01EF6EB24E6750629F1 /* Pods-PinmarkerTests.debug.xcconfig */,
+				D66DCC1FD610FA8E1CEA5B03 /* Pods-PinmarkerTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -444,9 +452,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 278EF45B185B71E2003A27D3 /* Build configuration list for PBXNativeTarget "PinmarkerTests" */;
 			buildPhases = (
+				7F71A88DBE68BBF4E3B4E471 /* [CP] Check Pods Manifest.lock */,
 				278EF443185B71E2003A27D3 /* Sources */,
 				278EF444185B71E2003A27D3 /* Frameworks */,
 				278EF445185B71E2003A27D3 /* Resources */,
+				CC3926642CB445BCD5A1D65B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -616,6 +626,46 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7F71A88DBE68BBF4E3B4E471 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PinmarkerTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CC3926642CB445BCD5A1D65B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PinmarkerTests/Pods-PinmarkerTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Lockbox/Lockbox.framework",
+				"${BUILT_PRODUCTS_DIR}/RNCryptor-objc/RNCryptor_objc.framework",
+				"${BUILT_PRODUCTS_DIR}/TinyKeychain/TinyKeychain.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lockbox.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNCryptor_objc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TinyKeychain.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PinmarkerTests/Pods-PinmarkerTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		EB786DE68C89C6EAD2617A6E /* [CP] Embed Pods Frameworks */ = {
@@ -908,10 +958,11 @@
 		};
 		278EF45C185B71E2003A27D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8C4DC01EF6EB24E6750629F1 /* Pods-PinmarkerTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Pinmarker.app/Pinmarker";
 				CLANG_ENABLE_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Pinmark/Pinmarker-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -943,10 +994,11 @@
 		};
 		278EF45D185B71E2003A27D3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D66DCC1FD610FA8E1CEA5B03 /* Pods-PinmarkerTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Pinmarker.app/Pinmarker";
 				CLANG_ENABLE_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Pinmark/Pinmarker-Prefix.pch";
 				INFOPLIST_FILE = "PinmarkTests/PinmarkerTests-Info.plist";
