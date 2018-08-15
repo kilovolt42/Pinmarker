@@ -46,10 +46,11 @@
         NSString *password = self.encryptionPassword;
 
         if (encryptedData && password) {
-            NSError *error = nil;
-            NSData *decryptedData = [RNDecryptor decryptData:encryptedData withPassword:password error:&error];
-            if (!error) {
-                _bookmarks = [NSKeyedUnarchiver unarchiveObjectWithData:decryptedData];
+            NSError *decryptError = nil;
+            NSData *decryptedData = [RNDecryptor decryptData:encryptedData withPassword:password error:&decryptError];
+            if (!decryptError) {
+                NSError *unarchiveError = nil;
+                _bookmarks = [NSKeyedUnarchiver unarchivedObjectOfClass:[PMBookmark class] fromData:decryptedData error:&unarchiveError];
             }
         }
 
@@ -130,13 +131,16 @@
     NSString *password = self.encryptionPassword;
 
     if (password) {
-        NSData *archivedData = [NSKeyedArchiver archivedDataWithRootObject:self.bookmarks];
+        NSError *archiveError = nil;
+        NSData *archivedData = [NSKeyedArchiver archivedDataWithRootObject:self.bookmarks requiringSecureCoding:YES error:&archiveError];
 
-        NSError *error = nil;
-        NSData *encryptedData = [RNEncryptor encryptData:archivedData withSettings:kRNCryptorAES256Settings password:password error:&error];
-        if (!error) {
-            NSString *path = [self bookmarksArchivePath];
-            return [encryptedData writeToFile:path atomically:YES];
+        if (!archiveError) {
+            NSError *encryptError = nil;
+            NSData *encryptedData = [RNEncryptor encryptData:archivedData withSettings:kRNCryptorAES256Settings password:password error:&encryptError];
+            if (!encryptError) {
+                NSString *path = [self bookmarksArchivePath];
+                return [encryptedData writeToFile:path atomically:YES];
+            }
         }
     }
 
