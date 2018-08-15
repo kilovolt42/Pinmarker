@@ -25,7 +25,22 @@ extension UserDefaults {
  `defaultUsername` property.
  */
 class AccountProvider {
-    var defaultUsername: String?
+    var defaultUsername: String? {
+        didSet {
+            defer {
+                UserDefaults.standard.synchronize()
+            }
+
+            guard let username = defaultUsername, associatedUsernames.contains(username) else {
+                defaultUsername = nil
+                UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.defaultUsername)
+                return
+            }
+
+            UserDefaults.standard.set(username, forKey: UserDefaults.Keys.defaultUsername)
+        }
+    }
+
     private(set) var associatedUsernames = [String]()
 
     /**

@@ -45,6 +45,7 @@
 		27DA5B501885BB0500AEE0F5 /* PMAddAccountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DA5B4F1885BB0500AEE0F5 /* PMAddAccountVC.m */; };
 		27E6A6431C6809AE00D77737 /* PMBookmarkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 272338B618BCFB6800F80497 /* PMBookmarkTests.m */; };
 		27F109622120ABAB003FF385 /* AccountProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F109612120ABAB003FF385 /* AccountProvider.swift */; };
+		27F109652120AEA3003FF385 /* AccountProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F109642120AEA3003FF385 /* AccountProviderTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,6 +155,8 @@
 		27DA5B4E1885BB0500AEE0F5 /* PMAddAccountVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMAddAccountVC.h; sourceTree = "<group>"; };
 		27DA5B4F1885BB0500AEE0F5 /* PMAddAccountVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMAddAccountVC.m; sourceTree = "<group>"; };
 		27F109612120ABAB003FF385 /* AccountProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountProvider.swift; sourceTree = "<group>"; };
+		27F109632120AEA3003FF385 /* PinmarkerKitTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PinmarkerKitTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		27F109642120AEA3003FF385 /* AccountProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountProviderTests.swift; sourceTree = "<group>"; };
 		3631A14A50BC35DF31065A67 /* Pods_Pinmarker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pinmarker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E2DFA3009A9AFE57034C28F /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2A13E7D0843829EA3AF30B1 /* Pods-Pinmarker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pinmarker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pinmarker/Pods-Pinmarker.debug.xcconfig"; sourceTree = "<group>"; };
@@ -348,6 +351,7 @@
 		27D637521C5483BD006D2C58 /* PinmarkerKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				27F109642120AEA3003FF385 /* AccountProviderTests.swift */,
 				272338B618BCFB6800F80497 /* PMBookmarkTests.m */,
 				27E6A6421C68099F00D77737 /* Supporting Files */,
 			);
@@ -383,6 +387,7 @@
 			isa = PBXGroup;
 			children = (
 				27D637551C5483BD006D2C58 /* Info.plist */,
+				27F109632120AEA3003FF385 /* PinmarkerKitTests-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -526,7 +531,7 @@
 					};
 					27D6374B1C5483BD006D2C58 = {
 						CreatedOnToolsVersion = 7.2;
-						LastSwiftMigration = 0930;
+						LastSwiftMigration = 1000;
 						TestTargetID = 278EF422185B71E2003A27D3;
 					};
 				};
@@ -690,6 +695,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27F109652120AEA3003FF385 /* AccountProviderTests.swift in Sources */,
 				27E6A6431C6809AE00D77737 /* PMBookmarkTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1052,6 +1058,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1063,6 +1070,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kilovolt42.PinmarkerKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PinmarkerKitTests/PinmarkerKitTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
@@ -1074,6 +1082,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1086,6 +1095,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kilovolt42.PinmarkerKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PinmarkerKitTests/PinmarkerKitTests-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pinmarker.app/Pinmarker";
