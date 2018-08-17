@@ -7,10 +7,17 @@
 //
 
 import XCTest
+import TinyKeychain
 @testable import PinmarkerKit
 
+private extension Keychain {
+    static var mock: Keychain {
+        return Keychain(group: nil, accessibilityLevel: .afterFirstUnlock)
+    }
+}
+
 class AccountProviderTests: XCTestCase {
-    let accountProvider = AccountProvider()
+    let accountProvider = AccountProvider(keychain: .mock)
 
     func testSetUnfamiliarUsernameAsDefault() {
         accountProvider.defaultUsername = "foobar"
