@@ -995,7 +995,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B2A13E7D0843829EA3AF30B1 /* Pods-Pinmarker.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1031,7 +1030,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 16D8966AD9DBF113EC293157 /* Pods-Pinmarker.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1207,7 +1205,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 724290B03ED4F7F877AFC898 /* Pods-PinmarkerKitTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1232,7 +1229,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B688EC94E4F6EC48B637A29D /* Pods-PinmarkerKitTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				COPY_PHASE_STRIP = NO;
