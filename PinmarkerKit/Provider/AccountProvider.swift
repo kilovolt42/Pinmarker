@@ -6,7 +6,7 @@
 //  Copyright © 2018 kilovolt42. All rights reserved.
 //
 
-import Foundation
+import TinyKeychain
 
 extension UserDefaults {
     struct Keys {
@@ -41,7 +41,24 @@ class AccountProvider {
         }
     }
 
-    private(set) var associatedUsernames = [String]()
+    /**
+     Usernames for the account tokens stored in the device's keychain.
+     */
+    var associatedUsernames: [String] {
+        return associatedTokens.compactMap { token in
+            token.tokenUsername()
+        }
+    }
+
+    private var associatedTokens: [String] {
+        return keychain[.associatedTokens] ?? []
+    }
+
+    private let keychain: Keychain
+
+    init(keychain: Keychain = Keychain.pinmarker) {
+        self.keychain = keychain
+    }
 
     /**
      Adds or updates the given API token. This will update the default username
