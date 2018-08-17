@@ -9,10 +9,20 @@ target 'Pinmarker' do
 end
 
 target 'PinmarkerTests' do
-    use_frameworks!
-    pod 'Lockbox'
-    pod 'RNCryptor-objc'
-    pod 'TinyKeychain'
+  use_frameworks!
+  pod 'Lockbox'
+  pod 'RNCryptor-objc'
+  pod 'TinyKeychain'
+end
+
+target 'PinmarkerKit' do
+  use_frameworks!
+  pod 'TinyKeychain'
+end
+
+target 'PinmarkerKitTests' do
+  use_frameworks!
+  pod 'TinyKeychain'
 end
 
 post_install do |installer|

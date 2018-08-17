@@ -1,5 +1,5 @@
 //
-//  PMKeychainTests.swift
+//  KeychainTests.swift
 //  Pinmarker
 //
 //  Created by Kyle Stevens on 5/13/18.
@@ -8,9 +8,9 @@
 
 import XCTest
 import TinyKeychain
-@testable import Pinmarker
+@testable import PinmarkerKit
 
-class PMKeychainTests: XCTestCase {
+class KeychainTests: XCTestCase {
     func testKeychainExists() {
         XCTAssertNotNil(Keychain.pinmarker, "Pinmarker keychain should exist")
     }

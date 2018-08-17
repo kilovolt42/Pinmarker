@@ -1,5 +1,5 @@
 //
-//  PMKeychain.swift
+//  Keychain.swift
 //  Pinmarker
 //
 //  Created by Kyle Stevens on 5/13/18.
@@ -8,8 +8,8 @@
 
 import TinyKeychain
 
-extension Keychain {
-    static var pinmarker: Keychain {
+public extension Keychain {
+    public static var pinmarker: Keychain {
         return Keychain(group: nil, accessibilityLevel: .afterFirstUnlock)
     }
 }

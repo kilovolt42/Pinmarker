@@ -8,13 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		01C0F1695DD96D8893D9D55F /* Pods_Pinmarker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3631A14A50BC35DF31065A67 /* Pods_Pinmarker.framework */; };
+		118DC2B25C8020170E761BC1 /* Pods_PinmarkerKitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 905F776CF80F67C268AC558D /* Pods_PinmarkerKitTests.framework */; };
 		2703C541185F7E6500570F0C /* PMNewPinTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2703C540185F7E6500570F0C /* PMNewPinTVC.m */; };
 		270BA16519E026C500BE9743 /* PinboardAPI.plist in Resources */ = {isa = PBXBuildFile; fileRef = 270BA16419E026C500BE9743 /* PinboardAPI.plist */; };
 		270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 270C4A4918628D6A000FC061 /* PMNavigationVC.m */; };
 		270F437818C7BE9200757DCB /* PMBookmarkStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 270F437718C7BE9200757DCB /* PMBookmarkStore.m */; };
+		27103AB121266EDE003CAF50 /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DA51620A882F400EBEE31 /* KeychainTests.swift */; };
+		27103AB621267254003CAF50 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DA51420A882EA00EBEE31 /* Keychain.swift */; };
 		271D051118D766BD006B5A4E /* PMAddAccountVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 271D051018D766BD006B5A4E /* PMAddAccountVC.xib */; };
-		271DA51520A882EA00EBEE31 /* PMKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DA51420A882EA00EBEE31 /* PMKeychain.swift */; };
-		271DA51820A8831100EBEE31 /* PMKeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DA51620A882F400EBEE31 /* PMKeychainTests.swift */; };
 		272C5CD3186DFF3E0079B95E /* PMTagCVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 272C5CD2186DFF3E0079B95E /* PMTagCVCell.m */; };
 		272C5CD5186F626D0079B95E /* PMTagCVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 272C5CD4186F626D0079B95E /* PMTagCVCell.xib */; };
 		27409CAB18CBDAAE006C97BB /* PMAccountStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 27409CAA18CBDAAE006C97BB /* PMAccountStore.m */; };
@@ -49,6 +50,7 @@
 		27DA5B501885BB0500AEE0F5 /* PMAddAccountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DA5B4F1885BB0500AEE0F5 /* PMAddAccountVC.m */; };
 		27E6A6431C6809AE00D77737 /* PMBookmarkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 272338B618BCFB6800F80497 /* PMBookmarkTests.m */; };
 		38F3BB757580295E51A720D6 /* Pods_PinmarkerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95598D5A4350C5C92DB18D58 /* Pods_PinmarkerTests.framework */; };
+		3D4F6DB994AFCA0EF758822D /* Pods_PinmarkerKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5F571D47DD31B0978490FE /* Pods_PinmarkerKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,9 +109,11 @@
 		270C4A4918628D6A000FC061 /* PMNavigationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMNavigationVC.m; sourceTree = "<group>"; };
 		270F437618C7BE9200757DCB /* PMBookmarkStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMBookmarkStore.h; sourceTree = "<group>"; };
 		270F437718C7BE9200757DCB /* PMBookmarkStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBookmarkStore.m; sourceTree = "<group>"; };
+		27103AB221266F15003CAF50 /* TinyKeychain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TinyKeychain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		27103AB421266F37003CAF50 /* TinyKeychain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TinyKeychain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		271D051018D766BD006B5A4E /* PMAddAccountVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMAddAccountVC.xib; sourceTree = "<group>"; };
-		271DA51420A882EA00EBEE31 /* PMKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMKeychain.swift; sourceTree = "<group>"; };
-		271DA51620A882F400EBEE31 /* PMKeychainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMKeychainTests.swift; sourceTree = "<group>"; };
+		271DA51420A882EA00EBEE31 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		271DA51620A882F400EBEE31 /* KeychainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
 		271FAF9718AA9F1E0011C41E /* NSString+Pinmarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Pinmarker.h"; sourceTree = "<group>"; };
 		271FAF9818AA9F1E0011C41E /* NSString+Pinmarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Pinmarker.m"; sourceTree = "<group>"; };
 		272338B618BCFB6800F80497 /* PMBookmarkTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBookmarkTests.m; sourceTree = "<group>"; };
@@ -163,10 +167,16 @@
 		27DA5B4F1885BB0500AEE0F5 /* PMAddAccountVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMAddAccountVC.m; sourceTree = "<group>"; };
 		3631A14A50BC35DF31065A67 /* Pods_Pinmarker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pinmarker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E2DFA3009A9AFE57034C28F /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		724290B03ED4F7F877AFC898 /* Pods-PinmarkerKitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PinmarkerKitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PinmarkerKitTests/Pods-PinmarkerKitTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8549A2B5AF03A0804BFCDFED /* Pods-PinmarkerKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PinmarkerKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PinmarkerKit/Pods-PinmarkerKit.debug.xcconfig"; sourceTree = "<group>"; };
 		8C4DC01EF6EB24E6750629F1 /* Pods-PinmarkerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PinmarkerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PinmarkerTests/Pods-PinmarkerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		905F776CF80F67C268AC558D /* Pods_PinmarkerKitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PinmarkerKitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		95598D5A4350C5C92DB18D58 /* Pods_PinmarkerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PinmarkerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2A13E7D0843829EA3AF30B1 /* Pods-Pinmarker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pinmarker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pinmarker/Pods-Pinmarker.debug.xcconfig"; sourceTree = "<group>"; };
+		B688EC94E4F6EC48B637A29D /* Pods-PinmarkerKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PinmarkerKitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PinmarkerKitTests/Pods-PinmarkerKitTests.release.xcconfig"; sourceTree = "<group>"; };
+		CF5F571D47DD31B0978490FE /* Pods_PinmarkerKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PinmarkerKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D66DCC1FD610FA8E1CEA5B03 /* Pods-PinmarkerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PinmarkerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PinmarkerTests/Pods-PinmarkerTests.release.xcconfig"; sourceTree = "<group>"; };
+		DD916CE0F3451158F762FC3B /* Pods-PinmarkerKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PinmarkerKit.release.xcconfig"; path = "Pods/Target Support Files/Pods-PinmarkerKit/Pods-PinmarkerKit.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +201,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D4F6DB994AFCA0EF758822D /* Pods_PinmarkerKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,6 +210,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				27D6374D1C5483BD006D2C58 /* PinmarkerKit.framework in Frameworks */,
+				118DC2B25C8020170E761BC1 /* Pods_PinmarkerKitTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,7 +264,6 @@
 		2718DE8319BE1F7500D560F6 /* Store */ = {
 			isa = PBXGroup;
 			children = (
-				271DA51420A882EA00EBEE31 /* PMKeychain.swift */,
 				270F437618C7BE9200757DCB /* PMBookmarkStore.h */,
 				270F437718C7BE9200757DCB /* PMBookmarkStore.m */,
 				27409CA918CBDAAE006C97BB /* PMAccountStore.h */,
@@ -291,10 +302,14 @@
 		278EF425185B71E2003A27D3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				27103AB421266F37003CAF50 /* TinyKeychain.framework */,
+				27103AB221266F15003CAF50 /* TinyKeychain.framework */,
 				27B2042119D476FD009FEAA1 /* SystemConfiguration.framework */,
 				3E2DFA3009A9AFE57034C28F /* Pods.framework */,
 				3631A14A50BC35DF31065A67 /* Pods_Pinmarker.framework */,
 				95598D5A4350C5C92DB18D58 /* Pods_PinmarkerTests.framework */,
+				CF5F571D47DD31B0978490FE /* Pods_PinmarkerKit.framework */,
+				905F776CF80F67C268AC558D /* Pods_PinmarkerKitTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -333,7 +348,6 @@
 			isa = PBXGroup;
 			children = (
 				278C3F4F20A656D700615E79 /* PMAccountStoreTests.swift */,
-				271DA51620A882F400EBEE31 /* PMKeychainTests.swift */,
 				27E6A6411C68099200D77737 /* Supporting Files */,
 			);
 			name = PinmarkerTests;
@@ -353,6 +367,7 @@
 		27D637441C5483BD006D2C58 /* PinmarkerKit */ = {
 			isa = PBXGroup;
 			children = (
+				271DA51420A882EA00EBEE31 /* Keychain.swift */,
 				2718DE8219BE1F5300D560F6 /* Model */,
 				27B2042319D47FFF009FEAA1 /* Network */,
 				27D6DE561C55C6110069CBFF /* Supporting Files */,
@@ -363,6 +378,7 @@
 		27D637521C5483BD006D2C58 /* PinmarkerKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				271DA51620A882F400EBEE31 /* KeychainTests.swift */,
 				272338B618BCFB6800F80497 /* PMBookmarkTests.m */,
 				27E6A6421C68099F00D77737 /* Supporting Files */,
 			);
@@ -409,6 +425,10 @@
 				16D8966AD9DBF113EC293157 /* Pods-Pinmarker.release.xcconfig */,
 				8C4DC01EF6EB24E6750629F1 /* Pods-PinmarkerTests.debug.xcconfig */,
 				D66DCC1FD610FA8E1CEA5B03 /* Pods-PinmarkerTests.release.xcconfig */,
+				8549A2B5AF03A0804BFCDFED /* Pods-PinmarkerKit.debug.xcconfig */,
+				DD916CE0F3451158F762FC3B /* Pods-PinmarkerKit.release.xcconfig */,
+				724290B03ED4F7F877AFC898 /* Pods-PinmarkerKitTests.debug.xcconfig */,
+				B688EC94E4F6EC48B637A29D /* Pods-PinmarkerKitTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -478,6 +498,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27D6375E1C5483BD006D2C58 /* Build configuration list for PBXNativeTarget "PinmarkerKit" */;
 			buildPhases = (
+				F1829B602891F3DB08D4EC98 /* [CP] Check Pods Manifest.lock */,
 				27D6373E1C5483BD006D2C58 /* Sources */,
 				27D6373F1C5483BD006D2C58 /* Frameworks */,
 				27D637401C5483BD006D2C58 /* Headers */,
@@ -496,9 +517,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27D637601C5483BD006D2C58 /* Build configuration list for PBXNativeTarget "PinmarkerKitTests" */;
 			buildPhases = (
+				51EF1E5E4BAB5DAADC514C8C /* [CP] Check Pods Manifest.lock */,
 				27D637481C5483BD006D2C58 /* Sources */,
 				27D637491C5483BD006D2C58 /* Frameworks */,
 				27D6374A1C5483BD006D2C58 /* Resources */,
+				97C4147BFF9D6F912768E062 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -634,6 +657,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		51EF1E5E4BAB5DAADC514C8C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PinmarkerKitTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		7F71A88DBE68BBF4E3B4E471 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -650,6 +691,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		97C4147BFF9D6F912768E062 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PinmarkerKitTests/Pods-PinmarkerKitTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/TinyKeychain/TinyKeychain.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TinyKeychain.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PinmarkerKitTests/Pods-PinmarkerKitTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CC3926642CB445BCD5A1D65B /* [CP] Embed Pods Frameworks */ = {
@@ -696,6 +755,24 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Pinmarker/Pods-Pinmarker-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		F1829B602891F3DB08D4EC98 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PinmarkerKit-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -706,7 +783,6 @@
 				278EF433185B71E2003A27D3 /* main.m in Sources */,
 				279719D2189960A400D58BC7 /* PMSettingsTVC.m in Sources */,
 				27409CAB18CBDAAE006C97BB /* PMAccountStore.m in Sources */,
-				271DA51520A882EA00EBEE31 /* PMKeychain.swift in Sources */,
 				270C4A4A18628D6A000FC061 /* PMNavigationVC.m in Sources */,
 				27DA5B501885BB0500AEE0F5 /* PMAddAccountVC.m in Sources */,
 				27925F141B1BA389007F4927 /* UIView+Inspectables.swift in Sources */,
@@ -725,7 +801,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				271DA51820A8831100EBEE31 /* PMKeychainTests.swift in Sources */,
 				278C3F5120A6576500615E79 /* PMAccountStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -739,6 +814,7 @@
 				27D6376F1C55B009006D2C58 /* Constants.m in Sources */,
 				27D6DE571C55C9FF0069CBFF /* PMBookmark.m in Sources */,
 				27D6DE511C55BBDB0069CBFF /* NSURL+Pinmarker.m in Sources */,
+				27103AB621267254003CAF50 /* Keychain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -746,6 +822,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27103AB121266EDE003CAF50 /* KeychainTests.swift in Sources */,
 				27E6A6431C6809AE00D77737 /* PMBookmarkTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -900,6 +977,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B2A13E7D0843829EA3AF30B1 /* Pods-Pinmarker.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -935,6 +1013,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 16D8966AD9DBF113EC293157 /* Pods-Pinmarker.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1034,6 +1113,7 @@
 		};
 		27D6375A1C5483BD006D2C58 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8549A2B5AF03A0804BFCDFED /* Pods-PinmarkerKit.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -1070,6 +1150,7 @@
 		};
 		27D6375B1C5483BD006D2C58 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD916CE0F3451158F762FC3B /* Pods-PinmarkerKit.release.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -1106,7 +1187,9 @@
 		};
 		27D6375C1C5483BD006D2C58 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 724290B03ED4F7F877AFC898 /* Pods-PinmarkerKitTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1127,7 +1210,9 @@
 		};
 		27D6375D1C5483BD006D2C58 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B688EC94E4F6EC48B637A29D /* Pods-PinmarkerKitTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
