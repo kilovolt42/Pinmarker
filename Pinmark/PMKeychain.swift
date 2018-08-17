@@ -10,6 +10,6 @@ import TinyKeychain
 
 extension Keychain {
     static var pinmarker: Keychain {
-        return Keychain(keychainAccessGroup: nil)
+        return Keychain(group: nil, accessibilityLevel: .afterFirstUnlock)
     }
 }
