@@ -53,10 +53,11 @@ NSString * const PMTagStoreUsernameKey = @"PMTagStoreUsernameKey";
         NSString *password = self.encryptionPassword;
 
         if (encryptedData && password) {
-            NSError *error = nil;
-            NSData *decryptedData = [RNDecryptor decryptData:encryptedData withPassword:password error:&error];
-            if (!error) {
-                _tags = [NSKeyedUnarchiver unarchiveObjectWithData:decryptedData];
+            NSError *decryptError = nil;
+            NSData *decryptedData = [RNDecryptor decryptData:encryptedData withPassword:password error:&decryptError];
+            if (!decryptError) {
+                NSError *unarchiveError = nil;
+                _tags = [NSKeyedUnarchiver unarchivedObjectOfClass:[NSMutableDictionary class] fromData:decryptedData error:&unarchiveError];
             }
         }
 
@@ -119,13 +120,16 @@ NSString * const PMTagStoreUsernameKey = @"PMTagStoreUsernameKey";
     NSString *password = self.encryptionPassword;
 
     if (password) {
-        NSData *archivedData = [NSKeyedArchiver archivedDataWithRootObject:self.tags];
+        NSError *archiveError = nil;
+        NSData *archivedData = [NSKeyedArchiver archivedDataWithRootObject:self.tags requiringSecureCoding:YES error:&archiveError];
 
-        NSError *error;
-        NSData *encryptedData = [RNEncryptor encryptData:archivedData withSettings:kRNCryptorAES256Settings password:password error:&error];
-        if (!error) {
-            NSString *path = [self tagsArchivePath];
-            return [encryptedData writeToFile:path atomically:YES];
+        if (!archiveError) {
+            NSError *encryptError;
+            NSData *encryptedData = [RNEncryptor encryptData:archivedData withSettings:kRNCryptorAES256Settings password:password error:&encryptError];
+            if (!encryptError) {
+                NSString *path = [self tagsArchivePath];
+                return [encryptedData writeToFile:path atomically:YES];
+            }
         }
     }
 
