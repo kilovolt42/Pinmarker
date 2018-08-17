@@ -1,10 +1,28 @@
-platform :ios, '10.0'
+platform :ios, '11.0'
 inhibit_all_warnings!
 
 target 'Pinmarker' do
   use_frameworks!
   pod 'Lockbox'
   pod 'RNCryptor-objc'
+  pod 'TinyKeychain'
+end
+
+target 'PinmarkerTests' do
+  use_frameworks!
+  pod 'Lockbox'
+  pod 'RNCryptor-objc'
+  pod 'TinyKeychain'
+end
+
+target 'PinmarkerKit' do
+  use_frameworks!
+  pod 'TinyKeychain'
+end
+
+target 'PinmarkerKitTests' do
+  use_frameworks!
+  pod 'TinyKeychain'
 end
 
 post_install do |installer|
