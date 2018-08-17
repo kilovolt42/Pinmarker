@@ -14,4 +14,8 @@ class KeychainTests: XCTestCase {
     func testKeychainExists() {
         XCTAssertNotNil(Keychain.pinmarker, "Pinmarker keychain should exist")
     }
+
+    func testAssociatedTokensKeyExists() {
+        XCTAssertNotNil(Keychain.Key<[String]>.associatedTokens, "Associated tokens key should exist")
+    }
 }

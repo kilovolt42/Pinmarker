@@ -13,3 +13,9 @@ public extension Keychain {
         return Keychain(group: nil, accessibilityLevel: .afterFirstUnlock)
     }
 }
+
+public extension Keychain.Key {
+    public static var associatedTokens: Keychain.Key<[String]> {
+        return Keychain.Key<[String]>(rawValue: "PMAssociatedTokensKey", synchronize: true)
+    }
+}
