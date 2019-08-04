@@ -567,10 +567,9 @@
 			};
 			buildConfigurationList = 278EF41E185B71E2003A27D3 /* Build configuration list for PBXProject "Pinmarker" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
