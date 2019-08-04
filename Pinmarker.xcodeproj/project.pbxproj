@@ -547,20 +547,20 @@
 				TargetAttributes = {
 					278EF422185B71E2003A27D3 = {
 						DevelopmentTeam = 793AL65W3G;
-						LastSwiftMigration = 0930;
+						LastSwiftMigration = 1030;
 					};
 					278EF446185B71E2003A27D3 = {
-						LastSwiftMigration = 0930;
+						LastSwiftMigration = 1030;
 						TestTargetID = 278EF422185B71E2003A27D3;
 					};
 					27D637421C5483BD006D2C58 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = 793AL65W3G;
-						LastSwiftMigration = 0930;
+						LastSwiftMigration = 1030;
 					};
 					27D6374B1C5483BD006D2C58 = {
 						CreatedOnToolsVersion = 7.2;
-						LastSwiftMigration = 0930;
+						LastSwiftMigration = 1030;
 						TestTargetID = 278EF422185B71E2003A27D3;
 					};
 				};
@@ -570,6 +570,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -1000,8 +1001,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Pinmark/Pinmarker-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
@@ -1033,8 +1033,7 @@
 				PRODUCT_NAME = Pinmarker;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Pinmark/Pinmarker-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
@@ -1071,8 +1070,7 @@
 				PRODUCT_NAME = PinmarkerTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "Pinmark/PinmarkerTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1102,8 +1100,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kilovolt42.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = PinmarkerTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "Pinmark/PinmarkerTests-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1139,8 +1136,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1176,8 +1172,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kilovolt42.PinmarkerKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1199,8 +1194,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kilovolt42.PinmarkerKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pinmarker.app/Pinmarker";
 			};
 			name = Debug;
@@ -1221,8 +1215,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kilovolt42.PinmarkerKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pinmarker.app/Pinmarker";
 			};
 			name = Release;
